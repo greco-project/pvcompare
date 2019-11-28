@@ -1,8 +1,19 @@
-# rli_template
-Template repository for creating new projects under the RLI's umbrella
+# PvCompare
+An oemof application that compares the benefit of different pv technologies for
+ net zero energy buildings 
 
-## Get started
+## Installation
 
-Simply click on the green `Use this template` button on the left of the `Clone or download` button.
+The feedin module requires an installation of the `greco_technologies` 
+repository. Please clone the repository:
 
-The detailed instructions to create a new repository from this template can be found [here](https://help.github.com/en/articles/creating-a-repository-from-a-template).
+    git clone git@github.com:greco-project/greco_technologies.git
+
+Go into the repository and checkout into the branch `CPV_dev`:
+
+    cd ./greco_technologies
+    git chechout CPV_dev
+    
+then you can install the develloper version:
+
+    pip install -e ./
