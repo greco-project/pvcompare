@@ -99,6 +99,7 @@ def calculate_power_demand(country, population, year):
         ax.set_ylabel("Power demand")
         plt.show()
 
+
 def calculate_heat_demand(country, population, year):
 
 
