@@ -70,6 +70,7 @@ def calculate_area_potential(population):
     return(storeys, used_south_facade, used_eastwest_facade, total_floor_area,
            flatroof_area)
 
+
 def plot_facade_potential(): #todo: delete this function?
 
     population = range(0, 1300, 120)
