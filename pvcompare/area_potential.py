@@ -9,10 +9,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
-def calculate_area_potential(population):
 
-    """Calculates the area potential of the rooftop, south and east+west facades
-    for a given population
+def calculate_area_potential(population):
+    r"""
+    Calculates the area potential of the rooftop, south and east+west facades
+    for a given population.
 
     Parameters
     ----------

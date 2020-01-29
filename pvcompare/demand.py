@@ -36,8 +36,8 @@ def calculate_power_demand(country, population, year):
         https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use
     2) the population of the country is requested from
         EUROSTAT_population
-    3) the total residential demand is devided by the countries population and
-        multiplied by the districts population
+    3) the total residential demand is divided by the countries' population and
+        multiplied by the districts' population
 
     Parameters
     ----------
@@ -50,7 +50,7 @@ def calculate_power_demand(country, population, year):
     Returns
     -------
     pd.DataFrame
-        hourly time series of the heat demand
+        hourly time series of the electrical demand
     """
     #load workalender for the given country #todo: import different caleder for
                                             #todo: each country

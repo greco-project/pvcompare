@@ -1,3 +1,16 @@
+"""
+This module is designed for the use with the pvlib.
+
+The weather data set has to be a DataFrame with the following columns:
+
+pvlib:
+ * ghi - global horizontal irradiation [W/m2]
+ * dni - direct normal irradiation [W/m2]
+ * dhi - diffuse horizontal irradiation [W/m2]
+ * temp_air - ambient temperature [°C]
+ * wind_speed - wind speed [m/s]
+"""
+
 from pvlib.location import Location
 import pvlib.atmosphere
 from pvlib.pvsystem import PVSystem
@@ -13,26 +26,9 @@ import cpvtopvlib.cpvsystem as cpv
 
 #import INS_CPV as ins
 
-"""
-This module is designed for the use with the pvlib.
-
-The weather data set has to be a DataFrame with the following columns:
-
-pvlib:
- * ghi - global horizontal irradiation [W/m2]
- * dni - direct normal irradiation [W/m2]
- * dhi - diffuse horizontal irradiation [W/m2]
- * temp_air - ambient temperature [°C]
- * wind_speed - wind speed [m/s]
-"""
-
-
-
-
-
 def create_PV_timeseries(lat, lon, weather, PV_setup=None, plot=True):
-
-    """For each building surface listed in PV_setup, one PV timeseries is
+    r"""
+    For each building surface listed in PV_setup, one PV timeseries is
     created with regard to the technology and its orientation used on this
     building surface. All timeseries are normalized to the peak power of the
     module unsed and stored as csv files in ./Data/...
@@ -121,7 +117,10 @@ def create_PV_timeseries(lat, lon, weather, PV_setup=None, plot=True):
         plt.show()
 
 def get_optimal_pv_angle(lat):
-    """ About 27° to 34° from ground in Germany.
+    r"""
+    Calculates the optimal tilt angle depending on the latitude.
+
+    About 27° to 34° from ground in Germany.
     The pvlib uses tilt angles horizontal=90° and up=0°. Therefore 90° minus
     the angle from the horizontal.
     """
@@ -129,9 +128,8 @@ def get_optimal_pv_angle(lat):
 
 
 def set_up_system(type, surface_azimuth, surface_tilt):
-
-    """Sets up the PV system for the given type of technology and returns
-    the initialized system and the module parameters as a dictionary.
+    r"""
+    Sets up the PV system for the given type of technology.
 
     Parameters
     ----------
@@ -144,7 +142,8 @@ def set_up_system(type, surface_azimuth, surface_tilt):
 
     Returns
     -------
-    PVSystem, pandas.Series
+    PVSystem: pandas.Series
+        Initialized PV system and module parameters.  # todo Series and dict?
     """
 
     if type=="si":
