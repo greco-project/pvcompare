@@ -6,6 +6,7 @@
 Welcome to the PvCompare documentation!
 =======================================
 
+Contents:
 
 .. toctree::
    :maxdepth: 2
