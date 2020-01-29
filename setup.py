@@ -21,6 +21,7 @@ setup(name='pvcompare',
       long_description_content_type='text/x-rst',
       zip_safe=False,  # todo
       python_requires=">=3.5, <4",
-      install_requires=["pandas", "pvlib", "demandlib"],
+      install_requires=["pandas", "pvlib", "demandlib",
+                        "scipy"],  # todo check if scipy is necessarily needed
       extras_require={
           'dev': ['pytest']})

@@ -20,6 +20,7 @@ import pandas as pd
 import numpy as np
 import os
 import pvlib
+import scipy  # todo check if necessarily needed
 
 import greco_technologies.cpv.cpv as ins
 import cpvtopvlib.cpvsystem as cpv
