@@ -56,7 +56,7 @@ def create_PV_timeseries(lat, lon, weather, PV_setup=None, plot=True):
     if PV_setup is None:
         # read example PV_setup file
         datapath = os.path.join(os.path.dirname(__file__),
-                                'Data/pv/PV_setup.csv')
+                                'data/pv/PV_setup.csv')
         PV_setup=pd.read_csv(datapath)
 
     technologies = PV_setup["technology"]

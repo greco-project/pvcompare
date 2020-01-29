@@ -57,10 +57,10 @@ def calculate_power_demand(country, population, year):
     cal = Germany()
     holidays = dict(cal.holidays(2010))
 
-    filename=os.path.join(os.path.dirname(__file__), 'Data/load_profiles/Electricity_consumption_residential.csv')
+    filename=os.path.join(os.path.dirname(__file__), 'data/load_profiles/Electricity_consumption_residential.csv')
     powerstat= pd.read_csv(filename, sep=';', index_col=0)
 
-    filename1=os.path.join(os.path.dirname(__file__), 'Data/load_profiles/EUROSTAT_population.csv')
+    filename1=os.path.join(os.path.dirname(__file__), 'data/load_profiles/EUROSTAT_population.csv')
     populations=pd.read_csv(filename1, index_col=0, sep=';')
     national_energyconsumption=powerstat.at[country, year] * 11.63 * 1000000
     annual_demand_per_population=(national_energyconsumption / populations.at[country, 'Population']) * population
@@ -131,7 +131,7 @@ def calculate_heat_demand(country, population, year):
 
     # read example temperature series
     datapath = os.path.join(os.path.dirname(__file__),
-                            'Data/load_profiles/example_data.csv')
+                            'data/load_profiles/example_data.csv')
     temperature = pd.read_csv(datapath)["temperature"]
     # Create DataFrame for 2010
     demand = pd.DataFrame(
@@ -139,14 +139,14 @@ def calculate_heat_demand(country, population, year):
                             periods=8760, freq='H'))
 
     # calculate annual demand
-    filename1=os.path.join(os.path.dirname(__file__), 'Data/load_profiles/Coal_consumption_residential.csv')
-    filename2=os.path.join(os.path.dirname(__file__), 'Data/load_profiles/Gas_consumption_residential.csv')
+    filename1=os.path.join(os.path.dirname(__file__), 'data/load_profiles/Coal_consumption_residential.csv')
+    filename2=os.path.join(os.path.dirname(__file__), 'data/load_profiles/Gas_consumption_residential.csv')
     coal_demand= pd.read_csv(filename1, sep=';', index_col=0, header=1)
     gas_demand = pd.read_csv(filename2, sep=';', index_col=0, header=1)
     coal_demand[year] = pd.to_numeric(coal_demand[year], errors='coerce')
     gas_demand[year] = pd.to_numeric(gas_demand[year], errors='coerce')
 
-    filename3=os.path.join(os.path.dirname(__file__), 'Data/load_profiles/EUROSTAT_population.csv')
+    filename3=os.path.join(os.path.dirname(__file__), 'data/load_profiles/EUROSTAT_population.csv')
     populations=pd.read_csv(filename3, index_col=0, sep=';')
     total_heat_demand=(coal_demand.at[country, year] * 11.63 * 1000000) + (gas_demand.at[country, year] * 11.63 * 1000000)
     annual_heat_demand_per_population=(total_heat_demand/populations.at[country, 'Population']) * population

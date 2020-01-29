@@ -28,7 +28,7 @@ def calculate_area_potential(population):
 
     # read building parameters
     datapath = os.path.join(os.path.dirname(__file__),
-                            'Data/load_profiles/building_parameters.csv')
+                            'data/load_profiles/building_parameters.csv')
     bp = pd.read_csv(datapath, index_col=0)
     bp=bp.T
     population_per_storey=bp.iloc[0]['population per storey']
