@@ -76,7 +76,7 @@ def create_PV_timeseries(lat, lon, weather, PV_setup=None, plot=True):
                                                            surface_azimuth=j,
                                                            surface_tilt=k)
                 timeseries.to_csv\
-                    ('Data/PV_feedin_SI_' + str(j) + '_' + str(k) + '.csv')
+                    ('data/PV_feedin_SI_' + str(j) + '_' + str(k) + '.csv')
 
                 if plot==True:
                     plt.plot(timeseries, label='si'+ str(j) + '_' + str(k))
@@ -92,7 +92,7 @@ def create_PV_timeseries(lat, lon, weather, PV_setup=None, plot=True):
                 timeseries=create_normalized_CPV_timeseries(lat, lon, weather,
                                                             j, k)
                 timeseries.to_csv\
-                    ('Data/PV_feedin_CPV_' + str(j) + '_' + str(k) + '.csv')
+                    ('data/PV_feedin_CPV_' + str(j) + '_' + str(k) + '.csv')
 
                 if plot==True:
                     plt.plot(timeseries, label='cpv'+ str(j) + '_' + str(k))
@@ -108,7 +108,7 @@ def create_PV_timeseries(lat, lon, weather, PV_setup=None, plot=True):
                 timeseries=create_normalized_SI_timeseries(lat, lon, weather,
                                                            j, k)
                 timeseries.to_csv\
-                    ('Data/PV_feedin_PSI_' + str(j) + '_' + str(k) + '.csv')
+                    ('data/PV_feedin_PSI_' + str(j) + '_' + str(k) + '.csv')
 
         else:
             print(i, 'is not in technologies. Please chose si, cpv or psi.')
