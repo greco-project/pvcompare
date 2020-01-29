@@ -41,6 +41,7 @@ docs/temp/*
 docs/_templates/*
 docs/_static
 docs/Makefile
+docs/make.bat
 
 # Unit test / coverage reports
 htmlcov/
