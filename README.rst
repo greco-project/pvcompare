@@ -44,4 +44,4 @@ Contributing
 ==============
 
 We are warmly welcoming all who want to contribute to the PVcompare.
-Please read [CONTRIBUTING.md](https://github.com/rl-institut/pvcompare/blob/dev/CONTRIBUTING.md).
+Please read `CONTRIBUTING.md <https://github.com/greco-project/pvcompare/blob/dev/CONTRIBUTING.md>`_.
