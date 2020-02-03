@@ -32,7 +32,7 @@ def create_PV_timeseries(lat, lon, weather, PV_setup=None, plot=True):
     For each building surface listed in PV_setup, one PV timeseries is
     created with regard to the technology and its orientation used on this
     building surface. All timeseries are normalized to the peak power of the
-    module unsed and stored as csv files in ./Data/...
+    module unsed and stored as csv files in ./data/...
 
     Parameters
     ----------
@@ -192,8 +192,8 @@ def set_up_system(type, surface_azimuth, surface_tilt):
 
 def create_normalized_SI_timeseries(lat, lon, weather, surface_azimuth,
                                     surface_tilt):
-
-    """The cpv timeseries is created for a given weather dataframe, at a given
+    """
+    The cpv timeseries is created for a given weather data frame, at a given
     orientation for the flat plate module "'Canadian_Solar_CS5P_220M___2009_'".
      The time series is normalized by the peak power of the module.
 
@@ -212,6 +212,7 @@ def create_normalized_SI_timeseries(lat, lon, weather, surface_azimuth,
     Returns
     -------
     pd.DataFrame
+        todo describe
     """
     system, module_parameters=set_up_system(type="si",
                                             surface_azimuth=surface_azimuth,
@@ -229,8 +230,8 @@ def create_normalized_SI_timeseries(lat, lon, weather, surface_azimuth,
 
 def create_normalized_CPV_timeseries(lat, lon, weather, surface_azimuth,
                                      surface_tilt):
-
-    """The cpv timeseries is created for a given weather dataframe, at a given
+    """
+    The cpv timeseries is created for a given weather dataframe, at a given
     orientation for the INSOLIGHT CPV module. The time series is normalized by
     the peak power of the module.
 
@@ -249,6 +250,7 @@ def create_normalized_CPV_timeseries(lat, lon, weather, surface_azimuth,
     Returns
     -------
     pd.DataFrame
+        todo describe
     """
     system, module_parameters=set_up_system(type="cpv",
                                             surface_azimuth=surface_azimuth,
@@ -262,7 +264,6 @@ def create_normalized_CPV_timeseries(lat, lon, weather, surface_azimuth,
 
 
 def nominal_values_pv(type, area, surface_azimuth, surface_tilt):
-
     """The nominal value for each PV technology is constructed by the size of
     the module,its peak power and the total available area. The nominal value
     functions as a limit for the potential installed capacity of pv in oemof.

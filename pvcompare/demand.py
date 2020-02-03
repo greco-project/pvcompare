@@ -46,7 +46,7 @@ def calculate_power_demand(country, population, year):
     population: int
         the district population
     year: int
-
+        Year for which power demand time series is calculated.
     Returns
     -------
     pd.DataFrame
@@ -101,8 +101,6 @@ def calculate_power_demand(country, population, year):
 
 
 def calculate_heat_demand(country, population, year):
-
-
     """The heat demand is calculated for a given population in a certain country
     and year. The annual heat demand is calculated by the following procedure:
     1) the residential heat demand for a country is requested from
@@ -119,6 +117,7 @@ def calculate_heat_demand(country, population, year):
     population: int
         the district population
     year: int
+        Year for which heat demand time series is calculated.
 
     Returns
     -------
