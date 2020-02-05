@@ -22,8 +22,8 @@ def calculate_area_potential(population):
 
     Returns
     -------
-    list
-        the list contains: storeys, used_south_facade, used_eastwest_facade,
+    tuple
+        contains: storeys, used_south_facade, used_eastwest_facade,
         total_floor_area, flatroof_area)
     """
 
