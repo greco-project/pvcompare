@@ -1,0 +1,4 @@
+orientation,surface_azimuth,surface_tilt,technology
+flat_roof,180,optimal,si
+flat_roof,180,optimal,cpv
+flat_roof,90,90,cpv
