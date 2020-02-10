@@ -1,4 +1,4 @@
-
+import logging
 import feedinlib.era5
 import pvlib
 import pandas as pd
@@ -19,6 +19,8 @@ def load_era5_weatherdata(lat, lon, year):
     start_date=str(year)+'-01-01'
     end_date=str(year)+'-12-31'
 
+    logging.info('loading era5 weatherdata for the year %s' % year)
+
     weather_xarray=feedinlib.era5.get_era5_data_from_datespan_and_position(
     start_date=start_date,
     end_date=end_date,
@@ -30,6 +32,7 @@ def load_era5_weatherdata(lat, lon, year):
     chunks=None,
     cds_client=None,
 )
+    logging.info('era5 weatherdata successfully loaded.')
     weather_df=format_pvlib(weather_xarray)
 
     spa=pvlib.solarposition.spa_python(time=weather_df.index, latitude=lat,
@@ -39,6 +42,7 @@ def load_era5_weatherdata(lat, lon, year):
                                               solar_zenith=spa['zenith'],
                                               times=weather_df.index).fillna(0)
 
+    logging.info('weatherdata successfully coverted into pvlib format.')
     return weather_df
 
 
