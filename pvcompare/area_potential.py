@@ -111,5 +111,5 @@ def plot_facade_potential(): #todo: delete this function?
 
 
 if __name__ == '__main__':
-    calculate_area_potential(population=600)
+    calculate_area_potential(population=48000)
 #    plot_facade_potential()
