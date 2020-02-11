@@ -25,7 +25,7 @@ setup(name='pvcompare',
                         "demandlib",
                         "numpy >= 1.12.0,  < 1.17",
                         "pandas >= 0.18.1, < 0.25",
-                        "workalender",  # todo check if needed
+                        "workalendar",  # todo check if needed
                         "scipy"],  # todo check if scipy is necessarily needed
       extras_require={
           'dev': ['pytest']})
