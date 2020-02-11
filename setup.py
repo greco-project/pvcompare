@@ -17,7 +17,7 @@ setup(name='pvcompare',
       package_data={
           'pvcompare': [os.path.join('data', 'load_profiles', '*.csv'),
                         os.path.join('data', 'pv', '*.csv')]},
-      long_description=read('README.md'),
+      long_description=read('README.rst'),
       long_description_content_type='text/x-rst',
       zip_safe=False,  # todo
       python_requires=">=3.5, <4",
