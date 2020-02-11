@@ -12,13 +12,18 @@ python:
 
 # command to install dependencies
 install:
+  - pip install -r requirements.txt
+  - python setup.py install
   - pip install -r tests/test_requirements.txt
 
 # commands to run tests 
 script:
-  - flake8
-  - pylint */*.py
   - pytest tests
+  - coverage run -m pytest
+
+
+#  - black --check . --exclude docs/  # todo for later
+
 #jobs:
 #  include:
 #    - stage: "Tests"                # naming the Tests stage

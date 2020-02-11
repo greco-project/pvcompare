@@ -17,11 +17,16 @@ setup(name='pvcompare',
       package_data={
           'pvcompare': [os.path.join('data', 'load_profiles', '*.csv'),
                         os.path.join('data', 'pv', '*.csv')]},
-      long_description=read('README.md'),
+      long_description=read('README.rst'),
       long_description_content_type='text/x-rst',
       zip_safe=False,  # todo
       python_requires=">=3.5, <4",
-      install_requires=["pandas", "pvlib", "demandlib",
-                        "scipy"],  # todo check if scipy is necessarily needed
+      install_requires=["pvlib",
+                        "demandlib",
+                        "numpy >= 1.12.0,  < 1.17",
+                        "pandas >= 0.18.1, < 0.25",
+                        "workalendar < 7.0.0",  # todo check if needed. Problems with installing skyfield in travis tests (from workalendar 7.0.0)
+                        # "scipy",
+                        ],  # todo check if scipy is necessarily needed
       extras_require={
           'dev': ['pytest']})

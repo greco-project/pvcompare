@@ -5,9 +5,15 @@ calculating the available area potential for PV-modules on the rooftop and facad
 
 """
 
-import matplotlib.pyplot as plt
+
 import pandas as pd
 import os
+import logging
+
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    plt = None
 
 
 def calculate_area_potential(population):
@@ -98,17 +104,19 @@ def plot_facade_potential(): #todo: delete this function?
     t.set_index('population', inplace=True)
 
     area = pd.concat([st, s, e, t], axis=1)
-
-    plt.plot(area['storeys'],
-             area['south_facade'] / area['total_floor_area'] * 100,
-             label='south_facade')
-    plt.plot(area['storeys'],
-             area['eastwest_facade'] / area['total_floor_area'] * 100,
-             label='eastwest_facades')
-    plt.ylabel('fraction of used facade to the total floor area')
-    plt.xlabel('number of floors')
-    plt.legend()
-    plt.show()
+    if plt:
+        plt.plot(area['storeys'],
+                 area['south_facade'] / area['total_floor_area'] * 100,
+                 label='south_facade')
+        plt.plot(area['storeys'],
+                 area['eastwest_facade'] / area['total_floor_area'] * 100,
+                 label='eastwest_facades')
+        plt.ylabel('fraction of used facade to the total floor area')
+        plt.xlabel('number of floors')
+        plt.legend()
+        plt.show()
+    else:
+        logging.warning("You need to install matplotlib to use this function.")
 
 
 if __name__ == '__main__':
