@@ -25,7 +25,8 @@ setup(name='pvcompare',
                         "demandlib",
                         "numpy >= 1.12.0,  < 1.17",
                         "pandas >= 0.18.1, < 0.25",
-                        "workalendar",  # todo check if needed
-                        "scipy"],  # todo check if scipy is necessarily needed
+                        "workalendar < 7.0.0",  # todo check if needed. Problems with installing skyfield in travis tests (from workalendar 7.0.0)
+                        # "scipy",
+                        ],  # todo check if scipy is necessarily needed
       extras_require={
           'dev': ['pytest']})

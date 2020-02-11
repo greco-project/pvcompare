@@ -16,10 +16,8 @@ import pvlib.atmosphere
 from pvlib.pvsystem import PVSystem
 from pvlib.modelchain import ModelChain
 import pandas as pd
-import numpy as np
 import os
 import pvlib
-import scipy  # todo check if necessarily needed
 
 try:
     import matplotlib.pyplot as plt
