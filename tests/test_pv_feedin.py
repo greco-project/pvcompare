@@ -13,8 +13,8 @@ import pandas as pd
 import numpy as np
 
 from pvcompare.pv_feedin import (
-    create_PV_timeseries, get_optimal_pv_angle, set_up_system,
-    create_normalized_SI_timeseries, create_normalized_CPV_timeseries,
+    create_pv_timeseries, get_optimal_pv_angle, set_up_system,
+    create_normalized_si_timeseries, create_normalized_cpv_timeseries,
     nominal_values_pv,
 )
 
