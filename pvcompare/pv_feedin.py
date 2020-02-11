@@ -15,12 +15,16 @@ from pvlib.location import Location
 import pvlib.atmosphere
 from pvlib.pvsystem import PVSystem
 from pvlib.modelchain import ModelChain
-import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import os
 import pvlib
 import scipy  # todo check if necessarily needed
+
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    plt = None
 
 import greco_technologies.cpv.cpv as ins
 import cpvtopvlib.cpvsystem as cpv
