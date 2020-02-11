@@ -1,3 +1,6 @@
 flake8
 pylint
 pytest
+black
+coverage
+python-coveralls
