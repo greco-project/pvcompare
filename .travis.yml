@@ -18,7 +18,6 @@ install:
 
 # commands to run tests
 script:
-  - pytest tests
   - coverage run --rcfile=.coveragerc --source pvcompare -m py.test
   - coverage report
 
