@@ -3,4 +3,4 @@ pylint
 pytest
 black
 coverage
-python-coveralls
+coveralls
