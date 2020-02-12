@@ -16,10 +16,14 @@ install:
   - python setup.py install
   - pip install -r tests/test_requirements.txt
 
-# commands to run tests 
+# commands to run tests
 script:
-  - pytest tests
-  - coverage run -m pytest
+  - coverage run --rcfile=.coveragerc --source pvcompare -m py.test
+  - coverage report
+
+after_success:
+  - coveralls
+
 
 
 #  - black --check . --exclude docs/  # todo for later
