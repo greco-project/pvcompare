@@ -2,7 +2,7 @@ index,unit,pv_plant_01,pv_plant_02,pv_plant_03
 age_installed,year,0,0,0
 capex_fix,currency,10000,10000,10000
 capex_var,currency/unit,7200,7200,7200
-file_name,str,Data/mvs_inputs/sequences/pv/si_180_25.csv,Data/mvs_inputs/sequences/pv/cpv_180_25.csv,Data/mvs_inputs/sequences/pv/cpv_90_90.csv
+file_name,str,data/mvs_inputs/sequences/pv/si_180_25.csv,data/mvs_inputs/sequences/pv/cpv_180_25.csv,Data/mvs_inputs/sequences/pv/cpv_90_90.csv
 installedCap,kWp,63637.176,141520.757,24260.701
 label,str,PV plant (mono),PV plant (mono),PV plant (mono)
 lifetime,year,30,30,30
