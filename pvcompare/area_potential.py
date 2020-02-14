@@ -5,31 +5,40 @@ calculating the available area potential for PV-modules on the rooftop and facad
 
 """
 
-import matplotlib.pyplot as plt
+
 import pandas as pd
 import os
 import logging
 
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    plt = None
+
 def calculate_area_potential(population, input_directory, surface_type):
 
-    """Calculates the area potential of the rooftop, south and east+west facades
-    for a given population
+    """
+    Calculates the area potential of the rooftop, south and east+west facades
+    for a given population.
 
     Parameters
     ----------
     population: int
         the population of the district
+		input_directory: str
+		surface_type: str
 
-    Returns
+    Returns: int
+			area
     -------
-    int
-        surface_area
+
     """
 
     # read building parameters
     logging.info("loading building parameters from building_parameters.csv ")
     datapath = os.path.join(input_directory,
                                 'building_parameters.csv')
+
 
     bp = pd.read_csv(datapath, index_col=0)
     bp=bp.T
@@ -73,46 +82,9 @@ def calculate_area_potential(population, input_directory, surface_type):
     return(area)
 
 
-# def plot_facade_potential(): #todo: delete this function?
-#
-#     population = range(0, 1300, 120)
-#     storeys = {}
-#     south = {}
-#     eastwest = {}
-#     total_floor = {}
-#
-#     for i in population:
-#         storeys[i], south[i], eastwest[i], total_floor[i] = \
-#             calculate_area_potential(population=i)
-#
-#     st = pd.DataFrame(list(storeys.items()))
-#     st.columns = ['population', 'storeys']
-#     st.set_index('population', inplace=True)
-#     s = pd.DataFrame(list(south.items()))
-#     s.columns = ['population', 'south_facade']
-#     s.set_index('population', inplace=True)
-#     e = pd.DataFrame(list(eastwest.items()))
-#     e.columns = ['population', 'eastwest_facade']
-#     e.set_index('population', inplace=True)
-#     t = pd.DataFrame(list(total_floor.items()))
-#     t.columns = ['population', 'total_floor_area']
-#     t.set_index('population', inplace=True)
-#
-#     area = pd.concat([st, s, e, t], axis=1)
-#
-#     plt.plot(area['storeys'],
-#              area['south_facade'] / area['total_floor_area'] * 100,
-#              label='south_facade')
-#     plt.plot(area['storeys'],
-#              area['eastwest_facade'] / area['total_floor_area'] * 100,
-#              label='eastwest_facades')
-#     plt.ylabel('fraction of used facade to the total floor area')
-#     plt.xlabel('number of floors')
-#     plt.legend()
-#     plt.show()
-
 
 #if __name__ == '__main__':
 
     #    calculate_area_potential(population=48000)
     #    plot_facade_potential()
+

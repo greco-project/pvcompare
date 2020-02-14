@@ -1,25 +1,3 @@
-from pvlib.location import Location
-import pvlib.atmosphere
-from pvlib.pvsystem import PVSystem
-from pvlib.modelchain import ModelChain
-import matplotlib.pyplot as plt
-import pandas as pd
-import os
-import pvlib
-import glob
-import logging
-import sys
-
-import cpvtopvlib.cpvsystem as cpv
-import greco_technologies.cpv.hybrid
-import greco_technologies.cpv.inputs
-import area_potential
-
-log_format = '%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s'
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
-
-#import INS_CPV as ins
-
 """
 This module is designed for the use with the pvlib.
 
@@ -33,15 +11,51 @@ pvlib:
  * wind_speed - wind speed [m/s]
 """
 
+from pvlib.location import Location
+import pvlib.atmosphere
+from pvlib.pvsystem import PVSystem
+from pvlib.modelchain import ModelChain
+import pandas as pd
+import os
+import pvlib
+import glob
+import logging
+import sys
+
+try:
+    import matplotlib.pyplot as plt
+except ImportError:
+    plt = None
+
+import cpvtopvlib.cpvsystem as cpv
+import greco_technologies.cpv.hybrid
+import greco_technologies.cpv.inputs
+import area_potential
+
+log_format = '%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s'
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
+
+#import INS_CPV as ins
 
 def create_pv_timeseries(lat, lon, weather, population, PV_setup=None, plot=True,
                          input_directory=None, output_directory=None,
                          mvs_input_directory=None):
+"""
+This module is designed for the use with the pvlib.
 
-    """For each building surface listed in PV_setup, one PV timeseries is
-    created with regard to the technology and its orientation used on this
+The weather data set has to be a DataFrame with the following columns:
+
+pvlib:
+ * ghi - global horizontal irradiation [W/m2]
+ * dni - direct normal irradiation [W/m2]
+ * dhi - diffuse horizontal irradiation [W/m2]
+ * temp_air - ambient temperature [°C]
+ * wind_speed - wind speed [m/s]
+
+ For each building surface listed in PV_setup, one PV timeseries is
+ created with regard to the technology and its orientation used on this
     building surface. All timeseries are normalized to the peak power of the
-    module unsed and stored as csv files in ./Data/...
+    module unsed and stored as csv files in ./data/...
 
     Parameters
     ----------
@@ -52,7 +66,7 @@ def create_pv_timeseries(lat, lon, weather, population, PV_setup=None, plot=True
     PV_setup: dict
         with collumns: technology, surface_azimuth, surface_tilt
         a tilt of 0 resembles a vertical orientation.
-        PV_setup=None loads example file Data/pv/PV_setup.csvS
+        PV_setup=None loads example file data/pv/PV_setup.csvS
     plot: boolean
 
     Returns
@@ -66,10 +80,9 @@ def create_pv_timeseries(lat, lon, weather, population, PV_setup=None, plot=True
 
         if input_directory is None:
             try:
-                input_directory='Data/inputs/'
-                datapath = os.path.join(input_directory,'PV_setup.csv')
+
             except:
-                logging.error("input file Data/inputs/PV_setup.csv does not "
+                logging.error("input file data/inputs/PV_setup.csv does not "
                               "exist.")
         else:
             try:
@@ -118,7 +131,6 @@ def create_pv_timeseries(lat, lon, weather, population, PV_setup=None, plot=True
             timeseries = create_normalized_cpv_timeseries(lat, lon,
                                                           weather,
                                                           j, k)
-
         elif row["technology"]=="psi":
             logging.error("The timeseries of psi cannot be calculated "
                           "yet. Please only use cpv or si right now.")
@@ -163,18 +175,22 @@ def create_pv_timeseries(lat, lon, weather, population, PV_setup=None, plot=True
 
 
 def get_optimal_pv_angle(lat):
+    r"""
+    Calculates the optimal tilt angle depending on the latitude.
 
-    """ About 27° to 34° from ground in Germany.
+    About 27° to 34° from ground in Germany.
     The pvlib uses tilt angles horizontal=90° and up=0°. Therefore 90° minus
     the angle from the horizontal.
     """
     return round(lat - 15)
 
 
-def set_up_system(technology, surface_azimuth, surface_tilt):
 
-    """Sets up the PV system for the given type of technology and returns
+def set_up_system(type, surface_azimuth, surface_tilt):
+    """
+		Sets up the PV system for the given type of technology and returns
     the initialized system and the module parameters as a dictionary.
+
 
     Parameters
     ----------
@@ -187,7 +203,8 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
 
     Returns
     -------
-    PVSystem, pandas.Series
+    PVSystem: pandas.Series
+        Initialized PV system and module parameters.
     """
 
     if technology=="si":
@@ -233,8 +250,8 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
 def create_normalized_si_timeseries(lat, lon, weather, surface_azimuth,
                                     surface_tilt, normalized=True):
 
-    """The cpv timeseries is created for a given weather dataframe, at a given
-    orientation for the flat plate module "'Canadian_Solar_CS5P_220M___2009_'".
+    r"""The cpv timeseries is created for a given weather dataframe, at a given
+    orientation for the flat plate module 'Canadian_Solar_CS5P_220M___2009_'.
      The time series is normalized by the peak power of the module.
 
     Parameters
@@ -253,6 +270,7 @@ def create_normalized_si_timeseries(lat, lon, weather, surface_azimuth,
     -------
     pd.DataFrame
     """
+
     system, module_parameters=set_up_system(technology="si",
                                             surface_azimuth=surface_azimuth,
                                             surface_tilt=surface_tilt)
@@ -532,3 +550,4 @@ if __name__ == '__main__':
     #
     # print('nominal value SI in MW:', nominal_value_pv)
     # print('nominal value CPV in MW:', nominal_value_cpv)
+

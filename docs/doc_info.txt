@@ -1,0 +1,5 @@
+# To test the documentation before uploading follow the instructions in rl-institut template:
+# https://github.com/rl-institut/rli_template
+# Use the following command to read all autosummary tables in the *.rst files that
+# have the :toctree: option set, and output corresponding stub pages in directory generated for all documented items
+# sphinx-autogen -o temp *.rst
