@@ -40,20 +40,9 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 def create_pv_timeseries(lat, lon, weather, population, PV_setup=None, plot=True,
                          input_directory=None, output_directory=None,
                          mvs_input_directory=None):
-"""
-This module is designed for the use with the pvlib.
-
-The weather data set has to be a DataFrame with the following columns:
-
-pvlib:
- * ghi - global horizontal irradiation [W/m2]
- * dni - direct normal irradiation [W/m2]
- * dhi - diffuse horizontal irradiation [W/m2]
- * temp_air - ambient temperature [°C]
- * wind_speed - wind speed [m/s]
-
- For each building surface listed in PV_setup, one PV timeseries is
- created with regard to the technology and its orientation used on this
+    """
+    For each building surface listed in PV_setup, one PV timeseries is
+    created with regard to the technology and its orientation used on this
     building surface. All timeseries are normalized to the peak power of the
     module unsed and stored as csv files in ./data/...
 
@@ -79,25 +68,19 @@ pvlib:
         logging.info("loading pv setup conditions from input directory.")
 
         if input_directory is None:
-            try:
-
-            except:
-                logging.error("input file data/inputs/PV_setup.csv does not "
-                              "exist.")
+            input_directory = 'data/inputs/'
         else:
-            try:
                 datapath = os.path.join(input_directory,
                                 'PV_setup.csv')
-            except:
-                logging.error("input file %s " % input_directory +
-                              "/PV_setup.csv does not exist.")
+        datapath = os.path.join(input_directory, 'PV_setup.csv')
+
         PV_setup=pd.read_csv(datapath)
         logging.info("setup conditions successfully loaded.")
 
     #empty output folder
     if output_directory is None:
         try:
-            output_directory='Data/mvs_inputs/sequences/pv/'
+            output_directory='data/mvs_inputs/sequences/pv/'
         except:
             logging.error("default output directory %s" % output_directory +
                           "cannot be found.")
@@ -186,7 +169,7 @@ def get_optimal_pv_angle(lat):
 
 
 
-def set_up_system(type, surface_azimuth, surface_tilt):
+def set_up_system(technology, surface_azimuth, surface_tilt):
     """
 		Sets up the PV system for the given type of technology and returns
     the initialized system and the module parameters as a dictionary.
@@ -372,7 +355,7 @@ def check_mvs_energyProduction_file(PV_setup, mvs_input_directory=None,
                                overwrite=True):
     """
     This function compares the number of powerplants in
-    Data/mvs_inputs/elements/csv/energyProduction.csv with the number of rows
+    data/mvs_inputs/elements/csv/energyProduction.csv with the number of rows
     in PV_setup.csv. If the number differs and overwrite=True, a new
     energyProduction.csv file is created with the correct number of columns and
     default values. The old file is overwritten. If overwrite=False, the
@@ -389,7 +372,7 @@ def check_mvs_energyProduction_file(PV_setup, mvs_input_directory=None,
 
     if mvs_input_directory==None:
         mvs_input_directory= os.path.join(os.path.dirname(__file__),
-                                          "Data/mvs_inputs/elements/csv/")
+                                          "data/mvs_inputs/elements/csv/")
     energyProduction_filename= os.path.join(mvs_input_directory,
                                             "energyProduction.csv")
     if os.path.isfile(energyProduction_filename):
@@ -504,7 +487,7 @@ def add_pp_column_to_energyProduction_file(pp_number, ts_filename,
 
     if mvs_input_directory==None:
         mvs_input_directory= os.path.join(os.path.dirname(__file__),
-                                          "Data/mvs_inputs/elements/csv/")
+                                          "data/mvs_inputs/elements/csv/")
     energyProduction_filename= os.path.join(mvs_input_directory,
                                             "energyProduction.csv")
     energyProduction = pd.read_csv(energyProduction_filename, index_col=0)
@@ -528,7 +511,7 @@ def add_pp_column_to_energyProduction_file(pp_number, ts_filename,
 
 if __name__ == '__main__':
 
-    filename = os.path.abspath('/home/local/RL-INSTITUT/inia.steinbach/Dokumente/greco-project/pvcompare/pvcompare/Data/ERA5_example_data_pvlib.csv')
+    filename = os.path.abspath('/home/local/RL-INSTITUT/inia.steinbach/Dokumente/greco-project/pvcompare/pvcompare/data/ERA5_example_data_pvlib.csv')
     weather_df = pd.read_csv(filename, index_col=0,
                              date_parser=lambda idx: pd.to_datetime(idx,
                                                                     utc=True))
