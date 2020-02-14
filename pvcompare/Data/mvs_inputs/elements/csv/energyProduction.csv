@@ -1,15 +1,15 @@
-,unit,pv_plant_01
-age_installed,year,0
-capex_fix,currency,10000
-capex_var,currency/unit,7200
-file_name,str,pv_gen_merra2_2014_eff1_tilt40_az180.csv
-installedCap,kWp,0
-label,str,PV plant (mono)
-lifetime,year,30
-opex_fix,currency/unit/year,80
-opex_var,currency/kWh,0
-optimizeCap,bool,True
-outflow_direction,str,PV plant (mono)
-type_oemof,str,source
-unit,str,kWp
-energyVector,str,Electricity
+index,unit,pv_plant_01,pv_plant_02,pv_plant_03
+age_installed,year,0,0,0
+capex_fix,currency,10000,10000,10000
+capex_var,currency/unit,7200,7200,7200
+file_name,str,Data/mvs_inputs/sequences/pv/si_180_25.csv,Data/mvs_inputs/sequences/pv/cpv_180_25.csv,Data/mvs_inputs/sequences/pv/cpv_90_90.csv
+installedCap,kWp,63637.176,141520.757,24260.701
+label,str,PV plant (mono),PV plant (mono),PV plant (mono)
+lifetime,year,30,30,30
+opex_fix,currency/unit/year,80,80,80
+opex_var,currency/kWh,0,0,0
+optimizeCap,bool,True,True,True
+outflow_direction,str,PV plant (mono),PV plant (mono),PV plant (mono)
+type_oemof,str,source,source,source
+unit,str,kWp,kWp,kWp
+energyVector,str,Electricity,Electricity,Electricity
