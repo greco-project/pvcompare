@@ -30,7 +30,7 @@ except ImportError:
 import cpvtopvlib.cpvsystem as cpv
 import greco_technologies.cpv.hybrid
 import greco_technologies.cpv.inputs
-import area_potential
+from pvcompare import area_potential
 
 log_format = '%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s'
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
@@ -40,20 +40,20 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 def create_pv_timeseries(lat, lon, weather, population, PV_setup=None, plot=True,
                          input_directory=None, output_directory=None,
                          mvs_input_directory=None):
-"""
-This module is designed for the use with the pvlib.
+    """
+    This module is designed for the use with the pvlib.
 
-The weather data set has to be a DataFrame with the following columns:
+    The weather data set has to be a DataFrame with the following columns:
 
-pvlib:
- * ghi - global horizontal irradiation [W/m2]
- * dni - direct normal irradiation [W/m2]
- * dhi - diffuse horizontal irradiation [W/m2]
- * temp_air - ambient temperature [°C]
- * wind_speed - wind speed [m/s]
+    pvlib:
+     * ghi - global horizontal irradiation [W/m2]
+     * dni - direct normal irradiation [W/m2]
+     * dhi - diffuse horizontal irradiation [W/m2]
+     * temp_air - ambient temperature [°C]
+     * wind_speed - wind speed [m/s]
 
- For each building surface listed in PV_setup, one PV timeseries is
- created with regard to the technology and its orientation used on this
+    For each building surface listed in PV_setup, one PV timeseries is
+    created with regard to the technology and its orientation used on this
     building surface. All timeseries are normalized to the peak power of the
     module unsed and stored as csv files in ./data/...
 
@@ -80,14 +80,14 @@ pvlib:
 
         if input_directory is None:
             try:
-
+                datapath = os.path.join(os.path.dirname(__file__),
+                                        'data/inputs/PV_setup.csv')
             except:
                 logging.error("input file data/inputs/PV_setup.csv does not "
                               "exist.")
         else:
             try:
-                datapath = os.path.join(input_directory,
-                                'PV_setup.csv')
+                datapath = os.path.join(input_directory, 'PV_setup.csv')
             except:
                 logging.error("input file %s " % input_directory +
                               "/PV_setup.csv does not exist.")
