@@ -13,9 +13,9 @@ class TestCalculateAreaPotential:
 
     def test_storeys_of_calculate_area_potential(self):
         # todo choose clearer example/numbers
-        storeys_exp = 6160
+        storeys_exp = 492800
         input_dir = os.path.join(os.path.dirname(__file__),
-                                 '../pvcompare/data/load_profiles/')
+                                 '../pvcompare/data/inputs/')
         a = calculate_area_potential(population=2400,
                                      input_directory=input_dir,
                                      surface_type='flat_roof')
