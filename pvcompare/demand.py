@@ -16,18 +16,26 @@ Optional:
 import demandlib.bdew as bdew
 import demandlib.particular_profiles as profiles
 import os
+import sys
 import pandas as pd
+import logging
+log_format = '%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s'
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 try:
     import matplotlib.pyplot as plt
 except ImportError:
     plt = None
+import workalendar
 try:
     from workalendar.europe import Germany
 except ImportError:
     workalendar=None
+import inspect
+from pkgutil import iter_modules
+from importlib import import_module
 
 
-def calculate_power_demand(country, population, year):
+def calculate_power_demand(country, population, year, input_directory):
 
     """
     The electricity demand is calculated for a given population in a certain
@@ -53,33 +61,45 @@ def calculate_power_demand(country, population, year):
     pd.DataFrame
         hourly time series of the electrical demand
     """
-    #load workalender for the given country #todo: import different calender for
-                                            #todo: each country
-    cal = Germany()
-    holidays = dict(cal.holidays(2010))
+    logging.info("loading calender for %s" %country)
+    cal=get_workalendar_class(country)
+    holidays = dict(cal.holidays(int(year)))
 
-    filename=os.path.join(os.path.dirname(__file__), 'data/load_profiles/Electricity_consumption_residential.csv')
-    powerstat= pd.read_csv(filename, sep=';', index_col=0)
+    logging.info("loading residential electricity demand")
+    if input_directory is None:
+        input_directory = os.path.join(os.path.dirname(__file__),
+                                       'data/inputs/')
 
-    filename1=os.path.join(os.path.dirname(__file__), 'data/load_profiles/EUROSTAT_population.csv')
+    bp= pd.read_csv(os.path.join(input_directory, "building_parameters.csv"),
+                    index_col=0)
+
+    filename_residential_electricity_demand=\
+        bp.at['filename_residential_electricity_demand', 'value']
+    filename_population=bp.at['filename_country_population', 'value']
+
+    filename_elec=os.path.join(os.path.dirname(__file__), input_directory,
+                               filename_residential_electricity_demand)
+    powerstat= pd.read_csv(filename_elec, sep=';', index_col=0)
+
+    filename1=os.path.join(input_directory, filename_population)
     populations=pd.read_csv(filename1, index_col=0, sep=';')
     national_energyconsumption=powerstat.at[country, year] * 11.63 * 1000000
-    annual_demand_per_population=(national_energyconsumption / populations.at[country, 'Population']) * population
+    annual_demand_per_population=(national_energyconsumption /
+                                  populations.at[country, 'Population']) * \
+                                 population
 
+    logging.info("The annual demand for a population of %s" %population +
+                 " for the year %s " %year + "is %s"
+                 %annual_demand_per_population)
 
-    ann_el_demand_h0 = {
-        'h0': annual_demand_per_population}
+    ann_el_demand_h0 = {'h0': annual_demand_per_population}
 
     # read standard load profiles
-    year= int(year)
-
-    e_slp = bdew.ElecSlp(year, holidays=holidays)
-
-    load_profile_h0=e_slp.create_bdew_load_profiles(dt_index=e_slp.date_time_index, slp_types=['h0'], holidays=None)
+    e_slp = bdew.ElecSlp(int(year), holidays=holidays)
 
     # multiply given annual demand with timeseries
-    load_elec_demand=e_slp.all_load_profiles(time_df=e_slp.date_time_index, holidays=None)
     elec_demand = e_slp.get_profile(ann_el_demand_h0)
+    # Add the slp for the industrial group
     ilp = profiles.IndustrialLoadProfile(e_slp.date_time_index,
                                          holidays=holidays)
 
@@ -91,7 +111,7 @@ def calculate_power_demand(country, population, year):
 
     # Resample 15-minute values to hourly values.
     elec_demand = elec_demand.resample('H').mean()
-    print("Annual electricity demand:", elec_demand.sum())
+    logging.info("The electrical load profile is completly calculated.")
 
     if plt is not None:
         # Plot demand
@@ -101,7 +121,8 @@ def calculate_power_demand(country, population, year):
         plt.show()
 
 
-def calculate_heat_demand(country, population, year):
+def calculate_heat_demand(country, population, year, weather, plot,
+                          input_directory):
     """
     The heat demand is calculated for a given population in a certain country
     and year. The annual heat demand is calculated by the following procedure:
@@ -127,40 +148,51 @@ def calculate_heat_demand(country, population, year):
         hourly time series of the heat demand
     """
 
-    cal = Germany()
-    holidays = dict(cal.holidays(2010))
+    # load workelendar for country
+    cal=get_workalendar_class(country)
+    holidays = dict(cal.holidays(int(year)))
 
-    # read example temperature series
-    datapath = os.path.join(os.path.dirname(__file__),
-                            'data/load_profiles/example_data.csv')
-    temperature = pd.read_csv(datapath)["temperature"]
-    # Create DataFrame for 2010
+    # define temperature
+    temp = weather['temp_air']
+
+    # Create DataFrame for demand timeseries
     demand = pd.DataFrame(
-        index=pd.date_range(pd.datetime(2010, 1, 1, 0),
-                            periods=8760, freq='H'))
+        index=pd.date_range(pd.datetime(int(year), 1, 1, 0),
+                            periods=temp.count(), freq='H'))
 
     # calculate annual demand
-    filename1=os.path.join(os.path.dirname(__file__), 'data/load_profiles/Coal_consumption_residential.csv')
-    filename2=os.path.join(os.path.dirname(__file__), 'data/load_profiles/Gas_consumption_residential.csv')
-    coal_demand= pd.read_csv(filename1, sep=';', index_col=0, header=1)
-    gas_demand = pd.read_csv(filename2, sep=';', index_col=0, header=1)
-    coal_demand[year] = pd.to_numeric(coal_demand[year], errors='coerce')
+    if input_directory is None:
+        input_directory = os.path.join(os.path.dirname(__file__),
+                                       'data/inputs/')
+
+    bp = pd.read_csv(os.path.join(input_directory, "building_parameters.csv"),
+                    index_col=0)
+    filename_residential_gas_demand=bp.at['filename_residential_gas_demand',
+                                          'value']
+    path_to_gas_demand=os.path.join(input_directory,
+                                    filename_residential_gas_demand)
+    gas_demand = pd.read_csv(path_to_gas_demand, sep=';',
+                            index_col=0, header=1)
     gas_demand[year] = pd.to_numeric(gas_demand[year], errors='coerce')
 
-    filename3=os.path.join(os.path.dirname(__file__), 'data/load_profiles/EUROSTAT_population.csv')
-    populations=pd.read_csv(filename3, index_col=0, sep=';')
-    total_heat_demand=(coal_demand.at[country, year] * 11.63 * 1000000) + (gas_demand.at[country, year] * 11.63 * 1000000)
-    annual_heat_demand_per_population=(total_heat_demand/populations.at[country, 'Population']) * population
+    filename_population=bp.at['filename_country_population', 'value']
+    filename1 = os.path.join(input_directory, filename_population)
+    populations = pd.read_csv(filename1, index_col=0, sep=';')
+
+    total_heat_demand=(gas_demand.at[country, year] * 11.63 * 1000000)
+    annual_heat_demand_per_population=(total_heat_demand/populations.at[
+        country, 'Population']) * population
 
 
     # Multi family house (mfh: Mehrfamilienhaus)
     demand['mfh in MW/h'] = bdew.HeatBuilding(
-        demand.index, holidays=holidays, temperature=temperature,
+        demand.index, holidays=holidays, temperature=temp,
         shlp_type='MFH',
-        building_class=2, wind_class=0, annual_heat_demand=annual_heat_demand_per_population,
+        building_class=2, wind_class=0,
+        annual_heat_demand=annual_heat_demand_per_population,
         name='MFH').get_bdew_profile()
 
-    if plt is not None:
+    if plot is not None:
         # Plot demand of building
         ax = demand.plot()
         ax.set_xlabel("Date")
@@ -169,6 +201,24 @@ def calculate_heat_demand(country, population, year):
     else:
         print('Annual consumption: \n{}'.format(demand.sum()))
 
+
+def get_workalendar_class(country):
+    country_name = country
+    for finder, name, ispkg in iter_modules(workalendar.__path__):
+        module_name = 'workalendar.{}'.format(name)
+        import_module(module_name)
+        classes = inspect.getmembers(sys.modules[module_name], inspect.isclass)
+        for class_name, _class in classes:
+            if _class.__doc__ == country_name:
+                return _class()
+
+    return None
+
 if __name__ == '__main__':
-    calculate_power_demand(country='Germany', population=600, year='2011')
-    calculate_heat_demand(country='Germany', population=600, year='2013')
+
+    weather= pd.read_csv("/home/local/RL-INSTITUT/inia.steinbach/Dokumente/greco-project/pvcompare/pvcompare/data/ERA5_example_data_pvlib.csv")
+
+    calculate_power_demand(country='Germany', population=600, year='2011',
+                           input_directory=None)
+    calculate_heat_demand(country='Spain', population=600, year='2011',
+                          weather=weather, plot=True, input_directory=None)
