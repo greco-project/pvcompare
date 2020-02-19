@@ -30,7 +30,7 @@ except ImportError:
 import cpvtopvlib.cpvsystem as cpv
 import greco_technologies.cpv.hybrid
 import greco_technologies.cpv.inputs
-import area_potential
+from pvcompare import area_potential
 
 log_format = '%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s'
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
@@ -84,6 +84,7 @@ def create_pv_components(lat, lon, weather, population, pv_setup=None, plot=True
         if input_directory is None:
             input_directory = 'data/inputs/'
         else:
+         
                 datapath = os.path.join(input_directory,
                                 'pv_setup.csv')
         datapath = os.path.join(input_directory, 'pv_setup.csv')
