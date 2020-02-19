@@ -221,7 +221,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
 
         return system, sandia_module
 
-    if technology=='cpv':
+    elif technology=='cpv':
 
         logging.debug("cpv module parameters are loaded from "
                       "greco_technologies/inputs.py")
@@ -239,7 +239,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
 
         return cpv_sys, module_params
 
-    if technology=='psi':
+    elif technology=='psi':
         logging.error('The nominal value for psi cannot be calculated yet.')
         pass
 
@@ -557,16 +557,6 @@ if __name__ == '__main__':
 
     create_pv_components(lat=40.3, lon=5.4, weather=weather_df, pv_setup=None,
                          population=48000)
-    #
-    # optimal_tilt=get_optimal_pv_angle(lat=40.3)
-    # nominal_value_pv=nominal_values_pv(type='si', area=1323,
-    #                                    surface_azimuth=180,
-    #                                    surface_tilt=optimal_tilt)
-    #
-    # nominal_value_cpv = nominal_values_pv(type='cpv', area=1323,
-    #                                       surface_azimuth=180,
-    #                                       surface_tilt=optimal_tilt)
-    #
-    # print('nominal value SI in MW:', nominal_value_pv)
-    # print('nominal value CPV in MW:', nominal_value_cpv)
+
+
 
