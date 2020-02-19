@@ -29,7 +29,8 @@ except ImportError:
 
 def calculate_power_demand(country, population, year):
 
-    """The electricity demand is calculated for a given population in a certain
+    """
+    The electricity demand is calculated for a given population in a certain
     country and year. The annual electricity demand is calculated by the
     following procedure:
     1) the residential electricity consumption for a country is requested from
@@ -52,7 +53,7 @@ def calculate_power_demand(country, population, year):
     pd.DataFrame
         hourly time series of the electrical demand
     """
-    #load workalender for the given country #todo: import different caleder for
+    #load workalender for the given country #todo: import different calender for
                                             #todo: each country
     cal = Germany()
     holidays = dict(cal.holidays(2010))
@@ -101,7 +102,8 @@ def calculate_power_demand(country, population, year):
 
 
 def calculate_heat_demand(country, population, year):
-    """The heat demand is calculated for a given population in a certain country
+    """
+    The heat demand is calculated for a given population in a certain country
     and year. The annual heat demand is calculated by the following procedure:
     1) the residential heat demand for a country is requested from
         https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use

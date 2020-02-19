@@ -15,6 +15,7 @@ try:
 except ImportError:
     plt = None
 
+
 def calculate_area_potential(population, input_directory, surface_type):
 
     """
@@ -25,12 +26,13 @@ def calculate_area_potential(population, input_directory, surface_type):
     ----------
     population: int
         the population of the district
-		input_directory: str
-		surface_type: str
+    input_directory: str
+    surface_type: str
 
-    Returns: int
-			area
-    -------
+    Returns
+    --------
+    int
+        area
 
     """
 

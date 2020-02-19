@@ -26,7 +26,7 @@ def main(lat, lon, year, population, input_directory=None, output_directory=None
 
     weather= era5.load_era5_weatherdata(lat=lat, lon=lon, year=year)
 
-    pv_feedin.create_pv_timeseries(lat=40.3, lon=5.4, weather=weather,
+    pv_feedin.create_pv_components(lat=40.3, lon=5.4, weather=weather,
                                    population=population,
                                    PV_setup=None, plot=True,
                                    input_directory=input_directory,
