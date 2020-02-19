@@ -1,7 +1,10 @@
-building parameter,size
+building parameter,value
 number of houses,400
 population per storey,24
 total storey area,1232
 length south facade,56
 length eastwest facade,22
 hight storey,3
+filename_residential_gas_demand,Gas_consumption_residential.csv
+filename_residential_electricity_demand,Electricity_consumption_residential.csv
+filename_country_population,EUROSTAT_population.csv
