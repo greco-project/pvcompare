@@ -19,6 +19,7 @@ import os
 import sys
 import pandas as pd
 import logging
+import numpy as np
 log_format = '%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s'
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 try:
@@ -111,6 +112,9 @@ def calculate_power_demand(country, population, year, input_directory):
 
     # Resample 15-minute values to hourly values.
     elec_demand = elec_demand.resample('H').mean()
+
+    elec_demand2=shift_working_hours(country=country, ts=elec_demand)
+
     logging.info("The electrical load profile is completly calculated.")
 
     if plt is not None:
@@ -200,6 +204,47 @@ def calculate_heat_demand(country, population, year, weather, plot,
         plt.show()
     else:
         print('Annual consumption: \n{}'.format(demand.sum()))
+
+
+def shift_working_hours(country, ts):
+
+    """
+
+    :return:
+    """
+    if country in ['Bulgaria', 'Croatia', 'Czech Republic', 'Hungary',
+                   'Lithuania', 'Poland', 'Slovakia', 'Slovenia', 'Romania']:
+        #todo: only shift on weekends: -1 h
+
+        ts.h0 = ts.h0.shift(2)
+        nans=ts[ts.isnull().any(axis=1)]
+
+        for i, row in nans.iterrows():
+            newindex=i + pd.DateOffset(hours=24)
+            value=ts.loc[str(newindex)]
+            ts=ts.replace(to_replace=np.nan, value=value)
+
+        return ts
+    elif country in ['Belgium', 'Estonia', 'Ireland', 'Italy', 'Latvia', 'Malta', 'France', 'UK']:
+        ts.h0 = ts.h0.shift(1)
+        nans=ts[ts.isnull().any(axis=1)]
+
+        for i, row in nans.iterrows():
+            newindex=i + pd.DateOffset(hours=24)
+            newvalue=ts.loc[str(newindex)]
+            return ts.replace(to_replace=np.nan, value=newvalue)
+
+    elif country in ['Cyprus', 'Greece', 'Portugal', 'Spain']:
+        ts.h0 = ts.h0.shift(2)
+        nans=ts[ts.isnull().any(axis=1)]
+
+        for i, row in nans.iterrows():
+            newindex=i + pd.DateOffset(hours=24)
+            newvalue=ts.loc[str(newindex)]
+            return ts.replace(to_replace=np.nan, value=newvalue)
+    else:
+        return ts
+
 
 
 def get_workalendar_class(country):
