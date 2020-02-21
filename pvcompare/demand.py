@@ -37,7 +37,7 @@ from importlib import import_module
 import datetime
 
 def calculate_load_profiles(country, population, year, input_directory,
-                           mvs_input_directory, plot):
+                           mvs_input_directory, plot, weather):
     """
     calculate electricity and heat load profiles and saves them to csv
     :param country:
@@ -48,10 +48,13 @@ def calculate_load_profiles(country, population, year, input_directory,
     :param plot:
     :return:
     """
-    calculate_power_demand(country, population, year, input_directory,
-                           mvs_input_directory, plot)
-    calculate_heat_demand(country, population, year, weather, plot,
-                          input_directory, mvs_input_directory)
+    calculate_power_demand(country=country, population=population, year=year,
+                           input_directory=input_directory,
+                           mvs_input_directory=mvs_input_directory, plot=plot)
+    calculate_heat_demand(country=country, population=population, year=year,
+                          weather=weather, plot=plot,
+                          input_directory=input_directory,
+                          mvs_input_directory=mvs_input_directory)
 
 
 def calculate_power_demand(country, population, year, input_directory,
@@ -98,16 +101,16 @@ def calculate_power_demand(country, population, year, input_directory,
         bp.at['filename_residential_electricity_demand', 'value']
     filename_population=bp.at['filename_country_population', 'value']
 
-    filename_elec=os.path.join(os.path.dirname(__file__), input_directory,
+    filename_elec=os.path.join(input_directory,
                                filename_residential_electricity_demand)
     powerstat= pd.read_csv(filename_elec, sep=';', index_col=0)
 
-    filename1=os.path.join(input_directory, filename_population)
-    populations=pd.read_csv(filename1, index_col=0, sep=';')
-    national_energyconsumption=powerstat.at[country, year] * 11.63 * 1000000
+    filename1 = os.path.join(input_directory, filename_population)
+    populations = pd.read_csv(filename1, index_col=0, sep=';')
+    national_energyconsumption = powerstat.at[country, str(year)] * 11.63 * 1000000
     annual_demand_per_population=(national_energyconsumption /
                                   populations.at[country, 'Population']) * \
-                                 population
+                                  population
 
     logging.info("The annual demand for a population of %s" %population +
                  " for the year %s " %year + "is %s"
@@ -201,13 +204,13 @@ def calculate_heat_demand(country, population, year, weather, plot,
                                     filename_residential_gas_demand)
     gas_demand = pd.read_csv(path_to_gas_demand, sep=';',
                             index_col=0, header=1)
-    gas_demand[year] = pd.to_numeric(gas_demand[year], errors='coerce')
+    gas_demand[str(year)] = pd.to_numeric(gas_demand[str(year)], errors='coerce')
 
     filename_population=bp.at['filename_country_population', 'value']
     filename1 = os.path.join(input_directory, filename_population)
     populations = pd.read_csv(filename1, index_col=0, sep=';')
 
-    total_heat_demand=(gas_demand.at[country, year] * 11.63 * 1000000)
+    total_heat_demand=(gas_demand.at[country, str(year)] * 11.63 * 1000000)
     annual_heat_demand_per_population=(total_heat_demand/populations.at[
         country, 'Population']) * population
 
@@ -229,12 +232,12 @@ def calculate_heat_demand(country, population, year, weather, plot,
 
     if plot is not None:
         # Plot demand of building
-        ax = demand.plot()
+        ax = shifted_demand.plot()
         ax.set_xlabel("Date")
         ax.set_ylabel("Heat demand in kW")
         plt.show()
     else:
-        print('Annual consumption: \n{}'.format(demand.sum()))
+        print('Annual consumption: \n{}'.format(shifted_demand.sum()))
 
 
 def shift_working_hours(country, ts):
@@ -337,6 +340,6 @@ if __name__ == '__main__':
 #    calculate_power_demand(country='Bulgaria', population=600, year='2011',
 #                           input_directory=None, plot=True,
 #                           mvs_input_directory=mvs_input_directory)
-    calculate_heat_demand(country='Belgium', population=600, year='2011',
+    calculate_load_profiles(country='Germany', population=600, year=2011,
                           weather=weather, plot=True, input_directory=None,
                           mvs_input_directory=mvs_input_directory)
