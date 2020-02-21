@@ -3,6 +3,7 @@
 import pandas as pd
 import logging
 import sys
+import pvlib
 from pvcompare import era5
 from pvcompare import demand
 from pvcompare import pv_feedin
@@ -11,8 +12,8 @@ from pvcompare import pv_feedin
 log_format = '%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s'
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 
-def main(lat, lon, year, population, country, input_directory=None, output_directory=None,
-         mvs_input_directory=None, plot=True):
+def main(lat, lon, year, population, country, input_directory=None,
+         output_directory=None, mvs_input_directory=None, plot=True):
 
     """
     loads weather data for the given year and location, calculates pv feedin
@@ -26,25 +27,32 @@ def main(lat, lon, year, population, country, input_directory=None, output_direc
     """
     #todo: scpecify country automatically by lat/lon
 
-    weather= era5.load_era5_weatherdata(lat=lat, lon=lon, year=year)
+#    weather= era5.load_era5_weatherdata(lat=lat, lon=lon, year=year)
+    weather=pd.read_csv('./data/inputs/weatherdata.csv', index_col=0)
+    weather.index=pd.to_datetime(weather.index)
+    spa = pvlib.solarposition.spa_python(time=weather.index, latitude=lat,
+                                         longitude=lon)
+    weather['dni'] = pvlib.irradiance.dirint(weather['ghi'],
+                                                solar_zenith=spa['zenith'],
+                                                times=weather.index)
 
     if mvs_input_directory==None:
         mvs_input_directory="./data/mvs_inputs/"
 
     pv_feedin.create_pv_components(lat=lat, lon=lon, weather=weather,
                                    population=population,
-                                   PV_setup=None,
+                                   pv_setup=None,
                                    plot=plot,
                                    input_directory=input_directory,
-                                   output_directory=output_directory,
-                                   mvs_input_directory=mvs_input_directory)
+                                   output_directory=output_directory)
 
     demand.calculate_load_profiles(country=country,
                                    population=population,
                                    year=year,
                                    input_directory=input_directory,
                                    mvs_input_directory=mvs_input_directory,
-                                   plot=plot)
+                                   plot=plot,
+                                   weather=weather)
 
 
 
@@ -53,7 +61,7 @@ if __name__ == '__main__':
 
     latitude=40.3
     longitude=5.4
-    year=2015
+    year=2013 # a year between 2011-2013!!!
     population=48000
     country = 'Spain'
 
