@@ -13,9 +13,7 @@ import pandas as pd
 import numpy as np
 
 from pvcompare.pv_feedin import (
-    create_pv_timeseries, get_optimal_pv_angle, set_up_system,
-    create_normalized_si_timeseries, create_normalized_cpv_timeseries,
-    nominal_values_pv,
+    create_si_timeseries
 )
 
 
@@ -60,6 +58,7 @@ class TestPvTimeSeries:
         #     lat=52.111130, lon=12.480622, weather=self.weather,
         #     surface_azimuth=0, surface_tilt=30)
         # todo complete after function is fixed
+        print(self.weather) # todo delete this line
         pass
 
 
