@@ -547,16 +547,38 @@ def add_parameters_to_energy_production_file(pp_number, ts_filename,
 
 if __name__ == '__main__':
 
-    filename = os.path.abspath('/home/local/RL-INSTITUT/inia.steinbach/Dokumente/greco-project/pvcompare/pvcompare/data/ERA5_example_data_pvlib.csv')
-    weather_df = pd.read_csv(filename, index_col=0,
-                             date_parser=lambda idx: pd.to_datetime(idx,
-                                                                    utc=True))
-    weather_df.index = pd.to_datetime(weather_df.index).tz_convert(
-        'Europe/Berlin')
-    weather_df['dni']=weather_df['ghi']-weather_df['dhi']
+    # filename = os.path.abspath('/home/local/RL-INSTITUT/inia.steinbach/Dokumente/greco-project/pvcompare/pvcompare/data/ERA5_example_data_pvlib.csv')
+    # weather_df = pd.read_csv(filename, index_col=0,
+    #                          date_parser=lambda idx: pd.to_datetime(idx,
+    #                                                                 utc=True))
+    # weather_df.index = pd.to_datetime(weather_df.index).tz_convert(
+    #     'Europe/Berlin')
+    # weather_df['dni']=weather_df['ghi']-weather_df['dhi']
+    #
+    # create_pv_components(lat=40.3, lon=5.4, weather=weather_df, pv_setup=None,
+    #                      population=48000)
 
-    create_pv_components(lat=40.3, lon=5.4, weather=weather_df, pv_setup=None,
-                         population=48000)
+    lat = 40.0
+    lon = 5.2
+    surface_azimuth = 180
+    surface_tilt = 30
 
 
+    weather_df=pd.DataFrame()
+    weather_df['temp_air']=[4, 5]
+    weather_df['wind_speed']=[2, 2.5]
+    weather_df['dhi']=[100,120]
+    weather_df['dni'] = [120, 150]
+    weather_df['ghi'] = [200, 220]
+    weather_df.index=['2014-01-01 13:00:00+00:00', '2014-01-01 14:00:00+00:00']
 
+    # output=create_cpv_timeseries(lat=lat, lon=lon, weather=weather,
+    #                       surface_azimuth=surface_azimuth,
+    #                       surface_tilt=surface_tilt, normalized=True)
+
+    output = create_si_timeseries(lat=lat, lon=lon, weather=weather_df,
+                                   surface_azimuth=surface_azimuth,
+                                   surface_tilt=surface_tilt, normalized=True)
+
+    a=output.sum
+    print(output)
