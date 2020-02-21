@@ -34,9 +34,28 @@ except ImportError:
 import inspect
 from pkgutil import iter_modules
 from importlib import import_module
+import datetime
+
+def calculate_load_profiles(country, population, year, input_directory,
+                           mvs_input_directory, plot):
+    """
+    calculate electricity and heat load profiles and saves them to csv
+    :param country:
+    :param population:
+    :param year:
+    :param input_directory:
+    :param mvs_input_directory:
+    :param plot:
+    :return:
+    """
+    calculate_power_demand(country, population, year, input_directory,
+                           mvs_input_directory, plot)
+    calculate_heat_demand(country, population, year, weather, plot,
+                          input_directory, mvs_input_directory)
 
 
-def calculate_power_demand(country, population, year, input_directory):
+def calculate_power_demand(country, population, year, input_directory,
+                           mvs_input_directory, plot):
 
     """
     The electricity demand is calculated for a given population in a certain
@@ -48,6 +67,7 @@ def calculate_power_demand(country, population, year, input_directory):
         EUROSTAT_population
     3) the total residential demand is divided by the countries' population and
         multiplied by the districts' population
+    4) The load profile is shifted due to country specific behaviour
 
     Parameters
     ----------
@@ -113,20 +133,23 @@ def calculate_power_demand(country, population, year, input_directory):
     # Resample 15-minute values to hourly values.
     elec_demand = elec_demand.resample('H').mean()
 
-    elec_demand2=shift_working_hours(country=country, ts=elec_demand)
+    shifted_elec_demand=shift_working_hours(country=country, ts=elec_demand)
 
-    logging.info("The electrical load profile is completly calculated.")
+    logging.info("The electrical load profile is completly calculated and "
+                 "being saved under %s." % mvs_input_directory)
+    filename=os.path.join(mvs_input_directory,'electricity_load_profile.csv')
+    shifted_elec_demand.to_csv(filename)
 
-    if plt is not None:
+    if plot is True:
         # Plot demand
-        ax = elec_demand.plot()
+        ax = shifted_elec_demand.plot()
         ax.set_xlabel("Date")
         ax.set_ylabel("Power demand")
         plt.show()
 
 
 def calculate_heat_demand(country, population, year, weather, plot,
-                          input_directory):
+                          input_directory, mvs_input_directory):
     """
     The heat demand is calculated for a given population in a certain country
     and year. The annual heat demand is calculated by the following procedure:
@@ -136,6 +159,7 @@ def calculate_heat_demand(country, population, year, weather, plot,
         EUROSTAT_population
     3) the total residential demand is devided by the countries population and
         multiplied by the districts population
+    4) The load profile is shifted due to country specific behaviour
 
     Parameters
     ----------
@@ -189,12 +213,19 @@ def calculate_heat_demand(country, population, year, weather, plot,
 
 
     # Multi family house (mfh: Mehrfamilienhaus)
-    demand['mfh in MW/h'] = bdew.HeatBuilding(
+    demand['h0'] = bdew.HeatBuilding(
         demand.index, holidays=holidays, temperature=temp,
         shlp_type='MFH',
         building_class=2, wind_class=0,
         annual_heat_demand=annual_heat_demand_per_population,
         name='MFH').get_bdew_profile()
+
+    shifted_demand=shift_working_hours(country=country, ts=demand)
+
+    logging.info("The electrical load profile is completly calculated and "
+                 "being saved under %s." % mvs_input_directory)
+    shifted_demand.to_csv(os.path.join(mvs_input_directory,
+                                          'heat_load_profile.csv'))
 
     if plot is not None:
         # Plot demand of building
@@ -209,23 +240,51 @@ def calculate_heat_demand(country, population, year, weather, plot,
 def shift_working_hours(country, ts):
 
     """
+    Since the energy demand for domnestic hot water depends strongly on
+    behaviour, the demand profile is adjusted for the different EU countries.
+    (see HOTMAPS report p. 127). The Statistic is received from
+    (HETUS: http://ec.europa.eu/eurostat/web/products-manuals-and-guidelines/-
+    /KS-RA-08-014)
 
-    :return:
+    Parameters
+    -----------
+    country: str
+        name of the country
+    ts: pd.DataFrame()
+        hourly load profile timeseries
+
+    Returns:
+    --------
+    ts: pd.DataFrame()
+        shifted time series
     """
+
     if country in ['Bulgaria', 'Croatia', 'Czech Republic', 'Hungary',
                    'Lithuania', 'Poland', 'Slovakia', 'Slovenia', 'Romania']:
-        #todo: only shift on weekends: -1 h
+        logging.info("The load profile is shifted by -1 hours only on "
+                     "weekends.")
+        # The timeseries is shifted by -1 hour only on weekends
+        ts['Day'] = pd.DatetimeIndex(ts.index).day_name()
+        one_weekend = pd.DataFrame()
+        for i, row in ts.iterrows():
+            if row['Day'] in  ['Saturday', 'Sunday']:
+                counter=1
+                one_weekend=one_weekend.append(row)
+            else:
+                if counter==1:
+                    one_weekend.h0 = one_weekend.h0.shift(-1)
+                    one_weekend.fillna(method='ffill', inplace=True)
+                    ts.update(one_weekend)
+                    one_weekend = pd.DataFrame()
+                    counter=counter+1
+                else:
+                    pass
+        return ts['h0']
 
-        ts.h0 = ts.h0.shift(2)
-        nans=ts[ts.isnull().any(axis=1)]
-
-        for i, row in nans.iterrows():
-            newindex=i + pd.DateOffset(hours=24)
-            value=ts.loc[str(newindex)]
-            ts=ts.replace(to_replace=np.nan, value=value)
-
-        return ts
-    elif country in ['Belgium', 'Estonia', 'Ireland', 'Italy', 'Latvia', 'Malta', 'France', 'UK']:
+    elif country in ['Belgium', 'Estonia', 'Ireland', 'Italy', 'Latvia',
+                     'Malta', 'France', 'UK']:
+        logging.info("The load profile is shifted by +1 hours.")
+        # the timeseries is shifted by one hour
         ts.h0 = ts.h0.shift(1)
         nans=ts[ts.isnull().any(axis=1)]
 
@@ -235,6 +294,8 @@ def shift_working_hours(country, ts):
             return ts.replace(to_replace=np.nan, value=newvalue)
 
     elif country in ['Cyprus', 'Greece', 'Portugal', 'Spain']:
+        logging.info("The load profile is shifted by +2 hours.")
+        # the timeseries is shifted by two hours
         ts.h0 = ts.h0.shift(2)
         nans=ts[ts.isnull().any(axis=1)]
 
@@ -243,11 +304,20 @@ def shift_working_hours(country, ts):
             newvalue=ts.loc[str(newindex)]
             return ts.replace(to_replace=np.nan, value=newvalue)
     else:
+        logging.info("The load profile is not shifted.")
         return ts
 
 
-
 def get_workalendar_class(country):
+
+    """
+    loads workalender for a given country
+
+    :param country: str
+        name of the country
+    :return: _class()
+        class of the country specific workalender
+    """
     country_name = country
     for finder, name, ispkg in iter_modules(workalendar.__path__):
         module_name = 'workalendar.{}'.format(name)
@@ -263,7 +333,10 @@ if __name__ == '__main__':
 
     weather= pd.read_csv("/home/local/RL-INSTITUT/inia.steinbach/Dokumente/greco-project/pvcompare/pvcompare/data/ERA5_example_data_pvlib.csv")
 
-    calculate_power_demand(country='Germany', population=600, year='2011',
-                           input_directory=None)
-    calculate_heat_demand(country='Spain', population=600, year='2011',
-                          weather=weather, plot=True, input_directory=None)
+    mvs_input_directory = "./data/mvs_inputs/"
+#    calculate_power_demand(country='Bulgaria', population=600, year='2011',
+#                           input_directory=None, plot=True,
+#                           mvs_input_directory=mvs_input_directory)
+    calculate_heat_demand(country='Belgium', population=600, year='2011',
+                          weather=weather, plot=True, input_directory=None,
+                          mvs_input_directory=mvs_input_directory)
