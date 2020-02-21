@@ -7,6 +7,7 @@ import pvlib
 from pvcompare import era5
 from pvcompare import demand
 from pvcompare import pv_feedin
+#from mvs_tool import mvs_tool
 
 # Reconfiguring the logger here will also affect test running in the PyCharm IDE
 log_format = '%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s'
@@ -27,7 +28,10 @@ def main(lat, lon, year, population, country, input_directory=None,
     """
     #todo: scpecify country automatically by lat/lon
 
+    #if era5 import works this line can be used
 #    weather= era5.load_era5_weatherdata(lat=lat, lon=lon, year=year)
+
+    #otherwise this example weather data for one year (2014) can be used for now
     weather=pd.read_csv('./data/inputs/weatherdata.csv', index_col=0)
     weather.index=pd.to_datetime(weather.index)
     spa = pvlib.solarposition.spa_python(time=weather.index, latitude=lat,
@@ -53,6 +57,7 @@ def main(lat, lon, year, population, country, input_directory=None,
                                    mvs_input_directory=mvs_input_directory,
                                    plot=plot,
                                    weather=weather)
+
 
 
 
