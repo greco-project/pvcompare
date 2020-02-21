@@ -1,3 +1,3 @@
 git+https://github.com/greco-project/greco_technologies.git@CPV_dev
 git+https://github.com/greco-project/cpvtopvlib.git@master
-
+git+https://github.com/greco-project/mvs_eland.git@dev
