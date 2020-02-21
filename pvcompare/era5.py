@@ -1,8 +1,8 @@
 import logging
-import feedinlib.era5
 import pvlib
 import pandas as pd
 import numpy as np
+from feedinlib import era5
 
 
 def load_era5_weatherdata(lat, lon, year):
@@ -21,7 +21,7 @@ def load_era5_weatherdata(lat, lon, year):
 
     logging.info('loading era5 weatherdata for the year %s' % year)
 
-    weather_xarray=feedinlib.era5.get_era5_data_from_datespan_and_position(
+    weather_xarray=era5.get_era5_data_from_datespan_and_position(
     start_date=start_date,
     end_date=end_date,
     variable="feedinlib",
