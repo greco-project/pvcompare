@@ -34,7 +34,6 @@ except ImportError:
 import inspect
 from pkgutil import iter_modules
 from importlib import import_module
-import datetime
 
 def calculate_load_profiles(country, population, year, input_directory,
                            mvs_input_directory, plot, weather):
@@ -103,11 +102,12 @@ def calculate_power_demand(country, population, year, input_directory,
 
     filename_elec=os.path.join(input_directory,
                                filename_residential_electricity_demand)
-    powerstat= pd.read_csv(filename_elec, sep=';', index_col=0)
+    powerstat= pd.read_csv(filename_elec, sep=':', index_col=0, header=1)
 
     filename1 = os.path.join(input_directory, filename_population)
     populations = pd.read_csv(filename1, index_col=0, sep=';')
-    national_energyconsumption = powerstat.at[country, str(year)] * 11.63 * 1000000
+    national_energyconsumption = powerstat.at[country, str(year)] \
+                                 * 11.63 * 1000000
     annual_demand_per_population=(national_energyconsumption /
                                   populations.at[country, 'Population']) * \
                                   population
@@ -192,26 +192,43 @@ def calculate_heat_demand(country, population, year, weather, plot,
                             periods=temp.count(), freq='H'))
 
     # calculate annual demand
+    # The annual heat condumption is calculated by adding up the total
+    # consumption for SH and WH and substracting the electrical condumption of
+    # SH and WH for a country
     if input_directory is None:
         input_directory = os.path.join(os.path.dirname(__file__),
                                        'data/inputs/')
-
     bp = pd.read_csv(os.path.join(input_directory, "building_parameters.csv"),
                     index_col=0)
-    filename_residential_gas_demand=bp.at['filename_residential_gas_demand',
-                                          'value']
-    path_to_gas_demand=os.path.join(input_directory,
-                                    filename_residential_gas_demand)
-    gas_demand = pd.read_csv(path_to_gas_demand, sep=';',
-                            index_col=0, header=1)
-    gas_demand[str(year)] = pd.to_numeric(gas_demand[str(year)], errors='coerce')
+    filename_total_SH=os.path.join(input_directory, bp.at['filename_total_SH',
+                                                          'value'])
+    filename_total_WH=os.path.join(input_directory, bp.at['filename_total_WH',
+                                                          'value'])
+    filename_electr_SH=os.path.join(input_directory,bp.at['filename_elect_SH',
+                                                          'value'])
+    filename_electr_WH=os.path.join(input_directory,bp.at['filename_elect_WH',
+                                                          'value'])
+
+    total_SH = pd.read_csv(filename_total_SH, sep=':', index_col=0, header=1)
+    total_WH = pd.read_csv(filename_total_WH, sep=':', index_col=0, header=1)
+    electr_SH = pd.read_csv(filename_electr_SH, sep=':', index_col=0, header=1)
+    electr_WH = pd.read_csv(filename_electr_WH, sep=':', index_col=0, header=1)
+
+    total_SH[str(year)] = pd.to_numeric(total_SH[str(year)], errors='coerce')
+    total_WH[str(year)] = pd.to_numeric(total_WH[str(year)], errors='coerce')
+    electr_SH[str(year)] = pd.to_numeric(electr_SH[str(year)], errors='coerce')
+    electr_WH[str(year)] = pd.to_numeric(electr_WH[str(year)], errors='coerce')
 
     filename_population=bp.at['filename_country_population', 'value']
     filename1 = os.path.join(input_directory, filename_population)
     populations = pd.read_csv(filename1, index_col=0, sep=';')
 
-    total_heat_demand=(gas_demand.at[country, str(year)] * 11.63 * 1000000)
-    annual_heat_demand_per_population=(total_heat_demand/populations.at[
+    heat_demand=((total_SH.at[country, str(year)] +
+                 total_WH.at[country, str(year)] -
+                 electr_SH.at[country, str(year)] -
+                 electr_WH.at[country, str(year)])
+                 * 11.63 * 1000000)
+    annual_heat_demand_per_population=(heat_demand/populations.at[
         country, 'Population']) * population
 
 
@@ -334,7 +351,7 @@ def get_workalendar_class(country):
 
 if __name__ == '__main__':
 
-    weather= pd.read_csv("/home/local/RL-INSTITUT/inia.steinbach/Dokumente/greco-project/pvcompare/pvcompare/data/ERA5_example_data_pvlib.csv")
+    weather= pd.read_csv("./data/inputs/weatherdata.csv")
 
     mvs_input_directory = "./data/mvs_inputs/"
 #    calculate_power_demand(country='Bulgaria', population=600, year='2011',
