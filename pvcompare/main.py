@@ -48,7 +48,7 @@ def main(lat, lon, year, population, country, input_directory=None,
                                    pv_setup=None,
                                    plot=plot,
                                    input_directory=input_directory,
-                                   output_directory=output_directory)
+                                   mvs_input_directory=mvs_input_directory)
 
     demand.calculate_load_profiles(country=country,
                                    population=population,

@@ -35,18 +35,34 @@ import inspect
 from pkgutil import iter_modules
 from importlib import import_module
 
-def calculate_load_profiles(country, population, year, input_directory,
-                           mvs_input_directory, plot, weather):
+DEFAULT_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__),
+                                       'data/inputs/')
+DEFAULT_MVS_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__),
+                                           'data/mvs_inputs/')
+
+def calculate_load_profiles(country, population, year, weather,
+                            input_directory=None,
+                           mvs_input_directory=None, plot=True):
     """
     calculate electricity and heat load profiles and saves them to csv
-    :param country:
-    :param population:
-    :param year:
-    :param input_directory:
-    :param mvs_input_directory:
-    :param plot:
-    :return:
+    :param country: str
+    :param population: int
+        number of habitants
+    :param year: int
+        year between 2011 - 2015
+    :param input_directory: str
+        if None: DEFAULT_INPUT_DIRECTORY
+    :param mvs_input_directory: str
+        if None: DEFAULT_MVS_INPUT_DIRECTORY
+    :param plot: bool
+    :return: None
     """
+
+    if input_directory is None:
+        input_directory = DEFAULT_INPUT_DIRECTORY
+    if mvs_input_directory is None:
+        mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
+
     calculate_power_demand(country=country, population=population, year=year,
                            input_directory=input_directory,
                            mvs_input_directory=mvs_input_directory, plot=plot)
@@ -56,8 +72,8 @@ def calculate_load_profiles(country, population, year, input_directory,
                           mvs_input_directory=mvs_input_directory)
 
 
-def calculate_power_demand(country, population, year, input_directory,
-                           mvs_input_directory, plot):
+def calculate_power_demand(country, population, year, input_directory=None,
+                           mvs_input_directory=None, plot=True):
 
     """
     The electricity demand is calculated for a given population in a certain
@@ -79,6 +95,12 @@ def calculate_power_demand(country, population, year, input_directory,
         the district population
     year: int
         Year for which power demand time series is calculated.
+        weather: pd.DataFrame()
+    plot: bool
+    input_directory: str
+        if None: input_directory= DEFAULT_INPUT_DIRECTORY
+    mvs_input_directory: str
+        if None: mvs_input_directory= DEFAULT_MVS_INPUT_DIRECTORY
     Returns
     -------
     pd.DataFrame
@@ -89,9 +111,9 @@ def calculate_power_demand(country, population, year, input_directory,
     holidays = dict(cal.holidays(int(year)))
 
     logging.info("loading residential electricity demand")
+
     if input_directory is None:
-        input_directory = os.path.join(os.path.dirname(__file__),
-                                       'data/inputs/')
+        input_directory = DEFAULT_INPUT_DIRECTORY
 
     bp= pd.read_csv(os.path.join(input_directory, "building_parameters.csv"),
                     index_col=0)
@@ -138,9 +160,13 @@ def calculate_power_demand(country, population, year, input_directory,
 
     shifted_elec_demand=shift_working_hours(country=country, ts=elec_demand)
 
+    if mvs_input_directory is None:
+        mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
+    sequences_directory= os.path.join(mvs_input_directory, 'sequences/')
+
     logging.info("The electrical load profile is completly calculated and "
-                 "being saved under %s." % mvs_input_directory)
-    filename=os.path.join(mvs_input_directory,'electricity_load_profile.csv')
+                 "being saved under %s." % sequences_directory)
+    filename=os.path.join(sequences_directory,'electricity_load_profile.csv')
     shifted_elec_demand.to_csv(filename)
 
     if plot is True:
@@ -151,8 +177,8 @@ def calculate_power_demand(country, population, year, input_directory,
         plt.show()
 
 
-def calculate_heat_demand(country, population, year, weather, plot,
-                          input_directory, mvs_input_directory):
+def calculate_heat_demand(country, population, year, weather, plot=True,
+                          input_directory=None, mvs_input_directory=None):
     """
     The heat demand is calculated for a given population in a certain country
     and year. The annual heat demand is calculated by the following procedure:
@@ -172,6 +198,13 @@ def calculate_heat_demand(country, population, year, weather, plot,
         the district population
     year: int
         Year for which heat demand time series is calculated.
+    weather: pd.DataFrame()
+    plot: bool
+    input_directory: str
+        if None: input_directory= DEFAULT_INPUT_DIRECTORY
+    mvs_input_directory: str
+        if None: mvs_input_directory= DEFAULT_MVS_INPUT_DIRECTORY
+
 
     Returns
     -------
@@ -196,8 +229,8 @@ def calculate_heat_demand(country, population, year, weather, plot,
     # consumption for SH and WH and substracting the electrical condumption of
     # SH and WH for a country
     if input_directory is None:
-        input_directory = os.path.join(os.path.dirname(__file__),
-                                       'data/inputs/')
+        input_directory = DEFAULT_INPUT_DIRECTORY
+
     bp = pd.read_csv(os.path.join(input_directory, "building_parameters.csv"),
                     index_col=0)
     filename_total_SH=os.path.join(input_directory, bp.at['filename_total_SH',
@@ -242,12 +275,16 @@ def calculate_heat_demand(country, population, year, weather, plot,
 
     shifted_demand=shift_working_hours(country=country, ts=demand)
 
+    if mvs_input_directory is None:
+        mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
+    sequences_directory= os.path.join(mvs_input_directory, 'sequences/')
+
     logging.info("The electrical load profile is completly calculated and "
-                 "being saved under %s." % mvs_input_directory)
-    shifted_demand.to_csv(os.path.join(mvs_input_directory,
+                 "being saved under %s." % sequences_directory)
+    shifted_demand.to_csv(os.path.join(sequences_directory,
                                           'heat_load_profile.csv'))
 
-    if plot is not None:
+    if plot is True:
         # Plot demand of building
         ax = shifted_demand.plot()
         ax.set_xlabel("Date")
