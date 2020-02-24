@@ -7,14 +7,22 @@ import pvlib
 from pvcompare import era5
 from pvcompare import demand
 from pvcompare import pv_feedin
-#from mvs_tool import mvs_tool
+import mvs_tool as mvs
+import os
+
+DEFAULT_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__),
+                                       'data/inputs/')
+DEFAULT_MVS_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__),
+                                           'data/mvs_inputs/')
+DEFAULT_MVS_OUTPUT_DIRECTORY = os.path.join(os.path.dirname(__file__),
+                                           'data/mvs_outputs/')
 
 # Reconfiguring the logger here will also affect test running in the PyCharm IDE
 log_format = '%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s'
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 
 def main(lat, lon, year, population, country, input_directory=None,
-         output_directory=None, mvs_input_directory=None, plot=True):
+         mvs_input_directory=None, plot=True):
 
     """
     loads weather data for the given year and location, calculates pv feedin
@@ -40,24 +48,27 @@ def main(lat, lon, year, population, country, input_directory=None,
                                                 solar_zenith=spa['zenith'],
                                                 times=weather.index)
 
-    if mvs_input_directory==None:
-        mvs_input_directory="./data/mvs_inputs/"
+    # pv_feedin.create_pv_components(lat=lat, lon=lon, weather=weather,
+    #                                population=population,
+    #                                pv_setup=None,
+    #                                plot=plot,
+    #                                input_directory=input_directory,
+    #                                mvs_input_directory=mvs_input_directory)
+    #
+    # demand.calculate_load_profiles(country=country,
+    #                                population=population,
+    #                                year=year,
+    #                                input_directory=input_directory,
+    #                                mvs_input_directory=mvs_input_directory,
+    #                                plot=plot,
+    #                                weather=weather)
 
-    pv_feedin.create_pv_components(lat=lat, lon=lon, weather=weather,
-                                   population=population,
-                                   pv_setup=None,
-                                   plot=plot,
-                                   input_directory=input_directory,
-                                   mvs_input_directory=mvs_input_directory)
-
-    demand.calculate_load_profiles(country=country,
-                                   population=population,
-                                   year=year,
-                                   input_directory=input_directory,
-                                   mvs_input_directory=mvs_input_directory,
-                                   plot=plot,
-                                   weather=weather)
-
+    #todo: this does not work yet. Probably "settings" are called from within mvs and not from out input directory.
+    mvs.main(
+        path_input_file=os.path.join(DEFAULT_MVS_INPUT_DIRECTORY, 'elements/'),
+        path_input_sequences=os.path.join(DEFAULT_MVS_INPUT_DIRECTORY, 'sequences/'),
+        path_output_folder=DEFAULT_MVS_OUTPUT_DIRECTORY,
+        path_input_folder=DEFAULT_MVS_INPUT_DIRECTORY)
 
 
 
