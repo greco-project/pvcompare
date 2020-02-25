@@ -1,7 +1,8 @@
-.. image:: https://travis-ci.com/greco-project/pvcompare.svg?branch=features%2Fdocumentation
+.. image:: https://travis-ci.com/greco-project/pvcompare.svg?branch=dev
     :target: https://travis-ci.com/greco-project/pvcompare
-.. image:: https://coveralls.io/repos/github/greco-project/pvcompare/badge.svg?branch=master
-    :target: https://coveralls.io/github/greco-project/pvcompare?branch=master
+.. image:: https://coveralls.io/repos/github/greco-project/pvcompare/badge.svg?branch=dev
+    :target: https://coveralls.io/github/greco-project/pvcompare?branch=dev
+
 
 
 Introduction
