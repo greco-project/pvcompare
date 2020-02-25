@@ -1,7 +1,11 @@
-dist: xenial   # required for Python >= 3.7
 language: python
-python:
-  - '3.6'
+dist: xenial   # required for Python >= 3.7
+
+matrix:
+  include:
+    - python: 3.6
+    - python: 3.7
+    - python: 3.8
 
 # To install packages which are not on pip
 #before_install:
@@ -18,15 +22,14 @@ install:
 
 # commands to run tests
 script:
+  - black --check . --exclude docs/
   - coverage run --rcfile=.coveragerc --source pvcompare -m py.test
   - coverage report
+
 
 after_success:
   - coveralls
 
-
-
-#  - black --check . --exclude docs/  # todo for later
 
 #jobs:
 #  include:
