@@ -23,7 +23,7 @@ setup(name='pvcompare',
       python_requires=">=3.5, <4",
       install_requires=["pvlib",
                         "demandlib",
-                        "feedinlib == v0.1.0rc2",
+                        # "feedinlib == v0.1.0rc2",  # travis has problems with installment todo
                         "numpy >= 1.12.0,  < 1.17",
                         "pandas >= 0.18.1, < 0.25",
                         # "mvs_tool", # todo NOTE: fovr now clone mvs_tool and install via "pip install -e ..."
