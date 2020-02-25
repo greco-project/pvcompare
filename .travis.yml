@@ -22,9 +22,10 @@ install:
 
 # commands to run tests
 script:
+  - black --check . --exclude docs/
   - coverage run --rcfile=.coveragerc --source pvcompare -m py.test
   - coverage report
-  - black --check . --exclude docs/
+
 
 after_success:
   - coveralls
