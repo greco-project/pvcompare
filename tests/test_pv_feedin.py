@@ -65,15 +65,15 @@ class TestPvTimeSeries:
 
         assert nominal_value == 129.134
 
-    def test_create_cpv_timeseries(self):
-
-
-        ts = create_cpv_timeseries(lat=self.lat, lon=self.lon,
-                                   weather=self.weather,
-                              surface_azimuth=self.surface_azimuth,
-                              surface_tilt=self.surface_tilt, normalized=True)
-        output = ts.sum()
-        assert output == 0.05573598647698353
+    # def test_create_cpv_timeseries(self):
+    #
+    #
+    #     ts = create_cpv_timeseries(lat=self.lat, lon=self.lon,
+    #                                weather=self.weather,
+    #                           surface_azimuth=self.surface_azimuth,
+    #                           surface_tilt=self.surface_tilt, normalized=True)
+    #     output = ts.sum()
+    #     assert output == 0.05573598647698353
 
 # # one can test that exception are raised
 # def test_addition_wrong_argument_number():
