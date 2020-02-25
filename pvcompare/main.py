@@ -1,5 +1,4 @@
-
-#import feedinlib.era5 as era
+# import feedinlib.era5 as era
 import pandas as pd
 import logging
 import sys
@@ -10,19 +9,29 @@ from pvcompare import pv_feedin
 import mvs_tool as mvs
 import os
 
-DEFAULT_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__),
-                                       'data/inputs/')
-DEFAULT_MVS_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__),
-                                           'data/mvs_inputs/')
-DEFAULT_MVS_OUTPUT_DIRECTORY = os.path.join(os.path.dirname(__file__),
-                                           'data/mvs_outputs/')
+DEFAULT_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__), "data/inputs/")
+DEFAULT_MVS_INPUT_DIRECTORY = os.path.join(
+    os.path.dirname(__file__), "data/mvs_inputs/"
+)
+DEFAULT_MVS_OUTPUT_DIRECTORY = os.path.join(
+    os.path.dirname(__file__), "data/mvs_outputs/"
+)
 
 # Reconfiguring the logger here will also affect test running in the PyCharm IDE
-log_format = '%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s'
+log_format = "%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s"
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 
-def main(lat, lon, year, population, country, input_directory=None,
-         mvs_input_directory=None, plot=True):
+
+def main(
+    lat,
+    lon,
+    year,
+    population,
+    country,
+    input_directory=None,
+    mvs_input_directory=None,
+    plot=True,
+):
 
     """
     loads weather data for the given year and location, calculates pv feedin
@@ -34,19 +43,20 @@ def main(lat, lon, year, population, country, input_directory=None,
     :param year: str
     :return:
     """
-    #todo: scpecify country automatically by lat/lon
+    # todo: scpecify country automatically by lat/lon
 
-    #if era5 import works this line can be used
-#    weather= era5.load_era5_weatherdata(lat=lat, lon=lon, year=year)
+    # if era5 import works this line can be used
+    #    weather= era5.load_era5_weatherdata(lat=lat, lon=lon, year=year)
 
-    #otherwise this example weather data for one year (2014) can be used for now
-    weather=pd.read_csv('./data/inputs/weatherdata.csv', index_col=0)
-    weather.index=pd.to_datetime(weather.index)
-    spa = pvlib.solarposition.spa_python(time=weather.index, latitude=lat,
-                                         longitude=lon)
-    weather['dni'] = pvlib.irradiance.dirint(weather['ghi'],
-                                                solar_zenith=spa['zenith'],
-                                                times=weather.index)
+    # otherwise this example weather data for one year (2014) can be used for now
+    weather = pd.read_csv("./data/inputs/weatherdata.csv", index_col=0)
+    weather.index = pd.to_datetime(weather.index)
+    spa = pvlib.solarposition.spa_python(
+        time=weather.index, latitude=lat, longitude=lon
+    )
+    weather["dni"] = pvlib.irradiance.dirint(
+        weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
+    )
 
     # pv_feedin.create_pv_components(lat=lat, lon=lon, weather=weather,
     #                                population=population,
@@ -63,23 +73,21 @@ def main(lat, lon, year, population, country, input_directory=None,
     #                                plot=plot,
     #                                weather=weather)
 
-    #todo: this does not work yet. Probably "settings" are called from within mvs and not from out input directory.
+    # todo: this does not work yet. Probably "settings" are called from within mvs and not from out input directory.
     mvs.main(
-        path_input_file=os.path.join(DEFAULT_MVS_INPUT_DIRECTORY, 'elements/'),
-        path_input_sequences=os.path.join(DEFAULT_MVS_INPUT_DIRECTORY, 'sequences/'),
+        path_input_file=os.path.join(DEFAULT_MVS_INPUT_DIRECTORY, "elements/"),
+        path_input_sequences=os.path.join(DEFAULT_MVS_INPUT_DIRECTORY, "sequences/"),
         path_output_folder=DEFAULT_MVS_OUTPUT_DIRECTORY,
-        path_input_folder=DEFAULT_MVS_INPUT_DIRECTORY)
+        path_input_folder=DEFAULT_MVS_INPUT_DIRECTORY,
+    )
 
 
+if __name__ == "__main__":
 
+    latitude = 40.3
+    longitude = 5.4
+    year = 2013  # a year between 2011-2013!!!
+    population = 48000
+    country = "Spain"
 
-if __name__ == '__main__':
-
-    latitude=40.3
-    longitude=5.4
-    year=2013 # a year between 2011-2013!!!
-    population=48000
-    country = 'Spain'
-
-    main(lat=latitude, lon=longitude, year=year, country=country,
-         population=population)
+    main(lat=latitude, lon=longitude, year=year, country=country, population=population)

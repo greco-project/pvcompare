@@ -16,33 +16,34 @@ def load_era5_weatherdata(lat, lon, year):
     :return: pd.DataFrame
     """
 
-    start_date=str(year)+'-01-01'
-    end_date=str(year)+'-12-31'
+    start_date = str(year) + "-01-01"
+    end_date = str(year) + "-12-31"
 
-    logging.info('loading era5 weatherdata for the year %s' % year)
+    logging.info("loading era5 weatherdata for the year %s" % year)
 
-    weather_xarray=era5.get_era5_data_from_datespan_and_position(
-    start_date=start_date,
-    end_date=end_date,
-    variable="feedinlib",
-    latitude=lat,
-    longitude=lon,
-    grid=None,
-    target_file=None,
-    chunks=None,
-    cds_client=None,
-)
-    logging.info('era5 weatherdata successfully loaded.')
-    weather_df=format_pvlib(weather_xarray)
+    weather_xarray = era5.get_era5_data_from_datespan_and_position(
+        start_date=start_date,
+        end_date=end_date,
+        variable="feedinlib",
+        latitude=lat,
+        longitude=lon,
+        grid=None,
+        target_file=None,
+        chunks=None,
+        cds_client=None,
+    )
+    logging.info("era5 weatherdata successfully loaded.")
+    weather_df = format_pvlib(weather_xarray)
 
-    spa=pvlib.solarposition.spa_python(time=weather_df.index, latitude=lat,
-                                       longitude=lon)
+    spa = pvlib.solarposition.spa_python(
+        time=weather_df.index, latitude=lat, longitude=lon
+    )
 
-    weather_df['dni']=pvlib.irradiance.dirint(weather_df['ghi'],
-                                              solar_zenith=spa['zenith'],
-                                              times=weather_df.index).fillna(0)
+    weather_df["dni"] = pvlib.irradiance.dirint(
+        weather_df["ghi"], solar_zenith=spa["zenith"], times=weather_df.index
+    ).fillna(0)
 
-    logging.info('weatherdata successfully coverted into pvlib format.')
+    logging.info("weatherdata successfully coverted into pvlib format.")
     return weather_df
 
 
@@ -90,9 +91,7 @@ def format_pvlib(ds):
     pvlib_vars = ["ghi", "dhi", "wind_speed", "temp_air"]
     ds_vars = list(ds.variables)
     drop_vars = [
-        _
-        for _ in ds_vars
-        if _ not in pvlib_vars + ["latitude", "longitude", "time"]
+        _ for _ in ds_vars if _ not in pvlib_vars + ["latitude", "longitude", "time"]
     ]
     ds = ds.drop(drop_vars)
 
@@ -102,21 +101,21 @@ def format_pvlib(ds):
     # the time stamp given by ERA5 for mean values (probably) corresponds to
     # the end of the valid time interval; the following sets the time stamp
     # to the middle of the valid time interval
-    df['time'] = df.time - pd.Timedelta(minutes=30)
+    df["time"] = df.time - pd.Timedelta(minutes=30)
 
-    df.set_index(['time'], inplace=True)
+    df.set_index(["time"], inplace=True)
     df.sort_index(inplace=True)
     df = df.tz_localize("UTC", level=0)
 
-    df = df[['latitude', 'longitude', "wind_speed", "temp_air", "ghi", "dhi"]]
+    df = df[["latitude", "longitude", "wind_speed", "temp_air", "ghi", "dhi"]]
     df.dropna(inplace=True)
 
     return df
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
-    latitude=40.3
-    longitude=5.4
+    latitude = 40.3
+    longitude = 5.4
 
-    df=load_era5_weatherdata(lat=latitude, lon=longitude, year=2015)
+    df = load_era5_weatherdata(lat=latitude, lon=longitude, year=2015)

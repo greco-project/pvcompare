@@ -32,17 +32,26 @@ import greco_technologies.cpv.hybrid
 import greco_technologies.cpv.inputs
 from pvcompare import area_potential
 
-log_format = '%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s'
+log_format = "%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s"
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 
-DEFAULT_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__),
-                                       'data/inputs/')
-DEFAULT_MVS_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__),
-                                           'data/mvs_inputs/')
+DEFAULT_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__), "data/inputs/")
+DEFAULT_MVS_INPUT_DIRECTORY = os.path.join(
+    os.path.dirname(__file__), "data/mvs_inputs/"
+)
 
-def create_pv_components(lat, lon, weather, population, pv_setup=None, plot=True,
-                         input_directory=None, mvs_input_directory=None,
-                         directory_energy_production=None):
+
+def create_pv_components(
+    lat,
+    lon,
+    weather,
+    population,
+    pv_setup=None,
+    plot=True,
+    input_directory=None,
+    mvs_input_directory=None,
+    directory_energy_production=None,
+):
     """
     Reads pv_setup.csv; for each surface_type listed in pv_setup,
     one PV timeseries is created with regard to the technology and its
@@ -86,85 +95,106 @@ def create_pv_components(lat, lon, weather, population, pv_setup=None, plot=True
         if input_directory is None:
             input_directory = DEFAULT_INPUT_DIRECTORY
 
-        datapath = os.path.join(input_directory, 'pv_setup.csv')
-        pv_setup=pd.read_csv(datapath)
+        datapath = os.path.join(input_directory, "pv_setup.csv")
+        pv_setup = pd.read_csv(datapath)
         logging.info("setup conditions successfully loaded.")
 
-    #empty output folder
+    # empty output folder
     if mvs_input_directory is None:
-        mvs_input_directory=DEFAULT_MVS_INPUT_DIRECTORY
-    sequences_directory=os.path.join(DEFAULT_MVS_INPUT_DIRECTORY,
-                                             'sequences')
+        mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
+    sequences_directory = os.path.join(DEFAULT_MVS_INPUT_DIRECTORY, "sequences")
     files = glob.glob(os.path.join(sequences_directory, "*"))
     for f in files:
         os.remove(f)
 
-    #check if all three required columns are in pv_setup
-    if not all([item in pv_setup.columns for item in ['surface_type',
-                                                      'surface_azimuth',
-                                                      'surface_tilt',
-                                                      'technology']]):
-        logging.error("The file pv_setup does not contain all required columns"
-                      "surface_azimuth, surface_tilt and technology.")
+    # check if all three required columns are in pv_setup
+    if not all(
+        [
+            item in pv_setup.columns
+            for item in [
+                "surface_type",
+                "surface_azimuth",
+                "surface_tilt",
+                "technology",
+            ]
+        ]
+    ):
+        logging.error(
+            "The file pv_setup does not contain all required columns"
+            "surface_azimuth, surface_tilt and technology."
+        )
 
-    #check if mvs_input/energyProduction.csv contains all powerplants
+    # check if mvs_input/energyProduction.csv contains all powerplants
     check_mvs_energy_production_file(pv_setup, directory_energy_production)
     # parse through pv_setup file and create timeseries for each technology
     for i, row in pv_setup.iterrows():
-        j = row['surface_azimuth']
-        k = row['surface_tilt']
-        k = pd.to_numeric(k, errors='ignore')
+        j = row["surface_azimuth"]
+        k = row["surface_tilt"]
+        k = pd.to_numeric(k, errors="ignore")
         if k == "optimal":
             k = get_optimal_pv_angle(lat)
-        if row["technology"]=="si":
-            timeseries = create_si_timeseries(lat=lat, lon=lon,
-                                                         weather=weather,
-                                                         surface_azimuth=j,
-                                                         surface_tilt=k)
-        elif row["technology"]=="cpv":
-            timeseries = create_cpv_timeseries(lat, lon,
-                                                          weather,
-                                                          j, k)
-        elif row["technology"]=="psi":
-            logging.error("The timeseries of psi cannot be calculated "
-                          "yet. Please only use cpv or si right now.")
+        if row["technology"] == "si":
+            timeseries = create_si_timeseries(
+                lat=lat, lon=lon, weather=weather, surface_azimuth=j, surface_tilt=k
+            )
+        elif row["technology"] == "cpv":
+            timeseries = create_cpv_timeseries(lat, lon, weather, j, k)
+        elif row["technology"] == "psi":
+            logging.error(
+                "The timeseries of psi cannot be calculated "
+                "yet. Please only use cpv or si right now."
+            )
         else:
-            logging.error(row["technology"], 'is not in technologies. Please '
-                                             'chose si, cpv or psi.')
+            logging.error(
+                row["technology"],
+                "is not in technologies. Please " "chose si, cpv or psi.",
+            )
         # define the name of the output file of the timeseries
-        output_csv=os.path.join(sequences_directory, str(row["technology"]) + '_'
-                                + str(j) + '_' + str(k) + '.csv')
+        output_csv = os.path.join(
+            sequences_directory,
+            str(row["technology"]) + "_" + str(j) + "_" + str(k) + ".csv",
+        )
         # save timeseries into mvs_inputs
         timeseries.to_csv(output_csv)
-        logging.info("%s" %row["technology"] + " timeseries is saved as csv "
-                                               "into output directory")
+        logging.info(
+            "%s" % row["technology"] + " timeseries is saved as csv "
+            "into output directory"
+        )
         if plot == True:
-            plt.plot(timeseries, label=str(row["technology"]) + str(j) + '_'
-                                       + str(k),
-                     alpha=0.7)
+            plt.plot(
+                timeseries,
+                label=str(row["technology"]) + str(j) + "_" + str(k),
+                alpha=0.7,
+            )
             plt.legend()
-        #calculate area potential
-        surface_type_list=['flat_roof', 'gable_roof', 'south_facade',
-                           'east_facade', 'west_facade']
-        if row['surface_type'] not in surface_type_list:
-            logging.error("The surface_type in row %s" %i + " in pv_setup.csv"
-                          " is not valid. Please choose from %s"
-                          %surface_type_list)
+        # calculate area potential
+        surface_type_list = [
+            "flat_roof",
+            "gable_roof",
+            "south_facade",
+            "east_facade",
+            "west_facade",
+        ]
+        if row["surface_type"] not in surface_type_list:
+            logging.error(
+                "The surface_type in row %s" % i + " in pv_setup.csv"
+                " is not valid. Please choose from %s" % surface_type_list
+            )
         else:
-            area=area_potential.calculate_area_potential(population,
-                                                         input_directory,
-                                 surface_type=row['surface_type'])
+            area = area_potential.calculate_area_potential(
+                population, input_directory, surface_type=row["surface_type"]
+            )
 
-        #calculate nominal value of the powerplant
-        nominal_value= nominal_values_pv(technology=row["technology"],
-                                         area=area, surface_azimuth=j,
-                                         surface_tilt=k)
+        # calculate nominal value of the powerplant
+        nominal_value = nominal_values_pv(
+            technology=row["technology"], area=area, surface_azimuth=j, surface_tilt=k
+        )
         # save the file name of the timeseries and the nominal value to
         # mvs_inputs/elements/csv/energyProduction.csv
-        add_parameters_to_energy_production_file(pp_number=i+1,
-                                               ts_filename=output_csv,
-                                               nominal_value=nominal_value, )
-    if plot==True:
+        add_parameters_to_energy_production_file(
+            pp_number=i + 1, ts_filename=output_csv, nominal_value=nominal_value,
+        )
+    if plot == True:
         plt.show()
 
 
@@ -202,46 +232,55 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
         Initialized PV system and module parameters.
     """
 
-    if technology=="si":
+    if technology == "si":
 
-        sandia_modules = pvlib.pvsystem.retrieve_sam('SandiaMod')
-        sandia_module = sandia_modules['Canadian_Solar_CS5P_220M___2009_']
-        cec_inverters = pvlib.pvsystem.retrieve_sam('cecinverter')
-        cec_inverter = cec_inverters['ABB__MICRO_0_25_I_OUTD_US_208__208V_']
-        system = PVSystem(surface_tilt=surface_tilt,
-                          surface_azimuth=surface_azimuth,
-                          module_parameters=sandia_module,
-                          inverter_parameters=cec_inverter)
+        sandia_modules = pvlib.pvsystem.retrieve_sam("SandiaMod")
+        sandia_module = sandia_modules["Canadian_Solar_CS5P_220M___2009_"]
+        cec_inverters = pvlib.pvsystem.retrieve_sam("cecinverter")
+        cec_inverter = cec_inverters["ABB__MICRO_0_25_I_OUTD_US_208__208V_"]
+        system = PVSystem(
+            surface_tilt=surface_tilt,
+            surface_azimuth=surface_azimuth,
+            module_parameters=sandia_module,
+            inverter_parameters=cec_inverter,
+        )
 
         return system, sandia_module
 
-    elif technology=='cpv':
+    elif technology == "cpv":
 
-        logging.debug("cpv module parameters are loaded from "
-                      "greco_technologies/inputs.py")
-        module_params=greco_technologies.cpv.inputs.create_ins_cpv_dict()
+        logging.debug(
+            "cpv module parameters are loaded from " "greco_technologies/inputs.py"
+        )
+        module_params = greco_technologies.cpv.inputs.create_ins_cpv_dict()
 
-        cpv_sys = cpv.StaticCPVSystem(surface_tilt=surface_tilt,
-                                      surface_azimuth=surface_azimuth,
-                                      module=None,
-                                      module_parameters=module_params,
-                                      modules_per_string=1,
-                                      strings_per_inverter=1,
-                                      inverter=None, inverter_parameters=None,
-                                      racking_model='insulated',
-                                      losses_parameters=None, name=None)
+        cpv_sys = cpv.StaticCPVSystem(
+            surface_tilt=surface_tilt,
+            surface_azimuth=surface_azimuth,
+            module=None,
+            module_parameters=module_params,
+            modules_per_string=1,
+            strings_per_inverter=1,
+            inverter=None,
+            inverter_parameters=None,
+            racking_model="insulated",
+            losses_parameters=None,
+            name=None,
+        )
 
         return cpv_sys, module_params
 
-    elif technology=='psi':
-        logging.error('The nominal value for psi cannot be calculated yet.')
+    elif technology == "psi":
+        logging.error("The nominal value for psi cannot be calculated yet.")
     else:
-        logging.warning(technology, 'is not in technologies. Please chose si, '
-                        'cpv or psi.')
+        logging.warning(
+            technology, "is not in technologies. Please chose si, " "cpv or psi."
+        )
 
 
-def create_si_timeseries(lat, lon, weather, surface_azimuth,
-                                    surface_tilt, normalized=True):
+def create_si_timeseries(
+    lat, lon, weather, surface_azimuth, surface_tilt, normalized=True
+):
 
     r"""The cpv timeseries is created for a given weather dataframe, at a given
     orientation for the flat plate module 'Canadian_Solar_CS5P_220M___2009_'.
@@ -265,27 +304,33 @@ def create_si_timeseries(lat, lon, weather, surface_azimuth,
     pd.DataFrame
     """
 
-    system, module_parameters=set_up_system(technology="si",
-                                            surface_azimuth=surface_azimuth,
-                                            surface_tilt=surface_tilt)
-    location=Location(latitude=lat, longitude=lon)
+    system, module_parameters = set_up_system(
+        technology="si", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt
+    )
+    location = Location(latitude=lat, longitude=lon)
 
-    peak = module_parameters['Impo'] * module_parameters['Vmpo']
+    peak = module_parameters["Impo"] * module_parameters["Vmpo"]
 
-    mc = ModelChain(system, location, orientation_strategy=None,
-                    aoi_model='sapm', spectral_model='sapm')
+    mc = ModelChain(
+        system,
+        location,
+        orientation_strategy=None,
+        aoi_model="sapm",
+        spectral_model="sapm",
+    )
     mc.run_model(times=weather.index, weather=weather)
-    output=mc.dc
-    if normalized==True:
+    output = mc.dc
+    if normalized == True:
         logging.info("normalized si timeseries is calculated.")
-        return (output['p_mp']/peak).clip(0)
+        return (output["p_mp"] / peak).clip(0)
     else:
         logging.info("si timeseries is calculated without normalization.")
-        return output['p_mp']
+        return output["p_mp"]
 
 
-def create_cpv_timeseries(lat, lon, weather, surface_azimuth,
-                          surface_tilt, normalized=True):
+def create_cpv_timeseries(
+    lat, lon, weather, surface_azimuth, surface_tilt, normalized=True
+):
 
     """The cpv timeseries is created for a given weather dataframe for the
     INSOLIGHT CPV module. If normalized=True the time series is normalized by
@@ -308,24 +353,27 @@ def create_cpv_timeseries(lat, lon, weather, surface_azimuth,
     -------
     pd.DataFrame
     """
-    system, module_parameters=set_up_system(technology="cpv",
-                                            surface_azimuth=surface_azimuth,
-                                            surface_tilt=surface_tilt)
+    system, module_parameters = set_up_system(
+        technology="cpv", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt
+    )
 
-    peak = module_parameters['Impo'] * module_parameters['Vmpo']
-    if normalized==True:
+    peak = module_parameters["Impo"] * module_parameters["Vmpo"]
+    if normalized == True:
         logging.info("normalized cpv timeseries is calculated.")
-        return (greco_technologies.cpv.hybrid.create_hybrid_timeseries(
-            lat=lat, lon=lon, weather=weather, surface_tilt=25,
-            surface_azimuth=180) / peak).clip(0)
+        return (
+            greco_technologies.cpv.hybrid.create_hybrid_timeseries(
+                lat=lat, lon=lon, weather=weather, surface_tilt=25, surface_azimuth=180
+            )
+            / peak
+        ).clip(0)
     else:
         logging.info("cpv timeseries is calculated without normalization.")
         return greco_technologies.cpv.hybrid.create_hybrid_timeseries(
-            lat=lat, lon=lon, weather=weather,
-            surface_tilt=25, surface_azimuth=180)
+            lat=lat, lon=lon, weather=weather, surface_tilt=25, surface_azimuth=180
+        )
 
 
-#def create_psi_timeseries(lat, lon, weather, surface_azimuth, surface_tilt):
+# def create_psi_timeseries(lat, lon, weather, surface_azimuth, surface_tilt):
 
 
 def nominal_values_pv(technology, area, surface_azimuth, surface_tilt):
@@ -352,20 +400,27 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt):
         the rounded possible installed capacity for an area
     """
 
-    system, module_parameters = set_up_system(technology=technology,
-                                              surface_azimuth=surface_azimuth,
-                                              surface_tilt=surface_tilt)
+    system, module_parameters = set_up_system(
+        technology=technology,
+        surface_azimuth=surface_azimuth,
+        surface_tilt=surface_tilt,
+    )
 
-    peak=module_parameters['Impo']*module_parameters['Vmpo']
-    module_size= module_parameters['Area']
-    nominal_value=round(area/module_size*peak)/1000
-    logging.info('The nominal value for %s' %type + " is %s" %nominal_value +
-                " kWp for an area of %s" %area + " qm.")
+    peak = module_parameters["Impo"] * module_parameters["Vmpo"]
+    module_size = module_parameters["Area"]
+    nominal_value = round(area / module_size * peak) / 1000
+    logging.info(
+        "The nominal value for %s" % type
+        + " is %s" % nominal_value
+        + " kWp for an area of %s" % area
+        + " qm."
+    )
     return nominal_value
 
 
-def check_mvs_energy_production_file(pv_setup, mvs_input_directory=None,
-                               overwrite=True):
+def check_mvs_energy_production_file(
+    pv_setup, mvs_input_directory=None, overwrite=True
+):
     """
     This function compares the number of powerplants in
     data/mvs_inputs/elements/csv/energyProduction.csv with the number of rows
@@ -386,45 +441,49 @@ def check_mvs_energy_production_file(pv_setup, mvs_input_directory=None,
     None
     """
 
-
-
-    if mvs_input_directory==None:
-        mvs_input_directory= os.path.join(DEFAULT_MVS_INPUT_DIRECTORY)
-    energy_production_filename= os.path.join(mvs_input_directory,
-                                             "/elements/"
-                                            "energyProduction.csv")
+    if mvs_input_directory == None:
+        mvs_input_directory = os.path.join(DEFAULT_MVS_INPUT_DIRECTORY)
+    energy_production_filename = os.path.join(
+        mvs_input_directory, "/elements/" "energyProduction.csv"
+    )
     if os.path.isfile(energy_production_filename):
-        energy_production = pd.read_csv(energy_production_filename,
-                                        index_col=0)
+        energy_production = pd.read_csv(energy_production_filename, index_col=0)
 
         if len(energy_production.columns) - 1 == len(pv_setup.index):
             logging.info(
                 "mvs_input file energyProduction.csv contains the correct"
-                "number of pv powerplants.")
+                "number of pv powerplants."
+            )
         elif overwrite == False:
             logging.error(
                 "The number of pv powerplants in energyProduction.csv"
                 " differs from the number of powerplants listed in "
                 "pv_setup.csv. Please check energyProduction.csv or "
                 "allow overwrite=True to have energyProduction.csv "
-                "set up automatically with default values. ")
+                "set up automatically with default values. "
+            )
         else:
             logging.warning(
                 "The number of pv powerplants in energyProduction.csv"
                 " differs from the number of powerplants listed in "
                 "pv_setup.csv. The file energyProduction.csv will thus "
-                "be overwritten and created anew with default values.")
-            create_mvs_energy_production_file(pv_setup,
-                                              energy_production_filename)
+                "be overwritten and created anew with default values."
+            )
+            create_mvs_energy_production_file(pv_setup, energy_production_filename)
 
-    elif overwrite==False:
-        logging.error("The file %s" %energy_production_filename + "does not"
-                      "exist. Please create energyProduction.csv or "
-                      "allow overwrite=True to have energyProduction.csv "
-                      "set up automatically with default values.")
-    else: logging.warning("The file %s" %energy_production_filename + "does not"
-                          "exist. It will thus be created anew with default "
-                          "values.")
+    elif overwrite == False:
+        logging.error(
+            "The file %s" % energy_production_filename + "does not"
+            "exist. Please create energyProduction.csv or "
+            "allow overwrite=True to have energyProduction.csv "
+            "set up automatically with default values."
+        )
+    else:
+        logging.warning(
+            "The file %s" % energy_production_filename + "does not"
+            "exist. It will thus be created anew with default "
+            "values."
+        )
 
 
 def create_mvs_energy_production_file(pv_setup, energy_production_filename):
@@ -443,62 +502,69 @@ def create_mvs_energy_production_file(pv_setup, energy_production_filename):
     ---------
     None
     """
-    #hardcoded list of parameters
-    data = {'index': ["age_installed",
-                    "capex_fix",
-                    "capex_var",
-                    "file_name",
-                    "installedCap",
-                    "label",
-                    "lifetime",
-                    "opex_fix",
-                    "opex_var",
-                    "optimizeCap",
-                    "outflow_direction",
-                    "type_oemof",
-                    "unit",
-                    "energyVector"],
-            'unit': ['year',
-                    'currency',
-                    'currency/unit',
-                    'str',
-                    'kWp',
-                    'str',
-                    'year',
-                    'currency/unit/year',
-                    'currency/kWh',
-                    'bool',
-                    'str',
-                    'str',
-                    'str',
-                    'str',
-                    ]}
-    df = pd.DataFrame(data, columns=['index', 'unit'])
-    df.set_index('index', inplace=True)
+    # hardcoded list of parameters
+    data = {
+        "index": [
+            "age_installed",
+            "capex_fix",
+            "capex_var",
+            "file_name",
+            "installedCap",
+            "label",
+            "lifetime",
+            "opex_fix",
+            "opex_var",
+            "optimizeCap",
+            "outflow_direction",
+            "type_oemof",
+            "unit",
+            "energyVector",
+        ],
+        "unit": [
+            "year",
+            "currency",
+            "currency/unit",
+            "str",
+            "kWp",
+            "str",
+            "year",
+            "currency/unit/year",
+            "currency/kWh",
+            "bool",
+            "str",
+            "str",
+            "str",
+            "str",
+        ],
+    }
+    df = pd.DataFrame(data, columns=["index", "unit"])
+    df.set_index("index", inplace=True)
     for i, row in pv_setup.iterrows():
-        #hardcoded default parameters
-        pp=['0',
-                '10000',
-                '7200',
-                '0',
-                '0',
-                'PV plant (mono)',
-                '30',
-                '80',
-                '0',
-                'True',
-                'PV plant (mono)',
-                'source',
-                'kWp',
-                'Electricity']
-        df['pv_plant_0' + str(i+1)] = pp
+        # hardcoded default parameters
+        pp = [
+            "0",
+            "10000",
+            "7200",
+            "0",
+            "0",
+            "PV plant (mono)",
+            "30",
+            "80",
+            "0",
+            "True",
+            "PV plant (mono)",
+            "source",
+            "kWp",
+            "Electricity",
+        ]
+        df["pv_plant_0" + str(i + 1)] = pp
 
     df.to_csv(energy_production_filename)
 
 
-def add_parameters_to_energy_production_file(pp_number, ts_filename,
-                                            nominal_value,
-                                            mvs_input_directory=None):
+def add_parameters_to_energy_production_file(
+    pp_number, ts_filename, nominal_value, mvs_input_directory=None
+):
 
     """
     enters the calculated installedCap and file_name parameters of one
@@ -515,39 +581,39 @@ def add_parameters_to_energy_production_file(pp_number, ts_filename,
 
     if mvs_input_directory == None:
         mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
-    energy_production_filename = os.path.join(mvs_input_directory,
-                                              "elements/energyProduction.csv")
-    #load energyProduction.csv
+    energy_production_filename = os.path.join(
+        mvs_input_directory, "elements/energyProduction.csv"
+    )
+    # load energyProduction.csv
     energy_production = pd.read_csv(energy_production_filename, index_col=0)
-    #insert parameter values
-    energy_production.loc[['installedCap'], ['pv_plant_0' + str(pp_number)]]=\
-        nominal_value
-    logging.info("The installed capacity of pv_plant_0%s" %pp_number +" has " \
-                 "been added to energyProduction.csv.")
-    energy_production.loc[['file_name'], ['pv_plant_0' + str(pp_number)]]=\
-        ts_filename
-    logging.info("The file_name of the time series of pv_plant_0%s" %pp_number
-                 +" has been added to energyProduction.csv.")
-    #save energyProduction.csv
+    # insert parameter values
+    energy_production.loc[
+        ["installedCap"], ["pv_plant_0" + str(pp_number)]
+    ] = nominal_value
+    logging.info(
+        "The installed capacity of pv_plant_0%s" % pp_number + " has "
+        "been added to energyProduction.csv."
+    )
+    energy_production.loc[["file_name"], ["pv_plant_0" + str(pp_number)]] = ts_filename
+    logging.info(
+        "The file_name of the time series of pv_plant_0%s" % pp_number
+        + " has been added to energyProduction.csv."
+    )
+    # save energyProduction.csv
     energy_production.to_csv(energy_production_filename)
 
 
+if __name__ == "__main__":
 
+    filename = os.path.abspath(
+        "/home/local/RL-INSTITUT/inia.steinbach/Dokumente/greco-project/pvcompare/pvcompare/data/ERA5_example_data_pvlib.csv"
+    )
+    weather_df = pd.read_csv(
+        filename, index_col=0, date_parser=lambda idx: pd.to_datetime(idx, utc=True)
+    )
+    weather_df.index = pd.to_datetime(weather_df.index).tz_convert("Europe/Berlin")
+    weather_df["dni"] = weather_df["ghi"] - weather_df["dhi"]
 
-
-
-
-if __name__ == '__main__':
-
-    filename = os.path.abspath('/home/local/RL-INSTITUT/inia.steinbach/Dokumente/greco-project/pvcompare/pvcompare/data/ERA5_example_data_pvlib.csv')
-    weather_df = pd.read_csv(filename, index_col=0,
-                             date_parser=lambda idx: pd.to_datetime(idx,
-                                                                    utc=True))
-    weather_df.index = pd.to_datetime(weather_df.index).tz_convert(
-        'Europe/Berlin')
-    weather_df['dni']=weather_df['ghi']-weather_df['dhi']
-
-    create_pv_components(lat=40.3, lon=5.4, weather=weather_df, pv_setup=None,
-                         population=48000)
-
-
+    create_pv_components(
+        lat=40.3, lon=5.4, weather=weather_df, pv_setup=None, population=48000
+    )

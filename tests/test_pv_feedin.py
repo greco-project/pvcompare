@@ -15,53 +15,54 @@ import numpy as np
 from pvcompare.pv_feedin import (
     create_si_timeseries,
     nominal_values_pv,
-    create_cpv_timeseries
+    create_cpv_timeseries,
 )
 
 
 class TestPvTimeSeries:
-
     @classmethod
     def setup_class(self):
         """Setup variables for all tests in this class"""
         weather_df = pd.DataFrame()
-        weather_df['temp_air'] = [4, 5]
-        weather_df['wind_speed'] = [2, 2.5]
-        weather_df['dhi'] = [100, 120]
-        weather_df['dni'] = [120, 150]
-        weather_df['ghi'] = [200, 220]
-        weather_df.index = ['2014-01-01 13:00:00+00:00',
-                            '2014-01-01 14:00:00+00:00']
-        weather_df.index=pd.to_datetime(weather_df.index)
-        self.weather=weather_df
+        weather_df["temp_air"] = [4, 5]
+        weather_df["wind_speed"] = [2, 2.5]
+        weather_df["dhi"] = [100, 120]
+        weather_df["dni"] = [120, 150]
+        weather_df["ghi"] = [200, 220]
+        weather_df.index = ["2014-01-01 13:00:00+00:00", "2014-01-01 14:00:00+00:00"]
+        weather_df.index = pd.to_datetime(weather_df.index)
+        self.weather = weather_df
 
         self.lat = 40.0
         self.lon = 5.2
         self.surface_azimuth = 180
         self.surface_tilt = 30
 
-
     def test_create_si_timeseries(self):
 
-
-
-        ts = create_si_timeseries(lat=self.lat, lon=self.lon,
-                                      weather=self.weather,
-                                      surface_azimuth=self.surface_azimuth,
-                                      surface_tilt=self.surface_tilt,
-                                      normalized=True)
-        output=ts.sum()
+        ts = create_si_timeseries(
+            lat=self.lat,
+            lon=self.lon,
+            weather=self.weather,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            normalized=True,
+        )
+        output = ts.sum()
 
         assert output == 0.4477100404694223
 
     def test_nominal_values_pv(self):
 
-        technology='si'
-        area=1000
+        technology = "si"
+        area = 1000
 
-        nominal_value=nominal_values_pv(technology=technology, area=area,
-                          surface_azimuth=self.surface_azimuth,
-                          surface_tilt=self.surface_tilt)
+        nominal_value = nominal_values_pv(
+            technology=technology,
+            area=area,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+        )
 
         assert nominal_value == 129.134
 
@@ -74,6 +75,7 @@ class TestPvTimeSeries:
     #                           surface_tilt=self.surface_tilt, normalized=True)
     #     output = ts.sum()
     #     assert output == 0.05573598647698353
+
 
 # # one can test that exception are raised
 # def test_addition_wrong_argument_number():
