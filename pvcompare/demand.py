@@ -18,11 +18,15 @@ import demandlib.particular_profiles as profiles
 import os
 import sys
 import pandas as pd
-import logging
 import numpy as np
+import inspect
+from pkgutil import iter_modules
+from importlib import import_module
 
+import logging
 log_format = "%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s"
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
+
 try:
     import matplotlib.pyplot as plt
 except ImportError:
@@ -33,14 +37,11 @@ try:
     from workalendar.europe import Germany
 except ImportError:
     workalendar = None
-import inspect
-from pkgutil import iter_modules
-from importlib import import_module
+
 
 DEFAULT_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__), "data/inputs/")
 DEFAULT_MVS_INPUT_DIRECTORY = os.path.join(
-    os.path.dirname(__file__), "data/mvs_inputs/"
-)
+    os.path.dirname(__file__), "data/mvs_inputs/")
 
 
 def calculate_load_profiles(
@@ -457,18 +458,3 @@ def get_workalendar_class(country):
 
 if __name__ == "__main__":
 
-    weather = pd.read_csv("./data/inputs/weatherdata.csv")
-
-    mvs_input_directory = "./data/mvs_inputs/"
-    #    calculate_power_demand(country='Bulgaria', population=600, year='2011',
-    #                           input_directory=None, plot=True,
-    #                           mvs_input_directory=mvs_input_directory)
-    calculate_load_profiles(
-        country="Germany",
-        population=600,
-        year=2011,
-        weather=weather,
-        plot=True,
-        input_directory=None,
-        mvs_input_directory=mvs_input_directory,
-    )
