@@ -16,6 +16,7 @@ from pvcompare.pv_feedin import (
     create_si_timeseries,
     nominal_values_pv,
     create_cpv_timeseries,
+    get_optimal_pv_angle,
 )
 
 
@@ -66,15 +67,21 @@ class TestPvTimeSeries:
 
         assert nominal_value == 129.134
 
-    # def test_create_cpv_timeseries(self):
-    #
-    #
-    #     ts = create_cpv_timeseries(lat=self.lat, lon=self.lon,
-    #                                weather=self.weather,
-    #                           surface_azimuth=self.surface_azimuth,
-    #                           surface_tilt=self.surface_tilt, normalized=True)
-    #     output = ts.sum()
-    #     assert output == 0.05573598647698353
+    def test_create_cpv_timeseries(self):
+
+
+        ts = create_cpv_timeseries(lat=self.lat, lon=self.lon,
+                                   weather=self.weather,
+                              surface_azimuth=self.surface_azimuth,
+                              surface_tilt=self.surface_tilt, normalized=True)
+        output = ts.sum()
+        assert output == 0.04707750771591392
+
+    def test_get_optimal_pv_angle(self):
+
+        output= get_optimal_pv_angle(self.lat)
+
+        assert output == 25
 
 
 # # one can test that exception are raised
