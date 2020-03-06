@@ -54,6 +54,10 @@ class TestDemandProfiles:
 
     def test_calculate_power_demand(self):
 
+        if os.path.exists(os.path.join(self.test_mvs_directory,
+                               "time_series/electricity_load_profile.csv")):
+            os.remove(os.path.join(self.test_mvs_directory,
+                               "time_series/electricity_load_profile.csv"))
         calculate_power_demand(
             country=self.country, population=self.population, year=self.year,
             input_directory=self.input_directory,
@@ -64,6 +68,11 @@ class TestDemandProfiles:
 
     def test_calculate_heat_demand(self):
 
+        if os.path.exists(os.path.join(self.test_mvs_directory,
+                               "time_series/heat_load_profile.csv")):
+            os.remove(os.path.join(self.test_mvs_directory,
+                               "time_series/heat_load_profile.csv"))
+
         calculate_heat_demand(
             country=self.country, population=self.population, year=self.year,
             input_directory=self.input_directory, weather=self.weather,
@@ -71,12 +80,6 @@ class TestDemandProfiles:
         assert os.path.exists(
             os.path.join(self.test_mvs_directory,
                          "time_series/heat_load_profile.csv"))
-
-    def teardown_module(self):
-        os.remove(os.path.join(self.test_mvs_directory,
-                               "time_series/electricity_load_profile.csv"))
-        os.remove(os.path.join(self.test_mvs_directory,
-                               "time_series/heat_load_profile.csv"))
 
     def test_shift_working_hours(self):
 
