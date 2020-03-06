@@ -45,20 +45,21 @@ def main(
     """
     # todo: scpecify country automatically by lat/lon
 
-    # if era5 import works this line can be used
-    #    weather= era5.load_era5_weatherdata(lat=lat, lon=lon, year=year)
+        #if era5 import works this line can be used
+    #weather= era5.load_era5_weatherdata(lat=lat, lon=lon, year=year)
 
     # otherwise this example weather data for one year (2014) can be used for now
-    weather = pd.read_csv("./data/inputs/weatherdata.csv", index_col=0)
-    weather.index = pd.to_datetime(weather.index)
-    spa = pvlib.solarposition.spa_python(
-        time=weather.index, latitude=lat, longitude=lon
-    )
-    weather["dni"] = pvlib.irradiance.dirint(
-        weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
-    )
+    # weather = pd.read_csv("./data/inputs/weatherdata.csv", index_col=0)
+    # weather.index = pd.to_datetime(weather.index)
+    # spa = pvlib.solarposition.spa_python(
+    #     time=weather.index, latitude=lat, longitude=lon
+    # )
+    # weather["dni"] = pvlib.irradiance.dirint(
+    #     weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
+    # )
 
-    # pv_feedin.create_pv_components(lat=lat, lon=lon, weather=weather,
+    # pv_feedin.create_pv_components(lat=lat, lon=lon,
+    #                                weather=weather,
     #                                population=population,
     #                                pv_setup=None,
     #                                plot=plot,
@@ -75,17 +76,17 @@ def main(
 
     # todo: this does not work yet. Probably "settings" are called from within mvs and not from out input directory.
     mvs.main(
-        path_input_file=os.path.join(DEFAULT_MVS_INPUT_DIRECTORY, "elements/"),
-        path_input_sequences=os.path.join(DEFAULT_MVS_INPUT_DIRECTORY, "sequences/"),
+        path_input_folder=os.path.join(DEFAULT_MVS_INPUT_DIRECTORY),
         path_output_folder=DEFAULT_MVS_OUTPUT_DIRECTORY,
-        path_input_folder=DEFAULT_MVS_INPUT_DIRECTORY,
+        input_type = 'csv',
+        overwrite=True,
     )
 
 
 if __name__ == "__main__":
 
-    latitude = 40.3
-    longitude = 5.4
+    latitude = 45.641603,
+    longitude = 5.875387
     year = 2013  # a year between 2011-2013!!!
     population = 48000
     country = "Spain"
