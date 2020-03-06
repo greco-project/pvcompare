@@ -170,17 +170,6 @@ def calculate_power_demand(
 
     # multiply given annual demand with timeseries
     elec_demand = e_slp.get_profile(ann_el_demand_h0)
-    # Add the slp for the industrial group
-    ilp = profiles.IndustrialLoadProfile(e_slp.date_time_index, holidays=holidays)
-
-    # Change scaling factors
-    elec_demand["h0"] = ilp.simple_profile(
-        ann_el_demand_h0["h0"],
-        profile_factors={
-            "week": {"day": 1.0, "night": 0.8},
-            "weekend": {"day": 0.8, "night": 0.6},
-        },
-    )
 
     # Resample 15-minute values to hourly values.
     elec_demand = elec_demand.resample("H").mean()
@@ -189,13 +178,13 @@ def calculate_power_demand(
 
     if mvs_input_directory is None:
         mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
-    sequences_directory = os.path.join(mvs_input_directory, "sequences/")
+    timeseries_directory = os.path.join(mvs_input_directory, "time_series/")
 
     logging.info(
         "The electrical load profile is completly calculated and "
-        "being saved under %s." % sequences_directory
+        "being saved under %s." % timeseries_directory
     )
-    filename = os.path.join(sequences_directory, "electricity_load_profile.csv")
+    filename = os.path.join(timeseries_directory, "electricity_load_profile.csv")
     shifted_elec_demand.to_csv(filename)
 
     if plot is True:
@@ -329,13 +318,13 @@ def calculate_heat_demand(
 
     if mvs_input_directory is None:
         mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
-    sequences_directory = os.path.join(mvs_input_directory, "sequences/")
+    timeseries_directory = os.path.join(mvs_input_directory, "time_series/")
 
     logging.info(
         "The electrical load profile is completly calculated and "
-        "being saved under %s." % sequences_directory
+        "being saved under %s." % timeseries_directory
     )
-    shifted_demand.to_csv(os.path.join(sequences_directory, "heat_load_profile.csv"))
+    shifted_demand.to_csv(os.path.join(timeseries_directory, "heat_load_profile.csv"))
 
     if plot is True:
         # Plot demand of building
@@ -369,6 +358,14 @@ def shift_working_hours(country, ts):
         shifted time series
     """
 
+    #check if time series contains more than 24 h
+    time0=ts.iloc[[0], [0]].index
+    time24= time0 + pd.DateOffset(hours=24)
+    if not time24 in ts.index:
+        logging.warning("Your demand timeseries does not cover 24h and is "
+                        "therefore not shifted according to the local "
+                        "behaviour.")
+        return ts
     if country in [
         "Bulgaria",
         "Croatia",
@@ -458,3 +455,36 @@ def get_workalendar_class(country):
 
 if __name__ == "__main__":
 
+    weather = pd.read_csv("./data/inputs/weatherdata.csv")
+
+    mvs_input_directory = "./data/mvs_inputs/"
+    #    calculate_power_demand(country='Bulgaria', population=600, year='2011',
+    #                           input_directory=None, plot=True,
+    #                           mvs_input_directory=mvs_input_directory)
+    calculate_load_profiles(
+        country="Germany",
+        population=600,
+        year=2011,
+        weather=weather,
+        plot=True,
+        input_directory=None,
+        mvs_input_directory=mvs_input_directory,
+    )
+
+    # country='Spain'
+    # ts = pd.DataFrame()
+    # ts['h0'] = [19052, 19052, 14289, 19052, 19052, 14289]
+    # ts.index = ["2014-01-01 13:30:00+00:00", "2014-01-01 14:30:00+00:00",
+    #             "2014-01-01 15:30:00+00:00", "2014-01-02 13:30:00+00:00",
+    #             "2014-01-02 14:30:00+00:00",
+    #             "2014-01-02 15:30:00+00:00"]
+    # ts.index = pd.to_datetime(ts.index)
+    #
+    # output = shift_working_hours(country=country, ts=ts)
+    # print(output['h0'].sum())
+    #
+    # cal=get_workalendar_class(country)
+    # print(cal.__class__.__name__)
+
+#    if cal == <workalendar.europe.spain.Spain object at 0x7f8e29b16390>:
+#        print(cal.__class__.__name__)
