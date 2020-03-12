@@ -63,6 +63,7 @@ class TestPvTimeSeries:
             area=area,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
+            cpvtype="ins"
         )
 
         assert nominal_value == 129.134
@@ -73,7 +74,8 @@ class TestPvTimeSeries:
         ts = create_cpv_timeseries(lat=self.lat, lon=self.lon,
                                    weather=self.weather,
                               surface_azimuth=self.surface_azimuth,
-                              surface_tilt=self.surface_tilt, normalized=True)
+                              surface_tilt=self.surface_tilt, normalized=True,
+                                   cpvtype="ins")
         output = ts.sum()
         assert output == 0.04707750771591392
 
