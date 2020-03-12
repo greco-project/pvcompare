@@ -627,6 +627,16 @@ def add_parameters_to_energy_production_file(
 
 def add_evaluated_period_to_simulation_settings(timeseries,
                                                 mvs_input_directory):
+    """
+    count the numer of days in timeseries and add it into
+    simulation_settings.csv
+
+    :param timeseries: pd.Dataframe()
+        pv timeseries
+    :param mvs_input_directory: str
+    :return: none
+    """
+
     if mvs_input_directory == None:
         mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
     simulation_settings_filename = os.path.join(
