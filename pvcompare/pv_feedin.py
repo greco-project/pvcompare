@@ -152,13 +152,23 @@ def create_pv_components(
                 row["technology"],
                 "is not in technologies. Please " "chose si, cpv or psi.",
             )
+
         # define the name of the output file of the timeseries
+        ts_csv = str(row["technology"]) + "_" + str(j) + "_" + str(k) + ".csv"
         output_csv = os.path.join(
             timeseries_directory,
-            str(row["technology"]) + "_" + str(j) + "_" + str(k) + ".csv",
+            ts_csv,
         )
+        # add "evaluated_period" to simulation_settings.csv
+
+        add_evaluated_period_to_simulation_settings(
+            timeseries=timeseries,
+            mvs_input_directory=mvs_input_directory
+        )
+
         # save timeseries into mvs_inputs
-        timeseries.to_csv(output_csv)
+        timeseries.fillna(0, inplace=True)
+        timeseries.to_csv(output_csv, header=['kW'], index=False)
         logging.info(
             "%s" % row["technology"] + " timeseries is saved as csv "
             "into output directory"
@@ -196,7 +206,7 @@ def create_pv_components(
         # save the file name of the timeseries and the nominal value to
         # mvs_inputs/elements/csv/energyProduction.csv
         add_parameters_to_energy_production_file(
-            pp_number=i + 1, ts_filename=output_csv, nominal_value=nominal_value,
+            pp_number=i + 1, ts_filename=ts_csv, nominal_value=nominal_value,
         )
     if plot == True:
         plt.show()
@@ -331,7 +341,7 @@ def create_si_timeseries(
         return (output["p_mp"] / peak).clip(0)
     else:
         logging.info("si timeseries is calculated without normalization.")
-        return output["p_mp"]
+        return  output["p_mp"]
 
 
 def create_cpv_timeseries(
@@ -456,7 +466,7 @@ def check_mvs_energy_production_file(
     if mvs_input_directory == None:
         mvs_input_directory = os.path.join(DEFAULT_MVS_INPUT_DIRECTORY)
     energy_production_filename = os.path.join(
-        mvs_input_directory, "/elements/" "energyProduction.csv"
+        mvs_input_directory, "csv_elements/" "energyProduction.csv"
     )
     if os.path.isfile(energy_production_filename):
         energy_production = pd.read_csv(energy_production_filename, index_col=0)
@@ -485,7 +495,7 @@ def check_mvs_energy_production_file(
 
     elif overwrite == False:
         logging.error(
-            "The file %s" % energy_production_filename + "does not"
+            "The file %s" % energy_production_filename + " does not"
             "exist. Please create energyProduction.csv or "
             "allow overwrite=True to have energyProduction.csv "
             "set up automatically with default values."
@@ -503,7 +513,7 @@ def create_mvs_energy_production_file(pv_setup, energy_production_filename):
     """
     creates a new energyProduction.csv file with the correct number of pv
     powerplants as defined in pv_setup.py and saves it into ./data/mvs_inputs/
-    elements/csv/energyProduction.csv
+    csv_elements/csv/energyProduction.csv
 
     Parameters
     ----------
@@ -594,7 +604,7 @@ def add_parameters_to_energy_production_file(
     if mvs_input_directory == None:
         mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
     energy_production_filename = os.path.join(
-        mvs_input_directory, "elements/energyProduction.csv"
+        mvs_input_directory, "csv_elements/energyProduction.csv"
     )
     # load energyProduction.csv
     energy_production = pd.read_csv(energy_production_filename, index_col=0)
@@ -613,6 +623,22 @@ def add_parameters_to_energy_production_file(
     )
     # save energyProduction.csv
     energy_production.to_csv(energy_production_filename)
+
+
+def add_evaluated_period_to_simulation_settings(timeseries,
+                                                mvs_input_directory):
+    if mvs_input_directory == None:
+        mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
+    simulation_settings_filename = os.path.join(
+        mvs_input_directory, "csv_elements/simulation_settings.csv")
+    # load simulation_settings.csv
+    simulation_settings = pd.read_csv(simulation_settings_filename, index_col=0)
+    length=len(timeseries.index)/24
+    simulation_settings.loc[
+        ["evaluated_period"], ["simulation_settings"]] = int(length)
+    simulation_settings.to_csv(simulation_settings_filename)
+
+
 
 
 if __name__ == "__main__":

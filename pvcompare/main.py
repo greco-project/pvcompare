@@ -11,10 +11,10 @@ import os
 
 DEFAULT_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__), "data/inputs/")
 DEFAULT_MVS_INPUT_DIRECTORY = os.path.join(
-    os.path.dirname(__file__), "data/mvs_inputs/"
+    os.path.dirname(__file__), "data/mvs_inputs"
 )
 DEFAULT_MVS_OUTPUT_DIRECTORY = os.path.join(
-    os.path.dirname(__file__), "data/mvs_outputs/"
+    os.path.dirname(__file__), "data/mvs_outputs"
 )
 
 # Reconfiguring the logger here will also affect test running in the PyCharm IDE
@@ -30,7 +30,7 @@ def main(
     country,
     input_directory=None,
     mvs_input_directory=None,
-    plot=True,
+    plot=False,
 ):
 
     """
@@ -48,35 +48,34 @@ def main(
         #if era5 import works this line can be used
     #weather= era5.load_era5_weatherdata(lat=lat, lon=lon, year=year)
 
-    # otherwise this example weather data for one year (2014) can be used for now
-    # weather = pd.read_csv("./data/inputs/weatherdata.csv", index_col=0)
-    # weather.index = pd.to_datetime(weather.index)
-    # spa = pvlib.solarposition.spa_python(
-    #     time=weather.index, latitude=lat, longitude=lon
-    # )
-    # weather["dni"] = pvlib.irradiance.dirint(
-    #     weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
-    # )
+#    otherwise this example weather data for one year (2014) can be used for now
+    weather = pd.read_csv("./data/inputs/weatherdata.csv", index_col=0)
+    weather.index = pd.to_datetime(weather.index)
+    spa = pvlib.solarposition.spa_python(
+        time=weather.index, latitude=lat, longitude=lon
+    )
+    weather["dni"] = pvlib.irradiance.dirint(
+        weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
+    )
 
-    # pv_feedin.create_pv_components(lat=lat, lon=lon,
-    #                                weather=weather,
-    #                                population=population,
-    #                                pv_setup=None,
-    #                                plot=plot,
-    #                                input_directory=input_directory,
-    #                                mvs_input_directory=mvs_input_directory)
-    #
-    # demand.calculate_load_profiles(country=country,
-    #                                population=population,
-    #                                year=year,
-    #                                input_directory=input_directory,
-    #                                mvs_input_directory=mvs_input_directory,
-    #                                plot=plot,
-    #                                weather=weather)
+    pv_feedin.create_pv_components(lat=lat, lon=lon,
+                                   weather=weather,
+                                   population=population,
+                                   pv_setup=None,
+                                   plot=plot,
+                                   input_directory=input_directory,
+                                   mvs_input_directory=mvs_input_directory)
 
-    # todo: this does not work yet. Probably "settings" are called from within mvs and not from out input directory.
+    demand.calculate_load_profiles(country=country,
+                                   population=population,
+                                   year=year,
+                                   input_directory=input_directory,
+                                   mvs_input_directory=mvs_input_directory,
+                                   plot=plot,
+                                   weather=weather)
+
     mvs.main(
-        path_input_folder=os.path.join(DEFAULT_MVS_INPUT_DIRECTORY),
+        path_input_folder=DEFAULT_MVS_INPUT_DIRECTORY,
         path_output_folder=DEFAULT_MVS_OUTPUT_DIRECTORY,
         input_type = 'csv',
         overwrite=True,
@@ -85,7 +84,7 @@ def main(
 
 if __name__ == "__main__":
 
-    latitude = 45.641603,
+    latitude = 45.641603
     longitude = 5.875387
     year = 2013  # a year between 2011-2013!!!
     population = 48000

@@ -44,6 +44,8 @@ DEFAULT_MVS_INPUT_DIRECTORY = os.path.join(
     os.path.dirname(__file__), "data/mvs_inputs/")
 
 
+#todo (nice to have): add function that writes name of demand.csv into energyConsumption.csv
+
 def calculate_load_profiles(
     country,
     population,
@@ -184,8 +186,8 @@ def calculate_power_demand(
         "The electrical load profile is completly calculated and "
         "being saved under %s." % timeseries_directory
     )
-    filename = os.path.join(timeseries_directory, "electricity_load_profile.csv")
-    shifted_elec_demand.to_csv(filename)
+    filename = os.path.join(timeseries_directory, "electricity_load.csv")
+    shifted_elec_demand.to_csv(filename, index=False)
 
     if plot is True:
         # Plot demand
@@ -324,7 +326,8 @@ def calculate_heat_demand(
         "The electrical load profile is completly calculated and "
         "being saved under %s." % timeseries_directory
     )
-    shifted_demand.to_csv(os.path.join(timeseries_directory, "heat_load_profile.csv"))
+    shifted_demand.to_csv(os.path.join(timeseries_directory,
+                                       "heat_load.csv"), index=False)
 
     if plot is True:
         # Plot demand of building
