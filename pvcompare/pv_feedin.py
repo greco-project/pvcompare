@@ -294,7 +294,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt, cpvtype):
 
 
 def create_si_timeseries(
-    lat, lon, weather, surface_azimuth, surface_tilt, normalized=True
+    lat, lon, weather, surface_azimuth, surface_tilt, normalized=False
 ):
 
     r"""The cpv timeseries is created for a given weather dataframe, at a given
@@ -345,7 +345,7 @@ def create_si_timeseries(
 
 
 def create_cpv_timeseries(
-    lat, lon, weather, surface_azimuth, surface_tilt, cpvtype, normalized=True,
+    lat, lon, weather, surface_azimuth, surface_tilt, cpvtype, normalized=False,
 ):
 
     """The cpv timeseries is created for a given weather dataframe for the
