@@ -30,7 +30,17 @@ master_doc = 'index'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.coverage', 'sphinx.ext.napoleon', 'sphinx.ext.autosummary']
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.extlinks',  # enables external links with a key
+    'sphinx.ext.viewcode',
+    'sphinx.ext.imgmath',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.coverage',
+]
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
