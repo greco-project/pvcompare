@@ -40,6 +40,7 @@ docs/temp/*
 .buildinfo
 docs/_templates/*
 docs/_static
+docs/_build/
 
 # Unit test / coverage reports
 htmlcov/
@@ -67,8 +68,6 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
-docs/_build/
 
 # PyBuilder
 target/
@@ -84,3 +83,6 @@ celerybeat-schedule
 
 # dotenv
 .env
+
+# MVS outputs
+pvcompare/data/mvs_outputs/*
