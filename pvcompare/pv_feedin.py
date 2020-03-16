@@ -55,9 +55,9 @@ def create_pv_components(
 ):
     """
     Reads pv_setup.csv; for each surface_type listed in pv_setup,
-    one PV timeseries is created with regard to the technology and its
-    orientation. All timeseries are normalized to the peak power of the
-    module unsed and stored as csv files in ./data/mvs_inputs/time_series/pv.
+    one PV time series is created with regard to the technology and its
+    orientation. All time series are normalized to the peak power of the
+    module and stored as csv files in ./data/mvs_inputs/time_series.
     Further the area potential of the surface_type with regard to the building
     parameters defined in building_parameters.csv is calculated and the
     maximum installed capacity (nominal value) is calculated. Both parameters
@@ -71,10 +71,11 @@ def create_pv_components(
         longitude
     population: num
         population
-    pv_setup: dict
+    pv_setup: dict or None
         with collumns: surface_type, technology, surface_azimuth, surface_tilt
         a tilt of 0 resembles a vertical orientation.
-        if pv_setup=None loads example file data/pv/pv_setup.csvS
+        if pv_setup=None loads example file data/inputs/pv_setup.csv
+        # todo If pv_setup is None, it is loaded from the input_directory
     plot: boolean
         if true plots created pv timeseries
     input_directory: str
