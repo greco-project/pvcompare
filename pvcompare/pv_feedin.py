@@ -390,7 +390,7 @@ def create_cpv_timeseries(
 
     peak = module_parameters["i_mp"] * module_parameters["v_mp"]
     if normalized == True:
-        logging.info("normalized cpv timeseries is calculated.")
+        logging.info("Normalized CPV time series is calculated.")
         return (
             greco_technologies.cpv.cpv.create_cpv_timeseries(
                 lat=lat, lon=lon, weather=weather, surface_tilt=surface_tilt,
@@ -399,7 +399,7 @@ def create_cpv_timeseries(
             / peak
         ).clip(0)
     else:
-        logging.info("cpv timeseries is calculated without normalization.")
+        logging.info("Absolute CPV time series is calculated.")
         return greco_technologies.cpv.cpv.create_cpv_timeseries(
             lat=lat, lon=lon, weather=weather, surface_tilt=surface_tilt,
             surface_azimuth=surface_azimuth, cpvtype=cpvtype

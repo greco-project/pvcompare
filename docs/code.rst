@@ -33,7 +33,7 @@ Functions for calculating the electrical demand profiles and heat demand profile
 Feed-in time series of photovoltaic installations
 =================================================
 
-Functions for calculating the feed-in time series for different PV technologies.
+Functions for calculating the feed-in time series of different PV technologies.
 
 .. autosummary::
    :toctree: temp/
