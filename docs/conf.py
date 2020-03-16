@@ -41,6 +41,12 @@ extensions = [
     'sphinx.ext.coverage',
 ]
 
+autodoc_member_order = 'bysource'
+
+extlinks = {'pandas':('http://pandas.pydata.org/pandas-docs/stable/reference/%s.html',
+                      'pandas.')
+            }
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
