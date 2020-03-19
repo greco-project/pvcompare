@@ -151,17 +151,17 @@ def create_pv_components(
         else:
             logging.error(
                 row["technology"],
-                "is not in technologies. Please " "chose si, cpv or psi.",
+                "is not in technologies. Please " "choose 'si', 'cpv' or 'psi'.",
             )
 
         # define the name of the output file of the timeseries
-        ts_csv = str(row["technology"]) + "_" + str(j) + "_" + str(k) + ".csv"
+        ts_csv = f"{row['technology']}_{j}_{k}.csv"
         output_csv = os.path.join(
             timeseries_directory,
             ts_csv,
         )
-        # add "evaluated_period" to simulation_settings.csv
 
+        # add "evaluated_period" to simulation_settings.csv
         add_evaluated_period_to_simulation_settings(
             timeseries=timeseries,
             mvs_input_directory=mvs_input_directory
@@ -181,6 +181,7 @@ def create_pv_components(
                 alpha=0.7,
             )
             plt.legend()
+
         # calculate area potential
         surface_type_list = [
             "flat_roof",
@@ -294,11 +295,12 @@ def set_up_system(technology, surface_azimuth, surface_tilt, cpvtype):
         )
 
 
-def create_si_timeseries(
-    lat, lon, weather, surface_azimuth, surface_tilt, normalized=False
-):
+def create_si_timeseries(lat, lon, weather, surface_azimuth, surface_tilt,
+                         normalized=False):
+    r"""
+    Calculates feed-in time series for a silicon PV module.
 
-    r"""The cpv timeseries is created for a given weather dataframe, at a given
+    The cpv time series is created for a given weather data frame, at a given
     orientation for the flat plate module 'Canadian_Solar_CS5P_220M___2009_'.
      The time series is normalized by the peak power of the module.
 
@@ -433,7 +435,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt,
     module_size = module_parameters["Area"]
     nominal_value = round(area / module_size * peak) / 1000
     logging.info(
-        "The nominal value for %s" % type
+        "The nominal value for %s" % type  # todo technology instead of type?
         + " is %s" % nominal_value
         + " kWp for an area of %s" % area
         + " qm."
