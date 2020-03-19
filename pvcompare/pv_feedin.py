@@ -110,7 +110,7 @@ def create_pv_components(
     for f in files:
         os.remove(f)
 
-    # check if all three required columns are in pv_setup
+    # check if all required columns are in pv_setup
     if not all(
         [
             item in pv_setup.columns
@@ -127,7 +127,7 @@ def create_pv_components(
             "surface_azimuth, surface_tilt and technology."
         )
 
-    # check if mvs_input/energyProduction.csv contains all powerplants
+    # check if mvs_input/energyProduction.csv contains all power plants
     check_mvs_energy_production_file(pv_setup, directory_energy_production)
     # parse through pv_setup file and create timeseries for each technology
     for i, row in pv_setup.iterrows():

@@ -323,7 +323,7 @@ def calculate_heat_demand(
     timeseries_directory = os.path.join(mvs_input_directory, "time_series/")
 
     logging.info(
-        "The electrical load profile is completly calculated and "
+        "The electrical load profile is completely calculated and "
         "being saved under %s." % timeseries_directory
     )
     shifted_demand.to_csv(os.path.join(timeseries_directory,
