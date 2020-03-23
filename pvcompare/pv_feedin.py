@@ -347,27 +347,41 @@ def create_si_timeseries(
 def create_cpv_timeseries(
     lat, lon, weather, surface_azimuth, surface_tilt, cpvtype, normalized=False,
 ):
+    r"""
+    Creates power time series of a CPV module.
 
-    """The cpv timeseries is created for a given weather dataframe for the
-    INSOLIGHT CPV module. If normalized=True the time series is normalized by
-    the peak power of the module.
+    The CPV time series is created for a given weather data frame (`weather`)
+    for the INSOLIGHT CPV module. If `normalized` is set to True, the time
+    series is divided by the peak power of the module.
 
     Parameters
     ----------
-    lat: float
-        latitude
-    lon: float
-        longitude
-    weather: pd.DataFrame
-    surface_azimuth: float
-        surface azimuth of the modules
+    lat : float
+        Latitude of the location for which the time series is calculated.
+    lon : float
+        Longitude of the location for which the time series is calculated.
+    weather : :pandas:`pandas.DataFrame<frame>`
+        DataFrame with time series for temperature `temp_air` in C°, wind speed
+        `wind_speed` in m/s,
+        # todo etc..
+    surface_azimuth : float
+        Surface azimuth of the modules (180° for south, 270° for west, etc.).
     surface_tilt: float
-        surface tilt of the modules
-    normalized: boolean
+        Surface tilt of the modules. #todo example/definition
+    cpvtype  : str
+        Defines the type of module of which the time series is calculated.
+        Options: "ins", "m300".
+    normalized: bool
+        If True, the time series is divided by the peak power of the CPV
+        module. Default: False.
 
     Returns
     -------
-    pd.DataFrame
+    :pandas:`pandas.Series<series>`
+        Power output of CPV module in W (if parameter `normalized` is False) or todo check unit.
+        normalized power output of CPV module (if parameter `normalized` is
+        False).
+
     """
     system, module_parameters = set_up_system(
         technology="cpv", surface_azimuth=surface_azimuth,
@@ -376,7 +390,7 @@ def create_cpv_timeseries(
 
     peak = module_parameters["i_mp"] * module_parameters["v_mp"]
     if normalized == True:
-        logging.info("normalized cpv timeseries is calculated.")
+        logging.info("Normalized CPV time series is calculated.")
         return (
             greco_technologies.cpv.cpv.create_cpv_timeseries(
                 lat=lat, lon=lon, weather=weather, surface_tilt=surface_tilt,
@@ -385,7 +399,7 @@ def create_cpv_timeseries(
             / peak
         ).clip(0)
     else:
-        logging.info("cpv timeseries is calculated without normalization.")
+        logging.info("Absolute CPV time series is calculated.")
         return greco_technologies.cpv.cpv.create_cpv_timeseries(
             lat=lat, lon=lon, weather=weather, surface_tilt=surface_tilt,
             surface_azimuth=surface_azimuth, cpvtype=cpvtype
