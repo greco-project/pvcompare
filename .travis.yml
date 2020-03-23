@@ -1,7 +1,11 @@
-dist: xenial   # required for Python >= 3.7
 language: python
-python:
-  - '3.6'
+dist: xenial   # required for Python >= 3.7
+
+matrix:
+  include:
+    - python: 3.6
+    - python: 3.7
+    - python: 3.8
 
 # To install packages which are not on pip
 #before_install:
@@ -12,13 +16,21 @@ python:
 
 # command to install dependencies
 install:
+  - pip install -r requirements.txt
+  - python setup.py install
   - pip install -r tests/test_requirements.txt
 
-# commands to run tests 
+# commands to run tests
 script:
-  - flake8
-  - pylint */*.py
-  - pytest tests
+  - black --check . --exclude docs/
+  - coverage run --rcfile=.coveragerc --source pvcompare -m py.test
+  - coverage report
+
+
+after_success:
+  - coveralls
+
+
 #jobs:
 #  include:
 #    - stage: "Tests"                # naming the Tests stage

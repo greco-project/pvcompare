@@ -1,0 +1,7 @@
+git+https://github.com/greco-project/greco_technologies.git@CPV_dev
+git+https://github.com/greco-project/cpvtopvlib.git@master
+git+https://github.com/rl-institut/mvs_eland.git@dev
+scipy
+numpy
+pandas
+demandlib
