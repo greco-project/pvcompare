@@ -55,9 +55,9 @@ def create_pv_components(
 ):
     """
     Reads pv_setup.csv; for each surface_type listed in pv_setup,
-    one PV timeseries is created with regard to the technology and its
-    orientation. All timeseries are normalized to the peak power of the
-    module unsed and stored as csv files in ./data/mvs_inputs/time_series/pv.
+    one PV time series is created with regard to the technology and its
+    orientation. All time series are normalized to the peak power of the
+    module and stored as csv files in ./data/mvs_inputs/time_series.
     Further the area potential of the surface_type with regard to the building
     parameters defined in building_parameters.csv is calculated and the
     maximum installed capacity (nominal value) is calculated. Both parameters
@@ -71,10 +71,11 @@ def create_pv_components(
         longitude
     population: num
         population
-    pv_setup: dict
+    pv_setup: dict or None
         with collumns: surface_type, technology, surface_azimuth, surface_tilt
         a tilt of 0 resembles a vertical orientation.
-        if pv_setup=None loads example file data/pv/pv_setup.csvS
+        if pv_setup=None loads example file data/inputs/pv_setup.csv
+        # todo If pv_setup is None, it is loaded from the input_directory
     plot: boolean
         if true plots created pv timeseries
     input_directory: str
@@ -109,7 +110,7 @@ def create_pv_components(
     for f in files:
         os.remove(f)
 
-    # check if all three required columns are in pv_setup
+    # check if all required columns are in pv_setup
     if not all(
         [
             item in pv_setup.columns
@@ -126,7 +127,7 @@ def create_pv_components(
             "surface_azimuth, surface_tilt and technology."
         )
 
-    # check if mvs_input/energyProduction.csv contains all powerplants
+    # check if mvs_input/energyProduction.csv contains all power plants
     check_mvs_energy_production_file(pv_setup, directory_energy_production)
     # parse through pv_setup file and create timeseries for each technology
     for i, row in pv_setup.iterrows():
@@ -150,17 +151,17 @@ def create_pv_components(
         else:
             logging.error(
                 row["technology"],
-                "is not in technologies. Please " "chose si, cpv or psi.",
+                "is not in technologies. Please " "choose 'si', 'cpv' or 'psi'.",
             )
 
         # define the name of the output file of the timeseries
-        ts_csv = str(row["technology"]) + "_" + str(j) + "_" + str(k) + ".csv"
+        ts_csv = f"{row['technology']}_{j}_{k}.csv"
         output_csv = os.path.join(
             timeseries_directory,
             ts_csv,
         )
-        # add "evaluated_period" to simulation_settings.csv
 
+        # add "evaluated_period" to simulation_settings.csv
         add_evaluated_period_to_simulation_settings(
             timeseries=timeseries,
             mvs_input_directory=mvs_input_directory
@@ -180,6 +181,7 @@ def create_pv_components(
                 alpha=0.7,
             )
             plt.legend()
+
         # calculate area potential
         surface_type_list = [
             "flat_roof",
@@ -293,11 +295,12 @@ def set_up_system(technology, surface_azimuth, surface_tilt, cpvtype):
         )
 
 
-def create_si_timeseries(
-    lat, lon, weather, surface_azimuth, surface_tilt, normalized=False
-):
+def create_si_timeseries(lat, lon, weather, surface_azimuth, surface_tilt,
+                         normalized=False):
+    r"""
+    Calculates feed-in time series for a silicon PV module.
 
-    r"""The cpv timeseries is created for a given weather dataframe, at a given
+    The cpv time series is created for a given weather data frame, at a given
     orientation for the flat plate module 'Canadian_Solar_CS5P_220M___2009_'.
      The time series is normalized by the peak power of the module.
 
@@ -446,7 +449,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt,
     module_size = module_parameters["Area"]
     nominal_value = round(area / module_size * peak) / 1000
     logging.info(
-        "The nominal value for %s" % type
+        "The nominal value for %s" % type  # todo technology instead of type?
         + " is %s" % nominal_value
         + " kWp for an area of %s" % area
         + " qm."
