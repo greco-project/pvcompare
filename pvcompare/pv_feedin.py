@@ -536,6 +536,8 @@ def check_mvs_energy_production_file(
 def create_mvs_energy_production_file(pv_setup, energy_production_filename):
 
     """
+    creates a new energyProduction.csv file
+
     creates a new energyProduction.csv file with the correct number of pv
     powerplants as defined in pv_setup.py and saves it into ./data/mvs_inputs/
     csv_elements/csv/energyProduction.csv
@@ -614,8 +616,7 @@ def add_parameters_to_energy_production_file(
 ):
 
     """
-    enters the calculated installedCap and file_name parameters of one
-    pv-powerplant in energyProduction.csv
+    enters new parameters into energyProduction.csv
 
     :param pp_number: int
         number of powerplants / columns in pv_setup
@@ -656,12 +657,12 @@ def add_parameters_to_energy_production_file(
 def add_evaluated_period_to_simulation_settings(time_series,
                                                 mvs_input_directory):
     """
-    count the numer of days in time series and add it into
-    simulation_settings.csv
+    adds number of days of the time series into simulation_settings.csv
 
     :param time_series: pd.Dataframe()
         pv time series
     :param mvs_input_directory: str
+        path to mvs input directory
     :return: none
     """
 

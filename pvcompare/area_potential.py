@@ -17,6 +17,8 @@ except ImportError:
 def calculate_area_potential(population, input_directory, surface_type):
 
     """
+    Calculates the area potential.
+
     Calculates the area potential of the rooftop, south and east/west
     facades for a given population.
 

@@ -99,6 +99,8 @@ def calculate_power_demand(
 ):
 
     """
+    calculates the electricity demand
+
     The electricity demand is calculated for a given population in a certain
     country and year. The annual electricity demand is calculated by the
     following procedure:
@@ -207,6 +209,8 @@ def calculate_heat_demand(
     mvs_input_directory=None,
 ):
     """
+    calculates heat demand.
+
     The heat demand is calculated for a given population in a certain country
     and year. The annual heat demand is calculated by the following procedure:
     1) the residential heat demand for a country is requested from
@@ -342,6 +346,8 @@ def calculate_heat_demand(
 def shift_working_hours(country, ts):
 
     """
+    shift the demand time series with regard to the countries habits.
+
     Since the energy demand for domnestic hot water depends strongly on
     behaviour, the demand profile is adjusted for the different EU countries.
     (see HOTMAPS report p. 127). The Statistic is received from
@@ -437,7 +443,7 @@ def shift_working_hours(country, ts):
 def get_workalendar_class(country):
 
     """
-    loads workalender for a given country
+    loads workalender for a given country.
 
     :param country: str
         name of the country
