@@ -231,6 +231,8 @@ def get_optimal_pv_angle(lat):
 def set_up_system(technology, surface_azimuth, surface_tilt, cpv_type):
 
     """
+    Sets up pvlibPVSystems.
+
     Initializes the pvlib.PVSystem for the given type of technology and returns
     the system and the module parameters as a dictionary.
 
@@ -268,7 +270,8 @@ def set_up_system(technology, surface_azimuth, surface_tilt, cpv_type):
     elif technology == "cpv":
 
         logging.debug(
-            "cpv module parameters are loaded from " "greco_technologies/inputs.py"
+            "cpv module parameters are loaded from " 
+            "greco_technologies/inputs.py"
         )
         module_params = greco_technologies.cpv.inputs.create_cpv_dict(
             cpv_type=cpv_type)
@@ -299,6 +302,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt, cpv_type):
 
 def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt,
                          normalized=False):
+
     """
     Calculates feed-in time series for a silicon PV module.
 
@@ -350,8 +354,10 @@ def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt,
 
 
 def create_cpv_time_series(
-    lat, lon, weather, surface_azimuth, surface_tilt, cpv_type, normalized=False,
+    lat, lon, weather, surface_azimuth, surface_tilt, cpv_type,
+        normalized=False,
 ):
+
     """
     Creates power time series of a CPV module.
 

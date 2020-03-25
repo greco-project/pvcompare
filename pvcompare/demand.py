@@ -55,8 +55,10 @@ def calculate_load_profiles(
     mvs_input_directory=None,
     plot=True,
 ):
+
     """
     calculate electricity and heat load profiles and saves them to csv
+
     :param country: str
     :param population: int
         number of habitants
@@ -208,6 +210,7 @@ def calculate_heat_demand(
     input_directory=None,
     mvs_input_directory=None,
 ):
+
     """
     calculates heat demand.
 
