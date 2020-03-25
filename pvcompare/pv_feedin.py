@@ -633,7 +633,10 @@ def add_parameters_to_energy_production_file(
         "The installed capacity of pv_plant_0%s" % pp_number + " has "
         "been added to energyProduction.csv."
     )
-    energy_production.loc[["file_name"], ["pv_plant_0" + str(pp_number)]] = ts_filename
+    energy_production.loc[["file_name"], ["pv_plant_0" + str(pp_number)]] = \
+        ts_filename
+    energy_production.loc[["label"], ["pv_plant_0" + str(pp_number)]] = \
+        "PV plant " + str(pp_number)
     logging.info(
         "The file_name of the time series of pv_plant_0%s" % pp_number
         + " has been added to energyProduction.csv."
@@ -659,7 +662,8 @@ def add_evaluated_period_to_simulation_settings(timeseries,
     simulation_settings_filename = os.path.join(
         mvs_input_directory, "csv_elements/simulation_settings.csv")
     # load simulation_settings.csv
-    simulation_settings = pd.read_csv(simulation_settings_filename, index_col=0)
+    simulation_settings = pd.read_csv(simulation_settings_filename,
+                                      index_col=0)
     length=len(timeseries.index)/24
     simulation_settings.loc[
         ["evaluated_period"], ["simulation_settings"]] = int(length)
