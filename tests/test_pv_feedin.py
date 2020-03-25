@@ -63,7 +63,7 @@ class TestPvTimeSeries:
             area=area,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            cpvtype="ins"
+            cpvtype="m300"
         )
 
         assert nominal_value == 129.134
@@ -75,9 +75,9 @@ class TestPvTimeSeries:
                                    weather=self.weather,
                               surface_azimuth=self.surface_azimuth,
                               surface_tilt=self.surface_tilt, normalized=True,
-                                   cpvtype="ins")
+                                   cpvtype="m300")
         output = ts.sum()
-        assert output == 0.04707750771591392
+        assert output == 0.1351719011687128
 
     def test_get_optimal_pv_angle(self):
 
