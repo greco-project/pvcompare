@@ -54,7 +54,9 @@ def create_pv_components(
     cpv_type='m300'
 ):
     """
-    Reads pv_setup.csv; for each surface_type listed in pv_setup,
+    creates feedin time series for all surface types in pv_setup.csv
+
+    Reads pv_setup.csv, for each surface_type listed in pv_setup,
     one PV time series is created with regard to the technology and its
     orientation. All time series are normalized to the peak power of the
     module and stored as csv files in ./data/mvs_inputs/time_series.
@@ -168,7 +170,7 @@ def create_pv_components(
         )
 
         # save time series into mvs_inputs
-#        time_series.fillna(0, inplace=True)
+        time_series.fillna(0, inplace=True)
         time_series.to_csv(output_csv, header=['kW'], index=False)
         logging.info(
             "%s" % row["technology"] + " time series is saved as csv "
@@ -297,7 +299,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt, cpv_type):
 
 def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt,
                          normalized=False):
-    r"""
+    """
     Calculates feed-in time series for a silicon PV module.
 
     The cpv time series is created for a given weather data frame, at a given
@@ -350,7 +352,7 @@ def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt,
 def create_cpv_time_series(
     lat, lon, weather, surface_azimuth, surface_tilt, cpv_type, normalized=False,
 ):
-    r"""
+    """
     Creates power time series of a CPV module.
 
     The CPV time series is created for a given weather data frame (`weather`)
@@ -416,6 +418,8 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt,
                       cpv_type):
 
     """
+    calculates the maximum installed capacity for each pv module.
+
     The nominal value for each PV technology is constructed by the size of
     the module, its peak power and the total available area. The nominal value
     functions as a limit for the potential installed capacity of pv in oemof.
@@ -461,19 +465,23 @@ def check_mvs_energy_production_file(
     pv_setup, mvs_input_directory=None, overwrite=True
 ):
     """
-    This function compares the number of powerplants in
-    data/mvs_inputs/elements/csv/energyProduction.csv with the number of rows
-    in pv_setup.csv. If the number differs and overwrite=True, a new
-    energyProduction.csv file is created with the correct number of columns and
-    default values. The old file is overwritten. If overwrite=False, the
-    process throws an error.
+    checks if energyProduction.csv file with correct number of collumns exists.
+
+    This function compares the number of powerplants in energyProduction.csv
+    with the number of rows in pv_setup.csv. If the number differs and
+    overwrite=True, a new energyProduction.csv file is created with the correct
+     number of columns and default values. The old file is overwritten. If
+     overwrite=False, the process throws an error.
 
 
     Parameters
     ----------
     pv_setup: dict
+        Dictionary that contains the surface types with technology and
+        orientation
     directory_energy_production: str
-    overwrite: boolean
+        path to the energyProduction.csv
+    overwrite: bool
 
     Returns
     ---------
