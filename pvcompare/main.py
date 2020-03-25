@@ -31,6 +31,7 @@ def main(
     input_directory=None,
     mvs_input_directory=None,
     plot=False,
+    mvs_output_directory = None
 ):
 
     """
@@ -75,8 +76,8 @@ def main(
                                    weather=weather)
 
     mvs.main(
-        path_input_folder=DEFAULT_MVS_INPUT_DIRECTORY,
-        path_output_folder=DEFAULT_MVS_OUTPUT_DIRECTORY,
+        path_input_folder=mvs_input_directory,
+        path_output_folder=mvs_output_directory,
         input_type = 'csv',
         overwrite=True,
     )
