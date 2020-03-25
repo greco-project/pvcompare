@@ -45,16 +45,16 @@ def calculate_area_potential(population, input_directory, surface_type):
 
     # read building parameters
     logging.info("loading building parameters from building_parameters.csv ")
-    datapath = os.path.join(input_directory, "building_parameters.csv")
+    data_path = os.path.join(input_directory, "building_parameters.csv")
 
     # load input parameters from building_parameters.csv
-    bp = pd.read_csv(datapath, index_col=0)
+    bp = pd.read_csv(data_path, index_col=0)
     bp = bp.T
     population_per_storey = int(bp.iloc[0]["population per storey"])
     number_of_storeys = int(bp.iloc[0]["number of storeys"])
     floor_area = int(bp.iloc[0]["total storey area"])
     length_south_facade = int(bp.iloc[0]["length south facade"])
-    length_eastwest_facade = int(bp.iloc[0]["length eastwest facade"])
+    length_east_west_facade = int(bp.iloc[0]["length eastwest facade"])
     hight_per_storey = int(bp.iloc[0]["hight storey"])
 
     number_houses = population / (population_per_storey * number_of_storeys)
@@ -76,8 +76,8 @@ def calculate_area_potential(population, input_directory, surface_type):
                 number_houses
             )
             if surface_type == "east_facade" or surface_type == "west_facade":
-                eastwest_facade = (
-                length_eastwest_facade
+                east_west_facade = (
+                length_east_west_facade
                 * hight_per_storey
                 * 2
                 * used_storeys
@@ -90,7 +90,7 @@ def calculate_area_potential(population, input_directory, surface_type):
             if surface_type == "south_facade":
                 area = south_facade / 100 * 50
             else:
-                area = eastwest_facade / 100 * 80
+                area = east_west_facade / 100 * 80
         else:
             area = 0
 

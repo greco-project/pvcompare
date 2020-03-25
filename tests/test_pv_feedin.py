@@ -13,14 +13,14 @@ import pandas as pd
 import numpy as np
 
 from pvcompare.pv_feedin import (
-    create_si_timeseries,
+    create_si_time_series,
     nominal_values_pv,
-    create_cpv_timeseries,
+    create_cpv_time_series,
     get_optimal_pv_angle,
 )
 
 
-class TestPvTimeSeries:
+class TestPvtime_series:
     @classmethod
     def setup_class(self):
         """Setup variables for all tests in this class"""
@@ -39,9 +39,9 @@ class TestPvTimeSeries:
         self.surface_azimuth = 180
         self.surface_tilt = 30
 
-    def test_create_si_timeseries(self):
+    def test_create_si_times_eries(self):
 
-        ts = create_si_timeseries(
+        ts = create_si_time_series(
             lat=self.lat,
             lon=self.lon,
             weather=self.weather,
@@ -63,19 +63,19 @@ class TestPvTimeSeries:
             area=area,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            cpvtype="m300"
+            cpv_type="m300"
         )
 
         assert nominal_value == 129.134
 
-    def test_create_cpv_timeseries(self):
+    def test_create_cpv_time_series(self):
 
 
-        ts = create_cpv_timeseries(lat=self.lat, lon=self.lon,
+        ts = create_cpv_time_series(lat=self.lat, lon=self.lon,
                                    weather=self.weather,
                               surface_azimuth=self.surface_azimuth,
                               surface_tilt=self.surface_tilt, normalized=True,
-                                   cpvtype="m300")
+                                   cpv_type="m300")
         output = ts.sum()
         assert output == 0.1351719011687128
 
