@@ -122,7 +122,7 @@ def create_pv_components(
             ]
         ]
     ):
-        logging.error(
+        raise ValueError(
             "The file pv_setup does not contain all required columns"
             "surface_azimuth, surface_tilt and technology."
         )
@@ -144,12 +144,12 @@ def create_pv_components(
             time_series = create_cpv_time_series(lat, lon, weather, j, k,
                                                cpv_type=cpv_type)
         elif row["technology"] == "psi":
-            logging.error(
+            raise ValueError(
                 "The time series of psi cannot be calculated "
                 "yet. Please only use cpv or si right now."
             )
         else:
-            logging.error(
+            raise ValueError(
                 row["technology"],
                 "is not in technologies. Please " "choose 'si', 'cpv' or 'psi'.",
             )
@@ -168,7 +168,7 @@ def create_pv_components(
         )
 
         # save time series into mvs_inputs
-        time_series.fillna(0, inplace=True)
+#        time_series.fillna(0, inplace=True)
         time_series.to_csv(output_csv, header=['kW'], index=False)
         logging.info(
             "%s" % row["technology"] + " time series is saved as csv "
@@ -191,7 +191,7 @@ def create_pv_components(
             "west_facade",
         ]
         if row["surface_type"] not in surface_type_list:
-            logging.error(
+            raise ValueError(
                 "The surface_type in row %s" % i + " in pv_setup.csv"
                 " is not valid. Please choose from %s" % surface_type_list
             )
@@ -288,10 +288,10 @@ def set_up_system(technology, surface_azimuth, surface_tilt, cpv_type):
         return cpv_sys, module_params
 
     elif technology == "psi":
-        logging.error("The nominal value for psi cannot be calculated yet.")
+        raise ValueError("The nominal value for psi cannot be calculated yet.")
     else:
         logging.warning(
-            technology, "is not in technologies. Please chose si, " "cpv or psi."
+            technology, "is not in technologies. Please chose si, cpv or psi."
         )
 
 
@@ -494,7 +494,7 @@ def check_mvs_energy_production_file(
                 "number of pv powerplants."
             )
         elif overwrite == False:
-            logging.error(
+            raise ValueError(
                 "The number of pv powerplants in energyProduction.csv"
                 " differs from the number of powerplants listed in "
                 "pv_setup.csv. Please check energyProduction.csv or "
@@ -511,7 +511,7 @@ def check_mvs_energy_production_file(
             create_mvs_energy_production_file(pv_setup, energy_production_filename)
 
     elif overwrite == False:
-        logging.error(
+        raise ValueError(
             "The file %s" % energy_production_filename + " does not"
             "exist. Please create energyProduction.csv or "
             "allow overwrite=True to have energyProduction.csv "
@@ -684,8 +684,7 @@ if __name__ == "__main__":
     weather_df["dni"] = weather_df["ghi"] - weather_df["dhi"]
 
     create_pv_components(
-        lat=40.3, lon=5.4, weather=weather_df, pv_setup=None, population=48000,
-        cpv_type='ins'
+        lat=40.3, lon=5.4, weather=weather_df, population=600
     )
 
     # weather_df = pd.DataFrame()
