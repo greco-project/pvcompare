@@ -1,5 +1,5 @@
 ,unit,economic_data
-currency,str,NOK
+currency,str,EUR
 discount_factor,factor,0.06
 label,str,economic_data
 project_duration,year,30
