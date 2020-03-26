@@ -269,7 +269,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt, cpvtype):
             "cpv module parameters are loaded from " "greco_technologies/inputs.py"
         )
         module_params = greco_technologies.cpv.inputs.create_cpv_dict(
-            cpvtype=cpvtype)
+            cpv_type=cpvtype)
 
         cpv_sys = cpv.StaticCPVSystem(
             surface_tilt=surface_tilt,
@@ -395,17 +395,17 @@ def create_cpv_timeseries(
     if normalized == True:
         logging.info("Normalized CPV time series is calculated.")
         return (
-            greco_technologies.cpv.cpv.create_cpv_timeseries(
+            greco_technologies.cpv.cpv.create_cpv_time_series(
                 lat=lat, lon=lon, weather=weather, surface_tilt=surface_tilt,
-                surface_azimuth=surface_azimuth, cpvtype=cpvtype
+                surface_azimuth=surface_azimuth, cpv_type=cpvtype
             )
             / peak
         ).clip(0)
     else:
         logging.info("Absolute CPV time series is calculated.")
-        return greco_technologies.cpv.cpv.create_cpv_timeseries(
+        return greco_technologies.cpv.cpv.create_cpv_time_series(
             lat=lat, lon=lon, weather=weather, surface_tilt=surface_tilt,
-            surface_azimuth=surface_azimuth, cpvtype=cpvtype
+            surface_azimuth=surface_azimuth, cpv_type=cpvtype
         )
 
 
