@@ -78,7 +78,7 @@ def create_pv_components(
         a tilt of 0 resembles a vertical orientation.
         if pv_setup=None loads example file data/inputs/pv_setup.csv
         # todo If pv_setup is None, it is loaded from the input_directory
-    plot: boolean
+    plot: bool
         if true plots created pv times series
     input_directory: str
         if None: ./data/inputs/
@@ -140,7 +140,8 @@ def create_pv_components(
             k = get_optimal_pv_angle(lat)
         if row["technology"] == "si":
             time_series = create_si_time_series(
-                lat=lat, lon=lon, weather=weather, surface_azimuth=j, surface_tilt=k
+                lat=lat, lon=lon, weather=weather, surface_azimuth=j,
+                surface_tilt=k
             )
         elif row["technology"] == "cpv":
             time_series = create_cpv_time_series(lat, lon, weather, j, k,
@@ -153,7 +154,8 @@ def create_pv_components(
         else:
             raise ValueError(
                 row["technology"],
-                "is not in technologies. Please " "choose 'si', 'cpv' or 'psi'.",
+                "is not in technologies. Please " "choose 'si', 'cpv' or "
+                "'psi'.",
             )
 
         # define the name of the output file of the time series
@@ -224,6 +226,17 @@ def get_optimal_pv_angle(lat):
     e.G. about 27° to 34° from ground in Germany.
     The pvlib uses tilt angles horizontal=90° and up=0°. Therefore 90° minus
     the angle from the horizontal.
+
+    Parameters
+    ---------
+    lat: float
+        latitude
+
+    Returns
+    -------
+    int
+        rounded angle for surface tilt
+
     """
     return round(lat - 15)
 
@@ -241,14 +254,14 @@ def set_up_system(technology, surface_azimuth, surface_tilt, cpv_type):
     ----------
     technology: str
         possible technologies are: si, cpv or psi
-    surface_azimuth: : float
+    surface_azimuth: float
         surface azimuth of the module
-    surface_tilt: : float
+    surface_tilt: float
         surface tilt of the module
 
     Returns
     -------
-    PVSystem: pandas.Series
+    PVSystem: :pandas:`pandas.Series<series>`
         Initialized PV system and module parameters.
     """
 
@@ -308,7 +321,7 @@ def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt,
 
     The cpv time series is created for a given weather data frame, at a given
     orientation for the flat plate module 'Canadian_Solar_CS5P_220M___2009_'.
-     The time series is normalized by the peak power of the module.
+    The time series is normalized by the peak power of the module.
 
 
     Parameters
@@ -317,7 +330,7 @@ def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt,
         latitude
     lon: float
         longitude
-    weather: pd.DataFrame
+    weather: :pandas:`pandas.DataFrame<frame>`
     surface_azimuth: float
         surface azimuth of the modules
     surface_tilt: float
@@ -326,7 +339,7 @@ def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt,
 
     Returns
     -------
-    pd.DataFrame
+    :pandas:`pandas.Series<series>`
     """
 
     system, module_parameters = set_up_system(
@@ -356,7 +369,7 @@ def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt,
 
 def create_cpv_time_series(
     lat, lon, weather, surface_azimuth, surface_tilt, cpv_type,
-        normalized=False,
+        normalized=False
 ):
 
     """
@@ -375,12 +388,11 @@ def create_cpv_time_series(
         Longitude of the location for which the time series is calculated.
     weather : :pandas:`pandas.DataFrame<frame>`
         DataFrame with time series for temperature `temp_air` in C°, wind speed
-        `wind_speed` in m/s,
-        # todo etc..
+        `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m²
     surface_azimuth : float
         Surface azimuth of the modules (180° for south, 270° for west, etc.).
     surface_tilt: float
-        Surface tilt of the modules. #todo example/definition
+        Surface tilt of the modules. (horizontal=90° and vertical=0°)
     cpv_type  : str
         Defines the type of module of which the time series is calculated.
         Options: "ins", "m300".
@@ -479,8 +491,8 @@ def check_mvs_energy_production_file(
     This function compares the number of powerplants in energyProduction.csv
     with the number of rows in pv_setup.csv. If the number differs and
     overwrite=True, a new energyProduction.csv file is created with the correct
-     number of columns and default values. The old file is overwritten. If
-     overwrite=False, the process throws an error.
+    number of columns and default values. The old file is overwritten. If
+    overwrite=False, the process throws an error.
 
 
     Parameters
@@ -554,12 +566,15 @@ def create_mvs_energy_production_file(pv_setup, energy_production_filename):
     Parameters
     ----------
     pv_setup: dict
+        dictionary that contains details on the pv-surfaces
     energy_production_filename: str
+        default: /data/mvs_inputs/csv_elements/csv/energyProduction.csv
 
     Returns
     ---------
     None
     """
+
     # hardcoded list of parameters
     data = {
         "index": [
@@ -627,13 +642,20 @@ def add_parameters_to_energy_production_file(
     """
     enters new parameters into energyProduction.csv
 
-    :param pp_number: int
+    Parameters
+    ---------
+    pp_number: int
         number of powerplants / columns in pv_setup
-    :param ts_filename: str
+    ts_filename: str
         file name of the pv time series
-    :param nominal_value: float
-    :param directory_energy_production: str
-    :return: None
+    nominal_value: float
+        maximum value of installed capacity
+    directory_energy_production: str
+        default: DEFAULT_MVS_INPUT_DIRECTORY/csc_elements/
+
+    Returns
+    -------
+    None
     """
 
     if mvs_input_directory == None:
@@ -668,11 +690,16 @@ def add_evaluated_period_to_simulation_settings(time_series,
     """
     adds number of days of the time series into simulation_settings.csv
 
-    :param time_series: pd.Dataframe()
+    Parameters
+    ----------
+    time_series: :pandas:`pandas.DataFrame<frame>`
         pv time series
-    :param mvs_input_directory: str
+    mvs_input_directory: str
         path to mvs input directory
-    :return: none
+
+    Returns
+    ------
+    None
     """
 
     if mvs_input_directory == None:

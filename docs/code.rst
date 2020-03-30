@@ -39,8 +39,8 @@ Functions for calculating the feed-in time series of different PV technologies.
    :toctree: temp/
 
     pv_feedin.create_pv_components
-    pv_feedin.create_si_timeseries
-    pv_feedin.create_cpv_timeseries
+    pv_feedin.create_si_time_series
+    pv_feedin.create_cpv_time_series
     pv_feedin.nominal_values_pv
     pv_feedin.set_up_system
     pv_feedin.get_optimal_pv_angle

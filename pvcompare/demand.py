@@ -59,17 +59,22 @@ def calculate_load_profiles(
     """
     calculate electricity and heat load profiles and saves them to csv
 
-    :param country: str
-    :param population: int
+    Parameters
+    ---------
+    country: str
+    population: int
         number of habitants
-    :param year: int
+    year: int
         year between 2011 - 2015
-    :param input_directory: str
+    input_directory: str
         if None: DEFAULT_INPUT_DIRECTORY
-    :param mvs_input_directory: str
+    mvs_input_directory: str
         if None: DEFAULT_MVS_INPUT_DIRECTORY
-    :param plot: bool
-    :return: None
+    plot: bool
+
+    Returns
+    ------
+    None
     """
 
     if input_directory is None:
@@ -97,7 +102,8 @@ def calculate_load_profiles(
 
 
 def calculate_power_demand(
-    country, population, year, input_directory=None, mvs_input_directory=None, plot=True
+    country, population, year, input_directory=None, mvs_input_directory=None,
+        plot=True
 ):
 
     """
@@ -108,11 +114,13 @@ def calculate_power_demand(
     following procedure:
 
     1) the residential electricity consumption for a country is requested from
-        https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use
+       [2]
     2) the population of the country is requested from EUROSTAT_population
     3) the total residential demand is divided by the countries population and
-        multiplied by the districts' population
+       multiplied by the districts population
     4) The load profile is shifted due to country specific behaviour
+
+    [2] https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use
 
     Parameters
     ----------
@@ -124,13 +132,15 @@ def calculate_power_demand(
         Year for which power demand time series is calculated.
         weather: pd.DataFrame()
     plot: bool
+        True or False
     input_directory: str
         if None: input_directory= DEFAULT_INPUT_DIRECTORY
     mvs_input_directory: str
         if None: mvs_input_directory= DEFAULT_MVS_INPUT_DIRECTORY
+
     Returns
     -------
-    pd.DataFrame
+    :pandas:`pandas.Series<series>`
         hourly time series of the electrical demand
     """
     logging.info("loading calender for %s" % country)
@@ -217,13 +227,13 @@ def calculate_heat_demand(
     The heat demand is calculated for a given population in a certain country
     and year. The annual heat demand is calculated by the following procedure:
 
-    1) the residential heat demand for a country is requested from
-        https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use
-    2) the population of the country is requested from
-        EUROSTAT_population
+    1) the residential heat demand for a country is requested from [2]
+    2) the population of the country is requested from EUROSTAT_population
     3) the total residential demand is devided by the countries population and
-        multiplied by the districts population
-    4) The load profile is shifted due to country specific behaviour
+       multiplied by the districts population
+    4) The load profile is shifted due to countrys specific behaviour
+
+    [2] https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use
 
     Parameters
     ----------
@@ -233,8 +243,10 @@ def calculate_heat_demand(
         the district population
     year: int
         Year for which heat demand time series is calculated.
-    weather: pd.DataFrame()
+    weather: :pandas:`pandas.DataFrame<frame>`
+        weather Data Frame
     plot: bool
+        True or False
     input_directory: str
         if None: input_directory= DEFAULT_INPUT_DIRECTORY
     mvs_input_directory: str
@@ -243,7 +255,7 @@ def calculate_heat_demand(
 
     Returns
     -------
-    pd.DataFrame
+    :pandas:`pandas.Series<series>`
         hourly time series of the heat demand
     """
 
@@ -350,24 +362,27 @@ def calculate_heat_demand(
 def shift_working_hours(country, ts):
 
     """
-    shift the demand time series with regard to the countries habits.
+    Shift the demand time series with regard to the countries sleeping customs.
 
     Since the energy demand for domnestic hot water depends strongly on
     behaviour, the demand profile is adjusted for the different EU countries.
-    (see HOTMAPS report p. 127). The Statistic is received from
-    (HETUS: http://ec.europa.eu/eurostat/web/products-manuals-and-guidelines/-
-    /KS-RA-08-014)
+    (see [3] HOTMAPS report p. 127). The statistics are received from [4].
+
+    [3] `Hotmaps <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_
+
+    [4] `Eurostat <https://ec.europa.eu/eurostat/web/products-manuals-and-guidelines/-/KS-RA-08-014>`_
+
 
     Parameters
     -----------
     country: str
         name of the country
-    ts: pd.DataFrame()
-        hourly load profile timeseries
+    ts: :pandas:`pandas.DataFrame<frame>`
+        hourly load profile time series
 
-    Returns:
-    --------
-    ts: pd.DataFrame()
+    Returns
+    -------
+    ts: :pandas:`pandas.DataFrame<frame>`
         shifted time series
     """
 
@@ -449,9 +464,14 @@ def get_workalendar_class(country):
     """
     loads workalender for a given country.
 
-    :param country: str
+    Parameters
+    ---------
+    country: str
         name of the country
-    :return: _class()
+
+    Returns
+    ------
+     str
         class of the country specific workalender
     """
     country_name = country
