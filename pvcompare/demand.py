@@ -106,11 +106,11 @@ def calculate_power_demand(
     The electricity demand is calculated for a given population in a certain
     country and year. The annual electricity demand is calculated by the
     following procedure:
+
     1) the residential electricity consumption for a country is requested from
         https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use
-    2) the population of the country is requested from
-        EUROSTAT_population
-    3) the total residential demand is divided by the countries' population and
+    2) the population of the country is requested from EUROSTAT_population
+    3) the total residential demand is divided by the countries population and
         multiplied by the districts' population
     4) The load profile is shifted due to country specific behaviour
 
@@ -216,6 +216,7 @@ def calculate_heat_demand(
 
     The heat demand is calculated for a given population in a certain country
     and year. The annual heat demand is calculated by the following procedure:
+
     1) the residential heat demand for a country is requested from
         https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use
     2) the population of the country is requested from

@@ -310,6 +310,7 @@ def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt,
     orientation for the flat plate module 'Canadian_Solar_CS5P_220M___2009_'.
      The time series is normalized by the peak power of the module.
 
+
     Parameters
     ----------
     lat: float
@@ -365,6 +366,7 @@ def create_cpv_time_series(
     for the INSOLIGHT CPV module. If `normalized` is set to True, the time
     series is divided by the peak power of the module.
 
+
     Parameters
     ----------
     lat : float
@@ -394,6 +396,7 @@ def create_cpv_time_series(
         False).
 
     """
+
     system, module_parameters = set_up_system(
         technology="cpv", surface_azimuth=surface_azimuth,
         surface_tilt=surface_tilt, cpv_type=cpv_type
