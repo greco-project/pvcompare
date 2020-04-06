@@ -39,11 +39,6 @@ except ImportError:
     workalendar = None
 
 
-DEFAULT_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__), "data/inputs/")
-DEFAULT_MVS_INPUT_DIRECTORY = os.path.join(
-    os.path.dirname(__file__), "data/mvs_inputs/")
-
-
 #todo (nice to have): add function that writes name of demand.csv into energyConsumption.csv
 
 def calculate_load_profiles(
@@ -78,9 +73,9 @@ def calculate_load_profiles(
     """
 
     if input_directory is None:
-        input_directory = DEFAULT_INPUT_DIRECTORY
+        input_directory = constants.DEFAULT_INPUT_DIRECTORY
     if mvs_input_directory is None:
-        mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
     calculate_power_demand(
         country=country,
@@ -150,7 +145,7 @@ def calculate_power_demand(
     logging.info("loading residential electricity demand")
 
     if input_directory is None:
-        input_directory = DEFAULT_INPUT_DIRECTORY
+        input_directory = constants.DEFAULT_INPUT_DIRECTORY
 
     bp = pd.read_csv(
         os.path.join(input_directory, "building_parameters.csv"), index_col=0
@@ -193,7 +188,7 @@ def calculate_power_demand(
     shifted_elec_demand = shift_working_hours(country=country, ts=elec_demand)
 
     if mvs_input_directory is None:
-        mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     timeseries_directory = os.path.join(mvs_input_directory, "time_series/")
 
     logging.info(
@@ -278,7 +273,7 @@ def calculate_heat_demand(
     # consumption for SH and WH and substracting the electrical condumption of
     # SH and WH for a country
     if input_directory is None:
-        input_directory = DEFAULT_INPUT_DIRECTORY
+        input_directory = constants.DEFAULT_INPUT_DIRECTORY
 
     bp = pd.read_csv(
         os.path.join(input_directory, "building_parameters.csv"), index_col=0
@@ -339,7 +334,7 @@ def calculate_heat_demand(
     shifted_demand = shift_working_hours(country=country, ts=demand)
 
     if mvs_input_directory is None:
-        mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     timeseries_directory = os.path.join(mvs_input_directory, "time_series/")
 
     logging.info(
