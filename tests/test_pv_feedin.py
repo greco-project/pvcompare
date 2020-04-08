@@ -63,25 +63,28 @@ class TestPvtime_series:
             area=area,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            cpv_type="m300"
+            cpv_type="m300",
         )
 
         assert nominal_value == 129.134
 
     def test_create_cpv_time_series(self):
 
-
-        ts = create_cpv_time_series(lat=self.lat, lon=self.lon,
-                                   weather=self.weather,
-                              surface_azimuth=self.surface_azimuth,
-                              surface_tilt=self.surface_tilt, normalized=True,
-                                   cpv_type="m300")
+        ts = create_cpv_time_series(
+            lat=self.lat,
+            lon=self.lon,
+            weather=self.weather,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            normalized=True,
+            cpv_type="m300",
+        )
         output = ts.sum()
         assert output == 0.1351719011687128
 
     def test_get_optimal_pv_angle(self):
 
-        output= get_optimal_pv_angle(self.lat)
+        output = get_optimal_pv_angle(self.lat)
 
         assert output == 25
 

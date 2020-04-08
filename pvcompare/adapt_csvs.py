@@ -192,7 +192,7 @@ def add_parameters_to_energy_production_file(
     ts_filename: str
         file name of the pv time series
     nominal_value: float
-        maximum value of installed capacity
+        maximum value of installable capacity
     directory_energy_production: str
         default: DEFAULT_MVS_INPUT_DIRECTORY/csc_elements/
 
@@ -213,13 +213,13 @@ def add_parameters_to_energy_production_file(
         ["maximumCap"], ["pv_plant_0" + str(pp_number)]
     ] = nominal_value
     logging.info(
-        "The installed capacity of pv_plant_0%s" % pp_number + " has "
+        "The maximum capacity of pv_plant_0%s" % pp_number + " has "
         "been added to energyProduction.csv."
     )
-    energy_production.loc[["file_name"], ["pv_plant_0" + str(pp_number)]] = \
-        ts_filename
-    energy_production.loc[["label"], ["pv_plant_0" + str(pp_number)]] = \
-        "PV plant " + str(pp_number)
+    energy_production.loc[["file_name"], ["pv_plant_0" + str(pp_number)]] = ts_filename
+    energy_production.loc[
+        ["label"], ["pv_plant_0" + str(pp_number)]
+    ] = "PV plant (mono)" + str(pp_number)
     logging.info(
         "The file_name of the time series of pv_plant_0%s" % pp_number
         + " has been added to energyProduction.csv."
@@ -228,8 +228,7 @@ def add_parameters_to_energy_production_file(
     energy_production.to_csv(energy_production_filename)
 
 
-def add_evaluated_period_to_simulation_settings(time_series,
-                                                mvs_input_directory):
+def add_evaluated_period_to_simulation_settings(time_series, mvs_input_directory):
     """
     adds number of days of the time series into simulation_settings.csv
 
@@ -248,11 +247,10 @@ def add_evaluated_period_to_simulation_settings(time_series,
     if mvs_input_directory == None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     simulation_settings_filename = os.path.join(
-        mvs_input_directory, "csv_elements/simulation_settings.csv")
+        mvs_input_directory, "csv_elements/simulation_settings.csv"
+    )
     # load simulation_settings.csv
-    simulation_settings = pd.read_csv(simulation_settings_filename,
-                                      index_col=0)
-    length=len(time_series.index)/24
-    simulation_settings.loc[
-        ["evaluated_period"], ["simulation_settings"]] = int(length)
+    simulation_settings = pd.read_csv(simulation_settings_filename, index_col=0)
+    length = len(time_series.index) / 24
+    simulation_settings.loc[["evaluated_period"], ["simulation_settings"]] = int(length)
     simulation_settings.to_csv(simulation_settings_filename)

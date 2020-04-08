@@ -1,7 +1,6 @@
 import os
 
 
-
 # default input directory for pvcompare
 DEFAULT_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__), "data/inputs/")
 # default input directory for mvs
