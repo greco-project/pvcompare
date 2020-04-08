@@ -104,7 +104,7 @@ def create_pv_components(
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     time_series_directory = os.path.join(
-        constants.mvs_input_directory, "time_series"
+        mvs_input_directory, "time_series"
     )
     files = glob.glob(os.path.join(time_series_directory, "*"))
     for f in files:
