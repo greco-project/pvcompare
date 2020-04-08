@@ -75,6 +75,11 @@ def main(
                                    plot=plot,
                                    weather=weather)
 
+    if mvs_input_directory is None:
+        mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
+    if mvs_output_directory is None:
+        mvs_output_directory = DEFAULT_MVS_OUTPUT_DIRECTORY
+
     mvs.main(
         path_input_folder=mvs_input_directory,
         path_output_folder=mvs_output_directory,
