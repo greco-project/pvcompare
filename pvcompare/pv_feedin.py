@@ -360,8 +360,8 @@ def create_si_time_series(
         logging.info("normalized si time series is calculated.")
         return (output["p_mp"] / peak).clip(0)
     else:
-        logging.info("si time series is calculated without normalization.")
-        return output["p_mp"]
+        logging.info("si time series is calculated in kW without normalization.")
+        return output["p_mp"]/1000
 
 
 def create_cpv_time_series(
@@ -414,7 +414,7 @@ def create_cpv_time_series(
 
     peak = module_parameters["i_mp"] * module_parameters["v_mp"]
     if normalized == True:
-        logging.info("Normalized CPV time series is calculated.")
+        logging.info("Normalized CPV time series is calculated in kW.")
         return (
             greco_technologies.cpv.cpv.create_cpv_time_series(
                 lat=lat,
@@ -427,7 +427,7 @@ def create_cpv_time_series(
             / peak
         ).clip(0)
     else:
-        logging.info("Absolute CPV time series is calculated.")
+        logging.info("Absolute CPV time series is calculated in kW.")
         return greco_technologies.cpv.cpv.create_cpv_time_series(
             lat=lat,
             lon=lon,
@@ -435,7 +435,7 @@ def create_cpv_time_series(
             surface_tilt=surface_tilt,
             surface_azimuth=surface_azimuth,
             cpv_type=cpv_type,
-        )
+        )/1000
 
 
 # def create_psi_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
@@ -480,7 +480,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, cpv_type)
     module_size = module_parameters["Area"]
     nominal_value = round(area / module_size * peak) / 1000
     logging.info(
-        "The nominal value for %s" % type  # todo technology instead of type?
+        "The nominal value for %s" % technology  # todo technology instead of type?
         + " is %s" % nominal_value
         + " kWp for an area of %s" % area
         + " qm."
