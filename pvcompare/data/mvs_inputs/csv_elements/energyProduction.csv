@@ -4,13 +4,14 @@ capex_fix,currency,10000,10000,10000
 capex_var,currency/unit,7200,7200,7200
 file_name,str,si_180_31.csv,cpv_180_31.csv,cpv_90_90.csv
 installedCap,kWp,0.0,0.0,0.0
+maximumCap,kWp,25454.87,55835.702,23929.586
 label,str,PV plant (mono)1,PV plant (mono)2,PV plant (mono)3
 lifetime,year,30,30,30
 opex_fix,currency/unit/year,80,80,80
 opex_var,currency/kWh,0,0,0
 optimizeCap,bool,True,True,True
 maximumCap, int,25454.87,55835.702,23929.586
-outflow_direction,str,PV plant (mono),PV plant (mono),PV plant (mono)
+outflow_direction,str,PV bus,PV bus,PV bus
 type_oemof,str,source,source,source
 unit,str,kWp,kWp,kWp
 energyVector,str,Electricity,Electricity,Electricity

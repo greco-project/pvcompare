@@ -8,7 +8,7 @@
         "label": "economic_data",
         "project_duration": {
             "unit": "year",
-            "value": 30
+            "value": 10
         },
         "tax": {
             "unit": "factor",
@@ -43,10 +43,10 @@
             },
             "efficiency": {
                 "unit": "factor",
-                "value": 1
+                "value": 0.95
             },
             "energyVector": "Electricity",
-            "inflow_direction": "PV plant (mono)",
+            "inflow_direction": "PV bus",
             "installedCap": {
                 "unit": "kW",
                 "value": 0
@@ -55,6 +55,10 @@
             "lifetime": {
                 "unit": "year",
                 "value": 15
+            },
+            "maximumCap": {
+                "unit": "kWp",
+                "value": 0
             },
             "opex_fix": {
                 "unit": "currency/kW/year",
@@ -100,6 +104,10 @@
                 "unit": "year",
                 "value": 10
             },
+            "maximumCap": {
+                "unit": "kWp",
+                "value": 0
+            },
             "opex_fix": {
                 "unit": "currency/kW/year",
                 "value": 0
@@ -144,6 +152,10 @@
                 "unit": "year",
                 "value": 10
             },
+            "maximumCap": {
+                "unit": "kWp",
+                "value": 0
+            },
             "opex_fix": {
                 "unit": "currency/kW/year",
                 "value": 0
@@ -167,11 +179,11 @@
             },
             "capex_fix": {
                 "unit": "currency",
-                "value": 0
+                "value": 0.0
             },
             "capex_var": {
                 "unit": "currency/kW",
-                "value": 0
+                "value": 0.0
             },
             "efficiency": {
                 "unit": "factor",
@@ -188,13 +200,17 @@
                 "unit": "year",
                 "value": 30
             },
+            "maximumCap": {
+                "unit": "kWp",
+                "value": 1500
+            },
             "opex_fix": {
                 "unit": "currency/kW/year",
-                "value": 0
+                "value": 0.0
             },
             "opex_var": {
                 "unit": "currency/kWh",
-                "value": 0
+                "value": 0.0
             },
             "optimizeCap": {
                 "unit": "bool",
@@ -211,11 +227,11 @@
             },
             "capex_fix": {
                 "unit": "currency",
-                "value": 0
+                "value": 0.0
             },
             "capex_var": {
                 "unit": "currency/kW",
-                "value": 0
+                "value": 0.0
             },
             "efficiency": {
                 "unit": "factor",
@@ -232,13 +248,17 @@
                 "unit": "year",
                 "value": 30
             },
+            "maximumCap": {
+                "unit": "kWp",
+                "value": 1500
+            },
             "opex_fix": {
                 "unit": "currency/kW/year",
-                "value": 0
+                "value": 0.0
             },
             "opex_var": {
                 "unit": "currency/kWh",
-                "value": 0
+                "value": 0.0
             },
             "optimizeCap": {
                 "unit": "bool",
@@ -290,7 +310,7 @@
                 "unit": "bool",
                 "value": true
             },
-            "outflow_direction": "PV plant (mono)",
+            "outflow_direction": "PV bus",
             "type_oemof": "source",
             "unit": "kWp"
         },
@@ -334,7 +354,7 @@
                 "unit": "bool",
                 "value": true
             },
-            "outflow_direction": "PV plant (mono)",
+            "outflow_direction": "PV bus",
             "type_oemof": "source",
             "unit": "kWp"
         },
@@ -378,7 +398,7 @@
                 "unit": "bool",
                 "value": true
             },
-            "outflow_direction": "PV plant (mono)",
+            "outflow_direction": "PV bus",
             "type_oemof": "source",
             "unit": "kWp"
         }
@@ -400,7 +420,7 @@
                 "unit": "bool",
                 "value": true
             },
-            "outflow_direction": "Electricity (DSO)",
+            "outflow_direction": "Electricity",
             "peak_demand_pricing": {
                 "unit": "currency/kW",
                 "value": 0
@@ -491,7 +511,7 @@
                     "unit": "kWh",
                     "value": 0
                 },
-                "label": "discharging_power",
+                "label": "charging power",
                 "lifetime": {
                     "unit": "year",
                     "value": 10
@@ -543,7 +563,7 @@
                     "unit": "kWh",
                     "value": 0
                 },
-                "label": "discharging_power",
+                "label": "discharging power",
                 "lifetime": {
                     "unit": "year",
                     "value": 10
@@ -578,7 +598,7 @@
                 "value": true
             },
             "outflow_direction": "ESS Li-Ion",
-            "storage_filename": "storage01.csv",
+            "storage_filename": "storage_01.csv",
             "type_oemof": "storage"
         }
     },
@@ -671,9 +691,9 @@
         "latitude": "59.17905",
         "longitude": "10.95787",
         "project_id": "1",
-        "project_name": "Borg Havn",
+        "project_name": "net zero energy community",
         "scenario_id": "1",
-        "scenario_name": "Warehouse 14"
+        "scenario_name": "Scenario 1"
     },
     "simulation_settings": {
         "evaluated_period": {
@@ -692,9 +712,9 @@
         },
         "restore_from_oemof_file": {
             "unit": "bool",
-            "value": true
+            "value": false
         },
-        "start_date": "2018-01-01 00:00:00",
+        "start_date": "2014-01-01 00:00:00",
         "store_oemof_results": {
             "unit": "bool",
             "value": true
