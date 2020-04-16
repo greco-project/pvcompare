@@ -2,5 +2,5 @@
 currency,str,EUR
 discount_factor,factor,0.06
 label,str,economic_data
-project_duration,year,10
+project_duration,year,1
 tax,factor,0.0 
