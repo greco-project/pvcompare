@@ -16,7 +16,7 @@ import oemof.thermal.compression_heatpumps_and_chillers as cmpr_hp_chiller
 from pvcompare import constants
 
 
-def calculate_cops_heat_pump(
+def calculate_cops_and_eers(
     weather, temperature_col="temp_air", mode="heat_pump",
     input_directory=None, mvs_input_directory=None,
 ):
@@ -147,6 +147,6 @@ def calculate_cops_heat_pump(
 if __name__ == "__main__":
     weather = pd.read_csv("./data/inputs/weatherdata.csv").set_index("time")
 
-    cops = calculate_cops_heat_pump(weather=weather, mode="heat_pump")
+    cops = calculate_cops_and_eers(weather=weather, mode="heat_pump")
     print(cops)
     print(f"Min: {round(min(cops), 2)}, Max: {round(max(cops), 2)}")
