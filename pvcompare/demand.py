@@ -24,6 +24,7 @@ from pkgutil import iter_modules
 from importlib import import_module
 
 import logging
+
 log_format = "%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s"
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 
@@ -39,12 +40,8 @@ except ImportError:
     workalendar = None
 
 
-DEFAULT_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__), "data/inputs/")
-DEFAULT_MVS_INPUT_DIRECTORY = os.path.join(
-    os.path.dirname(__file__), "data/mvs_inputs/")
+# todo (nice to have): add function that writes name of demand.csv into energyConsumption.csv
 
-
-#todo (nice to have): add function that writes name of demand.csv into energyConsumption.csv
 
 def calculate_load_profiles(
     country,
@@ -78,9 +75,9 @@ def calculate_load_profiles(
     """
 
     if input_directory is None:
-        input_directory = DEFAULT_INPUT_DIRECTORY
+        input_directory = constants.DEFAULT_INPUT_DIRECTORY
     if mvs_input_directory is None:
-        mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
     calculate_power_demand(
         country=country,
@@ -102,8 +99,7 @@ def calculate_load_profiles(
 
 
 def calculate_power_demand(
-    country, population, year, input_directory=None, mvs_input_directory=None,
-        plot=True
+    country, population, year, input_directory=None, mvs_input_directory=None, plot=True
 ):
 
     """
@@ -150,7 +146,7 @@ def calculate_power_demand(
     logging.info("loading residential electricity demand")
 
     if input_directory is None:
-        input_directory = DEFAULT_INPUT_DIRECTORY
+        input_directory = constants.DEFAULT_INPUT_DIRECTORY
 
     bp = pd.read_csv(
         os.path.join(input_directory, "building_parameters.csv"), index_col=0
@@ -193,7 +189,7 @@ def calculate_power_demand(
     shifted_elec_demand = shift_working_hours(country=country, ts=elec_demand)
 
     if mvs_input_directory is None:
-        mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     timeseries_directory = os.path.join(mvs_input_directory, "time_series/")
 
     logging.info(
@@ -278,7 +274,7 @@ def calculate_heat_demand(
     # consumption for SH and WH and substracting the electrical condumption of
     # SH and WH for a country
     if input_directory is None:
-        input_directory = DEFAULT_INPUT_DIRECTORY
+        input_directory = constants.DEFAULT_INPUT_DIRECTORY
 
     bp = pd.read_csv(
         os.path.join(input_directory, "building_parameters.csv"), index_col=0
@@ -339,15 +335,16 @@ def calculate_heat_demand(
     shifted_demand = shift_working_hours(country=country, ts=demand)
 
     if mvs_input_directory is None:
-        mvs_input_directory = DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     timeseries_directory = os.path.join(mvs_input_directory, "time_series/")
 
     logging.info(
         "The electrical load profile is completely calculated and "
         "being saved under %s." % timeseries_directory
     )
-    shifted_demand.to_csv(os.path.join(timeseries_directory,
-                                       "heat_load.csv"), index=False)
+    shifted_demand.to_csv(
+        os.path.join(timeseries_directory, "heat_load.csv"), index=False
+    )
 
     if plot is True:
         # Plot demand of building
@@ -386,13 +383,15 @@ def shift_working_hours(country, ts):
         shifted time series
     """
 
-    #check if time series contains more than 24 h
-    time0=ts.iloc[[0], [0]].index
-    time24= time0 + pd.DateOffset(hours=24)
+    # check if time series contains more than 24 h
+    time0 = ts.iloc[[0], [0]].index
+    time24 = time0 + pd.DateOffset(hours=24)
     if not time24 in ts.index:
-        logging.warning("Your demand timeseries does not cover 24h and is "
-                        "therefore not shifted according to the local "
-                        "behaviour.")
+        logging.warning(
+            "Your demand timeseries does not cover 24h and is "
+            "therefore not shifted according to the local "
+            "behaviour."
+        )
         return ts
     if country in [
         "Bulgaria",

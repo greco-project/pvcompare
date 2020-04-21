@@ -61,7 +61,7 @@ def calculate_area_potential(population, input_directory, surface_type):
 
     number_houses = population / (population_per_storey * number_of_storeys)
     if surface_type == "flat_roof":
-        area = floor_area * number_houses *0.4
+        area = floor_area * number_houses * 0.4
     elif surface_type == "gable_roof":
         # the south facing side of the gable roof with 45° elevation equals
         # 70% of the floor area
@@ -74,17 +74,16 @@ def calculate_area_potential(population, input_directory, surface_type):
         if number_of_storeys > 3:
             used_storeys = number_of_storeys - 3
             south_facade = (
-                length_south_facade * hight_per_storey * used_storeys *
-                number_houses
+                length_south_facade * hight_per_storey * used_storeys * number_houses
             )
             if surface_type == "east_facade" or surface_type == "west_facade":
                 east_west_facade = (
-                length_east_west_facade
-                * hight_per_storey
-                * 2
-                * used_storeys
-                * number_houses
-            )
+                    length_east_west_facade
+                    * hight_per_storey
+                    * 2
+                    * used_storeys
+                    * number_houses
+                )
 
             # 50 % of the south facade and 80% of the west and east facade can
             # be used
