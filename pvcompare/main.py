@@ -67,26 +67,26 @@ def main(
         weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
     )
 
-    # pv_feedin.create_pv_components(
-    #     lat=lat,
-    #     lon=lon,
-    #     weather=weather,
-    #     population=population,
-    #     pv_setup=None,
-    #     plot=plot,
-    #     input_directory=input_directory,
-    #     mvs_input_directory=mvs_input_directory,
-    # )
-    #
-    # demand.calculate_load_profiles(
-    #     country=country,
-    #     population=population,
-    #     year=year,
-    #     input_directory=input_directory,
-    #     mvs_input_directory=mvs_input_directory,
-    #     plot=plot,
-    #     weather=weather,
-    # )
+    pv_feedin.create_pv_components(
+        lat=latitude,
+        lon=longitude,
+        weather=weather,
+        population=population,
+        pv_setup=None,
+        plot=plot,
+        input_directory=input_directory,
+        mvs_input_directory=mvs_input_directory,
+    )
+
+    demand.calculate_load_profiles(
+        country=country,
+        population=population,
+        year=year,
+        input_directory=input_directory,
+        mvs_input_directory=mvs_input_directory,
+        plot=plot,
+        weather=weather,
+    )
 
     mvs.main(
         path_input_folder=mvs_input_directory,

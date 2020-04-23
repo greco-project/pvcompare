@@ -4,7 +4,7 @@ capex_fix,currency,0,0,0
 capex_var,currency/unit,1000,1000,1000
 file_name,str,si_180_31.csv,cpv_180_31.csv,cpv_90_90.csv
 installedCap,kWp,0.0,0.0,0.0
-maximumCap,kWp,25454.87,55835.702,23929.586
+maximumCap,kWp,25454.87,55835702,23929586
 label,str,PV si_180_31,PV cpv_180_31,PV cpv_90_90
 lifetime,year,25,25,25
 opex_fix,currency/unit/year,50,50,50
