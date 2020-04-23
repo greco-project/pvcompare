@@ -81,7 +81,7 @@ def calculate_load_profiles(
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
     #check if "country" is a valid country
-    check_if_country_is_valid(country, year, input_directory)
+    check_for_valid_country_year(country, year, input_directory)
 
     calculate_power_demand(
         country=country,
@@ -488,7 +488,7 @@ def get_workalendar_class(country):
 
     return None
 
-def check_if_country_is_valid(country, year, input_directory):
+def check_for_valid_country_year(country, year, input_directory):
     """
     checks if the input country is available in all input data
 
