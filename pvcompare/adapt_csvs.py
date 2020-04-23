@@ -24,6 +24,7 @@ import greco_technologies.cpv.inputs
 from pvcompare import area_potential
 from pvcompare import constants
 
+
 def add_project_data(mvs_input_directory, latitude, longitude, country, year):
     """
 
@@ -47,24 +48,25 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
     if os.path.isfile(project_data_filename):
         project_data = pd.read_csv(project_data_filename, index_col=0)
 
-        params={"latitude": latitude,
-                "longitude" : longitude,
-                "country" : country}
+        params = {"latitude": latitude, "longitude": longitude, "country": country}
         for key in params:
             if params[key] is None:
-                logging.info(f"The parameter {key} is taken "
-                             f"from project_data.csv.")
+                logging.info(f"The parameter {key} is taken " f"from project_data.csv.")
                 params[key] = project_data.at[key, "project_data"]
                 if params[key] is None:
-                    raise ValueError(f"The parameter {key} cannot be None. "
-                             f"Please correct the parameter {key} in "
-                             f"project_data.csv or change the paremeter "
-                             f"in the main function.")
+                    raise ValueError(
+                        f"The parameter {key} cannot be None. "
+                        f"Please correct the parameter {key} in "
+                        f"project_data.csv or change the paremeter "
+                        f"in the main function."
+                    )
             if params[key] != project_data.at[key, "project_data"]:
-                logging.warning(f"The parameter {key} in the main function"
-                                f" differs from the value in"
-                                f" project_data.csv. The value in file "
-                                f"project_data.csv will be overwritten.")
+                logging.warning(
+                    f"The parameter {key} in the main function"
+                    f" differs from the value in"
+                    f" project_data.csv. The value in file "
+                    f"project_data.csv will be overwritten."
+                )
                 project_data.at[key, "project_data"] = params[key]
 
     else:
@@ -73,31 +75,34 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
             f"exist. Please check the input folder {mvs_input_directory}"
             "/csv_elements"
         )
-    #change and insert start date in simulation settings
+    # change and insert start date in simulation settings
     simulation_settings_filename = os.path.join(
         mvs_input_directory, "csv_elements/" "simulation_settings.csv"
     )
     if os.path.isfile(simulation_settings_filename):
-        simulation_settings = pd.read_csv(simulation_settings_filename,
-                                          index_col=0)
+        simulation_settings = pd.read_csv(simulation_settings_filename, index_col=0)
     start_date = simulation_settings.at["start_date", "simulation_settings"]
     year_ss = str(start_date)[:-15]
     if year is None:
-        logging.info(f"The parameter 'year' is taken "
-                     f"from simulation_settings.csv.")
+        logging.info(f"The parameter 'year' is taken " f"from simulation_settings.csv.")
         year = year_ss
         if year is None:
-            raise ValueError(f"The parameter year cannot be None. "
-                             f"Please correct the parameter 'start_date' in "
-                             f"simulation_settings.csv or change the paremeter "
-                             f"'year' in the main function.")
+            raise ValueError(
+                f"The parameter year cannot be None. "
+                f"Please correct the parameter 'start_date' in "
+                f"simulation_settings.csv or change the paremeter "
+                f"'year' in the main function."
+            )
     elif year is not year_ss:
-        logging.warning(f"The parameter year in the main function"
-                        f" does not correspond to the value in"
-                        f" simulation_settings.csv. The value in file "
-                        f"simulation_settings.csv will be overwritten.")
-        simulation_settings.at["start_date", "simulation_settings"]= \
+        logging.warning(
+            f"The parameter year in the main function"
+            f" does not correspond to the value in"
+            f" simulation_settings.csv. The value in file "
+            f"simulation_settings.csv will be overwritten."
+        )
+        simulation_settings.at["start_date", "simulation_settings"] = (
             str(year) + "-01-01 00:00:00"
+        )
 
     # save energyProduction.csv
     project_data.to_csv(project_data_filename)
@@ -297,11 +302,12 @@ def add_parameters_to_energy_production_file(
         "been added to energyProduction.csv."
     )
     energy_production.loc[["file_name"], ["pv_plant_0" + str(pp_number)]] = ts_filename
-    energy_production.loc[
-        ["label"], ["pv_plant_0" + str(pp_number)]
-    ] = "PV " + str(ts_filename)[:-4]
+    energy_production.loc[["label"], ["pv_plant_0" + str(pp_number)]] = (
+        "PV " + str(ts_filename)[:-4]
+    )
     logging.info(
-        "The file_name of the time series of PV " + str(ts_filename)[:-4]
+        "The file_name of the time series of PV "
+        + str(ts_filename)[:-4]
         + " has been added to energyProduction.csv."
     )
     # save energyProduction.csv

@@ -19,7 +19,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 
 def main(
     population,
-    country = None,
+    country=None,
     latitude=None,
     longitude=None,
     year=None,
@@ -48,7 +48,9 @@ def main(
         mvs_output_directory = constants.DEFAULT_MVS_OUTPUT_DIRECTORY
 
     if all([latitude, longitude, country, year]) == False:
-        adapt_csvs.add_project_data(mvs_input_directory,latitude, longitude, country, year)
+        adapt_csvs.add_project_data(
+            mvs_input_directory, latitude, longitude, country, year
+        )
 
     # todo: scpecify country automatically by lat/lon
 

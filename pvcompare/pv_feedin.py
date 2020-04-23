@@ -103,9 +103,7 @@ def create_pv_components(
     # empty output folder
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
-    time_series_directory = os.path.join(
-        mvs_input_directory, "time_series"
-    )
+    time_series_directory = os.path.join(mvs_input_directory, "time_series")
     files = glob.glob(os.path.join(time_series_directory, "*"))
     for f in files:
         os.remove(f)
@@ -361,7 +359,7 @@ def create_si_time_series(
         return (output["p_mp"] / peak).clip(0)
     else:
         logging.info("si time series is calculated in kW without normalization.")
-        return output["p_mp"]/1000
+        return output["p_mp"] / 1000
 
 
 def create_cpv_time_series(
@@ -428,14 +426,17 @@ def create_cpv_time_series(
         ).clip(0)
     else:
         logging.info("Absolute CPV time series is calculated in kW.")
-        return greco_technologies.cpv.cpv.create_cpv_time_series(
-            lat=lat,
-            lon=lon,
-            weather=weather,
-            surface_tilt=surface_tilt,
-            surface_azimuth=surface_azimuth,
-            cpv_type=cpv_type,
-        )/1000
+        return (
+            greco_technologies.cpv.cpv.create_cpv_time_series(
+                lat=lat,
+                lon=lon,
+                weather=weather,
+                surface_tilt=surface_tilt,
+                surface_azimuth=surface_azimuth,
+                cpv_type=cpv_type,
+            )
+            / 1000
+        )
 
 
 # def create_psi_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
