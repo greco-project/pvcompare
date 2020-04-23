@@ -80,7 +80,7 @@ def calculate_load_profiles(
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
-    #check if "country" is a valid country
+    # check if "country" is a valid country
     check_for_valid_country_year(country, year, input_directory)
 
     calculate_power_demand(
@@ -168,7 +168,7 @@ def calculate_power_demand(
 
     filename1 = os.path.join(input_directory, filename_population)
     populations = pd.read_csv(filename1, index_col=0, sep=",")
-    #convert mtoe in kWh
+    # convert mtoe in kWh
     national_energyconsumption = powerstat.at[country, str(year)] * 11630
     annual_demand_per_population = (
         national_energyconsumption / populations.at[country, str(year)]
@@ -312,14 +312,11 @@ def calculate_heat_demand(
     populations = pd.read_csv(filename1, index_col=0, sep=",")
     # convert Mtoe in kWh
     heat_demand = (
-        (
-            total_SH.at[country, str(year)]
-            + total_WH.at[country, str(year)]
-            - electr_SH.at[country, str(year)]
-            - electr_WH.at[country, str(year)]
-        )
-        * 11630
-    )
+        total_SH.at[country, str(year)]
+        + total_WH.at[country, str(year)]
+        - electr_SH.at[country, str(year)]
+        - electr_WH.at[country, str(year)]
+    ) * 11630
     annual_heat_demand_per_population = (
         heat_demand / populations.at[country, str(year)]
     ) * population
@@ -488,6 +485,7 @@ def get_workalendar_class(country):
 
     return None
 
+
 def check_for_valid_country_year(country, year, input_directory):
     """
     checks if the input country is available in all input data
@@ -508,31 +506,47 @@ def check_for_valid_country_year(country, year, input_directory):
 
     """
 
-    pop=pd.read_csv(os.path.join(input_directory, "EUROSTAT_population.csv"), header=0, sep=",")
-    workalendar=pd.read_csv(os.path.join(input_directory, "list_of_workalender_countries.csv"), header = 0)
-    consumption=pd.read_csv(os.path.join(input_directory, "total_electricity_consumption_residential.csv"), header = 1, sep=":")
+    pop = pd.read_csv(
+        os.path.join(input_directory, "EUROSTAT_population.csv"), header=0, sep=","
+    )
+    workalendar = pd.read_csv(
+        os.path.join(input_directory, "list_of_workalender_countries.csv"), header=0
+    )
+    consumption = pd.read_csv(
+        os.path.join(input_directory, "total_electricity_consumption_residential.csv"),
+        header=1,
+        sep=":",
+    )
 
-    countries_pop=set(pop["country"][:43])
-    countries_workalender=set(workalendar["country"])
-    countries_consumption=set(consumption["country"][:32])
+    countries_pop = set(pop["country"][:43])
+    countries_workalender = set(workalendar["country"])
+    countries_consumption = set(consumption["country"][:32])
 
-    years_pop = set([x for x in pop.columns if x != 'country'])
-    years_consumption= set([x for x in consumption.columns if x not in ["country", "ISO code", "Unit", "Source Code", "Note"]])
+    years_pop = set([x for x in pop.columns if x != "country"])
+    years_consumption = set(
+        [
+            x
+            for x in consumption.columns
+            if x not in ["country", "ISO code", "Unit", "Source Code", "Note"]
+        ]
+    )
 
-
-    possible_countries= countries_pop & countries_workalender & countries_consumption
-    possible_years=years_pop & years_consumption
+    possible_countries = countries_pop & countries_workalender & countries_consumption
+    possible_years = years_pop & years_consumption
 
     if country not in possible_countries:
-        raise ValueError(f"The given country {country} is not recognized. "
-                         f"Please select one of the following "
-                         f"countries: {possible_countries}")
+        raise ValueError(
+            f"The given country {country} is not recognized. "
+            f"Please select one of the following "
+            f"countries: {possible_countries}"
+        )
 
     if str(year) not in possible_years:
-        raise ValueError(f"The given year {year} is not recognized. "
-                         f"Please select one of the following "
-                         f"years: {possible_years}")
-
+        raise ValueError(
+            f"The given year {year} is not recognized. "
+            f"Please select one of the following "
+            f"years: {possible_years}"
+        )
 
 
 if __name__ == "__main__":
@@ -554,7 +568,7 @@ if __name__ == "__main__":
         mvs_input_directory=mvs_input_directory,
     )
 
-    #check_if_country_is_valid(country="Spain", input_directory=input_directory)
+    # check_if_country_is_valid(country="Spain", input_directory=input_directory)
 
     # country='Spain'
     # ts = pd.DataFrame()
