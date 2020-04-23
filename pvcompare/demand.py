@@ -22,6 +22,7 @@ import numpy as np
 import inspect
 from pkgutil import iter_modules
 from importlib import import_module
+from pvcompare import constants
 
 import logging
 
@@ -164,7 +165,8 @@ def calculate_power_demand(
 
     filename1 = os.path.join(input_directory, filename_population)
     populations = pd.read_csv(filename1, index_col=0, sep=";")
-    national_energyconsumption = powerstat.at[country, str(year)] * 11.63 * 1000000
+    #convert mtoe in kWh
+    national_energyconsumption = powerstat.at[country, str(year)] * 11630
     annual_demand_per_population = (
         national_energyconsumption / populations.at[country, "Population"]
     ) * population
@@ -172,7 +174,7 @@ def calculate_power_demand(
     logging.info(
         "The annual demand for a population of %s" % population
         + " for the year %s " % year
-        + "is %s" % annual_demand_per_population
+        + "is %s Watts" % annual_demand_per_population
     )
 
     ann_el_demand_h0 = {"h0": annual_demand_per_population}
@@ -305,7 +307,7 @@ def calculate_heat_demand(
     filename_population = bp.at["filename_country_population", "value"]
     filename1 = os.path.join(input_directory, filename_population)
     populations = pd.read_csv(filename1, index_col=0, sep=";")
-
+    # convert Mtoe in kWh
     heat_demand = (
         (
             total_SH.at[country, str(year)]
@@ -313,8 +315,7 @@ def calculate_heat_demand(
             - electr_SH.at[country, str(year)]
             - electr_WH.at[country, str(year)]
         )
-        * 11.63
-        * 1000000
+        * 11630
     )
     annual_heat_demand_per_population = (
         heat_demand / populations.at[country, "Population"]
