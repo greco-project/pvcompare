@@ -80,6 +80,9 @@ def calculate_load_profiles(
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
+    #check if "country" is a valid country
+    check_if_country_is_valid(country, year, input_directory)
+
     calculate_power_demand(
         country=country,
         population=population,
@@ -164,11 +167,11 @@ def calculate_power_demand(
     powerstat = pd.read_csv(filename_elec, sep=":", index_col=0, header=1)
 
     filename1 = os.path.join(input_directory, filename_population)
-    populations = pd.read_csv(filename1, index_col=0, sep=";")
+    populations = pd.read_csv(filename1, index_col=0, sep=",")
     #convert mtoe in kWh
     national_energyconsumption = powerstat.at[country, str(year)] * 11630
     annual_demand_per_population = (
-        national_energyconsumption / populations.at[country, "Population"]
+        national_energyconsumption / populations.at[country, str(year)]
     ) * population
 
     logging.info(
@@ -306,7 +309,7 @@ def calculate_heat_demand(
 
     filename_population = bp.at["filename_country_population", "value"]
     filename1 = os.path.join(input_directory, filename_population)
-    populations = pd.read_csv(filename1, index_col=0, sep=";")
+    populations = pd.read_csv(filename1, index_col=0, sep=",")
     # convert Mtoe in kWh
     heat_demand = (
         (
@@ -318,7 +321,7 @@ def calculate_heat_demand(
         * 11630
     )
     annual_heat_demand_per_population = (
-        heat_demand / populations.at[country, "Population"]
+        heat_demand / populations.at[country, str(year)]
     ) * population
 
     # Multi family house (mfh: Mehrfamilienhaus)
@@ -485,24 +488,73 @@ def get_workalendar_class(country):
 
     return None
 
+def check_if_country_is_valid(country, year, input_directory):
+    """
+    checks if the input country is available in all input data
+
+    The inputs checkes the countries for population, workalender and consumption.
+
+    Parameters
+    ----------
+    country: str
+        country of interest
+    year: int
+        year of interest
+    input_directory: str
+        input directory for data input
+
+    Returns
+    -------
+
+    """
+
+    pop=pd.read_csv(os.path.join(input_directory, "EUROSTAT_population.csv"), header=0, sep=",")
+    workalendar=pd.read_csv(os.path.join(input_directory, "list_of_workalender_countries.csv"), header = 0)
+    consumption=pd.read_csv(os.path.join(input_directory, "total_electricity_consumption_residential.csv"), header = 1, sep=":")
+
+    countries_pop=set(pop["country"][:43])
+    countries_workalender=set(workalendar["country"])
+    countries_consumption=set(consumption["country"][:32])
+
+    years_pop = set([x for x in pop.columns if x != 'country'])
+    years_consumption= set([x for x in consumption.columns if x not in ["country", "ISO code", "Unit", "Source Code", "Note"]])
+
+
+    possible_countries= countries_pop & countries_workalender & countries_consumption
+    possible_years=years_pop & years_consumption
+
+    if country not in possible_countries:
+        raise ValueError(f"The given country {country} is not recognized. "
+                         f"Please select one of the following "
+                         f"countries: {possible_countries}")
+
+    if str(year) not in possible_years:
+        raise ValueError(f"The given year {year} is not recognized. "
+                         f"Please select one of the following "
+                         f"years: {possible_years}")
+
+
 
 if __name__ == "__main__":
 
     weather = pd.read_csv("./data/inputs/weatherdata.csv")
 
     mvs_input_directory = "./data/mvs_inputs/"
+    input_directory = "./data/inputs/"
     #    calculate_power_demand(country='Bulgaria', population=600, year='2011',
     #                           input_directory=None, plot=True,
     #                           mvs_input_directory=mvs_input_directory)
     calculate_load_profiles(
         country="Germany",
         population=600,
-        year=2011,
+        year=2001,
         weather=weather,
         plot=True,
         input_directory=None,
         mvs_input_directory=mvs_input_directory,
     )
+
+    #check_if_country_is_valid(country="Spain", input_directory=input_directory)
 
     # country='Spain'
     # ts = pd.DataFrame()
