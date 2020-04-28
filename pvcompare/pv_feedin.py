@@ -31,7 +31,7 @@ import cpvtopvlib.cpvsystem as cpv
 import greco_technologies.cpv.hybrid
 import greco_technologies.cpv.inputs
 from pvcompare import area_potential
-from pvcompare import adapt_csvs
+from pvcompare import check_inputs
 from pvcompare import constants
 
 log_format = "%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s"
@@ -126,7 +126,7 @@ def create_pv_components(
         )
 
     # check if mvs_input/energyProduction.csv contains all power plants
-    adapt_csvs.check_mvs_energy_production_file(pv_setup, directory_energy_production)
+    check_inputs.check_mvs_energy_production_file(pv_setup, directory_energy_production)
     # parse through pv_setup file and create time series for each technology
     for i, row in pv_setup.iterrows():
         j = row["surface_azimuth"]
@@ -158,7 +158,7 @@ def create_pv_components(
         output_csv = os.path.join(time_series_directory, ts_csv,)
 
         # add "evaluated_period" to simulation_settings.csv
-        adapt_csvs.add_evaluated_period_to_simulation_settings(
+        check_inputs.add_evaluated_period_to_simulation_settings(
             time_series=time_series, mvs_input_directory=mvs_input_directory
         )
 
@@ -205,7 +205,7 @@ def create_pv_components(
         )
         # save the file name of the time series and the nominal value to
         # mvs_inputs/elements/csv/energyProduction.csv
-        adapt_csvs.add_parameters_to_energy_production_file(
+        check_inputs.add_parameters_to_energy_production_file(
             pp_number=i + 1, ts_filename=ts_csv, nominal_value=nominal_value,
         )
     if plot == True:

@@ -8,7 +8,7 @@ from pvcompare import demand
 from pvcompare import pv_feedin
 from pvcompare import constants
 import mvs_tool as mvs
-from pvcompare import adapt_csvs
+from pvcompare import check_inputs
 import os
 
 
