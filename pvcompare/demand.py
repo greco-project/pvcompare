@@ -204,12 +204,8 @@ def calculate_power_demand(
     filename = os.path.join(timeseries_directory, "electricity_load.csv")
     shifted_elec_demand.to_csv(filename, index=False)
 
-    if plot is True:
-        # Plot demand
-        ax = shifted_elec_demand.plot()
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Power demand")
-        plt.show()
+    return shifted_elec_demand
+
 
 
 def calculate_heat_demand(
@@ -217,7 +213,6 @@ def calculate_heat_demand(
     population,
     year,
     weather,
-    plot=True,
     input_directory=None,
     mvs_input_directory=None,
 ):
@@ -333,7 +328,7 @@ def calculate_heat_demand(
         name="MFH",
     ).get_bdew_profile()
 
-    shifted_demand = shift_working_hours(country=country, ts=demand)
+    shifted_heat_demand = shift_working_hours(country=country, ts=demand)
 
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
@@ -343,19 +338,10 @@ def calculate_heat_demand(
         "The electrical load profile is completely calculated and "
         "being saved under %s." % timeseries_directory
     )
-    shifted_demand.to_csv(
+    shifted_heat_demand.to_csv(
         os.path.join(timeseries_directory, "heat_load.csv"), index=False
     )
-
-    if plot is True:
-        # Plot demand of building
-        ax = shifted_demand.plot()
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Heat demand in kW")
-        plt.show()
-    else:
-        print("Annual consumption: \n{}".format(shifted_demand.sum()))
-
+    return shifted_heat_demand
 
 def shift_working_hours(country, ts):
 
@@ -486,98 +472,67 @@ def get_workalendar_class(country):
     return None
 
 
-def check_for_valid_country_year(country, year, input_directory):
-    """
-    checks if the input country is available in all input data
-
-    The inputs checkes the countries for population, workalender and consumption.
-
-    Parameters
-    ----------
-    country: str
-        country of interest
-    year: int
-        year of interest
-    input_directory: str
-        input directory for data input
-
-    Returns
-    -------
-
-    """
-
-    pop = pd.read_csv(
-        os.path.join(input_directory, "EUROSTAT_population.csv"), header=0, sep=","
-    )
-    workalendar = pd.read_csv(
-        os.path.join(input_directory, "list_of_workalender_countries.csv"), header=0
-    )
-    consumption = pd.read_csv(
-        os.path.join(input_directory, "total_electricity_consumption_residential.csv"),
-        header=1,
-        sep=":",
-    )
-
-    countries_pop = set(pop["country"][:43])
-    countries_workalender = set(workalendar["country"])
-    countries_consumption = set(consumption["country"][:32])
-
-    years_pop = set([x for x in pop.columns if x != "country"])
-    years_consumption = set(
-        [
-            x
-            for x in consumption.columns
-            if x not in ["country", "ISO code", "Unit", "Source Code", "Note"]
-        ]
-    )
-
-    possible_countries = countries_pop & countries_workalender & countries_consumption
-    possible_years = years_pop & years_consumption
-
-    if country not in possible_countries:
-        raise ValueError(
-            f"The given country {country} is not recognized. "
-            f"Please select one of the following "
-            f"countries: {possible_countries}"
-        )
-
-    if str(year) not in possible_years:
-        raise ValueError(
-            f"The given year {year} is not recognized. "
-            f"Please select one of the following "
-            f"years: {possible_years}"
-        )
-
 
 if __name__ == "__main__":
 
-    weather = pd.read_csv("./data/inputs/weatherdata.csv")
-
-    mvs_input_directory = "./data/mvs_inputs/"
-    input_directory = "./data/inputs/"
-    #    calculate_power_demand(country='Bulgaria', population=600, year='2011',
-    #                           input_directory=None, plot=True,
-    #                           mvs_input_directory=mvs_input_directory)
-    calculate_load_profiles(
-        country="Germany",
-        population=600,
-        year=2001,
-        weather=weather,
-        plot=True,
-        input_directory=None,
-        mvs_input_directory=mvs_input_directory,
-    )
+    # weather = pd.read_csv("./data/inputs/weatherdata.csv")
+    #
+    # mvs_input_directory = "./data/mvs_inputs/"
+    # input_directory = "./data/inputs/"
+    # #    calculate_power_demand(country='Bulgaria', population=600, year='2011',
+    # #                           input_directory=None, plot=True,
+    # #                           mvs_input_directory=mvs_input_directory)
+    # calculate_load_profiles(
+    #     country="Germany",
+    #     population=600,
+    #     year=2001,
+    #     weather=weather,
+    #     plot=True,
+    #     input_directory=None,
+    #     mvs_input_directory=mvs_input_directory,
+    # )
 
     # check_if_country_is_valid(country="Spain", input_directory=input_directory)
 
-    # country='Spain'
-    # ts = pd.DataFrame()
-    # ts['h0'] = [19052, 19052, 14289, 19052, 19052, 14289]
-    # ts.index = ["2014-01-01 13:30:00+00:00", "2014-01-01 14:30:00+00:00",
-    #             "2014-01-01 15:30:00+00:00", "2014-01-02 13:30:00+00:00",
-    #             "2014-01-02 14:30:00+00:00",
-    #             "2014-01-02 15:30:00+00:00"]
-    # ts.index = pd.to_datetime(ts.index)
+    country='Spain'
+    population = 4800
+    year = 2014
+    input_directory = constants.DEFAULT_INPUT_DIRECTORY
+    test_mvs_directory = "../tests/test_data/test_mvs_inputs"
+
+    ts = pd.DataFrame()
+    ts["h0"] = [19052, 19052, 14289, 19052, 19052, 14289]
+    ts.index = [
+        "2014-01-01 13:30:00+00:00",
+        "2014-01-01 14:00:00+00:00",
+        "2014-01-01 14:30:00+00:00",
+        "2014-01-01 15:00:00+00:00",
+        "2014-01-01 15:30:00+00:00",
+        "2014-01-01 16:00:00+00:00",
+    ]
+    ts.index = pd.to_datetime(ts.index)
+
+    weather_df = pd.DataFrame()
+    weather_df["temp_air"] = [4, 5]
+    weather_df["wind_speed"] = [2, 2.5]
+    weather_df["dhi"] = [100, 120]
+    weather_df["dni"] = [120, 150]
+    weather_df["ghi"] = [200, 220]
+    weather_df.index = ["2014-01-01 13:00:00+00:00",
+                        "2014-01-01 14:00:00+00:00"]
+    weather_df.index = pd.to_datetime(weather_df.index)
+    weather = weather_df
+
+    d=calculate_heat_demand(
+        country=country,
+        population=population,
+        year=year,
+        weather=weather,
+        input_directory=input_directory,
+        mvs_input_directory=test_mvs_directory)
+
+    print(d.sum().values)
+
     #
     # output = shift_working_hours(country=country, ts=ts)
     # print(output['h0'].sum())
