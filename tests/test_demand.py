@@ -15,8 +15,9 @@ from pvcompare.demand import (
     calculate_power_demand,
     shift_working_hours,
     get_workalendar_class,
-    calculate_heat_demand,
+    calculate_heat_demand
 )
+from pvcompare import constants
 
 
 class TestDemandProfiles:
@@ -26,12 +27,8 @@ class TestDemandProfiles:
         self.country = "Spain"
         self.population = 4800
         self.year = 2014
-        self.input_directory = "../pvcompare/data/inputs/"
-        self.mvs_input_directory = os.path.join(
-            os.path.dirname(__file__), "data/mvs_inputs/"
-        )
-        self.test_mvs_directory = "./test_data/test_mvs_inputs"
-        self.plot = True
+        self.input_directory = constants.DEFAULT_INPUT_DIRECTORY
+        self.test_mvs_directory = os.path.join(os.path.dirname(__file__), "test_data/test_mvs_inputs")
 
         ts = pd.DataFrame()
         ts["h0"] = [19052, 19052, 14289, 19052, 19052, 14289]
@@ -56,7 +53,7 @@ class TestDemandProfiles:
         weather_df.index = pd.to_datetime(weather_df.index)
         self.weather = weather_df
 
-    def test_calculate_power_demand(self):
+    def test_power_demand_exists(self):
 
         if os.path.exists(
             os.path.join(self.test_mvs_directory, "time_series/electricity_load.csv")
@@ -72,13 +69,25 @@ class TestDemandProfiles:
             year=self.year,
             input_directory=self.input_directory,
             mvs_input_directory=self.test_mvs_directory,
-            plot=self.plot,
         )
         assert os.path.exists(
             os.path.join(self.test_mvs_directory, "time_series/electricity_load.csv")
         )
 
-    def test_calculate_heat_demand(self):
+    def test_calculate_power_demand(self):
+
+        a = calculate_power_demand(
+            country=self.country,
+            population=self.population,
+            year=self.year,
+            input_directory=self.input_directory,
+            mvs_input_directory=self.test_mvs_directory,
+        )
+
+        assert a["h0"].sum() == 17.65904126786193
+
+
+    def test_heat_demand_exists(self):
 
         if os.path.exists(
             os.path.join(self.test_mvs_directory, "time_series/heat_load.csv")
@@ -93,12 +102,25 @@ class TestDemandProfiles:
             year=self.year,
             input_directory=self.input_directory,
             weather=self.weather,
-            mvs_input_directory=self.test_mvs_directory,
-            plot=self.plot,
+            mvs_input_directory=self.test_mvs_directory
         )
         assert os.path.exists(
             os.path.join(self.test_mvs_directory, "time_series/heat_load.csv")
         )
+
+    def test_calculate_heat_demand(self):
+
+        a = calculate_heat_demand(
+            country=self.country,
+            population=self.population,
+            year=self.year,
+            input_directory=self.input_directory,
+            weather=self.weather,
+            mvs_input_directory=self.test_mvs_directory
+        )
+
+        assert a["h0"].sum() == 5.474071970330192
+
 
     def test_shift_working_hours(self):
 
@@ -108,8 +130,11 @@ class TestDemandProfiles:
 
         assert output["h0"].sum() == 104786
 
+
     def test_workalendar_class(self):
 
         cal = get_workalendar_class(self.country)
 
         assert cal.__class__.__name__ == "Spain"
+
+
