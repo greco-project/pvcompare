@@ -11,3 +11,5 @@ DEFAULT_MVS_INPUT_DIRECTORY = os.path.join(
 DEFAULT_MVS_OUTPUT_DIRECTORY = os.path.join(
     os.path.dirname(__file__), "data/mvs_outputs"
 )
+TEST_DATA_DIRECTORY = os.path.join(os.path.abspath(__file__), "/home/adminlocal/Dokumente/greco_env/pvcompare/tests/test_data/")
+DUMMY_TEST_DATA = os.path.join(os.path.abspath(__file__), "/home/adminlocal/Dokumente/greco_env/pvcompare/tests/test_data/dummy_data")
