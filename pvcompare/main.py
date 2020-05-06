@@ -48,16 +48,16 @@ def main(
         mvs_output_directory = constants.DEFAULT_MVS_OUTPUT_DIRECTORY
 
     if all([latitude, longitude, country, year]) == False:
-        adapt_csvs.add_project_data(
+        check_inputs.add_project_data(
             mvs_input_directory, latitude, longitude, country, year
         )
 
     # todo: scpecify country automatically by lat/lon
 
     # if era5 import works this line can be used
-    # weather= era5.load_era5_weatherdata(lat=lat, lon=lon, year=year)
+    # weather= era5.load_era5_weatherdata(lat=latitude, lon=longitude, year=year)
 
-    #   otherwise this example weather data for one year (2014) can be used for now
+    #  otherwise this example weather data for one year (2014) can be used for now
     weather = pd.read_csv("./data/inputs/weatherdata.csv", index_col=0)
     weather.index = pd.to_datetime(weather.index)
     spa = pvlib.solarposition.spa_python(
@@ -67,26 +67,25 @@ def main(
         weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
     )
 
-    pv_feedin.create_pv_components(
-        lat=latitude,
-        lon=longitude,
-        weather=weather,
-        population=population,
-        pv_setup=None,
-        plot=plot,
-        input_directory=input_directory,
-        mvs_input_directory=mvs_input_directory,
-    )
+    # pv_feedin.create_pv_components(
+    #     lat=latitude,
+    #     lon=longitude,
+    #     weather=weather,
+    #     population=population,
+    #     pv_setup=None,
+    #     plot=plot,
+    #     input_directory=input_directory,
+    #     mvs_input_directory=mvs_input_directory,
+    # )
 
-    demand.calculate_load_profiles(
-        country=country,
-        population=population,
-        year=year,
-        input_directory=input_directory,
-        mvs_input_directory=mvs_input_directory,
-        plot=plot,
-        weather=weather,
-    )
+    # demand.calculate_load_profiles(
+    #     country=country,
+    #     population=population,
+    #     year=year,
+    #     input_directory=input_directory,
+    #     mvs_input_directory=mvs_input_directory,
+    #     weather=weather,
+    # )
 
     mvs.main(
         path_input_folder=mvs_input_directory,
@@ -104,4 +103,10 @@ if __name__ == "__main__":
     population = 48000
     country = "Spain"
 
-    main(latitude=latitude, longitude=longitude, year=year, population=population)
+    main(
+        latitude=latitude,
+        longitude=longitude,
+        year=year,
+        population=population,
+        country=country,
+    )
