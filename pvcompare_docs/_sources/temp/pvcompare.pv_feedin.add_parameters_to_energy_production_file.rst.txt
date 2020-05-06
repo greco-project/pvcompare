@@ -1,0 +1,6 @@
+pvcompare.pv\_feedin.add\_parameters\_to\_energy\_production\_file
+==================================================================
+
+.. currentmodule:: pvcompare.pv_feedin
+
+.. autofunction:: add_parameters_to_energy_production_file

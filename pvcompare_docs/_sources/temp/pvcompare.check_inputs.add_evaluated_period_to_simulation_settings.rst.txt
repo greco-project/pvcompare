@@ -1,0 +1,6 @@
+pvcompare.check\_inputs.add\_evaluated\_period\_to\_simulation\_settings
+========================================================================
+
+.. currentmodule:: pvcompare.check_inputs
+
+.. autofunction:: add_evaluated_period_to_simulation_settings

@@ -1,0 +1,6 @@
+pvcompare.check\_inputs.add\_parameters\_to\_energy\_production\_file
+=====================================================================
+
+.. currentmodule:: pvcompare.check_inputs
+
+.. autofunction:: add_parameters_to_energy_production_file

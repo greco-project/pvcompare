@@ -1,0 +1,6 @@
+pvcompare.pv\_feedin.nominal\_values\_pv
+========================================
+
+.. currentmodule:: pvcompare.pv_feedin
+
+.. autofunction:: nominal_values_pv

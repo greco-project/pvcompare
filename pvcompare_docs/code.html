@@ -1,0 +1,346 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Code documentation &mdash; pvcompare  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pvcompare.area_potential.calculate_area_potential" href="temp/pvcompare.area_potential.calculate_area_potential.html" />
+    <link rel="prev" title="Examples" href="examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pvcompare
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Code documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#area-potential">Area potential</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.area_potential.calculate_area_potential.html">pvcompare.area_potential.calculate_area_potential</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#demand">Demand</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.demand.calculate_load_profiles.html">pvcompare.demand.calculate_load_profiles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.demand.calculate_power_demand.html">pvcompare.demand.calculate_power_demand</a></li>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.demand.calculate_heat_demand.html">pvcompare.demand.calculate_heat_demand</a></li>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.demand.shift_working_hours.html">pvcompare.demand.shift_working_hours</a></li>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.demand.get_workalendar_class.html">pvcompare.demand.get_workalendar_class</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#feed-in-time-series-of-photovoltaic-installations">Feed-in time series of photovoltaic installations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.pv_feedin.create_pv_components.html">pvcompare.pv_feedin.create_pv_components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.pv_feedin.create_si_time_series.html">pvcompare.pv_feedin.create_si_time_series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.pv_feedin.create_cpv_time_series.html">pvcompare.pv_feedin.create_cpv_time_series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.pv_feedin.nominal_values_pv.html">pvcompare.pv_feedin.nominal_values_pv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.pv_feedin.set_up_system.html">pvcompare.pv_feedin.set_up_system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.pv_feedin.get_optimal_pv_angle.html">pvcompare.pv_feedin.get_optimal_pv_angle</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#reading-and-writing-input-csv-s">Reading and Writing input csv’s</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.check_inputs.check_for_valid_country_year.html">pvcompare.check_inputs.check_for_valid_country_year</a></li>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.check_inputs.add_project_data.html">pvcompare.check_inputs.add_project_data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.check_inputs.check_mvs_energy_production_file.html">pvcompare.check_inputs.check_mvs_energy_production_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.check_inputs.create_mvs_energy_production_file.html">pvcompare.check_inputs.create_mvs_energy_production_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.check_inputs.add_parameters_to_energy_production_file.html">pvcompare.check_inputs.add_parameters_to_energy_production_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="temp/pvcompare.check_inputs.add_evaluated_period_to_simulation_settings.html">pvcompare.check_inputs.add_evaluated_period_to_simulation_settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pvcompare</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Code documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/code.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="code-documentation">
+<h1>Code documentation<a class="headerlink" href="#code-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="area-potential">
+<h2>Area potential<a class="headerlink" href="#area-potential" title="Permalink to this headline">¶</a></h2>
+<p>Function for calculating the area potential of the rooftop and facades for a given population.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="temp/pvcompare.area_potential.calculate_area_potential.html#pvcompare.area_potential.calculate_area_potential" title="pvcompare.area_potential.calculate_area_potential"><code class="xref py py-obj docutils literal notranslate"><span class="pre">area_potential.calculate_area_potential</span></code></a>(…)</p></td>
+<td><p>Calculates the area potential.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="demand">
+<h2>Demand<a class="headerlink" href="#demand" title="Permalink to this headline">¶</a></h2>
+<p>Functions for calculating the electrical demand profiles and heat demand profiles.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="temp/pvcompare.demand.calculate_load_profiles.html#pvcompare.demand.calculate_load_profiles" title="pvcompare.demand.calculate_load_profiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">demand.calculate_load_profiles</span></code></a>(country, …)</p></td>
+<td><p>calculate electricity and heat load profiles and saves them to csv</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="temp/pvcompare.demand.calculate_power_demand.html#pvcompare.demand.calculate_power_demand" title="pvcompare.demand.calculate_power_demand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">demand.calculate_power_demand</span></code></a>(country, …)</p></td>
+<td><p>calculates the electricity demand</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="temp/pvcompare.demand.calculate_heat_demand.html#pvcompare.demand.calculate_heat_demand" title="pvcompare.demand.calculate_heat_demand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">demand.calculate_heat_demand</span></code></a>(country, …[, …])</p></td>
+<td><p>calculates heat demand.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="temp/pvcompare.demand.shift_working_hours.html#pvcompare.demand.shift_working_hours" title="pvcompare.demand.shift_working_hours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">demand.shift_working_hours</span></code></a>(country, ts)</p></td>
+<td><p>Shift the demand time series with regard to the countries sleeping customs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="temp/pvcompare.demand.get_workalendar_class.html#pvcompare.demand.get_workalendar_class" title="pvcompare.demand.get_workalendar_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">demand.get_workalendar_class</span></code></a>(country)</p></td>
+<td><p>loads workalender for a given country.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="feed-in-time-series-of-photovoltaic-installations">
+<h2>Feed-in time series of photovoltaic installations<a class="headerlink" href="#feed-in-time-series-of-photovoltaic-installations" title="Permalink to this headline">¶</a></h2>
+<p>Functions for calculating the feed-in time series of different PV technologies.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="temp/pvcompare.pv_feedin.create_pv_components.html#pvcompare.pv_feedin.create_pv_components" title="pvcompare.pv_feedin.create_pv_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pv_feedin.create_pv_components</span></code></a>(lat, lon, …)</p></td>
+<td><p>creates feedin time series for all surface types in pv_setup.csv</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="temp/pvcompare.pv_feedin.create_si_time_series.html#pvcompare.pv_feedin.create_si_time_series" title="pvcompare.pv_feedin.create_si_time_series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pv_feedin.create_si_time_series</span></code></a>(lat, lon, …)</p></td>
+<td><p>Calculates feed-in time series for a silicon PV module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="temp/pvcompare.pv_feedin.create_cpv_time_series.html#pvcompare.pv_feedin.create_cpv_time_series" title="pvcompare.pv_feedin.create_cpv_time_series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pv_feedin.create_cpv_time_series</span></code></a>(lat, lon, …)</p></td>
+<td><p>Creates power time series of a CPV module.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="temp/pvcompare.pv_feedin.nominal_values_pv.html#pvcompare.pv_feedin.nominal_values_pv" title="pvcompare.pv_feedin.nominal_values_pv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pv_feedin.nominal_values_pv</span></code></a>(technology, …)</p></td>
+<td><p>calculates the maximum installed capacity for each pv module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="temp/pvcompare.pv_feedin.set_up_system.html#pvcompare.pv_feedin.set_up_system" title="pvcompare.pv_feedin.set_up_system"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pv_feedin.set_up_system</span></code></a>(technology, …)</p></td>
+<td><p>Sets up pvlibPVSystems.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="temp/pvcompare.pv_feedin.get_optimal_pv_angle.html#pvcompare.pv_feedin.get_optimal_pv_angle" title="pvcompare.pv_feedin.get_optimal_pv_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pv_feedin.get_optimal_pv_angle</span></code></a>(lat)</p></td>
+<td><p>Calculates the optimal tilt angle depending on the latitude.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="reading-and-writing-input-csv-s">
+<h2>Reading and Writing input csv’s<a class="headerlink" href="#reading-and-writing-input-csv-s" title="Permalink to this headline">¶</a></h2>
+<p>Functions that match manual inputs and calculated results with mvs_inputs/csv_elements/</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="temp/pvcompare.check_inputs.check_for_valid_country_year.html#pvcompare.check_inputs.check_for_valid_country_year" title="pvcompare.check_inputs.check_for_valid_country_year"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_inputs.check_for_valid_country_year</span></code></a>(…)</p></td>
+<td><p>checks if the input country is available in all input data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="temp/pvcompare.check_inputs.add_project_data.html#pvcompare.check_inputs.add_project_data" title="pvcompare.check_inputs.add_project_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_inputs.add_project_data</span></code></a>(…)</p></td>
+<td><p><dl class="field-list simple">
+<dt class="field-odd">param mvs_input_directory</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="temp/pvcompare.check_inputs.check_mvs_energy_production_file.html#pvcompare.check_inputs.check_mvs_energy_production_file" title="pvcompare.check_inputs.check_mvs_energy_production_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_inputs.check_mvs_energy_production_file</span></code></a>(…)</p></td>
+<td><p>checks if energyProduction.csv file with correct number of collumns exists.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="temp/pvcompare.check_inputs.create_mvs_energy_production_file.html#pvcompare.check_inputs.create_mvs_energy_production_file" title="pvcompare.check_inputs.create_mvs_energy_production_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_inputs.create_mvs_energy_production_file</span></code></a>(…)</p></td>
+<td><p>creates a new energyProduction.csv file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="temp/pvcompare.check_inputs.add_parameters_to_energy_production_file.html#pvcompare.check_inputs.add_parameters_to_energy_production_file" title="pvcompare.check_inputs.add_parameters_to_energy_production_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_inputs.add_parameters_to_energy_production_file</span></code></a>(…)</p></td>
+<td><p>enters new parameters into energyProduction.csv</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="temp/pvcompare.check_inputs.add_evaluated_period_to_simulation_settings.html#pvcompare.check_inputs.add_evaluated_period_to_simulation_settings" title="pvcompare.check_inputs.add_evaluated_period_to_simulation_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_inputs.add_evaluated_period_to_simulation_settings</span></code></a>(…)</p></td>
+<td><p>adds number of days of the time series into simulation_settings.csv</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="temp/pvcompare.area_potential.calculate_area_potential.html" class="btn btn-neutral float-right" title="pvcompare.area_potential.calculate_area_potential" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Reiner Lemoine Institut gGmbH
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

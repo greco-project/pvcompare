@@ -1,0 +1,6 @@
+pvcompare.pv\_feedin.add\_evaluated\_period\_to\_simulation\_settings
+=====================================================================
+
+.. currentmodule:: pvcompare.pv_feedin
+
+.. autofunction:: add_evaluated_period_to_simulation_settings

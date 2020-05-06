@@ -1,0 +1,731 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pvcompare.demand &mdash; pvcompare  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> pvcompare
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pvcompare</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>pvcompare.demand</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pvcompare.demand</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Creating demand profiles.</span>
+<span class="sd">The heat demand uses bdew profiles.</span>
+
+<span class="sd">Installation requirements</span>
+<span class="sd">-------------------------</span>
+<span class="sd">This example requires at least version v0.1.4 of the oemof demandlib. Install</span>
+<span class="sd">by:</span>
+<span class="sd">    pip install &#39;demandlib&gt;=0.1.4,&lt;0.2&#39;</span>
+<span class="sd">Optional:</span>
+<span class="sd">    pip install matplotlib</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">demandlib.bdew</span> <span class="k">as</span> <span class="nn">bdew</span>
+<span class="kn">import</span> <span class="nn">demandlib.particular_profiles</span> <span class="k">as</span> <span class="nn">profiles</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">from</span> <span class="nn">pkgutil</span> <span class="kn">import</span> <span class="n">iter_modules</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">import_module</span>
+<span class="kn">from</span> <span class="nn">pvcompare</span> <span class="kn">import</span> <span class="n">constants</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">log_format</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> </span><span class="si">%(levelname)s</span><span class="s2"> </span><span class="si">%(filename)s</span><span class="s2">:</span><span class="si">%(lineno)d</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">log_format</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">plt</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="kn">import</span> <span class="nn">workalendar</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">workalendar.europe</span> <span class="kn">import</span> <span class="n">Germany</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">workalendar</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="c1"># todo (nice to have): add function that writes name of demand.csv into energyConsumption.csv</span>
+
+
+<div class="viewcode-block" id="calculate_load_profiles"><a class="viewcode-back" href="../../temp/pvcompare.demand.calculate_load_profiles.html#pvcompare.demand.calculate_load_profiles">[docs]</a><span class="k">def</span> <span class="nf">calculate_load_profiles</span><span class="p">(</span>
+    <span class="n">country</span><span class="p">,</span>
+    <span class="n">population</span><span class="p">,</span>
+    <span class="n">year</span><span class="p">,</span>
+    <span class="n">weather</span><span class="p">,</span>
+    <span class="n">input_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">mvs_input_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    calculate electricity and heat load profiles and saves them to csv</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ---------</span>
+<span class="sd">    country: str</span>
+<span class="sd">    population: int</span>
+<span class="sd">        number of habitants</span>
+<span class="sd">    year: int</span>
+<span class="sd">        year between 2011 - 2015</span>
+<span class="sd">    input_directory: str</span>
+<span class="sd">        if None: DEFAULT_INPUT_DIRECTORY</span>
+<span class="sd">    mvs_input_directory: str</span>
+<span class="sd">        if None: DEFAULT_MVS_INPUT_DIRECTORY</span>
+<span class="sd">    plot: bool</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">input_directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">input_directory</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_INPUT_DIRECTORY</span>
+    <span class="k">if</span> <span class="n">mvs_input_directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mvs_input_directory</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_MVS_INPUT_DIRECTORY</span>
+
+    <span class="n">calculate_power_demand</span><span class="p">(</span>
+        <span class="n">country</span><span class="o">=</span><span class="n">country</span><span class="p">,</span>
+        <span class="n">population</span><span class="o">=</span><span class="n">population</span><span class="p">,</span>
+        <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span>
+        <span class="n">input_directory</span><span class="o">=</span><span class="n">input_directory</span><span class="p">,</span>
+        <span class="n">mvs_input_directory</span><span class="o">=</span><span class="n">mvs_input_directory</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">calculate_heat_demand</span><span class="p">(</span>
+        <span class="n">country</span><span class="o">=</span><span class="n">country</span><span class="p">,</span>
+        <span class="n">population</span><span class="o">=</span><span class="n">population</span><span class="p">,</span>
+        <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span>
+        <span class="n">weather</span><span class="o">=</span><span class="n">weather</span><span class="p">,</span>
+        <span class="n">input_directory</span><span class="o">=</span><span class="n">input_directory</span><span class="p">,</span>
+        <span class="n">mvs_input_directory</span><span class="o">=</span><span class="n">mvs_input_directory</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="calculate_power_demand"><a class="viewcode-back" href="../../temp/pvcompare.demand.calculate_power_demand.html#pvcompare.demand.calculate_power_demand">[docs]</a><span class="k">def</span> <span class="nf">calculate_power_demand</span><span class="p">(</span>
+    <span class="n">country</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">input_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mvs_input_directory</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    calculates the electricity demand</span>
+
+<span class="sd">    The electricity demand is calculated for a given population in a certain</span>
+<span class="sd">    country and year. The annual electricity demand is calculated by the</span>
+<span class="sd">    following procedure:</span>
+
+<span class="sd">    1) the residential electricity consumption for a country is requested from</span>
+<span class="sd">       [2]</span>
+<span class="sd">    2) the population of the country is requested from EUROSTAT_population</span>
+<span class="sd">    3) the total residential demand is divided by the countries population and</span>
+<span class="sd">       multiplied by the districts population</span>
+<span class="sd">    4) The load profile is shifted due to country specific behaviour</span>
+
+<span class="sd">    [2] https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    country: str</span>
+<span class="sd">        the countries name has to be in english and with capital first letter</span>
+<span class="sd">    population: int</span>
+<span class="sd">        the district population</span>
+<span class="sd">    year: int</span>
+<span class="sd">        Year for which power demand time series is calculated.</span>
+<span class="sd">        weather: pd.DataFrame()</span>
+<span class="sd">    plot: bool</span>
+<span class="sd">        True or False</span>
+<span class="sd">    input_directory: str</span>
+<span class="sd">        if None: input_directory= DEFAULT_INPUT_DIRECTORY</span>
+<span class="sd">    mvs_input_directory: str</span>
+<span class="sd">        if None: mvs_input_directory= DEFAULT_MVS_INPUT_DIRECTORY</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :pandas:`pandas.Series&lt;series&gt;`</span>
+<span class="sd">        hourly time series of the electrical demand</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;loading calender for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">country</span><span class="p">)</span>
+    <span class="n">cal</span> <span class="o">=</span> <span class="n">get_workalendar_class</span><span class="p">(</span><span class="n">country</span><span class="p">)</span>
+    <span class="n">holidays</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cal</span><span class="o">.</span><span class="n">holidays</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)))</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;loading residential electricity demand&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">input_directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">input_directory</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_INPUT_DIRECTORY</span>
+
+    <span class="n">bp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_directory</span><span class="p">,</span> <span class="s2">&quot;building_parameters.csv&quot;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">)</span>
+
+    <span class="n">filename_residential_electricity_demand</span> <span class="o">=</span> <span class="n">bp</span><span class="o">.</span><span class="n">at</span><span class="p">[</span>
+        <span class="s2">&quot;filename_residential_electricity_demand&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span>
+    <span class="p">]</span>
+    <span class="n">filename_population</span> <span class="o">=</span> <span class="n">bp</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;filename_country_population&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span>
+
+    <span class="n">filename_elec</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">input_directory</span><span class="p">,</span> <span class="n">filename_residential_electricity_demand</span>
+    <span class="p">)</span>
+    <span class="n">powerstat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename_elec</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">filename1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_directory</span><span class="p">,</span> <span class="n">filename_population</span><span class="p">)</span>
+    <span class="n">populations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename1</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+    <span class="c1"># convert mtoe in kWh</span>
+    <span class="n">national_energyconsumption</span> <span class="o">=</span> <span class="n">powerstat</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">country</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">11630</span>
+    <span class="n">annual_demand_per_population</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">national_energyconsumption</span> <span class="o">/</span> <span class="n">populations</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">country</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span>
+    <span class="p">)</span> <span class="o">*</span> <span class="n">population</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="s2">&quot;The annual demand for a population of </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">population</span>
+        <span class="o">+</span> <span class="s2">&quot; for the year </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="n">year</span>
+        <span class="o">+</span> <span class="s2">&quot;is </span><span class="si">%s</span><span class="s2"> Watts&quot;</span> <span class="o">%</span> <span class="n">annual_demand_per_population</span>
+    <span class="p">)</span>
+
+    <span class="n">ann_el_demand_h0</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;h0&quot;</span><span class="p">:</span> <span class="n">annual_demand_per_population</span><span class="p">}</span>
+
+    <span class="c1"># read standard load profiles</span>
+    <span class="n">e_slp</span> <span class="o">=</span> <span class="n">bdew</span><span class="o">.</span><span class="n">ElecSlp</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">),</span> <span class="n">holidays</span><span class="o">=</span><span class="n">holidays</span><span class="p">)</span>
+
+    <span class="c1"># multiply given annual demand with timeseries</span>
+    <span class="n">elec_demand</span> <span class="o">=</span> <span class="n">e_slp</span><span class="o">.</span><span class="n">get_profile</span><span class="p">(</span><span class="n">ann_el_demand_h0</span><span class="p">)</span>
+
+    <span class="c1"># Resample 15-minute values to hourly values.</span>
+    <span class="n">elec_demand</span> <span class="o">=</span> <span class="n">elec_demand</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;H&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="n">shifted_elec_demand</span> <span class="o">=</span> <span class="n">shift_working_hours</span><span class="p">(</span><span class="n">country</span><span class="o">=</span><span class="n">country</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="n">elec_demand</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mvs_input_directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mvs_input_directory</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_MVS_INPUT_DIRECTORY</span>
+    <span class="n">timeseries_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mvs_input_directory</span><span class="p">,</span> <span class="s2">&quot;time_series/&quot;</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="s2">&quot;The electrical load profile is completly calculated and &quot;</span>
+        <span class="s2">&quot;being saved under </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="n">timeseries_directory</span>
+    <span class="p">)</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">timeseries_directory</span><span class="p">,</span> <span class="s2">&quot;electricity_load.csv&quot;</span><span class="p">)</span>
+    <span class="n">shifted_elec_demand</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">shifted_elec_demand</span></div>
+
+
+
+<div class="viewcode-block" id="calculate_heat_demand"><a class="viewcode-back" href="../../temp/pvcompare.demand.calculate_heat_demand.html#pvcompare.demand.calculate_heat_demand">[docs]</a><span class="k">def</span> <span class="nf">calculate_heat_demand</span><span class="p">(</span>
+    <span class="n">country</span><span class="p">,</span>
+    <span class="n">population</span><span class="p">,</span>
+    <span class="n">year</span><span class="p">,</span>
+    <span class="n">weather</span><span class="p">,</span>
+    <span class="n">input_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">mvs_input_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    calculates heat demand.</span>
+
+<span class="sd">    The heat demand is calculated for a given population in a certain country</span>
+<span class="sd">    and year. The annual heat demand is calculated by the following procedure:</span>
+
+<span class="sd">    1) the residential heat demand for a country is requested from [2]</span>
+<span class="sd">    2) the population of the country is requested from EUROSTAT_population</span>
+<span class="sd">    3) the total residential demand is devided by the countries population and</span>
+<span class="sd">       multiplied by the districts population</span>
+<span class="sd">    4) The load profile is shifted due to countrys specific behaviour</span>
+
+<span class="sd">    [2] https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    country: str</span>
+<span class="sd">        the countries name has to be in english and with capital first letter</span>
+<span class="sd">    population: int</span>
+<span class="sd">        the district population</span>
+<span class="sd">    year: int</span>
+<span class="sd">        Year for which heat demand time series is calculated.</span>
+<span class="sd">    weather: :pandas:`pandas.DataFrame&lt;frame&gt;`</span>
+<span class="sd">        weather Data Frame</span>
+<span class="sd">    plot: bool</span>
+<span class="sd">        True or False</span>
+<span class="sd">    input_directory: str</span>
+<span class="sd">        if None: input_directory= DEFAULT_INPUT_DIRECTORY</span>
+<span class="sd">    mvs_input_directory: str</span>
+<span class="sd">        if None: mvs_input_directory= DEFAULT_MVS_INPUT_DIRECTORY</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :pandas:`pandas.Series&lt;series&gt;`</span>
+<span class="sd">        hourly time series of the heat demand</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># load workelendar for country</span>
+    <span class="n">cal</span> <span class="o">=</span> <span class="n">get_workalendar_class</span><span class="p">(</span><span class="n">country</span><span class="p">)</span>
+    <span class="n">holidays</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cal</span><span class="o">.</span><span class="n">holidays</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)))</span>
+
+    <span class="c1"># define temperature</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">weather</span><span class="p">[</span><span class="s2">&quot;temp_air&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Create DataFrame for demand timeseries</span>
+    <span class="n">demand</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">periods</span><span class="o">=</span><span class="n">temp</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;H&quot;</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># calculate annual demand</span>
+    <span class="c1"># The annual heat condumption is calculated by adding up the total</span>
+    <span class="c1"># consumption for SH and WH and substracting the electrical condumption of</span>
+    <span class="c1"># SH and WH for a country</span>
+    <span class="k">if</span> <span class="n">input_directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">input_directory</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_INPUT_DIRECTORY</span>
+
+    <span class="n">bp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_directory</span><span class="p">,</span> <span class="s2">&quot;building_parameters.csv&quot;</span><span class="p">),</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">)</span>
+    <span class="n">filename_total_SH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">input_directory</span><span class="p">,</span> <span class="n">bp</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;filename_total_SH&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">filename_total_WH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">input_directory</span><span class="p">,</span> <span class="n">bp</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;filename_total_WH&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">filename_electr_SH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">input_directory</span><span class="p">,</span> <span class="n">bp</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;filename_elect_SH&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">filename_electr_WH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="n">input_directory</span><span class="p">,</span> <span class="n">bp</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;filename_elect_WH&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">total_SH</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename_total_SH</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">total_WH</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename_total_WH</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">electr_SH</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename_electr_SH</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">electr_WH</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename_electr_WH</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">total_SH</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">total_SH</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+    <span class="n">total_WH</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">total_WH</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+    <span class="n">electr_SH</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">electr_SH</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+    <span class="n">electr_WH</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">electr_WH</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+
+    <span class="n">filename_population</span> <span class="o">=</span> <span class="n">bp</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="s2">&quot;filename_country_population&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="n">filename1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_directory</span><span class="p">,</span> <span class="n">filename_population</span><span class="p">)</span>
+    <span class="n">populations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename1</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+    <span class="c1"># convert Mtoe in kWh</span>
+    <span class="n">heat_demand</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">total_SH</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">country</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span>
+        <span class="o">+</span> <span class="n">total_WH</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">country</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span>
+        <span class="o">-</span> <span class="n">electr_SH</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">country</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span>
+        <span class="o">-</span> <span class="n">electr_WH</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">country</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span>
+    <span class="p">)</span> <span class="o">*</span> <span class="mi">11630</span>
+    <span class="n">annual_heat_demand_per_population</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">heat_demand</span> <span class="o">/</span> <span class="n">populations</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">country</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span>
+    <span class="p">)</span> <span class="o">*</span> <span class="n">population</span>
+
+    <span class="c1"># Multi family house (mfh: Mehrfamilienhaus)</span>
+    <span class="n">demand</span><span class="p">[</span><span class="s2">&quot;h0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bdew</span><span class="o">.</span><span class="n">HeatBuilding</span><span class="p">(</span>
+        <span class="n">demand</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+        <span class="n">holidays</span><span class="o">=</span><span class="n">holidays</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="o">=</span><span class="n">temp</span><span class="p">,</span>
+        <span class="n">shlp_type</span><span class="o">=</span><span class="s2">&quot;MFH&quot;</span><span class="p">,</span>
+        <span class="n">building_class</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">wind_class</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">annual_heat_demand</span><span class="o">=</span><span class="n">annual_heat_demand_per_population</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;MFH&quot;</span><span class="p">,</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">get_bdew_profile</span><span class="p">()</span>
+
+    <span class="n">shifted_heat_demand</span> <span class="o">=</span> <span class="n">shift_working_hours</span><span class="p">(</span><span class="n">country</span><span class="o">=</span><span class="n">country</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="n">demand</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mvs_input_directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mvs_input_directory</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_MVS_INPUT_DIRECTORY</span>
+    <span class="n">timeseries_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mvs_input_directory</span><span class="p">,</span> <span class="s2">&quot;time_series/&quot;</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="s2">&quot;The electrical load profile is completely calculated and &quot;</span>
+        <span class="s2">&quot;being saved under </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="n">timeseries_directory</span>
+    <span class="p">)</span>
+    <span class="n">shifted_heat_demand</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">timeseries_directory</span><span class="p">,</span> <span class="s2">&quot;heat_load.csv&quot;</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">shifted_heat_demand</span></div>
+
+<div class="viewcode-block" id="shift_working_hours"><a class="viewcode-back" href="../../temp/pvcompare.demand.shift_working_hours.html#pvcompare.demand.shift_working_hours">[docs]</a><span class="k">def</span> <span class="nf">shift_working_hours</span><span class="p">(</span><span class="n">country</span><span class="p">,</span> <span class="n">ts</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shift the demand time series with regard to the countries sleeping customs.</span>
+
+<span class="sd">    Since the energy demand for domnestic hot water depends strongly on</span>
+<span class="sd">    behaviour, the demand profile is adjusted for the different EU countries.</span>
+<span class="sd">    (see [3] HOTMAPS report p. 127). The statistics are received from [4].</span>
+
+<span class="sd">    [3] `Hotmaps &lt;https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf&gt;`_</span>
+
+<span class="sd">    [4] `Eurostat &lt;https://ec.europa.eu/eurostat/web/products-manuals-and-guidelines/-/KS-RA-08-014&gt;`_</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    country: str</span>
+<span class="sd">        name of the country</span>
+<span class="sd">    ts: :pandas:`pandas.DataFrame&lt;frame&gt;`</span>
+<span class="sd">        hourly load profile time series</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ts: :pandas:`pandas.DataFrame&lt;frame&gt;`</span>
+<span class="sd">        shifted time series</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># check if time series contains more than 24 h</span>
+    <span class="n">time0</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">index</span>
+    <span class="n">time24</span> <span class="o">=</span> <span class="n">time0</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">DateOffset</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">time24</span> <span class="ow">in</span> <span class="n">ts</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">&quot;Your demand timeseries does not cover 24h and is &quot;</span>
+            <span class="s2">&quot;therefore not shifted according to the local &quot;</span>
+            <span class="s2">&quot;behaviour.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">ts</span>
+    <span class="k">if</span> <span class="n">country</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="s2">&quot;Bulgaria&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Croatia&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Czech Republic&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Hungary&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Lithuania&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Poland&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Slovakia&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Slovenia&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Romania&quot;</span><span class="p">,</span>
+    <span class="p">]:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;The load profile is shifted by -1 hours only on &quot;</span> <span class="s2">&quot;weekends.&quot;</span><span class="p">)</span>
+        <span class="c1"># The timeseries is shifted by -1 hour only on weekends</span>
+        <span class="n">ts</span><span class="p">[</span><span class="s2">&quot;Day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DatetimeIndex</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">day_name</span><span class="p">()</span>
+        <span class="n">one_weekend</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">ts</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Day&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Saturday&quot;</span><span class="p">,</span> <span class="s2">&quot;Sunday&quot;</span><span class="p">]:</span>
+                <span class="n">counter</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">one_weekend</span> <span class="o">=</span> <span class="n">one_weekend</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">counter</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">one_weekend</span><span class="o">.</span><span class="n">h0</span> <span class="o">=</span> <span class="n">one_weekend</span><span class="o">.</span><span class="n">h0</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="n">one_weekend</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;ffill&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">ts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">one_weekend</span><span class="p">)</span>
+                    <span class="n">one_weekend</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+                    <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">ts</span><span class="p">[</span><span class="s2">&quot;h0&quot;</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="n">country</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="s2">&quot;Belgium&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Estonia&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Ireland&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Italy&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Latvia&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Malta&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;France&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;UK&quot;</span><span class="p">,</span>
+    <span class="p">]:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;The load profile is shifted by +1 hours.&quot;</span><span class="p">)</span>
+        <span class="c1"># the timeseries is shifted by one hour</span>
+        <span class="n">ts</span><span class="o">.</span><span class="n">h0</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">h0</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">nans</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="n">ts</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">nans</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">newindex</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">DateOffset</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+            <span class="n">newvalue</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">newindex</span><span class="p">)]</span>
+            <span class="k">return</span> <span class="n">ts</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">newvalue</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">country</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Cyprus&quot;</span><span class="p">,</span> <span class="s2">&quot;Greece&quot;</span><span class="p">,</span> <span class="s2">&quot;Portugal&quot;</span><span class="p">,</span> <span class="s2">&quot;Spain&quot;</span><span class="p">]:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;The load profile is shifted by +2 hours.&quot;</span><span class="p">)</span>
+        <span class="c1"># the timeseries is shifted by two hours</span>
+        <span class="n">ts</span><span class="o">.</span><span class="n">h0</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">h0</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">nans</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="n">ts</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">nans</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">newindex</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">DateOffset</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+            <span class="n">newvalue</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">newindex</span><span class="p">)]</span>
+            <span class="k">return</span> <span class="n">ts</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">newvalue</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;The load profile is not shifted.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ts</span></div>
+
+
+<div class="viewcode-block" id="get_workalendar_class"><a class="viewcode-back" href="../../temp/pvcompare.demand.get_workalendar_class.html#pvcompare.demand.get_workalendar_class">[docs]</a><span class="k">def</span> <span class="nf">get_workalendar_class</span><span class="p">(</span><span class="n">country</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    loads workalender for a given country.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ---------</span>
+<span class="sd">    country: str</span>
+<span class="sd">        name of the country</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ------</span>
+<span class="sd">     str</span>
+<span class="sd">        class of the country specific workalender</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">country_name</span> <span class="o">=</span> <span class="n">country</span>
+    <span class="k">for</span> <span class="n">finder</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">ispkg</span> <span class="ow">in</span> <span class="n">iter_modules</span><span class="p">(</span><span class="n">workalendar</span><span class="o">.</span><span class="n">__path__</span><span class="p">):</span>
+        <span class="n">module_name</span> <span class="o">=</span> <span class="s2">&quot;workalendar.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">import_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+        <span class="n">classes</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module_name</span><span class="p">],</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">class_name</span><span class="p">,</span> <span class="n">_class</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">_class</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">==</span> <span class="n">country_name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">_class</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="c1"># weather = pd.read_csv(&quot;./data/inputs/weatherdata.csv&quot;)</span>
+    <span class="c1">#</span>
+    <span class="c1"># mvs_input_directory = &quot;./data/mvs_inputs/&quot;</span>
+    <span class="c1"># input_directory = &quot;./data/inputs/&quot;</span>
+    <span class="c1"># #    calculate_power_demand(country=&#39;Bulgaria&#39;, population=600, year=&#39;2011&#39;,</span>
+    <span class="c1"># #                           input_directory=None, plot=True,</span>
+    <span class="c1"># #                           mvs_input_directory=mvs_input_directory)</span>
+    <span class="c1"># calculate_load_profiles(</span>
+    <span class="c1">#     country=&quot;Germany&quot;,</span>
+    <span class="c1">#     population=600,</span>
+    <span class="c1">#     year=2001,</span>
+    <span class="c1">#     weather=weather,</span>
+    <span class="c1">#     plot=True,</span>
+    <span class="c1">#     input_directory=None,</span>
+    <span class="c1">#     mvs_input_directory=mvs_input_directory,</span>
+    <span class="c1"># )</span>
+
+    <span class="c1"># check_if_country_is_valid(country=&quot;Spain&quot;, input_directory=input_directory)</span>
+
+    <span class="n">country</span><span class="o">=</span><span class="s1">&#39;Spain&#39;</span>
+    <span class="n">population</span> <span class="o">=</span> <span class="mi">4800</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="mi">2014</span>
+    <span class="n">input_directory</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">DEFAULT_INPUT_DIRECTORY</span>
+    <span class="n">test_mvs_directory</span> <span class="o">=</span> <span class="s2">&quot;../tests/test_data/test_mvs_inputs&quot;</span>
+
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">ts</span><span class="p">[</span><span class="s2">&quot;h0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">19052</span><span class="p">,</span> <span class="mi">19052</span><span class="p">,</span> <span class="mi">14289</span><span class="p">,</span> <span class="mi">19052</span><span class="p">,</span> <span class="mi">19052</span><span class="p">,</span> <span class="mi">14289</span><span class="p">]</span>
+    <span class="n">ts</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;2014-01-01 13:30:00+00:00&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;2014-01-01 14:00:00+00:00&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;2014-01-01 14:30:00+00:00&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;2014-01-01 15:00:00+00:00&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;2014-01-01 15:30:00+00:00&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;2014-01-01 16:00:00+00:00&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">ts</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+    <span class="n">weather_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">weather_df</span><span class="p">[</span><span class="s2">&quot;temp_air&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+    <span class="n">weather_df</span><span class="p">[</span><span class="s2">&quot;wind_speed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">]</span>
+    <span class="n">weather_df</span><span class="p">[</span><span class="s2">&quot;dhi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">120</span><span class="p">]</span>
+    <span class="n">weather_df</span><span class="p">[</span><span class="s2">&quot;dni&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">120</span><span class="p">,</span> <span class="mi">150</span><span class="p">]</span>
+    <span class="n">weather_df</span><span class="p">[</span><span class="s2">&quot;ghi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">220</span><span class="p">]</span>
+    <span class="n">weather_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;2014-01-01 13:00:00+00:00&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;2014-01-01 14:00:00+00:00&quot;</span><span class="p">]</span>
+    <span class="n">weather_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">weather_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">weather</span> <span class="o">=</span> <span class="n">weather_df</span>
+
+    <span class="n">d</span><span class="o">=</span><span class="n">calculate_heat_demand</span><span class="p">(</span>
+        <span class="n">country</span><span class="o">=</span><span class="n">country</span><span class="p">,</span>
+        <span class="n">population</span><span class="o">=</span><span class="n">population</span><span class="p">,</span>
+        <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span>
+        <span class="n">weather</span><span class="o">=</span><span class="n">weather</span><span class="p">,</span>
+        <span class="n">input_directory</span><span class="o">=</span><span class="n">input_directory</span><span class="p">,</span>
+        <span class="n">mvs_input_directory</span><span class="o">=</span><span class="n">test_mvs_directory</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># output = shift_working_hours(country=country, ts=ts)</span>
+    <span class="c1"># print(output[&#39;h0&#39;].sum())</span>
+    <span class="c1">#</span>
+    <span class="c1"># cal=get_workalendar_class(country)</span>
+    <span class="c1"># print(cal.__class__.__name__)</span>
+
+<span class="c1">#    if cal == &lt;workalendar.europe.spain.Spain object at 0x7f8e29b16390&gt;:</span>
+<span class="c1">#        print(cal.__class__.__name__)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Reiner Lemoine Institut gGmbH
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

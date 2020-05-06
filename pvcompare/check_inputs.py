@@ -90,14 +90,25 @@ def check_for_valid_country_year(country, year, input_directory):
 
 def add_project_data(mvs_input_directory, latitude, longitude, country, year):
     """
+    matches user input with mvs_inputs/csv_elements
+
+    checks if latitude, longitude, country and year exist either as a user
+    input or in the csv files. If a user input exists, the parameter in the
+    certain csv file will be overwritten, otherwise the parameter is taken from
+    the csv file.
 
     Parameters
     ----------
     mvs_input_directory: str
+        directory to "mvs_inputs/"
     latitude: float
+        latitude of the location
     longitude: float
+        longitude of the location
     country: str
+        country of the location
     year: int
+        year of the simulation
 
     Returns
     -------

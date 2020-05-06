@@ -1,0 +1,6 @@
+pvcompare.demand.calculate\_load\_profiles
+==========================================
+
+.. currentmodule:: pvcompare.demand
+
+.. autofunction:: calculate_load_profiles

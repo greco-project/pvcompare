@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pvcompare.area_potential &mdash; pvcompare  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> pvcompare
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../code.html">Code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pvcompare</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>pvcompare.area_potential</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pvcompare.area_potential</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">calculating the available area potential for PV-modules on the rooftop and facades</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">plt</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="calculate_area_potential"><a class="viewcode-back" href="../../temp/pvcompare.area_potential.calculate_area_potential.html#pvcompare.area_potential.calculate_area_potential">[docs]</a><span class="k">def</span> <span class="nf">calculate_area_potential</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">input_directory</span><span class="p">,</span> <span class="n">surface_type</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the area potential.</span>
+
+<span class="sd">    Calculates the area potential of the rooftop, south and east/west</span>
+<span class="sd">    facades for a given population.</span>
+
+<span class="sd">    Due to shading, the area potential for a flat roof is estimated to be 40%</span>
+<span class="sd">    of the whole usable roof area.</span>
+<span class="sd">    For more information see [1].</span>
+
+<span class="sd">    [1] https://energieatlas.berlin.de/Energieatlas_Be/Docs/Datendokumentation-Solarkataster_BLN.pdf</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    population: int</span>
+<span class="sd">        the population of the district</span>
+<span class="sd">    input_directory: str</span>
+<span class="sd">        path to the input directory</span>
+<span class="sd">    surface_type: str</span>
+<span class="sd">        possible values: &quot;flat_roof&quot;, &quot;gable_roof&quot;, &quot;east_facade&quot;,</span>
+<span class="sd">        &quot;west_facade&quot; or &quot;south_facade&quot;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    int</span>
+<span class="sd">        area</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># read building parameters</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;loading building parameters from building_parameters.csv &quot;</span><span class="p">)</span>
+    <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_directory</span><span class="p">,</span> <span class="s2">&quot;building_parameters.csv&quot;</span><span class="p">)</span>
+
+    <span class="c1"># load input parameters from building_parameters.csv</span>
+    <span class="n">bp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">bp</span> <span class="o">=</span> <span class="n">bp</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">population_per_storey</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bp</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;population per storey&quot;</span><span class="p">])</span>
+    <span class="n">number_of_storeys</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bp</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;number of storeys&quot;</span><span class="p">])</span>
+    <span class="n">floor_area</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bp</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;total storey area&quot;</span><span class="p">])</span>
+    <span class="n">length_south_facade</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bp</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;length south facade&quot;</span><span class="p">])</span>
+    <span class="n">length_east_west_facade</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bp</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;length eastwest facade&quot;</span><span class="p">])</span>
+    <span class="n">hight_per_storey</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bp</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;hight storey&quot;</span><span class="p">])</span>
+
+    <span class="n">number_houses</span> <span class="o">=</span> <span class="n">population</span> <span class="o">/</span> <span class="p">(</span><span class="n">population_per_storey</span> <span class="o">*</span> <span class="n">number_of_storeys</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">surface_type</span> <span class="o">==</span> <span class="s2">&quot;flat_roof&quot;</span><span class="p">:</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="n">floor_area</span> <span class="o">*</span> <span class="n">number_houses</span> <span class="o">*</span> <span class="mf">0.4</span>
+    <span class="k">elif</span> <span class="n">surface_type</span> <span class="o">==</span> <span class="s2">&quot;gable_roof&quot;</span><span class="p">:</span>
+        <span class="c1"># the south facing side of the gable roof with 45° elevation equals</span>
+        <span class="c1"># 70% of the floor area</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="p">(</span><span class="n">floor_area</span> <span class="o">*</span> <span class="n">number_houses</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span> <span class="o">*</span> <span class="mi">70</span> <span class="o">*</span> <span class="mf">0.4</span>
+
+    <span class="c1"># number of storeys for each building</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># solar panels are only starting from the fourth storey (see Hachem2014)</span>
+        <span class="k">if</span> <span class="n">number_of_storeys</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">used_storeys</span> <span class="o">=</span> <span class="n">number_of_storeys</span> <span class="o">-</span> <span class="mi">3</span>
+            <span class="n">south_facade</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">length_south_facade</span> <span class="o">*</span> <span class="n">hight_per_storey</span> <span class="o">*</span> <span class="n">used_storeys</span> <span class="o">*</span> <span class="n">number_houses</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">surface_type</span> <span class="o">==</span> <span class="s2">&quot;east_facade&quot;</span> <span class="ow">or</span> <span class="n">surface_type</span> <span class="o">==</span> <span class="s2">&quot;west_facade&quot;</span><span class="p">:</span>
+                <span class="n">east_west_facade</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">length_east_west_facade</span>
+                    <span class="o">*</span> <span class="n">hight_per_storey</span>
+                    <span class="o">*</span> <span class="mi">2</span>
+                    <span class="o">*</span> <span class="n">used_storeys</span>
+                    <span class="o">*</span> <span class="n">number_houses</span>
+                <span class="p">)</span>
+
+            <span class="c1"># 50 % of the south facade and 80% of the west and east facade can</span>
+            <span class="c1"># be used</span>
+            <span class="c1"># due to windows (see Hachem2014)</span>
+            <span class="k">if</span> <span class="n">surface_type</span> <span class="o">==</span> <span class="s2">&quot;south_facade&quot;</span><span class="p">:</span>
+                <span class="n">area</span> <span class="o">=</span> <span class="n">south_facade</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">*</span> <span class="mi">50</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">area</span> <span class="o">=</span> <span class="n">east_west_facade</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">*</span> <span class="mi">80</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">area</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="s2">&quot;The area potential has been calculated to be </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="n">area</span>
+        <span class="o">+</span> <span class="s2">&quot; qm for the surface type </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">surface_type</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">area</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="n">area</span> <span class="o">=</span> <span class="n">calculate_area_potential</span><span class="p">(</span>
+        <span class="n">population</span><span class="o">=</span><span class="mi">6000</span><span class="p">,</span> <span class="n">input_directory</span><span class="o">=</span><span class="s2">&quot;./data/inputs/&quot;</span><span class="p">,</span> <span class="n">surface_type</span><span class="o">=</span><span class="s2">&quot;flat_roof&quot;</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">area</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Reiner Lemoine Institut gGmbH
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

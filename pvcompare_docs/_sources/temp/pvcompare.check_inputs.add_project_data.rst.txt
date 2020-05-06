@@ -1,0 +1,6 @@
+pvcompare.check\_inputs.add\_project\_data
+==========================================
+
+.. currentmodule:: pvcompare.check_inputs
+
+.. autofunction:: add_project_data

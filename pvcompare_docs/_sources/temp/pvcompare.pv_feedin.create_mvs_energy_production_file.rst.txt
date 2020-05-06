@@ -1,0 +1,6 @@
+pvcompare.pv\_feedin.create\_mvs\_energy\_production\_file
+==========================================================
+
+.. currentmodule:: pvcompare.pv_feedin
+
+.. autofunction:: create_mvs_energy_production_file
