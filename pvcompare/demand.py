@@ -51,7 +51,6 @@ def calculate_load_profiles(
     weather,
     input_directory=None,
     mvs_input_directory=None,
-    plot=True,
 ):
 
     """
@@ -80,30 +79,25 @@ def calculate_load_profiles(
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
-    # check if "country" is a valid country
-    check_for_valid_country_year(country, year, input_directory)
-
     calculate_power_demand(
         country=country,
         population=population,
         year=year,
         input_directory=input_directory,
         mvs_input_directory=mvs_input_directory,
-        plot=plot,
     )
     calculate_heat_demand(
         country=country,
         population=population,
         year=year,
         weather=weather,
-        plot=plot,
         input_directory=input_directory,
         mvs_input_directory=mvs_input_directory,
     )
 
 
 def calculate_power_demand(
-    country, population, year, input_directory=None, mvs_input_directory=None, plot=True
+    country, population, year, input_directory=None, mvs_input_directory=None
 ):
 
     """
