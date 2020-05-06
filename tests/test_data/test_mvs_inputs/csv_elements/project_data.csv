@@ -1,8 +1,8 @@
 ,unit,project_data
 country,str,Spain
 label,str,project_data
-latitude,str,45.641603
-longitude,str,5.875387
+latitude,str,
+longitude,str,5.2
 project_id,str,1
 project_name,str,net zero energy community
 scenario_id,str,1

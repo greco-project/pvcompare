@@ -1,0 +1,5 @@
+surface_type,surface_azimuth,surface_tilt,technology
+wrong,180,optimal,si
+flat_roof,180,optimal,si
+east_facade,90,90,cpv
+
