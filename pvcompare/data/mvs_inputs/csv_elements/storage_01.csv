@@ -1,7 +1,7 @@
 ,unit,storage capacity,input power,output power
 age_installed,year,0,0,0
 capex_fix,currency,0,0,0
-capex_var,currency/unit,0.15,0,0
+capex_var,currency/unit,0.2,0,0
 c_rate,factor of total capacity (kWh),NA,1,1
 efficiency,factor,0,0.9,0.9
 installedCap,unit,0,0,0
