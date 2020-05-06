@@ -117,7 +117,7 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
             if params[key] is None:
                 logging.info(f"The parameter {key} is taken " f"from project_data.csv.")
                 params[key] = project_data.at[key, "project_data"]
-                if params[key] is None:
+                if pd.isna(params[key]) == True:
                     raise ValueError(
                         f"The parameter {key} cannot be None. "
                         f"Please correct the parameter {key} in "
@@ -146,17 +146,23 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
     if os.path.isfile(simulation_settings_filename):
         simulation_settings = pd.read_csv(simulation_settings_filename, index_col=0)
     start_date = simulation_settings.at["start_date", "simulation_settings"]
-    year_ss = str(start_date)[:-15]
+    start_date = None if start_date == 'None' else start_date
+    if pd.isna(start_date) == False:
+        year_ss = str(start_date)[:-15]
+    else:
+        year_ss = None
     if year is None:
         logging.info(f"The parameter 'year' is taken " f"from simulation_settings.csv.")
-        year = year_ss
-        if year is None:
+        if start_date is None:
             raise ValueError(
                 f"The parameter year cannot be None. "
                 f"Please correct the parameter 'start_date' in "
                 f"simulation_settings.csv or change the paremeter "
                 f"'year' in the main function."
             )
+        else:
+            year_ss = str(start_date)[:-15]
+            year=year_ss
     elif year is not year_ss:
         logging.warning(
             f"The parameter year in the main function"
