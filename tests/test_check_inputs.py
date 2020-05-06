@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import pytest
 
 from pvcompare.check_inputs import (
     check_for_valid_country_year,
@@ -76,6 +77,36 @@ class TestDemandProfiles:
 
         assert (float(latitude_csv), float(longitude_csv), country_csv) == \
                (self.lat, self.lon, self.country)
+
+    def test_add_project_data_with_latitude_is_none(self):
+
+        project_data = pd.read_csv(os.path.join(self.test_mvs_directory, "csv_elements/project_data.csv"), index_col=0, header=0)
+        project_data.at["latitude", "project_data"] = None
+        project_data.to_csv(os.path.join(self.test_mvs_directory, "csv_elements/project_data.csv"))
+
+        with pytest.raises(ValueError):
+            add_project_data(
+                mvs_input_directory=self.test_mvs_directory,
+                latitude=None,
+                longitude=self.lon,
+                country=self.country,
+                year=self.year)
+
+    def test_add_project_data_with_year_is_none(self):
+
+        simulation_setting = pd.read_csv(
+            os.path.join(self.test_mvs_directory, "csv_elements/simulation_settings.csv"), index_col=0, header=0)
+        simulation_setting.at["start_date", "simulation_settings"] = "None"
+        simulation_setting.to_csv(
+            os.path.join(self.test_mvs_directory, "csv_elements/simulation_settings.csv"))
+
+        with pytest.raises(ValueError):
+            add_project_data(
+                mvs_input_directory=self.test_mvs_directory,
+                latitude=self.lat,
+                longitude=self.lon,
+                country=self.country,
+                year=None)
 
     def test_check_mvs_energy_production_file(self):
 
