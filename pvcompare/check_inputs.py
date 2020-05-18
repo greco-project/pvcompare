@@ -157,7 +157,7 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
     if os.path.isfile(simulation_settings_filename):
         simulation_settings = pd.read_csv(simulation_settings_filename, index_col=0)
     start_date = simulation_settings.at["start_date", "simulation_settings"]
-    start_date = None if start_date == 'None' else start_date
+    start_date = None if start_date == "None" else start_date
     if pd.isna(start_date) == False:
         year_ss = str(start_date)[:-15]
     else:
@@ -173,7 +173,7 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
             )
         else:
             year_ss = str(start_date)[:-15]
-            year=year_ss
+            year = year_ss
     elif year is not year_ss:
         logging.warning(
             f"The parameter year in the main function"
@@ -421,6 +421,3 @@ def add_evaluated_period_to_simulation_settings(time_series, mvs_input_directory
     length = len(time_series.index) / 24
     simulation_settings.loc[["evaluated_period"], ["simulation_settings"]] = int(length)
     simulation_settings.to_csv(simulation_settings_filename)
-
-
-

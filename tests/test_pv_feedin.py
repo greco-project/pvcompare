@@ -34,8 +34,9 @@ class TestPvtime_series:
         weather_df["ghi"] = [200, 220]
         weather_df.index = ["2014-01-01 13:00:00+00:00", "2014-01-01 14:00:00+00:00"]
         weather_df.index = pd.to_datetime(weather_df.index)
-        self.test_mvs_directory = os.path.join(os.path.dirname(__file__),
-                                               "test_data/test_mvs_inputs")
+        self.test_mvs_directory = os.path.join(
+            os.path.dirname(__file__), "test_data/test_mvs_inputs"
+        )
         self.weather = weather_df
 
         self.population = 4600
@@ -94,60 +95,63 @@ class TestPvtime_series:
         assert output == 25
 
     def test_create_create_pv_components_column_missing_in_pvsetup(self):
-        pv_setup_filename = os.path.join(constants.DUMMY_TEST_DATA,
-                                         "test_pv_setup_missing_column.csv")
+        pv_setup_filename = os.path.join(
+            constants.DUMMY_TEST_DATA, "test_pv_setup_missing_column.csv"
+        )
         pv_setup = pd.read_csv(pv_setup_filename)
 
         with pytest.raises(ValueError):
             create_pv_components(
-                    self.lat,
-                    self.lon,
-                    self.weather,
-                    self.population,
-                    pv_setup= pv_setup,
-                    plot=False,
-                    input_directory=constants.DUMMY_TEST_DATA,
-                    mvs_input_directory=self.test_mvs_directory,
-                    directory_energy_production=None,
-                    cpv_type="m300",
+                self.lat,
+                self.lon,
+                self.weather,
+                self.population,
+                pv_setup=pv_setup,
+                plot=False,
+                input_directory=constants.DUMMY_TEST_DATA,
+                mvs_input_directory=self.test_mvs_directory,
+                directory_energy_production=None,
+                cpv_type="m300",
             )
 
     def test_create_create_pv_components_wrong_technology_in_pvsetup(self):
-        pv_setup_filename = os.path.join(constants.DUMMY_TEST_DATA,
-                                         "test_pv_setup_wrong_technology.csv")
+        pv_setup_filename = os.path.join(
+            constants.DUMMY_TEST_DATA, "test_pv_setup_wrong_technology.csv"
+        )
         pv_setup = pd.read_csv(pv_setup_filename)
 
         with pytest.raises(ValueError):
             create_pv_components(
-                    self.lat,
-                    self.lon,
-                    self.weather,
-                    self.population,
-                    pv_setup= pv_setup,
-                    plot=False,
-                    input_directory=constants.DUMMY_TEST_DATA,
-                    mvs_input_directory=self.test_mvs_directory,
-                    directory_energy_production=None,
-                    cpv_type="m300",
+                self.lat,
+                self.lon,
+                self.weather,
+                self.population,
+                pv_setup=pv_setup,
+                plot=False,
+                input_directory=constants.DUMMY_TEST_DATA,
+                mvs_input_directory=self.test_mvs_directory,
+                directory_energy_production=None,
+                cpv_type="m300",
             )
 
     def test_create_create_pv_components_wrong_surface_type_in_pvsetup(self):
-        pv_setup_filename = os.path.join(constants.DUMMY_TEST_DATA,
-                                         "test_pv_setup_wrong_surface_type.csv")
+        pv_setup_filename = os.path.join(
+            constants.DUMMY_TEST_DATA, "test_pv_setup_wrong_surface_type.csv"
+        )
         pv_setup = pd.read_csv(pv_setup_filename)
 
         with pytest.raises(ValueError):
             create_pv_components(
-                    self.lat,
-                    self.lon,
-                    self.weather,
-                    self.population,
-                    pv_setup= pv_setup,
-                    plot=False,
-                    input_directory=constants.DUMMY_TEST_DATA,
-                    mvs_input_directory=self.test_mvs_directory,
-                    directory_energy_production=None,
-                    cpv_type="m300",
+                self.lat,
+                self.lon,
+                self.weather,
+                self.population,
+                pv_setup=pv_setup,
+                plot=False,
+                input_directory=constants.DUMMY_TEST_DATA,
+                mvs_input_directory=self.test_mvs_directory,
+                directory_energy_production=None,
+                cpv_type="m300",
             )
 
 

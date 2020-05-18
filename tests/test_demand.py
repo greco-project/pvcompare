@@ -15,7 +15,7 @@ from pvcompare.demand import (
     calculate_power_demand,
     shift_working_hours,
     get_workalendar_class,
-    calculate_heat_demand
+    calculate_heat_demand,
 )
 from pvcompare import constants
 
@@ -28,7 +28,9 @@ class TestDemandProfiles:
         self.population = 4800
         self.year = 2014
         self.input_directory = constants.DEFAULT_INPUT_DIRECTORY
-        self.test_mvs_directory = os.path.join(os.path.dirname(__file__), "test_data/test_mvs_inputs")
+        self.test_mvs_directory = os.path.join(
+            os.path.dirname(__file__), "test_data/test_mvs_inputs"
+        )
 
         ts = pd.DataFrame()
         ts["h0"] = [19052, 19052, 14289, 19052, 19052, 14289]
@@ -86,7 +88,6 @@ class TestDemandProfiles:
 
         assert a["h0"].sum() == 17.65904126786193
 
-
     def test_heat_demand_exists(self):
 
         if os.path.exists(
@@ -102,7 +103,7 @@ class TestDemandProfiles:
             year=self.year,
             input_directory=self.input_directory,
             weather=self.weather,
-            mvs_input_directory=self.test_mvs_directory
+            mvs_input_directory=self.test_mvs_directory,
         )
         assert os.path.exists(
             os.path.join(self.test_mvs_directory, "time_series/heat_load.csv")
@@ -116,11 +117,10 @@ class TestDemandProfiles:
             year=self.year,
             input_directory=self.input_directory,
             weather=self.weather,
-            mvs_input_directory=self.test_mvs_directory
+            mvs_input_directory=self.test_mvs_directory,
         )
 
         assert a["h0"].sum() == 5.474071970330192
-
 
     def test_shift_working_hours(self):
 
@@ -130,11 +130,8 @@ class TestDemandProfiles:
 
         assert output["h0"].sum() == 104786
 
-
     def test_workalendar_class(self):
 
         cal = get_workalendar_class(self.country)
 
         assert cal.__class__.__name__ == "Spain"
-
-

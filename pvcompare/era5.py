@@ -47,6 +47,7 @@ def load_era5_weatherdata(lat, lon, year):
     logging.info("weatherdata successfully converted into pvlib format.")
     return weather_df
 
+
 def get_era5_data_from_datespan_and_position(
     start_date,
     end_date,
@@ -132,9 +133,7 @@ def format_pvcompare(ds):
     pvlib_vars = ["ghi", "dhi", "wind_speed", "temp_air", "pw"]
     ds_vars = list(ds.variables)
     drop_vars = [
-        _
-        for _ in ds_vars
-        if _ not in pvlib_vars + ["latitude", "longitude", "time"]
+        _ for _ in ds_vars if _ not in pvlib_vars + ["latitude", "longitude", "time"]
     ]
     ds = ds.drop(drop_vars)
 
@@ -144,9 +143,9 @@ def format_pvcompare(ds):
     # the time stamp given by ERA5 for mean values (probably) corresponds to
     # the end of the valid time interval; the following sets the time stamp
     # to the middle of the valid time interval
-    df['time'] = df.time - pd.Timedelta(minutes=30)
+    df["time"] = df.time - pd.Timedelta(minutes=30)
 
-    df.set_index(['time'], inplace=True)
+    df.set_index(["time"], inplace=True)
     df.sort_index(inplace=True)
     df = df.tz_localize("UTC", level=0)
 
@@ -156,9 +155,7 @@ def format_pvcompare(ds):
     return df
 
 
-def weather_df_from_era5(
-    era5_netcdf_filename, lib, start=None, end=None
-):
+def weather_df_from_era5(era5_netcdf_filename, lib, start=None, end=None):
     """
     Gets ERA5 weather data from netcdf file and converts it to a pandas
     dataframe as required by the spcified lib.
@@ -207,6 +204,7 @@ def weather_df_from_era5(
     if end is None:
         end = df.index[-1]
     return df[start:end]
+
 
 if __name__ == "__main__":
 
