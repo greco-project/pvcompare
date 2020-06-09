@@ -163,17 +163,32 @@ The values used by default in PVCompare for the above parameters in each CSV, ar
     8. **lifetime**: 10 (applies for all the parameters of the battery storage)
     9. **specific_costs_om**: 0 (applies for all the parameters of the battery storage)
     10. **dispatch_price**:
+
         a. **storage capacity**: NA (does not apply)
+
         b. **input power** and **output power**: 0
     11. **soc_initial**:
+
         a. **storage capacity**: None
+
         b. **input power** and **output power**: NA
     12. **soc_max**:
+
         a. **storage capacity**: 0.8 (Took the Fronius 4.5 battery which has a rated capacity 4.5 kW, but 3.6 kW is the usable capacity.So SoC max would be 80% or 0.8.)
+
         b. **input power** and **output power**: NA
     13. **soc_min**:
+
         a. **storage capacity**: 0.1 (Figure from this research `article <https://www.sciencedirect.com/science/article/pii/S0378775319310043>`_.)
+
         b. **input power** and **output power**: NA
     14. **unit**:
         a. **storage capacity**: kWh
+
         b. **input power** and **output power**: kW
+
+---------------------------------
+2. PVCompare-specific parameters
+---------------------------------
+
+
