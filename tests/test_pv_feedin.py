@@ -55,8 +55,8 @@ class TestPvtime_series:
             surface_tilt=self.surface_tilt,
             normalized=False,
         )
-        output = ts.values.sum()
-        assert output == 0.09834252308548698
+        output = round(ts.values.sum(), 3)
+        assert output == 0.098
 
     def test_nominal_values_pv(self):
 
