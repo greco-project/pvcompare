@@ -355,7 +355,7 @@ def shift_working_hours(country, ts):
     """
 
     # check if time series contains more than 24 h
-    time0 = ts.iloc[[0], [0]].index
+    time0 = ts.index[0]
     time24 = time0 + pd.DateOffset(hours=24)
     if not time24 in ts.index:
         logging.warning(
@@ -379,6 +379,7 @@ def shift_working_hours(country, ts):
         # The timeseries is shifted by -1 hour only on weekends
         ts["Day"] = pd.DatetimeIndex(ts.index).day_name()
         one_weekend = pd.DataFrame()
+        counter = 0
         for i, row in ts.iterrows():
             if row["Day"] in ["Saturday", "Sunday"]:
                 counter = 1
