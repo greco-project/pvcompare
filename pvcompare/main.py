@@ -11,24 +11,23 @@ import mvs_tool as mvs
 from pvcompare import check_inputs
 import os
 
-
 # Reconfiguring the logger here will also affect test running in the PyCharm IDE
 log_format = "%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s"
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 
 
 def main(
-    population,
-    country=None,
-    latitude=None,
-    longitude=None,
-    year=None,
-    input_directory=None,
-    mvs_input_directory=None,
-    plot=False,
-    mvs_output_directory=None,
+        population,
+        country=None,
+        latitude=None,
+        energy_price=None,
+        longitude=None,
+        year=None,
+        input_directory=None,
+        mvs_input_directory=None,
+        plot=False,
+        mvs_output_directory=None,
 ):
-
     """
     loads weather data for the given year and location, calculates pv feedin
     timeseries as well as the nominal values /installation capacities based on
@@ -51,6 +50,9 @@ def main(
         check_inputs.add_project_data(
             mvs_input_directory, latitude, longitude, country, year
         )
+
+    if energy_price is False:
+        check_inputs.energy_price_check(mvs_input_directory, energy_price, country)
 
     # todo: scpecify country automatically by lat/lon
 
@@ -96,7 +98,6 @@ def main(
 
 
 if __name__ == "__main__":
-
     latitude = 45.641603
     longitude = 5.875387
     year = 2013  # a year between 2011-2013!!!
