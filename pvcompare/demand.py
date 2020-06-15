@@ -393,7 +393,7 @@ def shift_working_hours(country, ts):
                     counter = counter + 1
                 else:
                     pass
-        return ts["h0"]
+        return ts.drop("Day", axis=1)
 
     elif country in [
         "Belgium",
