@@ -201,13 +201,13 @@ def energy_price_check(mvs_input_directory, energy_price, country):
 
     Parameters:
     -----------
-   mvs_input_directory:
-   energy_price: the price of electricity is either None or 0
+    mvs_input_directory:
+    energy_price: the price of electricity is either None or 0
 
     Returns:
     --------
-   energy_price: price of the grid electrcity
-   Updates value of energy_price in energyProviders.csv
+    energy_price: price of the grid electrcity
+    Updates value of energy_price in energyProviders.csv
     """
     if mvs_input_directory is None:
         mvs_input_directory = os.path.join(constants.DEFAULT_MVS_INPUT_DIRECTORY)
