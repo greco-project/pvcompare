@@ -215,7 +215,7 @@ def energy_price_check(mvs_input_directory, energy_price, country):
         mvs_input_directory, "csv_elements/" "energyProviders.csv"
     )
 
-    # Create dataframe containing the hoursehold electricity prices in the EU nations
+    # Create dataframe containing the household electricity prices in the EU nations
     prices_file_path = os.path.join(
         constants.DEFAULT_INPUT_DIRECTORY, "electricity_prices_households.csv"
     )
