@@ -17,16 +17,16 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 
 
 def main(
-        population,
-        country=None,
-        latitude=None,
-        energy_price=None,
-        longitude=None,
-        year=None,
-        input_directory=None,
-        mvs_input_directory=None,
-        plot=False,
-        mvs_output_directory=None,
+    population,
+    country=None,
+    latitude=None,
+    energy_price=None,
+    longitude=None,
+    year=None,
+    input_directory=None,
+    mvs_input_directory=None,
+    plot=False,
+    mvs_output_directory=None,
 ):
     """
     loads weather data for the given year and location, calculates pv feedin
@@ -111,5 +111,5 @@ if __name__ == "__main__":
         year=year,
         population=population,
         country=country,
-        energy_price=energy_price
+        energy_price=energy_price,
     )

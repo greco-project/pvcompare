@@ -190,6 +190,7 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
     simulation_settings.to_csv(simulation_settings_filename)
     return latitude, longitude, country, year
 
+
 def energy_price_check(mvs_input_directory, energy_price, country):
     """
     This function is called by the main function when then user-input value of the cost of
