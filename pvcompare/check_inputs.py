@@ -196,7 +196,7 @@ def energy_price_check(mvs_input_directory, energy_price, country):
     This function is called by the main function when then user-input value of the cost of
     grid electricity is None (i.e., not provided by the user). This function then determines the cost
     of electricity by checking in the energyProviders.csv, and returns the value.
-    If the value is not provided in that cscv either,
+    If the value is not provided in that csv either,
     then the value from the csv with energy prices in the EU is obtained and returned.
 
     Parameters:
