@@ -193,7 +193,7 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
 
 def energy_price_check(mvs_input_directory, energy_price, country):
     """
-    This function is called by the main function when then user-input vallue of the cost of
+    This function is called by the main function when then user-input value of the cost of
     grid electricity is None (i.e., not provided by the user). This function then determines the cost
     of electricity by checking in the energyProviders.csv, and returns the value.
     If the value is not provided in that cscv either,
@@ -215,8 +215,9 @@ def energy_price_check(mvs_input_directory, energy_price, country):
         mvs_input_directory, "csv_elements/" "energyProviders.csv"
     )
 
-    prices_file_path = os.path.join(constants.DEFAULT_INPUT_DIRECTORY, "electricity_prices.csv")
-    electricity_prices_eu = pd.read_csv(prices_file_path)
+    # Create dataframe containing the hoursehold electricity prices in the EU nations
+    prices_file_path = os.path.join(constants.DEFAULT_INPUT_DIRECTORY, "electricity_prices_households.csv")
+    electricity_prices_eu = pd.read_csv(prices_file_path, index_col=0)
 
     if os.path.isfile(energy_providers_filename):
         grid_related = pd.read_csv(energy_providers_filename, index_col=0)
@@ -225,12 +226,10 @@ def energy_price_check(mvs_input_directory, energy_price, country):
             logging.info(f"The parameter {energy_price} is taken " f"from energyProviders.csv.")
             energy_price = grid_related.at[energy_price, "Electricity grid"]
             if energy_price is None:
-                raise ValueError(
-                    f"The parameter {energy_price} cannot be None. "
-                    f"Please correct the parameter {energy_price} in "
-                    f"energyProviders.csv or change the parameter "
-                    f"in the main function."
-                )
+                energy_price = electricity_prices_eu.at[country, 'electricity_price_2019']
+                grid_related.at[energy_price, "Electricity grid"] = energy_price
+                grid_related.to_csv(energy_providers_filename)
+
         elif energy_price != grid_related(energy_price, "Electricity grid"):
             logging.warning(
                 f"The parameter {energy_price} in the main function"
@@ -239,13 +238,14 @@ def energy_price_check(mvs_input_directory, energy_price, country):
                 f"energyProviders.csv will be overwritten."
             )
             grid_related.at[energy_price, "Electricity grid"] = energy_price
+            grid_related.to_csv(energy_providers_filename)
 
     else:
         logging.warning(
             f"The file energyProviders.csv does not"
             f"exist. Please check the input folder {mvs_input_directory}"
             "/csv_elements")
-    grid_related.to_csv(energy_providers_filename)
+
     return energy_price
 
 def check_mvs_energy_production_file(
