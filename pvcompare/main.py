@@ -51,7 +51,7 @@ def main(
             mvs_input_directory, latitude, longitude, country, year
         )
 
-    if energy_price is False:
+    if energy_price is None:
         check_inputs.energy_price_check(mvs_input_directory, energy_price, country)
 
     # todo: scpecify country automatically by lat/lon
@@ -103,6 +103,7 @@ if __name__ == "__main__":
     year = 2013  # a year between 2011-2013!!!
     population = 48000
     country = "Spain"
+    energy_price = 0.2403
 
     main(
         latitude=latitude,
@@ -110,4 +111,5 @@ if __name__ == "__main__":
         year=year,
         population=population,
         country=country,
+        energy_price=energy_price
     )
