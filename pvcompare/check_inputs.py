@@ -228,22 +228,22 @@ def energy_price_check(mvs_input_directory, energy_price, country):
             logging.info(
                 f"The parameter {energy_price} is taken " f"from energyProviders.csv."
             )
-            energy_price = grid_related.at[energy_price, "Electricity grid"]
+            energy_price = grid_related.at[energy_price, "Electricity grid "]
             if energy_price is None:
                 energy_price = electricity_prices_eu.at[
                     country, "electricity_price_2019"
                 ]
-                grid_related.at[energy_price, "Electricity grid"] = energy_price
+                grid_related.at[energy_price, "Electricity grid "] = energy_price
                 grid_related.to_csv(energy_providers_filename)
 
-        elif energy_price != grid_related(energy_price, "Electricity grid"):
+        elif energy_price != grid_related(energy_price, "Electricity grid "):
             logging.warning(
                 f"The parameter {energy_price} in the main function"
                 f" differs from the value in"
                 f" energyProviders.csv. The value in file "
                 f"energyProviders.csv will be overwritten."
             )
-            grid_related.at[energy_price, "Electricity grid"] = energy_price
+            grid_related.at[energy_price, "Electricity grid "] = energy_price
             grid_related.to_csv(energy_providers_filename)
 
     else:
