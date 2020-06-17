@@ -183,7 +183,7 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
             f"simulation_settings.csv will be overwritten."
         )
         simulation_settings.at["start_date", "simulation_settings"] = (
-                str(year) + "-01-01 00:00:00"
+            str(year) + "-01-01 00:00:00"
         )
 
     # save energyProduction.csv
@@ -226,25 +226,29 @@ def energy_price_check(mvs_input_directory, energy_price, country):
         grid_related = pd.read_csv(energy_providers_filename, index_col=0)
 
         if energy_price is None:
-            logging.info(f"The parameter energy_price is taken from energyProviders.csv.")
-            energy_price = grid_related.at['energy_price', "Electricity grid "]
+            logging.info(
+                f"The parameter energy_price is taken from energyProviders.csv."
+            )
+            energy_price = grid_related.at["energy_price", "Electricity grid "]
             if energy_price is np.nan:
                 logging.info(f"The parameter is not available in energyProviders.csv.")
                 try:
-                    energy_price = electricity_prices_eu.at[country, "electricity_price_2019"]
+                    energy_price = electricity_prices_eu.at[
+                        country, "electricity_price_2019"
+                    ]
                 except:
-                    raise KeyError('Please enter a country within the EU')
-                grid_related.at['energy_price', "Electricity grid "] = energy_price
+                    raise KeyError("Please enter a country within the EU")
+                grid_related.at["energy_price", "Electricity grid "] = energy_price
                 grid_related.to_csv(energy_providers_filename)
 
-        elif energy_price != grid_related.at['energy_price', "Electricity grid "]:
+        elif energy_price != grid_related.at["energy_price", "Electricity grid "]:
             logging.warning(
                 f"The parameter energy_price in the main function"
                 f" differs from the value in"
                 f" energyProviders.csv. The value in file "
                 f"energyProviders.csv will be overwritten."
             )
-            grid_related.at['energy_price', "Electricity grid "] = float(energy_price)
+            grid_related.at["energy_price", "Electricity grid "] = float(energy_price)
             grid_related.to_csv(energy_providers_filename)
 
     else:
@@ -255,8 +259,9 @@ def energy_price_check(mvs_input_directory, energy_price, country):
         )
     return energy_price
 
+
 def check_mvs_energy_production_file(
-        pv_setup, mvs_input_directory=None, overwrite=True
+    pv_setup, mvs_input_directory=None, overwrite=True
 ):
     """
     checks if energyProduction.csv file with correct number of collumns exists.
@@ -315,15 +320,15 @@ def check_mvs_energy_production_file(
     elif overwrite == False:
         raise ValueError(
             "The file %s" % energy_production_filename + " does not"
-                                                         "exist. Please create energyProduction.csv or "
-                                                         "allow overwrite=True to have energyProduction.csv "
-                                                         "set up automatically with default values."
+            "exist. Please create energyProduction.csv or "
+            "allow overwrite=True to have energyProduction.csv "
+            "set up automatically with default values."
         )
     else:
         logging.warning(
             "The file %s" % energy_production_filename + "does not"
-                                                         "exist. It will thus be created anew with default "
-                                                         "values."
+            "exist. It will thus be created anew with default "
+            "values."
         )
 
 
@@ -407,7 +412,7 @@ def create_mvs_energy_production_file(pv_setup, energy_production_filename):
 
 
 def add_parameters_to_energy_production_file(
-        pp_number, ts_filename, nominal_value, mvs_input_directory=None
+    pp_number, ts_filename, nominal_value, mvs_input_directory=None
 ):
     """
     enters new parameters into energyProduction.csv
@@ -441,11 +446,11 @@ def add_parameters_to_energy_production_file(
     ] = nominal_value
     logging.info(
         "The maximum capacity of pv_plant_0%s" % pp_number + " has "
-                                                             "been added to energyProduction.csv."
+        "been added to energyProduction.csv."
     )
     energy_production.loc[["file_name"], ["pv_plant_0" + str(pp_number)]] = ts_filename
     energy_production.loc[["label"], ["pv_plant_0" + str(pp_number)]] = (
-            "PV " + str(ts_filename)[:-4]
+        "PV " + str(ts_filename)[:-4]
     )
     logging.info(
         "The file_name of the time series of PV "

@@ -153,8 +153,11 @@ class TestDemandProfiles:
 
     def test_energy_price_check(self):
         # Test for valid price
-        energy_price_check(mvs_input_directory=self.test_mvs_directory,
-                           country=self.country, energy_price=self.energy_price)
+        energy_price_check(
+            mvs_input_directory=self.test_mvs_directory,
+            country=self.country,
+            energy_price=self.energy_price,
+        )
 
         # Assert that the prices are equal
         energy_providers_filename = os.path.join(
@@ -162,6 +165,8 @@ class TestDemandProfiles:
         )
 
         grid_related_test = pd.read_csv(energy_providers_filename, index_col=0)
-        energy_price_csv = float(grid_related_test.at['energy_price', "Electricity grid "])
+        energy_price_csv = float(
+            grid_related_test.at["energy_price", "Electricity grid "]
+        )
 
         assert energy_price_csv == self.energy_price
