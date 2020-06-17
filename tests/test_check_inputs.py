@@ -1,11 +1,13 @@
 import pandas as pd
 import os
 import pytest
+import numpy as np
 
 from pvcompare.check_inputs import (
     check_for_valid_country_year,
     add_project_data,
     check_mvs_energy_production_file,
+    energy_price_check,
 )
 
 from pvcompare import constants
@@ -14,10 +16,11 @@ from pvcompare import constants
 class TestDemandProfiles:
     @classmethod
     def setup_class(self):
-        self.country = "Spain"
+        self.country = "Uganda"
         self.year = 2014
         self.lat = 40.0
         self.lon = 5.2
+        self.energy_price = 0.5
         self.input_directory = constants.DEFAULT_INPUT_DIRECTORY
         self.test_mvs_directory = os.path.join(
             os.path.dirname(__file__), "test_data/test_mvs_inputs"
@@ -147,3 +150,18 @@ class TestDemandProfiles:
             # If we get here, then the ValueError was not raised
             # raise an exception so that the test fails
             raise AssertionError("ValueError was not raised")
+
+    def test_energy_price_check(self):
+        # Test for valid price
+        energy_price_check(mvs_input_directory=self.test_mvs_directory,
+                           country=self.country, energy_price=self.energy_price)
+
+        # Assert that the prices are equal
+        energy_providers_filename = os.path.join(
+            self.test_mvs_directory, "csv_elements/" "energyProviders.csv"
+        )
+
+        grid_related_test = pd.read_csv(energy_providers_filename, index_col=0)
+        energy_price_csv = float(grid_related_test.at['energy_price', "Electricity grid "])
+
+        assert energy_price_csv == self.energy_price
