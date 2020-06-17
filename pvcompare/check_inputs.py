@@ -12,6 +12,7 @@ import pvlib
 import glob
 import logging
 import sys
+import numpy as np
 
 try:
     import matplotlib.pyplot as plt
@@ -227,10 +228,12 @@ def energy_price_check(mvs_input_directory, energy_price, country):
         if energy_price is None:
             logging.info(f"The parameter energy_price is taken from energyProviders.csv.")
             energy_price = grid_related.at['energy_price', "Electricity grid "]
-            if energy_price is None:
-                energy_price = electricity_prices_eu.at[
-                    country, "electricity_price_2019"
-                ]
+            if energy_price is np.nan:
+                logging.info(f"The parameter is not available in energyProviders.csv.")
+                try:
+                    energy_price = electricity_prices_eu.at[country, "electricity_price_2019"]
+                except:
+                    raise KeyError('Please enter a country within the EU')
                 grid_related.at['energy_price', "Electricity grid "] = energy_price
                 grid_related.to_csv(energy_providers_filename)
 
@@ -241,7 +244,7 @@ def energy_price_check(mvs_input_directory, energy_price, country):
                 f" energyProviders.csv. The value in file "
                 f"energyProviders.csv will be overwritten."
             )
-            grid_related.at['energy_price', "Electricity grid "] = energy_price
+            grid_related.at['energy_price', "Electricity grid "] = float(energy_price)
             grid_related.to_csv(energy_providers_filename)
 
     else:
@@ -251,7 +254,6 @@ def energy_price_check(mvs_input_directory, energy_price, country):
             "/csv_elements"
         )
     return energy_price
-
 
 def check_mvs_energy_production_file(
         pv_setup, mvs_input_directory=None, overwrite=True
