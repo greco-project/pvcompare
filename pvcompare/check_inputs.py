@@ -258,7 +258,7 @@ def energy_price_check(mvs_input_directory, energy_price, country):
 
     else:
         logging.warning(
-            f"The file energyProviders.csv does not"
+            f"The file energyProviders.csv does not "
             f"exist. Please check the input folder {mvs_input_directory}"
             "/csv_elements"
         )
