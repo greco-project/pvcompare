@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import pytest
 import numpy as np
+import logging
 
 from pvcompare.check_inputs import (
     check_for_valid_country_year,
@@ -20,7 +21,7 @@ class TestDemandProfiles:
         self.year = 2014
         self.lat = 40.0
         self.lon = 5.2
-        self.electricity_price = 0.5
+        self.electricity_price = None
         self.input_directory = constants.DEFAULT_INPUT_DIRECTORY
         self.test_mvs_directory = os.path.join(
             os.path.dirname(__file__), "test_data/test_mvs_inputs"
@@ -151,12 +152,21 @@ class TestDemandProfiles:
             # raise an exception so that the test fails
             raise AssertionError("ValueError was not raised")
 
+    def test_energy_price_check_energyprice_none(self):
+
+        with pytest.raises(KeyError):
+            energy_price_check(
+                mvs_input_directory=self.test_mvs_directory,
+                electricity_price=None,
+                country=self.country,
+            )
+
     def test_energy_price_check(self):
         # Test for valid price
-        energy_price_check(
+        electricity_price = energy_price_check(
             mvs_input_directory=self.test_mvs_directory,
             country=self.country,
-            electricity_price=self.electricity_price
+            electricity_price=0.5,
         )
 
         # Assert that the prices are equal
@@ -169,6 +179,4 @@ class TestDemandProfiles:
             grid_related_test.at["energy_price", "Electricity grid "]
         )
 
-        assert electricity_price_csv == self.electricity_price
-
-
+        assert electricity_price_csv == electricity_price
