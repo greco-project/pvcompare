@@ -17,7 +17,7 @@ from pvcompare import constants
 class TestDemandProfiles:
     @classmethod
     def setup_class(self):
-        self.country = "Uganda"
+        self.country = "Spain"
         self.year = 2014
         self.lat = 40.0
         self.lon = 5.2

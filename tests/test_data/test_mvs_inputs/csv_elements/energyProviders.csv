@@ -1,5 +1,5 @@
 ,unit,Electricity grid 
-energy_price,currency/kWh,NaN
+energy_price,currency/kWh,0.5
 feedin_tariff,currency/kWh,0.1
 inflow_direction,str,Electricity
 label,str,Electricity grid feedin
