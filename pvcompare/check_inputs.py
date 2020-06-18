@@ -258,7 +258,9 @@ def energy_price_check(mvs_input_directory, electricity_price, country=None):
                 f" energyProviders.csv. The value in file "
                 f"energyProviders.csv will be overwritten."
             )
-            grid_related.at["energy_price", "Electricity grid "] = float(electricity_price)
+            grid_related.at["energy_price", "Electricity grid "] = float(
+                electricity_price
+            )
             grid_related.to_csv(energy_providers_filename)
 
     else:

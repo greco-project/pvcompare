@@ -166,7 +166,8 @@ class TestDemandProfiles:
         electricity_price = energy_price_check(
             mvs_input_directory=self.test_mvs_directory,
             country=self.country,
-            electricity_price=0.5,)
+            electricity_price=0.5,
+        )
 
         # Assert that the prices are equal
         energy_providers_filename = os.path.join(
