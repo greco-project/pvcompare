@@ -192,7 +192,7 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
     return latitude, longitude, country, year
 
 
-def energy_price_check(mvs_input_directory, energy_price, country):
+def energy_price_check(mvs_input_directory, electricity_price, country=None):
     """
     Checks the electricity price of 'energyProviders.csv'.
 
