@@ -194,6 +194,8 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
 
 def energy_price_check(mvs_input_directory, energy_price, country):
     """
+    Checks the electricity price of 'energyProviders.csv'.
+
     This function is called by the main function when then user-input value of the cost of
     grid electricity is None (i.e., not provided by the user). This function then determines the cost
     of electricity by checking in the energyProviders.csv, and returns the value.
