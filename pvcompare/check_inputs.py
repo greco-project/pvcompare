@@ -239,7 +239,7 @@ def energy_price_check(mvs_input_directory, energy_price, country):
                         country, "electricity_price_2019"
                     ]
                 except:
-                    raise KeyError("Please enter a country within the EU")
+                    raise KeyError(f"Please enter a country within the EU, you entered {country}.")
                 grid_related.at["energy_price", "Electricity grid "] = energy_price
                 grid_related.to_csv(energy_providers_filename)
 
