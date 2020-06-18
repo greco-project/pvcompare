@@ -23,8 +23,6 @@ Here is a template for new release sections
 price if the user doesn't provide it. (#30)
 
 ### Changed
-- another thing
 
 ### Removed
 - yet another thing
-
