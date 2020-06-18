@@ -211,7 +211,8 @@ def energy_price_check(mvs_input_directory, energy_price, country):
 
     Returns:
     --------
-    energy_price: price of the grid electrcity
+    energy_price : float
+        price of the grid electrcity
     Updates value of energy_price in energyProviders.csv
     """
     if mvs_input_directory is None:
