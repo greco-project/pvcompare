@@ -208,7 +208,7 @@ def energy_price_check(mvs_input_directory, electricity_price, country=None):
         directory to "mvs_inputs/"
     energy_price :  float
         the price of electricity is either None or 0
-    country; str
+    country : str
         the EU country for which the electricity price is to be determined
 
     Returns:
