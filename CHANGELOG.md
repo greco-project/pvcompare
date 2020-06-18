@@ -16,15 +16,13 @@ Here is a template for new release sections
 ### Removed
 -
 ```
-## [Unreleased]
+## [Unreleased] - 2020-06-17
 
 ### Added
-- one thing
+- Added a function to check_inputs.py to automatically determine the electricity
+price if the user doesn't provide it. (#30)
 
 ### Changed
-- another thing
 
 ### Removed
 - yet another thing
-
-
