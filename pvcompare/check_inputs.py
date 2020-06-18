@@ -205,7 +205,8 @@ def energy_price_check(mvs_input_directory, energy_price, country):
     Parameters:
     -----------
     mvs_input_directory:
-    energy_price: the price of electricity is either None or 0
+    energy_price :  float
+        the price of electricity is either None or 0
 
     Returns:
     --------
