@@ -12,7 +12,6 @@ import pvlib
 import glob
 import logging
 import sys
-import numpy as np
 
 try:
     import matplotlib.pyplot as plt
@@ -189,87 +188,7 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
     # save energyProduction.csv
     project_data.to_csv(project_data_filename)
     simulation_settings.to_csv(simulation_settings_filename)
-    return latitude, longitude, country, year
-
-
-def energy_price_check(mvs_input_directory, electricity_price, country=None):
-    """
-    Checks the electricity price of 'energyProviders.csv'.
-
-    This function is called by the main function when then user-input value of the cost of
-    grid electricity is None (i.e., not provided by the user). This function then determines the cost
-    of electricity by checking in the energyProviders.csv, and returns the value.
-    If the value is not provided in that csv either,
-    then the value from the csv with energy prices in the EU is obtained and returned.
-
-    Parameters:
-    -----------
-    mvs_input_directory : str
-        directory to "mvs_inputs/"
-    energy_price :  float
-        the price of electricity is either None
-    country : str
-        the EU country for which the electricity price is to be determined
-
-    Returns:
-    --------
-    energy_price : float
-        price of the grid electrcity
-    Updates value of energy_price in energyProviders.csv
-    """
-    if mvs_input_directory is None:
-        mvs_input_directory = os.path.join(constants.DEFAULT_MVS_INPUT_DIRECTORY)
-    energy_providers_filename = os.path.join(
-        mvs_input_directory, "csv_elements/" "energyProviders.csv"
-    )
-
-    # Create dataframe containing the household electricity prices in the EU nations
-    prices_file_path = os.path.join(
-        constants.DEFAULT_INPUT_DIRECTORY, "electricity_prices_households.csv"
-    )
-    electricity_prices_eu = pd.read_csv(prices_file_path, index_col=0)
-
-    if os.path.isfile(energy_providers_filename):
-        grid_related = pd.read_csv(energy_providers_filename, index_col=0)
-
-        if electricity_price is None:
-            logging.info(
-                f"The parameter electricity_price is taken from energyProviders.csv."
-            )
-            electricity_price = grid_related.at["energy_price", "Electricity grid "]
-            if electricity_price is np.nan:
-                logging.info(f"The parameter is not available in energyProviders.csv.")
-                try:
-                    electricity_price_from_csv = electricity_prices_eu.at[
-                        country, "electricity_price_2019"
-                    ]
-                    electricity_price = electricity_price_from_csv
-                except KeyError:
-                    raise KeyError(
-                        f"Please enter a country within the EU, you entered {country}."
-                    )
-                grid_related.at["energy_price", "Electricity grid "] = electricity_price
-                grid_related.to_csv(energy_providers_filename)
-
-        elif electricity_price != grid_related.at["energy_price", "Electricity grid "]:
-            logging.warning(
-                f"The parameter energy_price in the main function"
-                f" differs from the value in"
-                f" energyProviders.csv. The value in file "
-                f"energyProviders.csv will be overwritten."
-            )
-            grid_related.at["energy_price", "Electricity grid "] = float(
-                electricity_price
-            )
-            grid_related.to_csv(energy_providers_filename)
-
-    else:
-        logging.warning(
-            f"The file energyProviders.csv does not "
-            f"exist. Please check the input folder {mvs_input_directory}"
-            "/csv_elements"
-        )
-    return electricity_price
+    return (latitude, longitude, country, year)
 
 
 def check_mvs_energy_production_file(
@@ -345,6 +264,7 @@ def check_mvs_energy_production_file(
 
 
 def create_mvs_energy_production_file(pv_setup, energy_production_filename):
+
     """
     creates a new energyProduction.csv file
 
@@ -363,6 +283,7 @@ def create_mvs_energy_production_file(pv_setup, energy_production_filename):
     ---------
     None
     """
+
     # hardcoded list of parameters
     data = {
         "index": [
@@ -426,6 +347,7 @@ def create_mvs_energy_production_file(pv_setup, energy_production_filename):
 def add_parameters_to_energy_production_file(
     pp_number, ts_filename, nominal_value, mvs_input_directory=None
 ):
+
     """
     enters new parameters into energyProduction.csv
 
