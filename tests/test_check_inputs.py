@@ -152,6 +152,7 @@ class TestDemandProfiles:
             # raise an exception so that the test fails
             raise AssertionError("ValueError was not raised")
 
+    # Test for checking the function when user does not provide any value for energy price
     def test_energy_price_check_energyprice_none(self):
 
         with pytest.raises(KeyError):
