@@ -20,12 +20,11 @@ Here is a template for new release sections
 
 ### Added
 - Added a function to check_inputs.py to automatically determine the electricity
-price if the user doesn't provide it.
+price if the user doesn't provide it. (#30)
 
 ### Changed
 - another thing
 
 ### Removed
 - yet another thing
-
 
