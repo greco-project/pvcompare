@@ -198,8 +198,8 @@ Further a few parameters must be filled in when calling the main function. These
     *The pv_setup.csv defines the number of facades that are covered with pv-modules.*
 
     1. **surface_type**: str, optional values are "flat_roof", "gable_roof", "south_facade", "east_facade" and "west_facade"
-    2 **surface_azimuth**: integer, between -180 and 180, where 180 is facing south, 90 is facing east and -90 is facing west
-    3 **surface_tilt**: integer, between 0 and 90, where 90 represents a vertical module and 0 a horizontal.
+    2. **surface_azimuth**: integer, between -180 and 180, where 180 is facing south, 90 is facing east and -90 is facing west
+    3. **surface_tilt**: integer, between 0 and 90, where 90 represents a vertical module and 0 a horizontal.
     4. **technology**: str, optional values are "si" for a silicone module, "cpv" for concentrator photovoltaics and "psi" for a perovskite silicone module
 
 * building_parameters:
