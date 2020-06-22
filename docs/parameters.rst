@@ -191,4 +191,43 @@ The values used by default in PVCompare for the above parameters in each CSV, ar
 2. PVCompare-specific parameters
 ---------------------------------
 
+In order to run PVCompare, a number of input parameters are needed; many of which are stored in csv files with default values in "pvcompare/inputs/".
+Further a few parameters must be filled in when calling the main function. These parameters will not be of interest here. For more information see the functions description.  The following list will give a brief introduction into the description of the csv files and the source of the given default parameters.
 
+* pv_setup.csv:
+    *The pv_setup.csv defines the number of facades that are covered with pv-modules.*
+
+    1. **surface_type**: str, optional values are "flat_roof", "gable_roof", "south_facade", "east_facade" and "west_facade"
+    2 **surface_azimuth**: integer, between -180 and 180, where 180 is facing south, 90 is facing east and -90 is facing west
+    3 **surface_tilt**: integer, between 0 and 90, where 90 represents a vertical module and 0 a horizontal.
+    4. **technology**: str, optional values are "si" for a silicone module, "cpv" for concentrator photovoltaics and "psi" for a perovskite silicone module
+
+* building_parameters:
+    *Parameters that describe the characteristics of the building that should be considered in the simulation. The default values are taken from [1].*
+
+    1. **number of storeys**: int
+    2. **population per storey**: int, number of habitants per storey
+    3. **total storey area**: int, total area of one storey, equal to the flat roof area in m²
+    4. **length south facade**: int, length of the south facade in m
+    5. **length eastwest facade**:int, length of the east/west facade in m
+    6. **hight storey**: int, hight of each storey in m
+    7. **filename_total_consumption**: str, name of the csv file that contains the total electricity and heat consumption for EU countries in different years from [2] *
+    8. **filename_total_SH**: str, name of the csv file that contains the total space heating for EU countries in different years [2] *
+    9. **filename_total_WH**: str, name of the csv file that contains the total water heating for EU countries in different years [2] *
+    10. **filename_elect_SH**: str, name of the csv file that contains the electrical space heatig for EU countries in different years [2] *
+    11. **filename_elect_WH**: str, name of the csv file that contains the electrical water heating for EU countries in different years [2] *
+    12. **filename_residential_electricity_demand**: str, name of the csv file that contains the total residential electricity demand for EU countries in different years [2] *
+    13. **filename_country_population**: str, name of the csv file that contains population for EU countries in different years [2] *
+
+* list_of_workalendar:
+    *list of countries for which a python.workalendar [3] exists with the column name "country".*
+
+
+
+[1] Hachem, 2014: Energy performance enhancement in multistory residential buildings. DOI: 10.1016/j.apenergy.2013.11.018
+
+[2] EUROSTAT: https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use
+
+[3] Workalendar https://pypi.org/project/workalendar/
+
+\* the described csv files are to be added to the input folder accordingly.
