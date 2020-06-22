@@ -53,11 +53,10 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalized=True,
+            normalized=False,
         )
-        output = ts.sum()
-
-        assert output == 0.4477100404694223
+        output = round(ts.values.sum(), 3)
+        assert output == 0.098
 
     def test_nominal_values_pv(self):
 

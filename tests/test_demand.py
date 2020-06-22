@@ -86,7 +86,7 @@ class TestDemandProfiles:
             mvs_input_directory=self.test_mvs_directory,
         )
 
-        assert a["h0"].sum() == 17.65904126786193
+        assert a["h0"].sum() == 17.65950917551695
 
     def test_heat_demand_exists(self):
 
