@@ -232,7 +232,7 @@ def energy_price_check(mvs_input_directory, electricity_price, country=None):
     if os.path.isfile(energy_providers_filename):
         grid_related = pd.read_csv(energy_providers_filename, index_col=0)
 
-        if electricity_price is None:
+        if electricity_price == None:
             logging.info(
                 f"The parameter electricity_price is taken from energyProviders.csv."
             )
