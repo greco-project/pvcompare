@@ -12,7 +12,6 @@ import pvlib
 import glob
 import logging
 import sys
-import numpy as np
 
 try:
     import matplotlib.pyplot as plt
@@ -345,6 +344,7 @@ def check_mvs_energy_production_file(
 
 
 def create_mvs_energy_production_file(pv_setup, energy_production_filename):
+
     """
     creates a new energyProduction.csv file
 
@@ -363,6 +363,7 @@ def create_mvs_energy_production_file(pv_setup, energy_production_filename):
     ---------
     None
     """
+
     # hardcoded list of parameters
     data = {
         "index": [
@@ -426,6 +427,7 @@ def create_mvs_energy_production_file(pv_setup, energy_production_filename):
 def add_parameters_to_energy_production_file(
     pp_number, ts_filename, nominal_value, mvs_input_directory=None
 ):
+
     """
     enters new parameters into energyProduction.csv
 
