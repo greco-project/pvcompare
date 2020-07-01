@@ -185,3 +185,15 @@ class TestDemandProfiles:
         )
 
         assert electricity_price_csv == electricity_price
+
+    def test_energy_price_country(self):
+        """
+        Test to check if, when the user provides a non-EU country and no energy price, and if an appropriate value is
+        not entered for energy_price in the energyProviders.csv, the keyError is raised.
+        """
+        with pytest.raises(KeyError):
+            energy_price_check(
+                mvs_input_directory=self.test_mvs_directory,
+                electricity_price=None,
+                country="Uganda",
+            )
