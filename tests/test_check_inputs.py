@@ -29,6 +29,17 @@ class TestDemandProfiles:
         data_path = os.path.join(self.input_directory, "pv_setup.csv")
         self.pv_setup = pd.read_csv(data_path)
 
+    def setup_method(self):
+        # Hard code the value of energy_price as NaN in the energyProviders.csv to prepare the file for the tests
+        energy_providers_filename = os.path.join(
+            self.test_mvs_directory, "csv_elements/" "energyProviders.csv"
+        )
+
+        grid_electricity_df = pd.read_csv(energy_providers_filename, index_col=0)
+        set_elec_price = np.NaN
+        grid_electricity_df.at["energy_price", "Electricity grid "] = set_elec_price
+        grid_electricity_df.to_csv(energy_providers_filename)
+
     def test_check_for_valid_country(self):
         try:
             check_for_valid_country_year(
