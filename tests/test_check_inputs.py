@@ -163,21 +163,15 @@ class TestDemandProfiles:
             # raise an exception so that the test fails
             raise AssertionError("ValueError was not raised")
 
-    def test_energy_price_check_energyprice_none(self):
-
-        with pytest.raises(KeyError):
-            energy_price_check(
-                mvs_input_directory=self.test_mvs_directory,
-                electricity_price=None,
-                country=self.country,
-            )
-
     def test_energy_price_check(self):
-        # Test for valid price
+        """
+        Test to check if the function overwrites the energy_price value in the energyProviders.csv with the
+        user provided value, if they are found to be different.
+        """
         electricity_price = energy_price_check(
             mvs_input_directory=self.test_mvs_directory,
             country=self.country,
-            electricity_price=0.5,
+            electricity_price=0.5678686,
         )
 
         # Assert that the prices are equal
