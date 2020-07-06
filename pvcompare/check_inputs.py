@@ -273,6 +273,7 @@ def add_electricity_price(mvs_input_directory=None):
         electricity_price = electricity_price_from_csv
     return electricity_price
 
+
 def check_mvs_energy_production_file(
     pv_setup, mvs_input_directory=None, overwrite=True
 ):
