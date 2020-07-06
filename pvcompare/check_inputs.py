@@ -193,11 +193,11 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
 
 def add_electricity_price(mvs_input_directory=None):
     """
-    Adds the electricity price from 'electricity_prices_households.csv' to 'energyProviders.csv'.
+    Adds the electricity price from 'electricity_prices.csv' to 'energyProviders.csv'.
 
     This function is called by the main function when then user-input value of the cost of
     grid electricity is None. This function then adds cost of electricity for
-    the country from the csv file 'electricity_prices_households.csv' to
+    the country and year from the csv file 'electricity_prices.csv' to
     energyProviders.csv.
     If the value is already provided in the 'energyProviders.csv' a warning is
     returned.
@@ -206,22 +206,18 @@ def add_electricity_price(mvs_input_directory=None):
     -----------
     mvs_input_directory : str
         directory to "mvs_inputs/"
-    country : str
-        the EU country for which the electricity price is to be determined
 
     Returns:
     --------
-    electricity_price : float
-        price of the grid electrcity
-    Updates value of energy_price in energyProviders.csv
+    None
     """
+
     if mvs_input_directory is None:
         mvs_input_directory = os.path.join(constants.DEFAULT_MVS_INPUT_DIRECTORY)
     energy_providers_filename = os.path.join(
         mvs_input_directory, "csv_elements/" "energyProviders.csv"
     )
 
-    # Create dataframe containing the household electricity prices in the EU nations
     prices_file_path = os.path.join(
         constants.DEFAULT_INPUT_DIRECTORY, "electricity_prices.csv"
     )
