@@ -5,4 +5,3 @@ scipy
 numpy
 pandas
 demandlib
-oemof
