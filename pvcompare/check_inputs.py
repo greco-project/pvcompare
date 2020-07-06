@@ -191,28 +191,27 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
     return latitude, longitude, country, year
 
 
-def energy_price_check(mvs_input_directory, electricity_price, country=None):
+def add_electricity_price(mvs_input_directory=None):
     """
-    Checks the electricity price of 'energyProviders.csv'.
+    Adds the electricity price from 'electricity_prices_households.csv' to 'energyProviders.csv'.
 
     This function is called by the main function when then user-input value of the cost of
-    grid electricity is None (i.e., not provided by the user). This function then determines the cost
-    of electricity by checking in the energyProviders.csv, and returns the value.
-    If the value is not provided in that csv either,
-    then the value from the csv with energy prices in the EU is obtained and returned.
+    grid electricity is None. This function then adds cost of electricity for
+    the country from the csv file 'electricity_prices_households.csv' to
+    energyProviders.csv.
+    If the value is already provided in the 'energyProviders.csv' a warning is
+    returned.
 
     Parameters:
     -----------
     mvs_input_directory : str
         directory to "mvs_inputs/"
-    energy_price :  float
-        the price of electricity is either None
     country : str
         the EU country for which the electricity price is to be determined
 
     Returns:
     --------
-    energy_price : float
+    electricity_price : float
         price of the grid electrcity
     Updates value of energy_price in energyProviders.csv
     """
@@ -224,51 +223,57 @@ def energy_price_check(mvs_input_directory, electricity_price, country=None):
 
     # Create dataframe containing the household electricity prices in the EU nations
     prices_file_path = os.path.join(
-        constants.DEFAULT_INPUT_DIRECTORY, "electricity_prices_households.csv"
+        constants.DEFAULT_INPUT_DIRECTORY, "electricity_prices.csv"
     )
     electricity_prices_eu = pd.read_csv(prices_file_path, index_col=0)
 
-    if os.path.isfile(energy_providers_filename):
-        grid_related = pd.read_csv(energy_providers_filename, index_col=0)
-
-        if electricity_price == None:
-            logging.info(
-                f"The parameter electricity_price is taken from energyProviders.csv."
-            )
-            electricity_price = grid_related.at["energy_price", "Electricity grid "]
-            if electricity_price is np.nan:
-                logging.info(f"The parameter is not available in energyProviders.csv.")
-                try:
-                    electricity_price_from_csv = electricity_prices_eu.at[
-                        country, "electricity_price_2019"
-                    ]
-                    electricity_price = electricity_price_from_csv
-                except KeyError:
-                    raise KeyError(
-                        f"Please enter a country within the EU, you entered {country}."
-                    )
-                grid_related.at["energy_price", "Electricity grid "] = electricity_price
-                grid_related.to_csv(energy_providers_filename)
-
-        elif electricity_price != grid_related.at["energy_price", "Electricity grid "]:
-            logging.warning(
-                f"The parameter energy_price in the main function"
-                f" differs from the value in"
-                f" energyProviders.csv. The value in file "
-                f"energyProviders.csv will be overwritten."
-            )
-            grid_related.at["energy_price", "Electricity grid "] = float(
-                electricity_price
-            )
-            grid_related.to_csv(energy_providers_filename)
-
+    project_data_filename = os.path.join(
+        mvs_input_directory, "csv_elements/" "project_data.csv"
+    )
+    if os.path.isfile(project_data_filename):
+        project_data = pd.read_csv(project_data_filename, index_col=0)
+        country = project_data.at["country", "project_data"]
     else:
-        logging.warning(
-            f"The file energyProviders.csv does not "
-            f"exist. Please check the input folder {mvs_input_directory}"
-            "/csv_elements"
+        logging.error("The file project_data.csv is missing.")
+
+    simulation_settings_filename = os.path.join(
+        mvs_input_directory, "csv_elements/" "simulation_settings.csv"
+    )
+    if os.path.isfile(simulation_settings_filename):
+        simulation_settings = pd.read_csv(simulation_settings_filename, index_col=0)
+    else:
+        logging.error("The file simulation_settings.csv is missing.")
+    start_date = simulation_settings.at["start_date", "simulation_settings"]
+    year = str(start_date)[:-15]
+
+    if os.path.isfile(energy_providers_filename):
+        energy_providers = pd.read_csv(energy_providers_filename, index_col=0)
+    else:
+        logging.error("The file energyProviders.csv is missing ")
+
+    electricity_price = energy_providers.at["energy_price", "Electricity grid "]
+
+    electricity_price_from_csv = electricity_prices_eu.at[country, year]
+
+    if pd.isna(electricity_price) == False:
+        if electricity_price != electricity_price_from_csv:
+            logging.warning(
+                "The electricity price in energyProviders.csv "
+                "differs from the reference value of "
+                f"{electricity_price_from_csv} for the country "
+                f"{country}. If you want it to be overwritten "
+                f"automatically, please set the value of "
+                f"energy_Price in energyProviders.csv to None."
+            )
+    else:
+        energy_providers.at[
+            "energy_price", "Electricity grid "
+        ] = electricity_price_from_csv
+        energy_providers.to_csv(energy_providers_filename)
+        logging.info(
+            "The parameter energy_price has been automatically added"
+            "to energyProviders.csv."
         )
-    return electricity_price
 
 
 def check_mvs_energy_production_file(
