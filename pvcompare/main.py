@@ -27,6 +27,7 @@ def main(
     mvs_input_directory=None,
     plot=False,
     mvs_output_directory=None,
+    electricity_price=None,
 ):
 
     """
@@ -51,6 +52,8 @@ def main(
         check_inputs.add_project_data(
             mvs_input_directory, latitude, longitude, country, year
         )
+    if electricity_price == None:
+        check_inputs.add_electricity_price()
 
     # todo: scpecify country automatically by lat/lon
 
@@ -58,14 +61,14 @@ def main(
     # weather= era5.load_era5_weatherdata(lat=latitude, lon=longitude, year=year)
 
     #  otherwise this example weather data for one year (2014) can be used for now
-    weather = pd.read_csv("./data/inputs/weatherdata.csv", index_col=0)
-    weather.index = pd.to_datetime(weather.index)
-    spa = pvlib.solarposition.spa_python(
-        time=weather.index, latitude=latitude, longitude=longitude
-    )
-    weather["dni"] = pvlib.irradiance.dirint(
-        weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
-    )
+    # weather = pd.read_csv("./data/inputs/weatherdata.csv", index_col=0)
+    # weather.index = pd.to_datetime(weather.index)
+    # spa = pvlib.solarposition.spa_python(
+    #     time=weather.index, latitude=latitude, longitude=longitude
+    # )
+    # weather["dni"] = pvlib.irradiance.dirint(
+    #     weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
+    # )
 
     # pv_feedin.create_pv_components(
     #     lat=latitude,
@@ -87,12 +90,12 @@ def main(
     #     weather=weather,
     # )
 
-    mvs.main(
-        path_input_folder=mvs_input_directory,
-        path_output_folder=mvs_output_directory,
-        input_type="csv",
-        overwrite=True,
-    )
+    # mvs.main(
+    #     path_input_folder=mvs_input_directory,
+    #     path_output_folder=mvs_output_directory,
+    #     input_type="csv",
+    #     overwrite=True,
+    # )
 
 
 if __name__ == "__main__":
