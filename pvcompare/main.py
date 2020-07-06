@@ -26,8 +26,7 @@ def main(
     input_directory=None,
     mvs_input_directory=None,
     plot=False,
-    mvs_output_directory=None,
-    electricity_price=None,
+    mvs_output_directory=None
 ):
 
     """
@@ -52,8 +51,7 @@ def main(
         check_inputs.add_project_data(
             mvs_input_directory, latitude, longitude, country, year
         )
-    if electricity_price == None:
-        check_inputs.add_electricity_price()
+    check_inputs.add_electricity_price()
 
     # todo: scpecify country automatically by lat/lon
 
