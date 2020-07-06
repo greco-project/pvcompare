@@ -6,6 +6,7 @@ from pvcompare.check_inputs import (
     check_for_valid_country_year,
     add_project_data,
     check_mvs_energy_production_file,
+    add_electricity_price
 )
 
 from pvcompare import constants
@@ -24,17 +25,6 @@ class TestDemandProfiles:
         )
         data_path = os.path.join(self.input_directory, "pv_setup.csv")
         self.pv_setup = pd.read_csv(data_path)
-
-    def setup_method(self):
-        # Hard code the value of energy_price as NaN in the energyProviders.csv to prepare the file for the tests
-        energy_providers_filename = os.path.join(
-            self.test_mvs_directory, "csv_elements/" "energyProviders.csv"
-        )
-
-        grid_electricity_df = pd.read_csv(energy_providers_filename, index_col=0)
-        set_elec_price = np.NaN
-        grid_electricity_df.at["energy_price", "Electricity grid "] = set_elec_price
-        grid_electricity_df.to_csv(energy_providers_filename)
 
     def test_check_for_valid_country(self):
         try:
@@ -159,37 +149,37 @@ class TestDemandProfiles:
             # raise an exception so that the test fails
             raise AssertionError("ValueError was not raised")
 
-    def test_energy_price_check(self):
+
+    def test_add_electricity_price(self):
         """
         Test to check if the function overwrites the energy_price value in the energyProviders.csv with the
         user provided value, if they are found to be different.
         """
-        electricity_price = energy_price_check(
-            mvs_input_directory=self.test_mvs_directory,
-            country=self.country,
-            electricity_price=0.5678686,
-        )
-
-        # Assert that the prices are equal
+        # set energy_price in energyProviders.csv to None
         energy_providers_filename = os.path.join(
             self.test_mvs_directory, "csv_elements/" "energyProviders.csv"
         )
 
-        grid_related_test = pd.read_csv(energy_providers_filename, index_col=0)
-        electricity_price_csv = float(
-            grid_related_test.at["energy_price", "Electricity grid "]
+        energyProviders = pd.read_csv(energy_providers_filename,
+                                          index_col=0)
+        energyProviders.at["energy_price", "Electricity grid "] = None
+        energyProviders.to_csv(energy_providers_filename)
+
+        # set start_date in simulation_settings.csv to 01.01.2014
+        energy_providers_filename = os.path.join(
+            self.test_mvs_directory, "csv_elements/" "simulation_settings.csv"
         )
 
-        assert electricity_price_csv == electricity_price
+        simulation_settings = pd.read_csv(energy_providers_filename,
+                                          index_col=0)
+        simulation_settings.at["start_date", "simulation_settings"] = "2014-01-01 00:00:00"
+        simulation_settings.to_csv(energy_providers_filename)
 
-    def test_energy_price_country(self):
-        """
-        Test to check if, when the user provides a non-EU country and no energy price, and if an appropriate value is
-        not entered for energy_price in the energyProviders.csv, the keyError is raised.
-        """
-        with pytest.raises(KeyError):
-            energy_price_check(
-                mvs_input_directory=self.test_mvs_directory,
-                electricity_price=None,
-                country="Uganda",
-            )
+
+
+        electricity_price = add_electricity_price(
+            mvs_input_directory=self.test_mvs_directory
+        )
+
+        assert electricity_price == 0.2165
+
