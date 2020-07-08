@@ -12,7 +12,7 @@ Within the pvcompare/pvcompare/data/ directory, two separate cateogies of inputs
 ------------------
 
 As PVCompare makes use of the `MVS <https://github.com/rl-institut/mvs_eland>`_ tool, the definitions of all the
-relevant parameters of MVS can be found `here <https://mvs-eland.readthedocs.io/en/latest/MVS_parameters.html>`_. Note
+relevant parameters of MVS can be found `here <https://mvs-eland.readthedocs.io/en/latest/MVS_parameters.html>`_. 
 that some parameters of MVS (for instance, all parameters concerning a diesel generator) are not applicable for PVCompare.
 
 The values used by default in PVCompare for the above parameters in each CSV, are detailed below:
