@@ -191,7 +191,7 @@ The values used by default in PVCompare for the above parameters in each CSV, ar
 ---------------------------------
 
 In order to run PVCompare, a number of input parameters are needed; many of which are stored in csv files with default values in "pvcompare/inputs/".
-Further a few parameters must be filled in when calling the main function. These parameters will not be of interest here. For more information see the functions description.  The following list will give a brief introduction into the description of the csv files and the source of the given default parameters.
+Further a few parameters must be filled in when calling the main function. These parameters will not be of interest here. For more information see the function's description.  The following list will give a brief introduction into the description of the csv files and the source of the given default parameters.
 
 * pv_setup.csv:
     *The pv_setup.csv defines the number of facades that are covered with pv-modules.*
