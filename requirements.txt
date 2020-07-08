@@ -11,3 +11,4 @@ reverse_geocoder
 staticmap
 pyppeteer
 demandlib
+oemof
