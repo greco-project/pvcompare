@@ -195,12 +195,12 @@ def add_electricity_price(mvs_input_directory=None):
     """
     Adds the electricity price from 'electricity_prices.csv' to 'energyProviders.csv'.
 
-    This function is called by the main function when then user-input value of the cost of
-    grid electricity is None. This function then adds cost of electricity for
-    the country and year from the csv file 'electricity_prices.csv' to
+    This function is called by the main function when the value of the parameter
+     "energy_price" in energyProviders.csv is None. This function then adds the
+     cost of electricity for the country and year from the csv file 'electricity_prices.csv' to
     energyProviders.csv.
-    If the value is already provided in the 'energyProviders.csv' a warning is
-    returned.
+    If the value is already provided in the 'energyProviders.csv' and this value
+    differs from the one in 'electricity_prices.csv' a warning is returned.
 
     Parameters:
     -----------
@@ -211,18 +211,24 @@ def add_electricity_price(mvs_input_directory=None):
     --------
     None
     """
-
+    #load energyProviders
     if mvs_input_directory is None:
         mvs_input_directory = os.path.join(constants.DEFAULT_MVS_INPUT_DIRECTORY)
     energy_providers_filename = os.path.join(
         mvs_input_directory, "csv_elements/" "energyProviders.csv"
     )
+    if os.path.isfile(energy_providers_filename):
+        energy_providers = pd.read_csv(energy_providers_filename, index_col=0)
+    else:
+        logging.error("The file energyProviders.csv is missing ")
 
+    #load electricity prices
     prices_file_path = os.path.join(
         constants.DEFAULT_INPUT_DIRECTORY, "electricity_prices.csv"
     )
     electricity_prices_eu = pd.read_csv(prices_file_path, index_col=0)
 
+    # load project data to select country
     project_data_filename = os.path.join(
         mvs_input_directory, "csv_elements/" "project_data.csv"
     )
@@ -232,6 +238,7 @@ def add_electricity_price(mvs_input_directory=None):
     else:
         logging.error("The file project_data.csv is missing.")
 
+    #load simulation settings for year
     simulation_settings_filename = os.path.join(
         mvs_input_directory, "csv_elements/" "simulation_settings.csv"
     )
@@ -242,10 +249,6 @@ def add_electricity_price(mvs_input_directory=None):
     start_date = simulation_settings.at["start_date", "simulation_settings"]
     year = str(start_date)[:-15]
 
-    if os.path.isfile(energy_providers_filename):
-        energy_providers = pd.read_csv(energy_providers_filename, index_col=0)
-    else:
-        logging.error("The file energyProviders.csv is missing ")
 
     electricity_price = energy_providers.at["energy_price", "Electricity grid "]
 
