@@ -14,13 +14,14 @@ Within the pvcompare/pvcompare/data/ directory, two separate cateogies of inputs
 As PVCompare makes use of the `Multi-vector Simulation Tool "MVS" <https://github.com/rl-institut/mvs_eland>`_ tool, the definitions of all the
 relevant parameters of MVS can be found `here <https://mvs-eland.readthedocs.io/en/latest/MVS_parameters.html>`_. 
 
-The values used by default in PVCompare for the above parameters in each CSV, are detailed below:
+The values used by default in PVCompare for the above parameters in each CSV, are detailed below.
+Some parameters can be calculated automatically by pvcompare and do not need to be filled it by hand. These parameters are marked with * *auto_calc*.
 
 * project_data.csv
-    1. **country**: {optional} str, Spain (the country in which the project is located)
+    1. **country**: str, Spain (the country in which the project is located), * *auto_calc*
     2. **label**: str, project_data
-    3. **latitude**: str, 45.641603
-    4. **longitude**: str, 5.875387
+    3. **latitude**: str, 45.641603 * *auto_calc*
+    4. **longitude**: str, 5.875387 * *auto_calc*
     5. **project_id**: str, 1
     6. **project_name**: str, net zero energy community
 
@@ -32,11 +33,11 @@ The values used by default in PVCompare for the above parameters in each CSV, ar
     5. **tax**: factor, 0 (this feature has not been implemented yet, as per MVS documentation)
 
 * simulation_settings.csv
-    1. **evaluated_period**: {optional} days, 365 (number of days)
+    1. **evaluated_period**: {optional} days, 365 (number of days),  * *auto_calc*
     2. **label**: str, simulation_settings
     3. **output_lp_file**: bool, False
     4. **restore_from_oemof_file**: bool, False
-    5. **start_date**: str, 2013-01-01 00:00:00
+    5. **start_date**: str, 2013-01-01 00:00:00,  * *auto_calc*
     6. **store_oemof_results**: bool, True
     7. **timestep**: minutes, 60 (hourly time-steps, 60 minutes)
     8. **display_nx_graph**: bool, False
@@ -105,12 +106,12 @@ The values used by default in PVCompare for the above parameters in each CSV, ar
     1. **age_installed**: year, 0 (for all the components)
     2. **development_costs**: currency, 0 (**TO BE DECIDED**)
     3. **specific_costs**: currency/unit, (**TO BE DECIDED**)
-    4. **file_name**: {optional} str
+    4. **file_name**: {optional} str,  * *auto_calc*
         a. **pv_plant_01**: si_180_31.csv
         b. **pv_plant_02**: cpv_180_31.csv
         c. **pv_plant_03**: cpv_90_90.csv
     5. **installedCap**: kWp, 0.0 (for all components)
-    6. **maximumCap**: {optional} kWp
+    6. **maximumCap**: {optional} kWp  * *auto_calc*
         a. **pv_plant_01**: 25454.87
         b. **pv_plant_02**: 55835.702
         c. **pv_plant_03**: 23929.586
@@ -127,7 +128,7 @@ The values used by default in PVCompare for the above parameters in each CSV, ar
     14. **unit**: str, kWp (for all of the components)
     15. **energyVector**: str, Electricity (for all of the components)
 * energyProviders.csv:
-    1. **energy_price**: {optional} currency/kWh, 0.24 (0.24 €/kWh is the average household electricity price of Spain for 2019S1. Obtained from `Eurostat <https://ec.europa.eu/eurostat/statistics-explained/images/d/d9/Electricity_prices%2C_first_semester_of_2017-2019_%28EUR_per_kWh%29.png>`_.)
+    1. **energy_price**: {optional} currency/kWh, 0.24  * *auto_calc* (0.24 €/kWh is the average household electricity price of Spain for 2019S1. Obtained from `Eurostat <https://ec.europa.eu/eurostat/statistics-explained/images/d/d9/Electricity_prices%2C_first_semester_of_2017-2019_%28EUR_per_kWh%29.png>`_.)
     2. **feedin_tariff**: currency/kWh, (0.10 €/kWh is for Germany. We do not have data for Spain yet.)
     3. **inflow_direction**: str, Electricity
     4. **label**: str, Electricity grid feedin
@@ -191,7 +192,7 @@ The values used by default in PVCompare for the above parameters in each CSV, ar
 ---------------------------------
 
 In order to run PVCompare, a number of input parameters are needed; many of which are stored in csv files with default values in "pvcompare/inputs/".
-Further a few parameters must be filled in when calling the main function. These parameters will not be of interest here. For more information see the function's description.  The following list will give a brief introduction into the description of the csv files and the source of the given default parameters.
+The following list will give a brief introduction into the description of the csv files and the source of the given default parameters.
 
 * pv_setup.csv:
     *The pv_setup.csv defines the number of facades that are covered with pv-modules.*
