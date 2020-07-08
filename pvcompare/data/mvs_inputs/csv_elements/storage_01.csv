@@ -1,15 +1,15 @@
 ,unit,storage capacity,input power,output power
-age_installed,year,0,0,0
-capex_fix,currency,0,0,0
-capex_var,currency/unit,0.2,0,0
-c_rate,factor of total capacity (kWh),NA,1,1
-efficiency,factor,0,0.9,0.9
-installedCap,unit,0,0,0
-label,str,storage capacity,input power,output power
-lifetime,year,10,10,10
-opex_fix,currency/unit/year,0,0,0
-opex_var,currency/kWh,NA,0,0
-soc_initial,None or factor,None,NA,NA
-soc_max,factor,0.8,NA,NA
-soc_min,factor,0.1,NA,NA
+label,str,Storage capacity,discharging_power,discharging_power
 unit,str,kWh,kW,kW
+installedCap,kWh,0.0,0,0
+age_installed,year,0,0,0
+lifetime,year,10,10,10
+development_costs,currency,0.0,0.0,0.0
+specific_costs,currency/kWh,700,0,0
+specific_costs_om,currency/kWh/year,0.15,0,0
+dispatch_price,currency/kWh,NaN,0,0
+c_rate,factor of total capacity (kWh),NaN,1,1
+efficiency,factor,0.0,0.9,0.9
+soc_initial,None or factor,None,NaN,NaN
+soc_max,factor,0.8,NaN,NaN
+soc_min,factor,0.1,NaN,NaN
