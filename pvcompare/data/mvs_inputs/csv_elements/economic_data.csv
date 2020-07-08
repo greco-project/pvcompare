@@ -1,6 +1,0 @@
-,unit,economic_data
-label,str,economic_data
-project_duration,year,1
-currency,str,EUR
-discount_factor,factor,1
-tax,factor,0.0 
