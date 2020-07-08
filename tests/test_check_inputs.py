@@ -6,6 +6,7 @@ from pvcompare.check_inputs import (
     check_for_valid_country_year,
     add_project_data,
     check_mvs_energy_production_file,
+    add_electricity_price,
 )
 
 from pvcompare import constants
@@ -147,3 +148,34 @@ class TestDemandProfiles:
             # If we get here, then the ValueError was not raised
             # raise an exception so that the test fails
             raise AssertionError("ValueError was not raised")
+
+    def test_add_electricity_price(self):
+        """
+        Test to check if the function overwrites the energy_price value in the energyProviders.csv with the
+        user provided value, if they are found to be different.
+        """
+        # set energy_price in energyProviders.csv to None
+        energy_providers_filename = os.path.join(
+            self.test_mvs_directory, "csv_elements/" "energyProviders.csv"
+        )
+
+        energyProviders = pd.read_csv(energy_providers_filename, index_col=0)
+        energyProviders.at["energy_price", "Electricity grid "] = None
+        energyProviders.to_csv(energy_providers_filename)
+
+        # set start_date in simulation_settings.csv to 01.01.2014
+        energy_providers_filename = os.path.join(
+            self.test_mvs_directory, "csv_elements/" "simulation_settings.csv"
+        )
+
+        simulation_settings = pd.read_csv(energy_providers_filename, index_col=0)
+        simulation_settings.at[
+            "start_date", "simulation_settings"
+        ] = "2014-01-01 00:00:00"
+        simulation_settings.to_csv(energy_providers_filename)
+
+        electricity_price = add_electricity_price(
+            mvs_input_directory=self.test_mvs_directory
+        )
+
+        assert electricity_price == 0.2165

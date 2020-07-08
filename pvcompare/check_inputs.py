@@ -188,7 +188,92 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
     # save energyProduction.csv
     project_data.to_csv(project_data_filename)
     simulation_settings.to_csv(simulation_settings_filename)
-    return (latitude, longitude, country, year)
+    return latitude, longitude, country, year
+
+
+def add_electricity_price(mvs_input_directory=None):
+    """
+    Adds the electricity price from 'electricity_prices.csv' to 'energyProviders.csv'.
+
+    This function is called by the main function when the value of the parameter
+     "energy_price" in energyProviders.csv is None. This function then adds the
+     cost of electricity for the country and year from the csv file 'electricity_prices.csv' to
+    energyProviders.csv.
+    If the value is already provided in the 'energyProviders.csv' and this value
+    differs from the one in 'electricity_prices.csv' a warning is returned.
+
+    Parameters:
+    -----------
+    mvs_input_directory : str
+        directory to "mvs_inputs/"
+
+    Returns:
+    --------
+    None
+    """
+    # load energyProviders
+    if mvs_input_directory is None:
+        mvs_input_directory = os.path.join(constants.DEFAULT_MVS_INPUT_DIRECTORY)
+    energy_providers_filename = os.path.join(
+        mvs_input_directory, "csv_elements/" "energyProviders.csv"
+    )
+    if os.path.isfile(energy_providers_filename):
+        energy_providers = pd.read_csv(energy_providers_filename, index_col=0)
+    else:
+        logging.error("The file energyProviders.csv is missing ")
+
+    # load electricity prices
+    prices_file_path = os.path.join(
+        constants.DEFAULT_INPUT_DIRECTORY, "electricity_prices.csv"
+    )
+    electricity_prices_eu = pd.read_csv(prices_file_path, index_col=0)
+
+    # load project data to select country
+    project_data_filename = os.path.join(
+        mvs_input_directory, "csv_elements/" "project_data.csv"
+    )
+    if os.path.isfile(project_data_filename):
+        project_data = pd.read_csv(project_data_filename, index_col=0)
+        country = project_data.at["country", "project_data"]
+    else:
+        logging.error("The file project_data.csv is missing.")
+
+    # load simulation settings for year
+    simulation_settings_filename = os.path.join(
+        mvs_input_directory, "csv_elements/" "simulation_settings.csv"
+    )
+    if os.path.isfile(simulation_settings_filename):
+        simulation_settings = pd.read_csv(simulation_settings_filename, index_col=0)
+    else:
+        logging.error("The file simulation_settings.csv is missing.")
+    start_date = simulation_settings.at["start_date", "simulation_settings"]
+    year = str(start_date)[:-15]
+
+    electricity_price = energy_providers.at["energy_price", "Electricity grid "]
+
+    electricity_price_from_csv = electricity_prices_eu.at[country, year]
+
+    if pd.isna(electricity_price) == False:
+        if electricity_price != electricity_price_from_csv:
+            logging.warning(
+                "The electricity price in energyProviders.csv "
+                "differs from the reference value of "
+                f"{electricity_price_from_csv} for the country "
+                f"{country}. If you want it to be overwritten "
+                f"automatically, please set the value of "
+                f"energy_Price in energyProviders.csv to None."
+            )
+    else:
+        energy_providers.at[
+            "energy_price", "Electricity grid "
+        ] = electricity_price_from_csv
+        energy_providers.to_csv(energy_providers_filename)
+        logging.info(
+            "The parameter energy_price has been automatically added"
+            "to energyProviders.csv."
+        )
+        electricity_price = electricity_price_from_csv
+    return electricity_price
 
 
 def check_mvs_energy_production_file(
@@ -287,35 +372,39 @@ def create_mvs_energy_production_file(pv_setup, energy_production_filename):
     # hardcoded list of parameters
     data = {
         "index": [
-            "age_installed",
-            "capex_fix",
-            "capex_var",
-            "file_name",
-            "installedCap",
             "label",
-            "lifetime",
-            "opex_fix",
-            "opex_var",
-            "optimizeCap",
-            "outflow_direction",
-            "type_oemof",
             "unit",
+            "optimizeCap",
+            "maximumCap",
+            "installedCap",
+            "age_installed",
+            "lifetime",
+            "development_costs",
+            "specific_costs",
+            "specific_costs_om",
+            "dispatch_price",
+            "outflow_direction",
+            "file_name",
             "energyVector",
+            "renewableAsset",
+            "type_oemof",
         ],
         "unit": [
+            "str",
+            "str",
+            "bool",
+            "None or float",
+            "kWp",
+            "year",
             "year",
             "currency",
             "currency/unit",
-            "str",
-            "kWp",
-            "str",
-            "year",
             "currency/unit/year",
             "currency/kWh",
+            "str",
+            "str",
+            "str",
             "bool",
-            "str",
-            "str",
-            "str",
             "str",
         ],
     }
@@ -324,20 +413,22 @@ def create_mvs_energy_production_file(pv_setup, energy_production_filename):
     for i, row in pv_setup.iterrows():
         # hardcoded default parameters
         pp = [
-            "0",
-            "10000",
-            "7200",
-            "0",
-            "0",
-            "PV plant (mono)",
-            "30",
-            "80",
-            "0",
-            "True",
-            "PV plant (mono)",
-            "source",
+            "PV plant",
             "kWp",
+            "True",
+            "0",
+            "0",
+            "0",
+            "25",
+            "1350",
+            "1220",
+            "50",
+            "0",
+            "PV bus",
+            "si_180_31.csv",
             "Electricity",
+            "True",
+            "source",
         ]
         df["pv_plant_0" + str(i + 1)] = pp
 
