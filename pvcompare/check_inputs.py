@@ -211,7 +211,7 @@ def add_electricity_price(mvs_input_directory=None):
     --------
     None
     """
-    #load energyProviders
+    # load energyProviders
     if mvs_input_directory is None:
         mvs_input_directory = os.path.join(constants.DEFAULT_MVS_INPUT_DIRECTORY)
     energy_providers_filename = os.path.join(
@@ -222,7 +222,7 @@ def add_electricity_price(mvs_input_directory=None):
     else:
         logging.error("The file energyProviders.csv is missing ")
 
-    #load electricity prices
+    # load electricity prices
     prices_file_path = os.path.join(
         constants.DEFAULT_INPUT_DIRECTORY, "electricity_prices.csv"
     )
@@ -238,7 +238,7 @@ def add_electricity_price(mvs_input_directory=None):
     else:
         logging.error("The file project_data.csv is missing.")
 
-    #load simulation settings for year
+    # load simulation settings for year
     simulation_settings_filename = os.path.join(
         mvs_input_directory, "csv_elements/" "simulation_settings.csv"
     )
@@ -248,7 +248,6 @@ def add_electricity_price(mvs_input_directory=None):
         logging.error("The file simulation_settings.csv is missing.")
     start_date = simulation_settings.at["start_date", "simulation_settings"]
     year = str(start_date)[:-15]
-
 
     electricity_price = energy_providers.at["energy_price", "Electricity grid "]
 
