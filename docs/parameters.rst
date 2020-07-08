@@ -33,7 +33,7 @@ Some parameters can be calculated automatically by pvcompare and do not need to 
     5. **tax**: factor, 0 (this feature has not been implemented yet, as per MVS documentation)
 
 * simulation_settings.csv
-    1. **evaluated_period**: {optional} days, 365 (number of days),  * *auto_calc*
+    1. **evaluated_period**: days, 365 (number of days),  * *auto_calc*
     2. **label**: str, simulation_settings
     3. **output_lp_file**: bool, False
     4. **restore_from_oemof_file**: bool, False
@@ -106,16 +106,16 @@ Some parameters can be calculated automatically by pvcompare and do not need to 
     1. **age_installed**: year, 0 (for all the components)
     2. **development_costs**: currency, 0 (**TO BE DECIDED**)
     3. **specific_costs**: currency/unit, (**TO BE DECIDED**)
-    4. **file_name**: {optional} str,  * *auto_calc*
+    4. **file_name**: str,  * *auto_calc*
         a. **pv_plant_01**: si_180_31.csv
         b. **pv_plant_02**: cpv_180_31.csv
         c. **pv_plant_03**: cpv_90_90.csv
     5. **installedCap**: kWp, 0.0 (for all components)
-    6. **maximumCap**: {optional} kWp  * *auto_calc*
+    6. **maximumCap**: kWp  * *auto_calc*
         a. **pv_plant_01**: 25454.87
         b. **pv_plant_02**: 55835.702
         c. **pv_plant_03**: 23929.586
-    7. **label**: {optional} str
+    7. **label**: str
         a. **pv_plant_01**: PV si_180_31
         b. **pv_plant_02**: PV cpv_180_31
         c. **pv_plant_03**: PV cpv_90_90
@@ -128,7 +128,7 @@ Some parameters can be calculated automatically by pvcompare and do not need to 
     14. **unit**: str, kWp (for all of the components)
     15. **energyVector**: str, Electricity (for all of the components)
 * energyProviders.csv:
-    1. **energy_price**: {optional} currency/kWh, 0.24  * *auto_calc* (0.24 €/kWh is the average household electricity price of Spain for 2019S1. Obtained from `Eurostat <https://ec.europa.eu/eurostat/statistics-explained/images/d/d9/Electricity_prices%2C_first_semester_of_2017-2019_%28EUR_per_kWh%29.png>`_.)
+    1. **energy_price**: currency/kWh, 0.24  * *auto_calc* (0.24 €/kWh is the average household electricity price of Spain for 2019S1. Obtained from `Eurostat <https://ec.europa.eu/eurostat/statistics-explained/images/d/d9/Electricity_prices%2C_first_semester_of_2017-2019_%28EUR_per_kWh%29.png>`_.)
     2. **feedin_tariff**: currency/kWh, (0.10 €/kWh is for Germany. We do not have data for Spain yet.)
     3. **inflow_direction**: str, Electricity
     4. **label**: str, Electricity grid feedin
