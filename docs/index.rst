@@ -15,6 +15,7 @@ Contents:
    getting_started
    examples
    code
+   parameters
 
 
 
