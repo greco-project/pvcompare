@@ -157,6 +157,7 @@ def create_pv_components(
         output_csv = os.path.join(time_series_directory, ts_csv,)
 
         # add "evaluated_period" to simulation_settings.csv
+        # add "evaluated_period" to simulation_settings.csv
         check_inputs.add_evaluated_period_to_simulation_settings(
             time_series=time_series, mvs_input_directory=mvs_input_directory
         )
@@ -520,18 +521,25 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, cpv_type)
         the rounded possible installed capacity for an area
     """
 
-    system, module_parameters = set_up_system(
-        technology=technology,
-        surface_azimuth=surface_azimuth,
-        surface_tilt=surface_tilt,
-        cpv_type=cpv_type,
-    )
-    if technology == "si":
-        peak = module_parameters["Impo"] * module_parameters["Vmpo"]
-    else:
-        peak = module_parameters["i_mp"] * module_parameters["v_mp"]
-    module_size = module_parameters["Area"]
-    nominal_value = round(area / module_size * peak) / 1000
+    if technology=="si" or technology=="cpv":
+        system, module_parameters = set_up_system(
+            technology=technology,
+            surface_azimuth=surface_azimuth,
+            surface_tilt=surface_tilt,
+            cpv_type=cpv_type,
+        )
+        if technology == "si":
+            peak = module_parameters["Impo"] * module_parameters["Vmpo"]
+        else:
+            peak = module_parameters["i_mp"] * module_parameters["v_mp"]
+        module_size = module_parameters["Area"]
+        nominal_value = round(area / module_size * peak) / 1000
+    elif technology == "psi":
+        import greco_technologies.perosi.data.cell_parameters_korte_pero as param
+        peak = param.p_mp
+        module_size = param.A /10000 # in m²
+        nominal_value = round(area / module_size * peak) / 1000
+
     logging.info(
         "The nominal value for %s" % technology  # todo technology instead of type?
         + " is %s" % nominal_value
