@@ -44,6 +44,7 @@ class TestPvtime_series:
         self.lon = 5.2
         self.surface_azimuth = 180
         self.surface_tilt = 30
+        self.year=2015
 
     def test_create_si_times_eries(self):
 
@@ -111,6 +112,7 @@ class TestPvtime_series:
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
                 cpv_type="m300",
+                year=self.year
             )
 
     def test_create_create_pv_components_wrong_technology_in_pvsetup(self):
@@ -131,6 +133,7 @@ class TestPvtime_series:
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
                 cpv_type="m300",
+                year=self.year
             )
 
     def test_create_create_pv_components_wrong_surface_type_in_pvsetup(self):
@@ -151,6 +154,7 @@ class TestPvtime_series:
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
                 cpv_type="m300",
+                year=self.year
             )
 
 
