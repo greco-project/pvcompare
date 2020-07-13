@@ -264,9 +264,7 @@ def add_electricity_price(mvs_input_directory=None):
                 f"energy_Price in energyProviders.csv to None."
             )
     else:
-        energy_providers.at[
-            "energy_price", "DSO"
-        ] = electricity_price_from_csv
+        energy_providers.at["energy_price", "DSO"] = electricity_price_from_csv
         energy_providers.to_csv(energy_providers_filename)
         logging.info(
             "The parameter energy_price has been automatically added"
