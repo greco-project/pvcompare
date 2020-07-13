@@ -249,7 +249,7 @@ def add_electricity_price(mvs_input_directory=None):
     start_date = simulation_settings.at["start_date", "simulation_settings"]
     year = str(start_date)[:-15]
 
-    electricity_price = energy_providers.at["energy_price", "Electricity grid "]
+    electricity_price = energy_providers.at["energy_price", "DSO"]
 
     electricity_price_from_csv = electricity_prices_eu.at[country, year]
 
@@ -265,7 +265,7 @@ def add_electricity_price(mvs_input_directory=None):
             )
     else:
         energy_providers.at[
-            "energy_price", "Electricity grid "
+            "energy_price", "DSO"
         ] = electricity_price_from_csv
         energy_providers.to_csv(energy_providers_filename)
         logging.info(

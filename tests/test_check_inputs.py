@@ -160,7 +160,7 @@ class TestDemandProfiles:
         )
 
         energyProviders = pd.read_csv(energy_providers_filename, index_col=0)
-        energyProviders.at["energy_price", "Electricity grid "] = None
+        energyProviders.at["energy_price", "DSO"] = None
         energyProviders.to_csv(energy_providers_filename)
 
         # set start_date in simulation_settings.csv to 01.01.2014
