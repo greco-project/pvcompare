@@ -521,7 +521,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, cpv_type)
         the rounded possible installed capacity for an area
     """
 
-    if technology=="si" or technology=="cpv":
+    if technology == "si" or technology == "cpv":
         system, module_parameters = set_up_system(
             technology=technology,
             surface_azimuth=surface_azimuth,
@@ -536,8 +536,9 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, cpv_type)
         nominal_value = round(area / module_size * peak) / 1000
     elif technology == "psi":
         import greco_technologies.perosi.data.cell_parameters_korte_pero as param
+
         peak = param.p_mp
-        module_size = param.A /10000 # in m²
+        module_size = param.A / 10000  # in m²
         nominal_value = round(area / module_size * peak) / 1000
 
     logging.info(
