@@ -30,6 +30,7 @@ except ImportError:
 import cpvtopvlib.cpvsystem as cpv
 import greco_technologies.cpv.hybrid
 import greco_technologies.cpv.inputs
+import greco_technologies.perosi.perosi
 from pvcompare import area_potential
 from pvcompare import check_inputs
 from pvcompare import constants
@@ -43,6 +44,7 @@ def create_pv_components(
     lon,
     weather,
     population,
+    year,
     pv_setup=None,
     plot=True,
     input_directory=None,
@@ -143,10 +145,7 @@ def create_pv_components(
                 lat, lon, weather, j, k, cpv_type=cpv_type
             )
         elif row["technology"] == "psi":
-            raise ValueError(
-                "The time series of psi cannot be calculated "
-                "yet. Please only use cpv or si right now."
-            )
+            time_series = create_psi_time_series(lat, lon, year, j, k)
         else:
             raise ValueError(
                 row["technology"],
@@ -298,7 +297,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt, cpv_type):
         return cpv_sys, module_params
 
     elif technology == "psi":
-        raise ValueError("The nominal value for psi cannot be calculated yet.")
+        pass
     else:
         logging.warning(
             technology, "is not in technologies. Please chose si, cpv or psi."
@@ -439,7 +438,60 @@ def create_cpv_time_series(
         )
 
 
-# def create_psi_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
+def create_psi_time_series(
+    lat, lon, year, surface_azimuth, surface_tilt, normalized=False
+):
+
+    """
+         Creates power time series of a Perovskite-Silicone module.
+
+         The PSI time series is created for a given weather data frame
+         (`weather`). If `normalized` is set to True, the time
+         series is divided by the peak power of the module.
+
+
+         Parameters
+         ----------
+         lat : float
+             Latitude of the location for which the time series is calculated.
+         lon : float
+             Longitude of the location for which the time series is calculated.
+         weather : :pandas:`pandas.DataFrame<frame>`
+             DataFrame with time series for temperature `temp_air` in C°, wind speed
+             `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m²
+         surface_azimuth : float
+             Surface azimuth of the modules (180° for south, 270° for west, etc.).
+         surface_tilt: float
+             Surface tilt of the modules. (horizontal=90° and vertical=0°)
+         psi_type  : str
+             Defines the type of module of which the time series is calculated.
+             Options: "Korte".
+         normalized: bool
+             If True, the time series is divided by the peak power of the CPV
+             module. Default: False.
+
+         Returns
+         -------
+         :pandas:`pandas.Series<series>`
+             Power output of PSI module in W (if parameter `normalized` is False) or todo check unit.
+             normalized power output of CPV module (if parameter `normalized` is
+             False).
+
+         """
+
+    logging.info("Absolute PSI time series is calculated in kW.")
+    return (
+        greco_technologies.perosi.perosi.create_pero_si_timeseries(
+            year,
+            lat,
+            lon,
+            surface_azimuth,
+            surface_tilt,
+            number_hours=8760,
+            input_directory=None,
+        )
+        / 1000
+    )
 
 
 def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, cpv_type):
