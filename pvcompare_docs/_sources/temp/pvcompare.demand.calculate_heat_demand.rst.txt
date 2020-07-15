@@ -1,6 +1,0 @@
-pvcompare.demand.calculate\_heat\_demand
-========================================
-
-.. currentmodule:: pvcompare.demand
-
-.. autofunction:: calculate_heat_demand

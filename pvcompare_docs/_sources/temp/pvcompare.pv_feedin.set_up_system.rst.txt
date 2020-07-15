@@ -1,6 +1,0 @@
-pvcompare.pv\_feedin.set\_up\_system
-====================================
-
-.. currentmodule:: pvcompare.pv_feedin
-
-.. autofunction:: set_up_system

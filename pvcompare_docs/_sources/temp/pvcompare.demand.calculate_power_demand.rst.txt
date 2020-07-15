@@ -1,6 +1,0 @@
-pvcompare.demand.calculate\_power\_demand
-=========================================
-
-.. currentmodule:: pvcompare.demand
-
-.. autofunction:: calculate_power_demand

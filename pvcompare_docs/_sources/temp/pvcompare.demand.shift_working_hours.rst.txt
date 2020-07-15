@@ -1,6 +1,0 @@
-pvcompare.demand.shift\_working\_hours
-======================================
-
-.. currentmodule:: pvcompare.demand
-
-.. autofunction:: shift_working_hours

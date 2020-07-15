@@ -1,6 +1,0 @@
-pvcompare.check\_inputs.check\_for\_valid\_country\_year
-========================================================
-
-.. currentmodule:: pvcompare.check_inputs
-
-.. autofunction:: check_for_valid_country_year

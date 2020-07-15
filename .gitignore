@@ -38,9 +38,7 @@ pip-delete-this-directory.txt
 docs/temp/*
 .doctrees
 .buildinfo
-docs/_templates/*
-docs/_static
-docs/_build/
+pvcompare_docs/*
 
 # Unit test / coverage reports
 htmlcov/
