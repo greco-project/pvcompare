@@ -197,8 +197,8 @@ def add_electricity_price(mvs_input_directory=None):
     Adds the electricity price from 'electricity_prices.csv' to 'energyProviders.csv'.
 
     This function is called by the main function when the value of the parameter
-     "energy_price" in energyProviders.csv is None. This function then adds the
-     cost of electricity for the country and year from the csv file 'electricity_prices.csv' to
+    "energy_price" in energyProviders.csv is None. This function then adds the
+    cost of electricity for the country and year from the csv file 'electricity_prices.csv' to
     energyProviders.csv.
     If the value is already provided in the 'energyProviders.csv' and this value
     differs from the one in 'electricity_prices.csv' a warning is returned.

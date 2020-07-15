@@ -132,6 +132,7 @@ def calculate_power_demand(
     :pandas:`pandas.Series<series>`
         hourly time series of the electrical demand
     """
+
     logging.info("loading calender for %s" % country)
     cal = get_workalendar_class(country)
     holidays = dict(cal.holidays(int(year)))
