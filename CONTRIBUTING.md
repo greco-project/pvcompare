@@ -67,3 +67,22 @@ Please follow the indications in the pull request template and update the approp
 
 Once you are satisfied with your PR you should ask someone to review it. Before that please lint
  your code with [Black](https://github.com/psf/black) (run `black . --exclude docs/`).
+
+## Documentation on Readthedocs
+
+The documentation of pvcompare is compiled with the content of the folder "docs". 
+You need to install the requirements:
+
+```bash
+pip install -r docs/docs_requirements.txt
+```
+
+After editing, build the documentation locally by running
+
+```bash
+ sphinx-build -b html ~/path/to/pvcompare/docs/ ~/path/to/pvcompare/pvcompare_docs/
+```
+
+to check the results by opening the html files in the directory `pvcompare_docs`.
+
+An introduction to creating the readthedocs with Sphinx is given here: https://docs.readthedocs.io/en/stable/intro/getting-started-with-sphinx.html.
