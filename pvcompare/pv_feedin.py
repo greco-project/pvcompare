@@ -31,7 +31,7 @@ import cpvtopvlib.cpvsystem as cpv
 import greco_technologies.cpv.hybrid
 import greco_technologies.cpv.inputs
 from pvcompare import area_potential
-from pvcompare import adapt_csvs
+from pvcompare import check_inputs
 from pvcompare import constants
 
 log_format = "%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s"
@@ -103,9 +103,7 @@ def create_pv_components(
     # empty output folder
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
-    time_series_directory = os.path.join(
-        mvs_input_directory, "time_series"
-    )
+    time_series_directory = os.path.join(mvs_input_directory, "time_series")
     files = glob.glob(os.path.join(time_series_directory, "*"))
     for f in files:
         os.remove(f)
@@ -128,7 +126,7 @@ def create_pv_components(
         )
 
     # check if mvs_input/energyProduction.csv contains all power plants
-    adapt_csvs.check_mvs_energy_production_file(pv_setup, directory_energy_production)
+    check_inputs.check_mvs_energy_production_file(pv_setup, directory_energy_production)
     # parse through pv_setup file and create time series for each technology
     for i, row in pv_setup.iterrows():
         j = row["surface_azimuth"]
@@ -138,7 +136,7 @@ def create_pv_components(
             k = get_optimal_pv_angle(lat)
         if row["technology"] == "si":
             time_series = create_si_time_series(
-                lat=lat, lon=lon, weather=weather, surface_azimuth=j, surface_tilt=k
+                lat=lat, lon=lon, weather=weather, surface_azimuth=j, surface_tilt=k,
             )
         elif row["technology"] == "cpv":
             time_series = create_cpv_time_series(
@@ -160,7 +158,7 @@ def create_pv_components(
         output_csv = os.path.join(time_series_directory, ts_csv,)
 
         # add "evaluated_period" to simulation_settings.csv
-        adapt_csvs.add_evaluated_period_to_simulation_settings(
+        check_inputs.add_evaluated_period_to_simulation_settings(
             time_series=time_series, mvs_input_directory=mvs_input_directory
         )
 
@@ -207,7 +205,7 @@ def create_pv_components(
         )
         # save the file name of the time series and the nominal value to
         # mvs_inputs/elements/csv/energyProduction.csv
-        adapt_csvs.add_parameters_to_energy_production_file(
+        check_inputs.add_parameters_to_energy_production_file(
             pp_number=i + 1, ts_filename=ts_csv, nominal_value=nominal_value,
         )
     if plot == True:
@@ -361,11 +359,11 @@ def create_si_time_series(
         return (output["p_mp"] / peak).clip(0)
     else:
         logging.info("si time series is calculated in kW without normalization.")
-        return output["p_mp"]/1000
+        return output["p_mp"] / 1000
 
 
 def create_cpv_time_series(
-    lat, lon, weather, surface_azimuth, surface_tilt, cpv_type, normalized=False
+    lat, lon, weather, surface_azimuth, surface_tilt, cpv_type, normalized=False,
 ):
 
     """
@@ -428,14 +426,17 @@ def create_cpv_time_series(
         ).clip(0)
     else:
         logging.info("Absolute CPV time series is calculated in kW.")
-        return greco_technologies.cpv.cpv.create_cpv_time_series(
-            lat=lat,
-            lon=lon,
-            weather=weather,
-            surface_tilt=surface_tilt,
-            surface_azimuth=surface_azimuth,
-            cpv_type=cpv_type,
-        )/1000
+        return (
+            greco_technologies.cpv.cpv.create_cpv_time_series(
+                lat=lat,
+                lon=lon,
+                weather=weather,
+                surface_tilt=surface_tilt,
+                surface_azimuth=surface_azimuth,
+                cpv_type=cpv_type,
+            )
+            / 1000
+        )
 
 
 # def create_psi_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
@@ -492,7 +493,7 @@ if __name__ == "__main__":
 
     filename = os.path.abspath("./data/inputs/weatherdata.csv")
     weather_df = pd.read_csv(
-        filename, index_col=0, date_parser=lambda idx: pd.to_datetime(idx, utc=True)
+        filename, index_col=0, date_parser=lambda idx: pd.to_datetime(idx, utc=True),
     )
     weather_df.index = pd.to_datetime(weather_df.index).tz_convert("Europe/Berlin")
     weather_df["dni"] = weather_df["ghi"] - weather_df["dhi"]

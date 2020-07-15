@@ -1,8 +1,8 @@
 ,unit,project_data
-country,str,Norway
 label,str,project_data
-latitude,str,59.17905
-longitude,str,10.95787
+country,str,Germany
+latitude,str,48.1351
+longitude,str,11.582
 project_id,str,1
 project_name,str,net zero energy community
 scenario_id,str,1

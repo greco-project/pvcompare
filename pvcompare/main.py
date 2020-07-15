@@ -8,7 +8,7 @@ from pvcompare import demand
 from pvcompare import pv_feedin
 from pvcompare import constants
 import mvs_tool as mvs
-from pvcompare import adapt_csvs
+from pvcompare import check_inputs
 import os
 
 
@@ -19,7 +19,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 
 def main(
     population,
-    country = None,
+    country=None,
     latitude=None,
     longitude=None,
     year=None,
@@ -48,26 +48,29 @@ def main(
         mvs_output_directory = constants.DEFAULT_MVS_OUTPUT_DIRECTORY
 
     if all([latitude, longitude, country, year]) == False:
-        adapt_csvs.add_project_data(mvs_input_directory,latitude, longitude, country, year)
+        check_inputs.add_project_data(
+            mvs_input_directory, latitude, longitude, country, year
+        )
+    check_inputs.add_electricity_price()
 
     # todo: scpecify country automatically by lat/lon
 
     # if era5 import works this line can be used
-    # weather= era5.load_era5_weatherdata(lat=lat, lon=lon, year=year)
+    # weather= era5.load_era5_weatherdata(lat=latitude, lon=longitude, year=year)
 
-    #   otherwise this example weather data for one year (2014) can be used for now
-    weather = pd.read_csv("./data/inputs/weatherdata.csv", index_col=0)
-    weather.index = pd.to_datetime(weather.index)
-    spa = pvlib.solarposition.spa_python(
-        time=weather.index, latitude=latitude, longitude=longitude
-    )
-    weather["dni"] = pvlib.irradiance.dirint(
-        weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
-    )
+    #  otherwise this example weather data for one year (2014) can be used for now
+    # weather = pd.read_csv("./data/inputs/weatherdata.csv", index_col=0)
+    # weather.index = pd.to_datetime(weather.index)
+    # spa = pvlib.solarposition.spa_python(
+    #     time=weather.index, latitude=latitude, longitude=longitude
+    # )
+    # weather["dni"] = pvlib.irradiance.dirint(
+    #     weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
+    # )
 
     # pv_feedin.create_pv_components(
-    #     lat=lat,
-    #     lon=lon,
+    #     lat=latitude,
+    #     lon=longitude,
     #     weather=weather,
     #     population=population,
     #     pv_setup=None,
@@ -75,23 +78,22 @@ def main(
     #     input_directory=input_directory,
     #     mvs_input_directory=mvs_input_directory,
     # )
-    #
+
     # demand.calculate_load_profiles(
     #     country=country,
     #     population=population,
     #     year=year,
     #     input_directory=input_directory,
     #     mvs_input_directory=mvs_input_directory,
-    #     plot=plot,
     #     weather=weather,
     # )
 
-    mvs.main(
-        path_input_folder=mvs_input_directory,
-        path_output_folder=mvs_output_directory,
-        input_type="csv",
-        overwrite=True,
-    )
+    # mvs.main(
+    #     path_input_folder=mvs_input_directory,
+    #     path_output_folder=mvs_output_directory,
+    #     input_type="csv",
+    #     overwrite=True,
+    # )
 
 
 if __name__ == "__main__":
@@ -102,4 +104,10 @@ if __name__ == "__main__":
     population = 48000
     country = "Spain"
 
-    main(latitude=latitude, longitude=longitude, year=year, population=population)
+    main(
+        latitude=latitude,
+        longitude=longitude,
+        year=year,
+        population=population,
+        country=country,
+    )

@@ -44,7 +44,24 @@ Functions for calculating the feed-in time series of different PV technologies.
     pv_feedin.nominal_values_pv
     pv_feedin.set_up_system
     pv_feedin.get_optimal_pv_angle
-    pv_feedin.check_mvs_energy_production_file
-    pv_feedin.create_mvs_energy_production_file
-    pv_feedin.add_parameters_to_energy_production_file
-    pv_feedin.add_evaluated_period_to_simulation_settings
+
+
+
+Reading and Writing input csv's
+===============================
+
+Functions that match manual inputs and calculated results with mvs_inputs/csv_elements/
+
+.. autosummary::
+   :toctree: temp/
+
+   check_inputs.check_for_valid_country_year
+   check_inputs.add_project_data
+   check_inputs.add_electricity_price
+   check_inputs.check_mvs_energy_production_file
+   check_inputs.create_mvs_energy_production_file
+   check_inputs.add_parameters_to_energy_production_file
+   check_inputs.add_evaluated_period_to_simulation_settings
+
+
+	

@@ -1,9 +1,9 @@
 ,unit,demand_01
-dsm,str,False
-file_name,str,electricity_load.csv
-label,str,Households
-type_asset,str,demand
-type_oemof,str,sink
-energyVector,str,Electricity
-inflow_direction,str,Electricity
+label,str,households
 unit,str,kW
+inflow_direction,str,Electricity
+file_name,str,electricity_load.csv
+energyVector,str,Electricity
+type_oemof,str,sink
+type_asset,str,demand
+dsm,str,False

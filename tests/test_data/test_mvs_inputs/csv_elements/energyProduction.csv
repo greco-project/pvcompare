@@ -1,0 +1,16 @@
+index,unit,pv_plant_01
+age_installed,year,0
+capex_fix,currency,0
+capex_var,currency/unit,500
+file_name,str,si_180_31.csv
+installedCap,kWp,0.0
+maximumCap,kWp,25454.87
+label,str,PV si_180_31
+lifetime,year,25
+opex_fix,currency/unit/year,50
+opex_var,currency/kWh,0
+optimizeCap,bool,True
+outflow_direction,str,PV bus1
+type_oemof,str,source
+unit,str,kWp
+energyVector,str,Electricity

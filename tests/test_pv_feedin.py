@@ -10,9 +10,11 @@ https://docs.python.org/3/library/unittest.html are also good support.
 
 import pytest
 import pandas as pd
+import os
 import numpy as np
-
+from pvcompare import constants
 from pvcompare.pv_feedin import (
+    create_pv_components,
     create_si_time_series,
     nominal_values_pv,
     create_cpv_time_series,
@@ -30,10 +32,17 @@ class TestPvtime_series:
         weather_df["dhi"] = [100, 120]
         weather_df["dni"] = [120, 150]
         weather_df["ghi"] = [200, 220]
-        weather_df.index = ["2014-01-01 13:00:00+00:00", "2014-01-01 14:00:00+00:00"]
+        weather_df.index = [
+            "2014-01-01 13:00:00+00:00",
+            "2014-01-01 14:00:00+00:00",
+        ]
         weather_df.index = pd.to_datetime(weather_df.index)
+        self.test_mvs_directory = os.path.join(
+            os.path.dirname(__file__), "test_data/test_mvs_inputs"
+        )
         self.weather = weather_df
 
+        self.population = 4600
         self.lat = 40.0
         self.lon = 5.2
         self.surface_azimuth = 180
@@ -47,11 +56,10 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalized=True,
+            normalized=False,
         )
-        output = ts.sum()
-
-        assert output == 0.4477100404694223
+        output = round(ts.values.sum(), 3)
+        assert output == 0.098
 
     def test_nominal_values_pv(self):
 
@@ -87,6 +95,66 @@ class TestPvtime_series:
         output = get_optimal_pv_angle(self.lat)
 
         assert output == 25
+
+    def test_create_create_pv_components_column_missing_in_pvsetup(self):
+        pv_setup_filename = os.path.join(
+            constants.DUMMY_TEST_DATA, "test_pv_setup_missing_column.csv"
+        )
+        pv_setup = pd.read_csv(pv_setup_filename)
+
+        with pytest.raises(ValueError):
+            create_pv_components(
+                self.lat,
+                self.lon,
+                self.weather,
+                self.population,
+                pv_setup=pv_setup,
+                plot=False,
+                input_directory=constants.DUMMY_TEST_DATA,
+                mvs_input_directory=self.test_mvs_directory,
+                directory_energy_production=None,
+                cpv_type="m300",
+            )
+
+    def test_create_create_pv_components_wrong_technology_in_pvsetup(self):
+        pv_setup_filename = os.path.join(
+            constants.DUMMY_TEST_DATA, "test_pv_setup_wrong_technology.csv"
+        )
+        pv_setup = pd.read_csv(pv_setup_filename)
+
+        with pytest.raises(ValueError):
+            create_pv_components(
+                self.lat,
+                self.lon,
+                self.weather,
+                self.population,
+                pv_setup=pv_setup,
+                plot=False,
+                input_directory=constants.DUMMY_TEST_DATA,
+                mvs_input_directory=self.test_mvs_directory,
+                directory_energy_production=None,
+                cpv_type="m300",
+            )
+
+    def test_create_create_pv_components_wrong_surface_type_in_pvsetup(self):
+        pv_setup_filename = os.path.join(
+            constants.DUMMY_TEST_DATA, "test_pv_setup_wrong_surface_type.csv"
+        )
+        pv_setup = pd.read_csv(pv_setup_filename)
+
+        with pytest.raises(ValueError):
+            create_pv_components(
+                self.lat,
+                self.lon,
+                self.weather,
+                self.population,
+                pv_setup=pv_setup,
+                plot=False,
+                input_directory=constants.DUMMY_TEST_DATA,
+                mvs_input_directory=self.test_mvs_directory,
+                directory_energy_production=None,
+                cpv_type="m300",
+            )
 
 
 # # one can test that exception are raised
