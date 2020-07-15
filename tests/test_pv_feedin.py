@@ -11,7 +11,6 @@ https://docs.python.org/3/library/unittest.html are also good support.
 import pytest
 import pandas as pd
 import os
-import numpy as np
 from pvcompare import constants
 from pvcompare.pv_feedin import (
     create_pv_components,
