@@ -29,9 +29,7 @@ class TestDemandProfiles:
     def test_check_for_valid_country(self):
         try:
             check_for_valid_country_year(
-                country="Uganda",
-                year=self.year,
-                input_directory=self.input_directory,
+                country="Uganda", year=self.year, input_directory=self.input_directory,
             )
         except ValueError:
             # The exception was raised as expected
@@ -44,9 +42,7 @@ class TestDemandProfiles:
     def test_check_for_valid_year(self):
         try:
             check_for_valid_country_year(
-                country=self.country,
-                year=2001,
-                input_directory=self.input_directory,
+                country=self.country, year=2001, input_directory=self.input_directory,
             )
         except ValueError:
             # The exception was raised as expected
@@ -78,9 +74,7 @@ class TestDemandProfiles:
         )
 
         project_data = pd.read_csv(
-            os.path.join(
-                self.test_mvs_directory, "csv_elements/project_data.csv"
-            ),
+            os.path.join(self.test_mvs_directory, "csv_elements/project_data.csv"),
             index_col=0,
         )
         latitude_csv = project_data.at["latitude", "project_data"]
@@ -96,17 +90,13 @@ class TestDemandProfiles:
     def test_add_project_data_with_latitude_is_none(self):
 
         project_data = pd.read_csv(
-            os.path.join(
-                self.test_mvs_directory, "csv_elements/project_data.csv"
-            ),
+            os.path.join(self.test_mvs_directory, "csv_elements/project_data.csv"),
             index_col=0,
             header=0,
         )
         project_data.at["latitude", "project_data"] = None
         project_data.to_csv(
-            os.path.join(
-                self.test_mvs_directory, "csv_elements/project_data.csv"
-            )
+            os.path.join(self.test_mvs_directory, "csv_elements/project_data.csv")
         )
 
         with pytest.raises(ValueError):
@@ -178,9 +168,7 @@ class TestDemandProfiles:
             self.test_mvs_directory, "csv_elements/" "simulation_settings.csv"
         )
 
-        simulation_settings = pd.read_csv(
-            energy_providers_filename, index_col=0
-        )
+        simulation_settings = pd.read_csv(energy_providers_filename, index_col=0)
         simulation_settings.at[
             "start_date", "simulation_settings"
         ] = "2014-01-01 00:00:00"

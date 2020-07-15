@@ -45,12 +45,7 @@ except ImportError:
 
 
 def calculate_load_profiles(
-    country,
-    population,
-    year,
-    weather,
-    input_directory=None,
-    mvs_input_directory=None,
+    country, population, year, weather, input_directory=None, mvs_input_directory=None,
 ):
     """
     Calculates electricity and heat load profiles and saves them to csv.
@@ -202,12 +197,7 @@ def calculate_power_demand(
 
 
 def calculate_heat_demand(
-    country,
-    population,
-    year,
-    weather,
-    input_directory=None,
-    mvs_input_directory=None,
+    country, population, year, weather, input_directory=None, mvs_input_directory=None,
 ):
     """
     Calculates heat demand profile for `population` and `country`.
@@ -382,9 +372,7 @@ def shift_working_hours(country, ts):
         "Slovenia",
         "Romania",
     ]:
-        logging.info(
-            "The load profile is shifted by -1 hours only on " "weekends."
-        )
+        logging.info("The load profile is shifted by -1 hours only on " "weekends.")
         # The timeseries is shifted by -1 hour only on weekends
         ts["Day"] = pd.DatetimeIndex(ts.index).day_name()
         one_weekend = pd.DataFrame()

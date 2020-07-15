@@ -74,10 +74,7 @@ def calculate_area_potential(population, input_directory, surface_type):
         if number_of_storeys > 3:
             used_storeys = number_of_storeys - 3
             south_facade = (
-                length_south_facade
-                * hight_per_storey
-                * used_storeys
-                * number_houses
+                length_south_facade * hight_per_storey * used_storeys * number_houses
             )
             if surface_type == "east_facade" or surface_type == "west_facade":
                 east_west_facade = (
@@ -108,8 +105,6 @@ def calculate_area_potential(population, input_directory, surface_type):
 if __name__ == "__main__":
 
     area = calculate_area_potential(
-        population=6000,
-        input_directory="./data/inputs/",
-        surface_type="flat_roof",
+        population=6000, input_directory="./data/inputs/", surface_type="flat_roof",
     )
     print(area)

@@ -126,9 +126,7 @@ def create_pv_components(
         )
 
     # check if mvs_input/energyProduction.csv contains all power plants
-    check_inputs.check_mvs_energy_production_file(
-        pv_setup, directory_energy_production
-    )
+    check_inputs.check_mvs_energy_production_file(pv_setup, directory_energy_production)
     # parse through pv_setup file and create time series for each technology
     for i, row in pv_setup.iterrows():
         j = row["surface_azimuth"]
@@ -138,11 +136,7 @@ def create_pv_components(
             k = get_optimal_pv_angle(lat)
         if row["technology"] == "si":
             time_series = create_si_time_series(
-                lat=lat,
-                lon=lon,
-                weather=weather,
-                surface_azimuth=j,
-                surface_tilt=k,
+                lat=lat, lon=lon, weather=weather, surface_azimuth=j, surface_tilt=k,
             )
         elif row["technology"] == "cpv":
             time_series = create_cpv_time_series(
@@ -156,9 +150,7 @@ def create_pv_components(
         else:
             raise ValueError(
                 row["technology"],
-                "is not in technologies. Please "
-                "choose 'si', 'cpv' or "
-                "'psi'.",
+                "is not in technologies. Please " "choose 'si', 'cpv' or " "'psi'.",
             )
 
         # define the name of the output file of the time series
@@ -285,12 +277,9 @@ def set_up_system(technology, surface_azimuth, surface_tilt, cpv_type):
     elif technology == "cpv":
 
         logging.debug(
-            "cpv module parameters are loaded from "
-            "greco_technologies/inputs.py"
+            "cpv module parameters are loaded from " "greco_technologies/inputs.py"
         )
-        module_params = greco_technologies.cpv.inputs.create_cpv_dict(
-            cpv_type=cpv_type
-        )
+        module_params = greco_technologies.cpv.inputs.create_cpv_dict(cpv_type=cpv_type)
 
         cpv_sys = cpv.StaticCPVSystem(
             surface_tilt=surface_tilt,
@@ -369,20 +358,12 @@ def create_si_time_series(
         logging.info("normalized si time series is calculated.")
         return (output["p_mp"] / peak).clip(0)
     else:
-        logging.info(
-            "si time series is calculated in kW without normalization."
-        )
+        logging.info("si time series is calculated in kW without normalization.")
         return output["p_mp"] / 1000
 
 
 def create_cpv_time_series(
-    lat,
-    lon,
-    weather,
-    surface_azimuth,
-    surface_tilt,
-    cpv_type,
-    normalized=False,
+    lat, lon, weather, surface_azimuth, surface_tilt, cpv_type, normalized=False,
 ):
 
     """
@@ -461,9 +442,7 @@ def create_cpv_time_series(
 # def create_psi_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
 
 
-def nominal_values_pv(
-    technology, area, surface_azimuth, surface_tilt, cpv_type
-):
+def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, cpv_type):
 
     """
     calculates the maximum installed capacity for each pv module.
@@ -502,8 +481,7 @@ def nominal_values_pv(
     module_size = module_parameters["Area"]
     nominal_value = round(area / module_size * peak) / 1000
     logging.info(
-        "The nominal value for %s"
-        % technology  # todo technology instead of type?
+        "The nominal value for %s" % technology  # todo technology instead of type?
         + " is %s" % nominal_value
         + " kWp for an area of %s" % area
         + " qm."
@@ -515,13 +493,9 @@ if __name__ == "__main__":
 
     filename = os.path.abspath("./data/inputs/weatherdata.csv")
     weather_df = pd.read_csv(
-        filename,
-        index_col=0,
-        date_parser=lambda idx: pd.to_datetime(idx, utc=True),
+        filename, index_col=0, date_parser=lambda idx: pd.to_datetime(idx, utc=True),
     )
-    weather_df.index = pd.to_datetime(weather_df.index).tz_convert(
-        "Europe/Berlin"
-    )
+    weather_df.index = pd.to_datetime(weather_df.index).tz_convert("Europe/Berlin")
     weather_df["dni"] = weather_df["ghi"] - weather_df["dhi"]
 
     create_pv_components(lat=40.3, lon=5.4, weather=weather_df, population=600)

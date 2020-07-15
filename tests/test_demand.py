@@ -61,9 +61,7 @@ class TestDemandProfiles:
     def test_power_demand_exists(self):
 
         if os.path.exists(
-            os.path.join(
-                self.test_mvs_directory, "time_series/electricity_load.csv"
-            )
+            os.path.join(self.test_mvs_directory, "time_series/electricity_load.csv")
         ):
             os.remove(
                 os.path.join(
@@ -78,9 +76,7 @@ class TestDemandProfiles:
             mvs_input_directory=self.test_mvs_directory,
         )
         assert os.path.exists(
-            os.path.join(
-                self.test_mvs_directory, "time_series/electricity_load.csv"
-            )
+            os.path.join(self.test_mvs_directory, "time_series/electricity_load.csv")
         )
 
     def test_calculate_power_demand(self):
@@ -101,9 +97,7 @@ class TestDemandProfiles:
             os.path.join(self.test_mvs_directory, "time_series/heat_load.csv")
         ):
             os.remove(
-                os.path.join(
-                    self.test_mvs_directory, "time_series/heat_load.csv"
-                )
+                os.path.join(self.test_mvs_directory, "time_series/heat_load.csv")
             )
 
         calculate_heat_demand(
