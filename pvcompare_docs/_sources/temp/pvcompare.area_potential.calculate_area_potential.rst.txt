@@ -1,6 +1,0 @@
-pvcompare.area\_potential.calculate\_area\_potential
-====================================================
-
-.. currentmodule:: pvcompare.area_potential
-
-.. autofunction:: calculate_area_potential

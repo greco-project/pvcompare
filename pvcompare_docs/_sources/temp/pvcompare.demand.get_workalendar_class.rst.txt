@@ -1,6 +1,0 @@
-pvcompare.demand.get\_workalendar\_class
-========================================
-
-.. currentmodule:: pvcompare.demand
-
-.. autofunction:: get_workalendar_class
