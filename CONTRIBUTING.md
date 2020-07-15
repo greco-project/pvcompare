@@ -1,83 +1,69 @@
-## Development
+## Development of pvcompare
 
 ### Prerequisites
 
 - [Git](https://git-scm.com/)
+- Clone https://github.com/greco-project/pvcompare.git or `git@github.com:greco-project/pvcompare.git` (SSH) and install the cloned repository using pip:
 
+```bash
+pip install -e /path/to/the/repository
+```
 
 ### Philosophy
 
-Development of a feature for this repository should follow the workflow described 
+Development of a feature for this repository should be aligned with the workflow described 
 by [Vincent Driessen](https://nvie.com/posts/a-successful-git-branching-model/).
 
-Here are the minimal procedure you should follow : 
+Here is the minimal procedure you should follow : 
 
-#### Step 1: Describe the issue on github
+#### Step 1: Create an issue.
+ 
+ Create [an issue](https://help.github.com/en/articles/creating-an-issue) on the github repository, describing the problem you will then address with your feature/fix.
+This is an important step as it forces one to think about the issue (to describe an issue to others, one has to think it through first).
 
-Create [an issue](https://help.github.com/en/articles/creating-an-issue)
-on the github repository, describing the problem you will then address
-with your feature/fix. This is an important step as it forces one to
-think about the issue (to describe an issue to others, one has to think
-it through first).
+#### Step 2: Create a branch to work on the issue.
 
-#### Step 2: Solve the issue locally
-
-1. Create a separate branch from `dev`, to work on
+1. Create a separate branch from `dev` (make sure you have the latest version of `dev`), to work on
     ```bash
-    git checkout -b feature/myfeature dev
+    git checkout -b feature/description_of_feature dev
     ```
-    The convention is to always have `feature/` in the branch name. The `myfeature` part should describe shortly what the feature is about (separate words with `_`).
+    The convention is to start the branch name with its functionality, e.g. `feature/` or `fix/`.  The second part describes shortly what the feature/fix is about.
 
 2. Try to follow [these conventions](https://chris.beams.io/posts/git-commit) for commit messages:
     - Keep the subject line [short](https://chris.beams.io/posts/git-commit/#limit-50) (i.e. do not commit more than a few changes at the time)
     - Use [imperative](https://chris.beams.io/posts/git-commit/#imperative) for commit messages 
     - Do not end the commit message with a [period](https://chris.beams.io/posts/git-commit/#end) 
-        You can use 
-        ```bash
-        git commit --amend
-        ```
-        to edit the commit message of your latest commit (provided it is not already pushed on the remote server).
-        With `--amend` you can even add/modify changes to the commit.
 
-3. Push your local branch on the remote server `origin`
-    ```bash
-    git push
-    ```
-    If your branch does not exist on the remote server yet, git will provide you with instructions, simply follow them.
+3. Push your local branch on the remote server immediately so
+ that everyone knows you are working on it, you are also encouraged to create a draft pull request (see Step 4).
 
 
 #### Step 3: Run tests locally
 
-To run tests locally, install the dependencies 
-```bash 
-pip install -r tests/test_requirements.txt 
+After creating a pull request (step 4) tests will run automatically but you can also run them locally - this is especially helpful in case a tests fails and you need debugging for finding the error.
+To install all packages required for the integration tests locally run:
+```bash
+pip install -r tests/test_requirements.txt
 ```
 
-1. Integration/unit tests 
-    ```bash
-    pytest tests
-    ```
-2.  Linting tests
-    ```bash
-    flake8
-    ```
-    and
-    ```bash
-    pylint
-    ```
-    You can fix the linting errors either manually or with the packages
-    `autopep8` or `black` for example.
-    
+Run tests locally by:
+```bash
+pytest
+```
+
+If a test fails, it is only due to what you changed (the test must passed before the code is
+ merged, so you know that the tests were passing before you start working on your branch). The
+  test names and error messages are there to help you find the error, please read them to try to
+   debug yourself before seeking assistance.
+
 #### Step 4: Submit a pull request (PR)
 
 Follow the [steps](https://help.github.com/en/articles/creating-a-pull-request) of the github help to create the PR.
-Please note that you PR should be directed from your branch (for example `myfeature`) towards the branch `dev`.
+Please note that you PR should be directed from your branch (for example `feature/myfeature`) towards the branch `dev`.
 
-Add a line `Fix #<number of the issue created in Step 2.0>` in the
-description of your PR, so that when it is merged, it automatically
-closes the issue once your code gets merged into the default branch of
-your repository.
-[Here](https://help.github.com/en/github/managing-your-work-on-github/closing-issues-using-keywords)
-is a list of other keywords you can use to automatically close the
-issues
+You can start with a draft pull request (see [step 6](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request#creating-the-pull-request) of github help) to let the other developers know that you are working on the issue and  unblock if for review once your feature is finished.
+ 
+Please follow the indications in the pull request template and update the appropriate checkboxes.
 
+Once you are satisfied with your PR you should ask someone to review it. Before that please lint
+ your code with [Black](https://github.com/psf/black) (run `black . --exclude docs/`).
