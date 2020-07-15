@@ -1,6 +1,0 @@
-pvcompare.pv\_feedin.create\_si\_time\_series
-=============================================
-
-.. currentmodule:: pvcompare.pv_feedin
-
-.. autofunction:: create_si_time_series

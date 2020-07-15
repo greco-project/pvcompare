@@ -1,6 +1,0 @@
-pvcompare.pv\_feedin.get\_optimal\_pv\_angle
-============================================
-
-.. currentmodule:: pvcompare.pv_feedin
-
-.. autofunction:: get_optimal_pv_angle
