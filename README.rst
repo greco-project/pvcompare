@@ -32,7 +32,7 @@ Go into the repository and checkout into the branch `CPV_dev`:
 ::
 
     cd ./greco_technologies
-    git chechout CPV_dev
+    git checkout CPV_dev
 
 then you can install the developer version:
 
