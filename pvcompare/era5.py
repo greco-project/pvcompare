@@ -133,7 +133,9 @@ def format_pvcompare(ds):
     pvlib_vars = ["ghi", "dhi", "wind_speed", "temp_air", "pw"]
     ds_vars = list(ds.variables)
     drop_vars = [
-        _ for _ in ds_vars if _ not in pvlib_vars + ["latitude", "longitude", "time"]
+        _
+        for _ in ds_vars
+        if _ not in pvlib_vars + ["latitude", "longitude", "time"]
     ]
     ds = ds.drop(drop_vars)
 
@@ -149,7 +151,9 @@ def format_pvcompare(ds):
     df.sort_index(inplace=True)
     df = df.tz_localize("UTC", level=0)
 
-    df = df[["latitude", "longitude", "wind_speed", "temp_air", "ghi", "dhi", "pw"]]
+    df = df[
+        ["latitude", "longitude", "wind_speed", "temp_air", "ghi", "dhi", "pw"]
+    ]
     df.dropna(inplace=True)
 
     return df

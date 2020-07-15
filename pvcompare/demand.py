@@ -45,7 +45,12 @@ except ImportError:
 
 
 def calculate_load_profiles(
-    country, population, year, weather, input_directory=None, mvs_input_directory=None,
+    country,
+    population,
+    year,
+    weather,
+    input_directory=None,
+    mvs_input_directory=None,
 ):
     """
     Calculates electricity and heat load profiles and saves them to csv.
@@ -197,7 +202,12 @@ def calculate_power_demand(
 
 
 def calculate_heat_demand(
-    country, population, year, weather, input_directory=None, mvs_input_directory=None,
+    country,
+    population,
+    year,
+    weather,
+    input_directory=None,
+    mvs_input_directory=None,
 ):
     """
     Calculates heat demand profile for `population` and `country`.
@@ -372,7 +382,9 @@ def shift_working_hours(country, ts):
         "Slovenia",
         "Romania",
     ]:
-        logging.info("The load profile is shifted by -1 hours only on " "weekends.")
+        logging.info(
+            "The load profile is shifted by -1 hours only on " "weekends."
+        )
         # The timeseries is shifted by -1 hour only on weekends
         ts["Day"] = pd.DatetimeIndex(ts.index).day_name()
         one_weekend = pd.DataFrame()
@@ -498,7 +510,10 @@ if __name__ == "__main__":
     weather_df["dhi"] = [100, 120]
     weather_df["dni"] = [120, 150]
     weather_df["ghi"] = [200, 220]
-    weather_df.index = ["2014-01-01 13:00:00+00:00", "2014-01-01 14:00:00+00:00"]
+    weather_df.index = [
+        "2014-01-01 13:00:00+00:00",
+        "2014-01-01 14:00:00+00:00",
+    ]
     weather_df.index = pd.to_datetime(weather_df.index)
     weather = weather_df
 

@@ -46,13 +46,18 @@ def check_for_valid_country_year(country, year, input_directory):
     """
 
     pop = pd.read_csv(
-        os.path.join(input_directory, "EUROSTAT_population.csv"), header=0, sep=","
+        os.path.join(input_directory, "EUROSTAT_population.csv"),
+        header=0,
+        sep=",",
     )
     workalendar = pd.read_csv(
-        os.path.join(input_directory, "list_of_workalender_countries.csv"), header=0
+        os.path.join(input_directory, "list_of_workalender_countries.csv"),
+        header=0,
     )
     consumption = pd.read_csv(
-        os.path.join(input_directory, "total_electricity_consumption_residential.csv"),
+        os.path.join(
+            input_directory, "total_electricity_consumption_residential.csv"
+        ),
         header=1,
         sep=":",
     )
@@ -70,7 +75,9 @@ def check_for_valid_country_year(country, year, input_directory):
         ]
     )
 
-    possible_countries = countries_pop & countries_workalender & countries_consumption
+    possible_countries = (
+        countries_pop & countries_workalender & countries_consumption
+    )
     possible_years = years_pop & years_consumption
 
     if country not in possible_countries:
@@ -117,17 +124,25 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
     """
 
     if mvs_input_directory == None:
-        mvs_input_directory = os.path.join(constants.DEFAULT_MVS_INPUT_DIRECTORY)
+        mvs_input_directory = os.path.join(
+            constants.DEFAULT_MVS_INPUT_DIRECTORY
+        )
     project_data_filename = os.path.join(
         mvs_input_directory, "csv_elements/" "project_data.csv"
     )
     if os.path.isfile(project_data_filename):
         project_data = pd.read_csv(project_data_filename, index_col=0)
 
-        params = {"latitude": latitude, "longitude": longitude, "country": country}
+        params = {
+            "latitude": latitude,
+            "longitude": longitude,
+            "country": country,
+        }
         for key in params:
             if params[key] is None:
-                logging.info(f"The parameter {key} is taken " f"from project_data.csv.")
+                logging.info(
+                    f"The parameter {key} is taken " f"from project_data.csv."
+                )
                 params[key] = project_data.at[key, "project_data"]
                 if pd.isna(params[key]) == True:
                     raise ValueError(
@@ -156,7 +171,9 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
         mvs_input_directory, "csv_elements/" "simulation_settings.csv"
     )
     if os.path.isfile(simulation_settings_filename):
-        simulation_settings = pd.read_csv(simulation_settings_filename, index_col=0)
+        simulation_settings = pd.read_csv(
+            simulation_settings_filename, index_col=0
+        )
     start_date = simulation_settings.at["start_date", "simulation_settings"]
     start_date = None if start_date == "None" else start_date
     if pd.isna(start_date) == False:
@@ -164,7 +181,9 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
     else:
         year_ss = None
     if year is None:
-        logging.info(f"The parameter 'year' is taken " f"from simulation_settings.csv.")
+        logging.info(
+            f"The parameter 'year' is taken " f"from simulation_settings.csv."
+        )
         if start_date is None:
             raise ValueError(
                 f"The parameter year cannot be None. "
@@ -214,7 +233,9 @@ def add_electricity_price(mvs_input_directory=None):
     """
     # load energyProviders
     if mvs_input_directory is None:
-        mvs_input_directory = os.path.join(constants.DEFAULT_MVS_INPUT_DIRECTORY)
+        mvs_input_directory = os.path.join(
+            constants.DEFAULT_MVS_INPUT_DIRECTORY
+        )
     energy_providers_filename = os.path.join(
         mvs_input_directory, "csv_elements/" "energyProviders.csv"
     )
@@ -244,7 +265,9 @@ def add_electricity_price(mvs_input_directory=None):
         mvs_input_directory, "csv_elements/" "simulation_settings.csv"
     )
     if os.path.isfile(simulation_settings_filename):
-        simulation_settings = pd.read_csv(simulation_settings_filename, index_col=0)
+        simulation_settings = pd.read_csv(
+            simulation_settings_filename, index_col=0
+        )
     else:
         logging.error("The file simulation_settings.csv is missing.")
     start_date = simulation_settings.at["start_date", "simulation_settings"]
@@ -303,12 +326,16 @@ def check_mvs_energy_production_file(
     """
 
     if mvs_input_directory == None:
-        mvs_input_directory = os.path.join(constants.DEFAULT_MVS_INPUT_DIRECTORY)
+        mvs_input_directory = os.path.join(
+            constants.DEFAULT_MVS_INPUT_DIRECTORY
+        )
     energy_production_filename = os.path.join(
         mvs_input_directory, "csv_elements/" "energyProduction.csv"
     )
     if os.path.isfile(energy_production_filename):
-        energy_production = pd.read_csv(energy_production_filename, index_col=0)
+        energy_production = pd.read_csv(
+            energy_production_filename, index_col=0
+        )
 
         if len(energy_production.columns) - 1 == len(pv_setup.index):
             logging.info(
@@ -330,7 +357,9 @@ def check_mvs_energy_production_file(
                 "pv_setup.csv. The file energyProduction.csv will thus "
                 "be overwritten and created anew with default values."
             )
-            create_mvs_energy_production_file(pv_setup, energy_production_filename)
+            create_mvs_energy_production_file(
+                pv_setup, energy_production_filename
+            )
 
     elif overwrite == False:
         raise ValueError(
@@ -472,7 +501,9 @@ def add_parameters_to_energy_production_file(
         "The maximum capacity of pv_plant_0%s" % pp_number + " has "
         "been added to energyProduction.csv."
     )
-    energy_production.loc[["file_name"], ["pv_plant_0" + str(pp_number)]] = ts_filename
+    energy_production.loc[
+        ["file_name"], ["pv_plant_0" + str(pp_number)]
+    ] = ts_filename
     energy_production.loc[["label"], ["pv_plant_0" + str(pp_number)]] = (
         "PV " + str(ts_filename)[:-4]
     )
@@ -485,7 +516,9 @@ def add_parameters_to_energy_production_file(
     energy_production.to_csv(energy_production_filename)
 
 
-def add_evaluated_period_to_simulation_settings(time_series, mvs_input_directory):
+def add_evaluated_period_to_simulation_settings(
+    time_series, mvs_input_directory
+):
     """
     adds number of days of the time series into simulation_settings.csv
 
@@ -507,7 +540,11 @@ def add_evaluated_period_to_simulation_settings(time_series, mvs_input_directory
         mvs_input_directory, "csv_elements/simulation_settings.csv"
     )
     # load simulation_settings.csv
-    simulation_settings = pd.read_csv(simulation_settings_filename, index_col=0)
+    simulation_settings = pd.read_csv(
+        simulation_settings_filename, index_col=0
+    )
     length = len(time_series.index) / 24
-    simulation_settings.loc[["evaluated_period"], ["simulation_settings"]] = int(length)
+    simulation_settings.loc[
+        ["evaluated_period"], ["simulation_settings"]
+    ] = int(length)
     simulation_settings.to_csv(simulation_settings_filename)
