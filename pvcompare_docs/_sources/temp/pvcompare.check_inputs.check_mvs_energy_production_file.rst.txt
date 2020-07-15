@@ -1,6 +1,0 @@
-pvcompare.check\_inputs.check\_mvs\_energy\_production\_file
-============================================================
-
-.. currentmodule:: pvcompare.check_inputs
-
-.. autofunction:: check_mvs_energy_production_file
