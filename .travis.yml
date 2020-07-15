@@ -5,7 +5,7 @@ matrix:
   include:
     - python: 3.6
     - python: 3.7
-    - python: 3.8
+#    - python: 3.8
 
 # To install packages which are not on pip
 #before_install:
