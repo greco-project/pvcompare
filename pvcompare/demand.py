@@ -47,22 +47,23 @@ except ImportError:
 def calculate_load_profiles(
     country, population, year, weather, input_directory=None, mvs_input_directory=None,
 ):
-
     """
-    calculate electricity and heat load profiles and saves them to csv
+    Calculates electricity and heat load profiles and saves them to csv.
 
     Parameters
     ---------
     country: str
+        The country's name has to be in English and with capital first letter.
     population: int
-        number of habitants
+        The district population.
     year: int
-        year between 2011 - 2015
-    input_directory: str
-        if None: DEFAULT_INPUT_DIRECTORY
-    mvs_input_directory: str
-        if None: DEFAULT_MVS_INPUT_DIRECTORY
-    plot: bool
+        Year for which power demand time series is calculated, needs to be between 2011 - 2015.
+    weather :
+        # todo add
+    input_directory: str or None
+        Path to input directory of pvcompare. If None: DEFAULT_INPUT_DIRECTORY. Default: None.
+    mvs_input_directory : str or None
+        Path to mvs input directory. If None: DEFAULT_MVS_INPUT_DIRECTORY. Default: None.
 
     Returns
     ------
@@ -94,9 +95,8 @@ def calculate_load_profiles(
 def calculate_power_demand(
     country, population, year, input_directory=None, mvs_input_directory=None
 ):
-
     """
-    calculates the electricity demand
+    Calculates electricity demand profile for `population` and `country`.
 
     The electricity demand is calculated for a given population in a certain
     country and year. The annual electricity demand is calculated by the
@@ -114,18 +114,17 @@ def calculate_power_demand(
     Parameters
     ----------
     country: str
-        the countries name has to be in english and with capital first letter
+        The country's name has to be in English and with capital first letter.
     population: int
-        the district population
+        The district population.
     year: int
-        Year for which power demand time series is calculated.
-        weather: pd.DataFrame()
-    plot: bool
-        True or False
-    input_directory: str
-        if None: input_directory= DEFAULT_INPUT_DIRECTORY
-    mvs_input_directory: str
-        if None: mvs_input_directory= DEFAULT_MVS_INPUT_DIRECTORY
+        Year for which power demand time series is calculated. # todo needs to be between 2011 - 2015 like above?
+    weather: pd.DataFrame
+        # todo
+    input_directory: str or None
+        Path to input directory of pvcompare. If None: DEFAULT_INPUT_DIRECTORY. Default: None.
+    mvs_input_directory: str or None
+        Path to mvs input directory. If None: DEFAULT_MVS_INPUT_DIRECTORY.  Default: None.
 
     Returns
     -------
@@ -200,9 +199,8 @@ def calculate_power_demand(
 def calculate_heat_demand(
     country, population, year, weather, input_directory=None, mvs_input_directory=None,
 ):
-
     """
-    calculates heat demand.
+    Calculates heat demand profile for `population` and `country`.
 
     The heat demand is calculated for a given population in a certain country
     and year. The annual heat demand is calculated by the following procedure:
@@ -218,25 +216,23 @@ def calculate_heat_demand(
     Parameters
     ----------
     country: str
-        the countries name has to be in english and with capital first letter
+        The country's name has to be in English and with capital first letter.
     population: int
-        the district population
+        The district population.
     year: int
-        Year for which heat demand time series is calculated.
+        Year for which heat demand time series is calculated. # todo needs to be between 2011 - 2015 like above?
     weather: :pandas:`pandas.DataFrame<frame>`
-        weather Data Frame
-    plot: bool
-        True or False
-    input_directory: str
-        if None: input_directory= DEFAULT_INPUT_DIRECTORY
-    mvs_input_directory: str
-        if None: mvs_input_directory= DEFAULT_MVS_INPUT_DIRECTORY
+        weather Data Frame # todo add requirements
+    input_directory: str or None
+        Path to input directory of pvcompare. If None: DEFAULT_INPUT_DIRECTORY. Default: None.
+    mvs_input_directory: str or None
+        Path to mvs input directory. If None: DEFAULT_MVS_INPUT_DIRECTORY.  Default: None.
 
 
     Returns
     -------
-    :pandas:`pandas.Series<series>`
-        hourly time series of the heat demand
+    shifted_heat_demand : :pandas:`pandas.Series<series>`
+        Hourly heat demand time series.
     """
 
     # load workelendar for country
@@ -254,8 +250,8 @@ def calculate_heat_demand(
     )
 
     # calculate annual demand
-    # The annual heat condumption is calculated by adding up the total
-    # consumption for SH and WH and substracting the electrical condumption of
+    # The annual heat consumption is calculated by adding up the total
+    # consumption for SH and WH and subtracting the electrical consumption of
     # SH and WH for a country
     if input_directory is None:
         input_directory = constants.DEFAULT_INPUT_DIRECTORY
@@ -329,11 +325,10 @@ def calculate_heat_demand(
 
 
 def shift_working_hours(country, ts):
-
     """
-    Shift the demand time series with regard to the countries sleeping customs.
+    Shift the demand time series with regard to country's customs.
 
-    Since the energy demand for domnestic hot water depends strongly on
+    Since the energy demand for domestic hot water depends strongly on
     behaviour, the demand profile is adjusted for the different EU countries.
     (see [3] HOTMAPS report p. 127). The statistics are received from [4].
 
@@ -345,14 +340,15 @@ def shift_working_hours(country, ts):
     Parameters
     -----------
     country: str
-        name of the country
+        The country's name has to be in English and with capital first letter.
     ts: :pandas:`pandas.DataFrame<frame>`
-        hourly load profile time series
+        Hourly load profile time series.
 
     Returns
     -------
     ts: :pandas:`pandas.DataFrame<frame>`
-        shifted time series
+        Shifted time series.
+
     """
 
     # check if time series contains more than 24 h
@@ -432,9 +428,8 @@ def shift_working_hours(country, ts):
 
 
 def get_workalendar_class(country):
-
     """
-    loads workalender for a given country.
+    Loads workalender for a given country.
 
     Parameters
     ---------
@@ -503,7 +498,10 @@ if __name__ == "__main__":
     weather_df["dhi"] = [100, 120]
     weather_df["dni"] = [120, 150]
     weather_df["ghi"] = [200, 220]
-    weather_df.index = ["2014-01-01 13:00:00+00:00", "2014-01-01 14:00:00+00:00"]
+    weather_df.index = [
+        "2014-01-01 13:00:00+00:00",
+        "2014-01-01 14:00:00+00:00",
+    ]
     weather_df.index = pd.to_datetime(weather_df.index)
     weather = weather_df
 

@@ -138,7 +138,7 @@ def create_pv_components(
             k = get_optimal_pv_angle(lat)
         if row["technology"] == "si":
             time_series = create_si_time_series(
-                lat=lat, lon=lon, weather=weather, surface_azimuth=j, surface_tilt=k
+                lat=lat, lon=lon, weather=weather, surface_azimuth=j, surface_tilt=k,
             )
         elif row["technology"] == "cpv":
             time_series = create_cpv_time_series(
@@ -363,7 +363,7 @@ def create_si_time_series(
 
 
 def create_cpv_time_series(
-    lat, lon, weather, surface_azimuth, surface_tilt, cpv_type, normalized=False
+    lat, lon, weather, surface_azimuth, surface_tilt, cpv_type, normalized=False,
 ):
 
     """
@@ -554,7 +554,7 @@ if __name__ == "__main__":
 
     filename = os.path.abspath("./data/inputs/weatherdata.csv")
     weather_df = pd.read_csv(
-        filename, index_col=0, date_parser=lambda idx: pd.to_datetime(idx, utc=True)
+        filename, index_col=0, date_parser=lambda idx: pd.to_datetime(idx, utc=True),
     )
     weather_df.index = pd.to_datetime(weather_df.index).tz_convert("Europe/Berlin")
     weather_df["dni"] = weather_df["ghi"] - weather_df["dhi"]
