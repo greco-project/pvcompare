@@ -45,7 +45,7 @@ setup(
         "pdfkit==0.6.1",
         "xarray",
         "feedinlib",
-        "windpowerlib"
+        "windpowerlib",
     ],
     extras_require={"dev": ["pytest"]},
 )

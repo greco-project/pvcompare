@@ -72,7 +72,7 @@ class TestPvtime_series:
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
             cpv_type="m300",
-            psi_type="Chen"
+            psi_type="Chen",
         )
 
         assert nominal_value == 129.134
