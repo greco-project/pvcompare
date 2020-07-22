@@ -51,6 +51,7 @@ def create_pv_components(
     mvs_input_directory=None,
     directory_energy_production=None,
     cpv_type="m300",
+    psi_type="Chen"
 ):
     """
     creates feedin time series for all surface types in pv_setup.csv
@@ -202,6 +203,7 @@ def create_pv_components(
             surface_azimuth=j,
             surface_tilt=k,
             cpv_type=cpv_type,
+            psi_type=psi_type
         )
         # save the file name of the time series and the nominal value to
         # mvs_inputs/elements/csv/energyProduction.csv
@@ -440,7 +442,7 @@ def create_cpv_time_series(
 
 
 def create_psi_time_series(
-    lat, lon, year, surface_azimuth, surface_tilt, normalized=False
+    lat, lon, year, surface_azimuth, surface_tilt, normalized=False, psi_type="Chen"
 ):
 
     """
@@ -479,7 +481,6 @@ def create_psi_time_series(
              False).
 
          """
-
     logging.info("Absolute PSI time series is calculated in kW.")
     return (
         greco_technologies.perosi.perosi.create_pero_si_timeseries(
@@ -490,12 +491,13 @@ def create_psi_time_series(
             surface_tilt,
             number_hours=8760,
             input_directory=None,
+            psi_type=psi_type
         )
         / 1000
     )
 
 
-def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, cpv_type):
+def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, cpv_type, psi_type):
 
     """
     calculates the maximum installed capacity for each pv module.
@@ -534,12 +536,17 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, cpv_type)
             peak = module_parameters["i_mp"] * module_parameters["v_mp"]
         module_size = module_parameters["Area"]
         nominal_value = round(area / module_size * peak) / 1000
-    elif technology == "psi":
-        import greco_technologies.perosi.data.cell_parameters_korte_pero as param
+    elif technology == "psi":                                                   #todo: correct nominal value
+        if psi_type=="Korte":
+            import greco_technologies.perosi.data.cell_parameters_korte_pero as param1
+            import greco_technologies.perosi.data.cell_parameters_korte_si as param2
+        elif psi_type == "Chen":
+            import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_pero as param1
+            import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
-        peak = param.p_mp
-        module_size = param.A / 10000  # in m²
-        nominal_value = round(area / module_size * peak) / 1000
+        peak = param1.p_mp + param2.p_mp
+        module_size = param1.A / 10000  # in m²
+        nominal_value = round((area / module_size) * peak) / 1000
 
     logging.info(
         "The nominal value for %s" % technology  # todo technology instead of type?
@@ -551,15 +558,22 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, cpv_type)
 
 
 if __name__ == "__main__":
-
-    filename = os.path.abspath("./data/inputs/weatherdata.csv")
-    weather_df = pd.read_csv(
-        filename, index_col=0, date_parser=lambda idx: pd.to_datetime(idx, utc=True)
+    area = area_potential.calculate_area_potential(
+        population=48000, input_directory=constants.DEFAULT_INPUT_DIRECTORY, surface_type="flat_roof"
     )
-    weather_df.index = pd.to_datetime(weather_df.index).tz_convert("Europe/Berlin")
-    weather_df["dni"] = weather_df["ghi"] - weather_df["dhi"]
 
-    create_pv_components(lat=40.3, lon=5.4, weather=weather_df, population=600)
+    nominal_value_psi=nominal_values_pv(technology="psi", area=area, surface_azimuth=180, surface_tilt=30, cpv_type=None, psi_type="Chen")
+    print(nominal_value_psi)
+
+
+    # filename = os.path.abspath("./data/inputs/weatherdata.csv")
+    # weather_df = pd.read_csv(
+    #     filename, index_col=0, date_parser=lambda idx: pd.to_datetime(idx, utc=True)
+    # )
+    # weather_df.index = pd.to_datetime(weather_df.index).tz_convert("Europe/Berlin")
+    # weather_df["dni"] = weather_df["ghi"] - weather_df["dhi"]
+    #
+    # create_pv_components(lat=40.3, lon=5.4, weather=weather_df, population=600)
 
     # weather_df = pd.DataFrame()
     # weather_df["temp_air"] = [4, 5]
