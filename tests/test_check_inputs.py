@@ -29,7 +29,7 @@ class TestDemandProfiles:
     def test_check_for_valid_country(self):
         try:
             check_for_valid_country_year(
-                country="Uganda", year=self.year, input_directory=self.input_directory
+                country="Uganda", year=self.year, input_directory=self.input_directory,
             )
         except ValueError:
             # The exception was raised as expected
@@ -42,7 +42,7 @@ class TestDemandProfiles:
     def test_check_for_valid_year(self):
         try:
             check_for_valid_country_year(
-                country=self.country, year=2001, input_directory=self.input_directory
+                country=self.country, year=2001, input_directory=self.input_directory,
             )
         except ValueError:
             # The exception was raised as expected

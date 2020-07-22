@@ -7,7 +7,7 @@ pvlib:
  * ghi - global horizontal irradiation [W/m2]
  * dni - direct normal irradiation [W/m2]
  * dhi - diffuse horizontal irradiation [W/m2]
- * temp_air - ambient temperature [Â°C]
+ * temp_air - ambient temperature [°C]
  * wind_speed - wind speed [m/s]
 """
 
@@ -219,8 +219,8 @@ def get_optimal_pv_angle(lat):
     """
     Calculates the optimal tilt angle depending on the latitude.
 
-    e.G. about 27Â° to 34Â° from ground in Germany.
-    The pvlib uses tilt angles horizontal=90Â° and up=0Â°. Therefore 90Â° minus
+    e.G. about 27° to 34° from ground in Germany.
+    The pvlib uses tilt angles horizontal=90° and up=0°. Therefore 90° minus
     the angle from the horizontal.
 
     Parameters
@@ -383,12 +383,12 @@ def create_cpv_time_series(
     lon : float
         Longitude of the location for which the time series is calculated.
     weather : :pandas:`pandas.DataFrame<frame>`
-        DataFrame with time series for temperature `temp_air` in CÂ°, wind speed
-        `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/mÂ²
+        DataFrame with time series for temperature `temp_air` in C°, wind speed
+        `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m²
     surface_azimuth : float
-        Surface azimuth of the modules (180Â° for south, 270Â° for west, etc.).
+        Surface azimuth of the modules (180° for south, 270° for west, etc.).
     surface_tilt: float
-        Surface tilt of the modules. (horizontal=90Â° and vertical=0Â°)
+        Surface tilt of the modules. (horizontal=90° and vertical=0°)
     cpv_type  : str
         Defines the type of module of which the time series is calculated.
         Options: "ins", "m300".
@@ -460,12 +460,12 @@ def create_psi_time_series(
          lon : float
              Longitude of the location for which the time series is calculated.
          weather : :pandas:`pandas.DataFrame<frame>`
-             DataFrame with time series for temperature `temp_air` in CÂ°, wind speed
-             `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/mÂ²
+             DataFrame with time series for temperature `temp_air` in C°, wind speed
+             `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m²
          surface_azimuth : float
-             Surface azimuth of the modules (180Â° for south, 270Â° for west, etc.).
+             Surface azimuth of the modules (180° for south, 270° for west, etc.).
          surface_tilt: float
-             Surface tilt of the modules. (horizontal=90Â° and vertical=0Â°)
+             Surface tilt of the modules. (horizontal=90° and vertical=0°)
          psi_type  : str
              Defines the type of module of which the time series is calculated.
              Options: "Korte".
@@ -545,7 +545,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, cpv_type,
             import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
         peak = param1.p_mp + param2.p_mp
-        module_size = param1.A / 10000  # in mÂ²
+        module_size = param1.A / 10000  # in m²
         nominal_value = round((area / module_size) * peak) / 1000
 
     logging.info(
