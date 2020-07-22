@@ -35,6 +35,17 @@ setup(
         "scipy",
         # "mvs_tool", # todo NOTE: fovr now clone mvs_tool and install via "pip install -e ..."
         "workalendar < 7.0.0",  # todo check if needed. Problems with installing skyfield in travis tests (from workalendar 7.0.0)
+        "dash",
+        "scipy",
+        "folium",
+        "gitpython",
+        "reverse_geocoder",
+        "staticmap",
+        "pyppeteer",
+        "pdfkit==0.6.1",
+        "xarray",
+        "feedinlib",
+        "windpowerlib"
     ],
     extras_require={"dev": ["pytest"]},
 )
