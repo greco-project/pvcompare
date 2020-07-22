@@ -7,7 +7,7 @@ pvlib:
  * ghi - global horizontal irradiation [W/m2]
  * dni - direct normal irradiation [W/m2]
  * dhi - diffuse horizontal irradiation [W/m2]
- * temp_air - ambient temperature [°C]
+ * temp_air - ambient temperature [ï¿½C]
  * wind_speed - wind speed [m/s]
 """
 
@@ -51,7 +51,7 @@ def create_pv_components(
     mvs_input_directory=None,
     directory_energy_production=None,
     cpv_type="m300",
-    psi_type="Chen"
+    psi_type="Chen",
 ):
     """
     creates feedin time series for all surface types in pv_setup.csv
@@ -203,7 +203,7 @@ def create_pv_components(
             surface_azimuth=j,
             surface_tilt=k,
             cpv_type=cpv_type,
-            psi_type=psi_type
+            psi_type=psi_type,
         )
         # save the file name of the time series and the nominal value to
         # mvs_inputs/elements/csv/energyProduction.csv
@@ -219,8 +219,8 @@ def get_optimal_pv_angle(lat):
     """
     Calculates the optimal tilt angle depending on the latitude.
 
-    e.G. about 27° to 34° from ground in Germany.
-    The pvlib uses tilt angles horizontal=90° and up=0°. Therefore 90° minus
+    e.G. about 27ï¿½ to 34ï¿½ from ground in Germany.
+    The pvlib uses tilt angles horizontal=90ï¿½ and up=0ï¿½. Therefore 90ï¿½ minus
     the angle from the horizontal.
 
     Parameters
@@ -303,7 +303,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt, cpv_type):
         pass
     else:
         logging.warning(
-            technology, "is not in technologies. Please chose si, cpv or psi."
+            f"{technology} is not in technologies. Please chose si, cpv or psi."
         )
 
 
@@ -383,12 +383,12 @@ def create_cpv_time_series(
     lon : float
         Longitude of the location for which the time series is calculated.
     weather : :pandas:`pandas.DataFrame<frame>`
-        DataFrame with time series for temperature `temp_air` in C°, wind speed
-        `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m²
+        DataFrame with time series for temperature `temp_air` in Cï¿½, wind speed
+        `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/mï¿½
     surface_azimuth : float
-        Surface azimuth of the modules (180° for south, 270° for west, etc.).
+        Surface azimuth of the modules (180ï¿½ for south, 270ï¿½ for west, etc.).
     surface_tilt: float
-        Surface tilt of the modules. (horizontal=90° and vertical=0°)
+        Surface tilt of the modules. (horizontal=90ï¿½ and vertical=0ï¿½)
     cpv_type  : str
         Defines the type of module of which the time series is calculated.
         Options: "ins", "m300".
@@ -460,12 +460,12 @@ def create_psi_time_series(
          lon : float
              Longitude of the location for which the time series is calculated.
          weather : :pandas:`pandas.DataFrame<frame>`
-             DataFrame with time series for temperature `temp_air` in C°, wind speed
-             `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m²
+             DataFrame with time series for temperature `temp_air` in Cï¿½, wind speed
+             `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/mï¿½
          surface_azimuth : float
-             Surface azimuth of the modules (180° for south, 270° for west, etc.).
+             Surface azimuth of the modules (180ï¿½ for south, 270ï¿½ for west, etc.).
          surface_tilt: float
-             Surface tilt of the modules. (horizontal=90° and vertical=0°)
+             Surface tilt of the modules. (horizontal=90ï¿½ and vertical=0ï¿½)
          psi_type  : str
              Defines the type of module of which the time series is calculated.
              Options: "Korte".
@@ -491,13 +491,15 @@ def create_psi_time_series(
             surface_tilt,
             number_hours=8760,
             input_directory=None,
-            psi_type=psi_type
+            psi_type=psi_type,
         )
         / 1000
     )
 
 
-def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, cpv_type, psi_type):
+def nominal_values_pv(
+    technology, area, surface_azimuth, surface_tilt, cpv_type, psi_type
+):
 
     """
     calculates the maximum installed capacity for each pv module.
@@ -536,8 +538,8 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, cpv_type,
             peak = module_parameters["i_mp"] * module_parameters["v_mp"]
         module_size = module_parameters["Area"]
         nominal_value = round(area / module_size * peak) / 1000
-    elif technology == "psi":                                                   #todo: correct nominal value
-        if psi_type=="Korte":
+    elif technology == "psi":  # todo: correct nominal value
+        if psi_type == "Korte":
             import greco_technologies.perosi.data.cell_parameters_korte_pero as param1
             import greco_technologies.perosi.data.cell_parameters_korte_si as param2
         elif psi_type == "Chen":
@@ -545,7 +547,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, cpv_type,
             import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
         peak = param1.p_mp + param2.p_mp
-        module_size = param1.A / 10000  # in m²
+        module_size = param1.A / 10000  # in mï¿½
         nominal_value = round((area / module_size) * peak) / 1000
 
     logging.info(
@@ -559,12 +561,20 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, cpv_type,
 
 if __name__ == "__main__":
     area = area_potential.calculate_area_potential(
-        population=48000, input_directory=constants.DEFAULT_INPUT_DIRECTORY, surface_type="flat_roof"
+        population=48000,
+        input_directory=constants.DEFAULT_INPUT_DIRECTORY,
+        surface_type="flat_roof",
     )
 
-    nominal_value_psi=nominal_values_pv(technology="psi", area=area, surface_azimuth=180, surface_tilt=30, cpv_type=None, psi_type="Chen")
+    nominal_value_psi = nominal_values_pv(
+        technology="psi",
+        area=area,
+        surface_azimuth=180,
+        surface_tilt=30,
+        cpv_type=None,
+        psi_type="Chen",
+    )
     print(nominal_value_psi)
-
 
     # filename = os.path.abspath("./data/inputs/weatherdata.csv")
     # weather_df = pd.read_csv(
