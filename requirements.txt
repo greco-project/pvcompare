@@ -13,4 +13,5 @@ pyppeteer
 demandlib
 oemof
 pdfkit==0.6.1
+xarray==0.15.0
 
