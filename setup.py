@@ -43,7 +43,6 @@ setup(
         "staticmap",
         "pyppeteer",
         "pdfkit==0.6.1",
-        "xarray",
         "feedinlib",
     ],
     extras_require={"dev": ["pytest"]},
