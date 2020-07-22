@@ -30,7 +30,7 @@ setup(
         "demandlib",
         # "feedinlib == v0.1.0rc2",  # travis has problems with installment todo
         "numpy >= 1.12.0,  < 1.17",
-        "pandas >= 0.18.1, <0.26",
+        "pandas >= 0.18.1, <0.25",
         "oemof == 0.3.1",
         "scipy",
         # "mvs_tool", # todo NOTE: fovr now clone mvs_tool and install via "pip install -e ..."
@@ -45,7 +45,6 @@ setup(
         "pdfkit==0.6.1",
         "xarray",
         "feedinlib",
-        "windpowerlib",
     ],
     extras_require={"dev": ["pytest"]},
 )
