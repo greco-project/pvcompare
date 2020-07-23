@@ -1,7 +1,6 @@
 git+https://github.com/greco-project/greco_technologies.git@dev
 git+https://github.com/greco-project/cpvtopvlib.git@master
 git+https://github.com/rl-institut/mvs_eland.git@dev
-git+https://github.com/oemof/feedinlib.git@dev
 dash
 scipy
 numpy
@@ -15,5 +14,5 @@ demandlib
 oemof
 pdfkit==0.6.1
 xarray==0.15.0
-feedinlib==0.0.12
+feedinlib==0.1.0rc2
 
