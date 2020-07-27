@@ -188,7 +188,6 @@ def calculate_power_demand(
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     timeseries_directory = os.path.join(mvs_input_directory, "time_series/")
 
-
     logging.info(
         "The electrical load profile is completly calculated and "
         "being saved under %s." % timeseries_directory
