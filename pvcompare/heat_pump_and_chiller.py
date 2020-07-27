@@ -143,6 +143,12 @@ def calculate_cops_and_eers(
 
     return efficiency_series
 
+def add_sector_coupling():
+    """
+    Add heat sector if heat pump in `energyConversion.csv`.
+    """
+    pass
+
 
 if __name__ == "__main__":
     weather = pd.read_csv("./data/inputs/weatherdata.csv").set_index("time")

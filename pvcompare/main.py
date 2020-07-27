@@ -12,6 +12,7 @@ from pvcompare import era5
 from pvcompare import demand
 from pvcompare import pv_feedin
 from pvcompare import constants
+from pvcompare import heat_pump_and_chiller
 from pvcompare import check_inputs
 
 
@@ -83,6 +84,10 @@ def main(
         mvs_input_directory=mvs_input_directory,
         year=year
     )
+
+    # add sector coupling in case heat pump or chiller exists in energyConversion.csv
+    # note: chiller was not tested, yet.
+    heat_pump_and_chiller.add_sector_coupling()
 
     demand.calculate_load_profiles(
         country=country,
