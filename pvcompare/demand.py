@@ -166,7 +166,7 @@ def calculate_power_demand(
     logging.info(
         "The annual demand for a population of %s" % population
         + " for the year %s " % year
-        + "is %s Watts" % annual_demand_per_population
+        + "is %s kW" % annual_demand_per_population
     )
 
     ann_el_demand_h0 = {"h0": annual_demand_per_population}
@@ -181,10 +181,13 @@ def calculate_power_demand(
     elec_demand = elec_demand.resample("H").mean()
 
     shifted_elec_demand = shift_working_hours(country=country, ts=elec_demand)
+    # rename column "h0" to kWh
+    shifted_elec_demand.rename(columns={"h0": "kWh"}, inplace=True)
 
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     timeseries_directory = os.path.join(mvs_input_directory, "time_series/")
+
 
     logging.info(
         "The electrical load profile is completly calculated and "
@@ -309,6 +312,7 @@ def calculate_heat_demand(
     ).get_bdew_profile()
 
     shifted_heat_demand = shift_working_hours(country=country, ts=demand)
+    shifted_heat_demand.rename(columns={"h0": "kWh"}, inplace=True)
 
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
