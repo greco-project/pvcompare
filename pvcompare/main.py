@@ -62,12 +62,12 @@ def main(
     # weather = pd.read_csv("./data/inputs/weatherdata.csv", index_col=0)
     # weather.index = pd.to_datetime(weather.index)
     # spa = pvlib.solarposition.spa_python(
-    #     time=weather.index, latitude=latitude, longitude=longitude
+    #      time=weather.index, latitude=latitude, longitude=longitude
     # )
     # weather["dni"] = pvlib.irradiance.dirint(
-    #     weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
+    #      weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
     # )
-
+    #
     # pv_feedin.create_pv_components(
     #     lat=latitude,
     #     lon=longitude,
@@ -77,6 +77,7 @@ def main(
     #     plot=plot,
     #     input_directory=input_directory,
     #     mvs_input_directory=mvs_input_directory,
+    #     year=year
     # )
 
     # demand.calculate_load_profiles(
@@ -88,12 +89,12 @@ def main(
     #     weather=weather,
     # )
 
-    # mvs.main(
-    #     path_input_folder=mvs_input_directory,
-    #     path_output_folder=mvs_output_directory,
-    #     input_type="csv",
-    #     overwrite=True,
-    # )
+    mvs.main(
+        path_input_folder=mvs_input_directory,
+        path_output_folder=mvs_output_directory,
+        input_type="csv",
+        overwrite=True,
+    )
 
 
 if __name__ == "__main__":

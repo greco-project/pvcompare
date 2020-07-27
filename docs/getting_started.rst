@@ -24,12 +24,12 @@ repository. Please clone the repository:
 
     git clone git@github.com:greco-project/greco_technologies.git
 
-Go into the repository and checkout into the branch `CPV_dev`:
+Go into the repository and checkout into the branch `dev`:
 
 ::
 
     cd ./greco_technologies
-    git chechout CPV_dev
+    git chechout dev
 
 then you can install the developer version:
 

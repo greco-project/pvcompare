@@ -11,7 +11,6 @@ https://docs.python.org/3/library/unittest.html are also good support.
 import pytest
 import pandas as pd
 import os
-import numpy as np
 from pvcompare import constants
 from pvcompare.pv_feedin import (
     create_pv_components,
@@ -47,6 +46,7 @@ class TestPvtime_series:
         self.lon = 5.2
         self.surface_azimuth = 180
         self.surface_tilt = 30
+        self.year = 2015
 
     def test_create_si_times_eries(self):
 
@@ -72,6 +72,7 @@ class TestPvtime_series:
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
             cpv_type="m300",
+            psi_type="Chen",
         )
 
         assert nominal_value == 129.134
@@ -114,6 +115,7 @@ class TestPvtime_series:
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
                 cpv_type="m300",
+                year=self.year,
             )
 
     def test_create_create_pv_components_wrong_technology_in_pvsetup(self):
@@ -134,6 +136,7 @@ class TestPvtime_series:
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
                 cpv_type="m300",
+                year=self.year,
             )
 
     def test_create_create_pv_components_wrong_surface_type_in_pvsetup(self):
@@ -154,6 +157,7 @@ class TestPvtime_series:
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
                 cpv_type="m300",
+                year=self.year,
             )
 
 
