@@ -1,0 +1,9 @@
+,unit,demand_01
+label,str,households
+unit,str,kW
+inflow_direction,str,Electricity
+file_name,str,electricity_load.csv
+energyVector,str,Electricity
+type_oemof,str,sink
+type_asset,str,demand
+dsm,str,False
