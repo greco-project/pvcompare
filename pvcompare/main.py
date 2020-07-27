@@ -59,35 +59,35 @@ def main(
     # weather= era5.load_era5_weatherdata(lat=latitude, lon=longitude, year=year)
 
     #  otherwise this example weather data for one year (2014) can be used for now
-    # weather = pd.read_csv("./data/inputs/weatherdata.csv", index_col=0)
-    # weather.index = pd.to_datetime(weather.index)
-    # spa = pvlib.solarposition.spa_python(
-    #      time=weather.index, latitude=latitude, longitude=longitude
-    # )
-    # weather["dni"] = pvlib.irradiance.dirint(
-    #      weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
-    # )
-    #
-    # pv_feedin.create_pv_components(
-    #     lat=latitude,
-    #     lon=longitude,
-    #     weather=weather,
-    #     population=population,
-    #     pv_setup=None,
-    #     plot=plot,
-    #     input_directory=input_directory,
-    #     mvs_input_directory=mvs_input_directory,
-    #     year=year
-    # )
+    weather = pd.read_csv("./data/inputs/weatherdata.csv", index_col=0)
+    weather.index = pd.to_datetime(weather.index)
+    spa = pvlib.solarposition.spa_python(
+         time=weather.index, latitude=latitude, longitude=longitude
+    )
+    weather["dni"] = pvlib.irradiance.dirint(
+         weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
+    )
 
-    # demand.calculate_load_profiles(
-    #     country=country,
-    #     population=population,
-    #     year=year,
-    #     input_directory=input_directory,
-    #     mvs_input_directory=mvs_input_directory,
-    #     weather=weather,
-    # )
+    pv_feedin.create_pv_components(
+        lat=latitude,
+        lon=longitude,
+        weather=weather,
+        population=population,
+        pv_setup=None,
+        plot=plot,
+        input_directory=input_directory,
+        mvs_input_directory=mvs_input_directory,
+        year=year
+    )
+
+    demand.calculate_load_profiles(
+        country=country,
+        population=population,
+        year=year,
+        input_directory=input_directory,
+        mvs_input_directory=mvs_input_directory,
+        weather=weather,
+    )
 
     mvs.main(
         path_input_folder=mvs_input_directory,
