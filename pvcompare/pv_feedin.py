@@ -103,14 +103,6 @@ def create_pv_components(
         pv_setup = pd.read_csv(data_path)
         logging.info("setup conditions successfully loaded.")
 
-    # empty output folder
-    if mvs_input_directory is None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
-    time_series_directory = os.path.join(mvs_input_directory, "time_series")
-    files = glob.glob(os.path.join(time_series_directory, "*"))
-    for f in files:
-        os.remove(f)
-
     # check if all required columns are in pv_setup
     if not all(
         [
@@ -130,6 +122,12 @@ def create_pv_components(
 
     # check if mvs_input/energyProduction.csv contains all power plants
     check_inputs.check_mvs_energy_production_file(pv_setup, directory_energy_production)
+
+    #  define time series directory
+    if mvs_input_directory is None:
+        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+    time_series_directory = os.path.join(mvs_input_directory,
+                                         "time_series")
     # parse through pv_setup file and create time series for each technology
     for i, row in pv_setup.iterrows():
         j = row["surface_azimuth"]
@@ -137,39 +135,45 @@ def create_pv_components(
         k = pd.to_numeric(k, errors="ignore")
         if k == "optimal":
             k = get_optimal_pv_angle(lat)
-        if row["technology"] == "si":
-            time_series = create_si_time_series(
-                lat=lat, lon=lon, weather=weather, surface_azimuth=j, surface_tilt=k
-            )
-        elif row["technology"] == "cpv":
-            time_series = create_cpv_time_series(
-                lat, lon, weather, j, k, cpv_type=cpv_type
-            )
-        elif row["technology"] == "psi":
-            time_series = create_psi_time_series(lat, lon, year, j, k)
-        else:
-            raise ValueError(
-                row["technology"],
-                "is not in technologies. Please " "choose 'si', 'cpv' or " "'psi'.",
-            )
 
+        # check if timeseries already exists
         # define the name of the output file of the time series
-        ts_csv = f"{row['technology']}_{j}_{k}.csv"
-        output_csv = os.path.join(time_series_directory, ts_csv,)
+        ts_csv = f"{row['technology']}_{j}_{k}_{year}_{lat}_{lon}.csv"
+        output_csv = os.path.join(time_series_directory, ts_csv)
 
-        # add "evaluated_period" to simulation_settings.csv
+        if not os.path.isdir(output_csv):
+
+            if row["technology"] == "si":
+                time_series = create_si_time_series(
+                    lat=lat, lon=lon, weather=weather, surface_azimuth=j, surface_tilt=k
+                )
+            elif row["technology"] == "cpv":
+                time_series = create_cpv_time_series(
+                    lat, lon, weather, j, k, cpv_type=cpv_type
+                )
+            elif row["technology"] == "psi":
+                time_series = create_psi_time_series(lat, lon, year, j, k)
+            else:
+                raise ValueError(
+                    row["technology"],
+                    "is not in technologies. Please " "choose 'si', 'cpv' or " "'psi'.",
+                )
+            # save time series into mvs_inputs
+            time_series.fillna(0, inplace=True)
+            time_series.to_csv(output_csv, header=["kW"], index=False)
+            logging.info(
+                "%s" % row["technology"] + " time series is saved as csv "
+                                           "into output directory"
+            )
+        else:
+            logging.info(f"The timeseries of the {row['technology']} technology"
+                         "already exists and is therefore not calculated again.")
+
         # add "evaluated_period" to simulation_settings.csv
         check_inputs.add_evaluated_period_to_simulation_settings(
             time_series=time_series, mvs_input_directory=mvs_input_directory
         )
 
-        # save time series into mvs_inputs
-        time_series.fillna(0, inplace=True)
-        time_series.to_csv(output_csv, header=["kW"], index=False)
-        logging.info(
-            "%s" % row["technology"] + " time series is saved as csv "
-            "into output directory"
-        )
         if plot == True:
             plt.plot(
                 time_series,
