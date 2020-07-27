@@ -125,6 +125,7 @@ def calculate_cops_and_eers(
 
     # extract COPs/EERs as pd.Series from data frame
     efficiency_series = df[column_name]
+    efficiency_series.name = "no_unit"
 
     # save time series to mvs input directory / timeseries
     if mvs_input_directory is None:
