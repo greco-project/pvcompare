@@ -505,20 +505,21 @@ def create_psi_time_series(
             import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_pero as param1
             import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
-        #calculate peak power with 5 % CTM losses
-        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp)/100)*5
+        # calculate peak power with 5 % CTM losses
+        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp) / 100) * 5
 
         return (
-        greco_technologies.perosi.perosi.create_pero_si_timeseries(
-            year,
-            lat,
-            lon,
-            surface_azimuth,
-            surface_tilt,
-            number_hours=8760,
-            input_directory=None,
-            psi_type=psi_type,
-        )/ peak
+            greco_technologies.perosi.perosi.create_pero_si_timeseries(
+                year,
+                lat,
+                lon,
+                surface_azimuth,
+                surface_tilt,
+                number_hours=8760,
+                input_directory=None,
+                psi_type=psi_type,
+            )
+            / peak
         ).clip(0)
 
 
@@ -571,10 +572,10 @@ def nominal_values_pv(
             import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_pero as param1
             import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
-        #calculate peak power with 5 % CTM losses
-        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp)/100)*5
+        # calculate peak power with 5 % CTM losses
+        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp) / 100) * 5
         module_size = param1.A / 10000  # in m^2
-        nominal_value = (round((area / module_size) * peak) / 1000 )
+        nominal_value = round((area / module_size) * peak) / 1000
 
     logging.info(
         "The nominal value for %s" % technology  # todo technology instead of type?
