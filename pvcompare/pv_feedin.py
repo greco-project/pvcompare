@@ -126,8 +126,7 @@ def create_pv_components(
     #  define time series directory
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
-    time_series_directory = os.path.join(mvs_input_directory,
-                                         "time_series")
+    time_series_directory = os.path.join(mvs_input_directory, "time_series")
     # parse through pv_setup file and create time series for each technology
     for i, row in pv_setup.iterrows():
         j = row["surface_azimuth"]
@@ -163,11 +162,13 @@ def create_pv_components(
             time_series.to_csv(output_csv, header=["kW"], index=False)
             logging.info(
                 "%s" % row["technology"] + " time series is saved as csv "
-                                           "into output directory"
+                "into output directory"
             )
         else:
-            logging.info(f"The timeseries of the {row['technology']} technology"
-                         "already exists and is therefore not calculated again.")
+            logging.info(
+                f"The timeseries of the {row['technology']} technology"
+                "already exists and is therefore not calculated again."
+            )
 
         # add "evaluated_period" to simulation_settings.csv
         check_inputs.add_evaluated_period_to_simulation_settings(
@@ -509,20 +510,21 @@ def create_psi_time_series(
             import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_pero as param1
             import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
-        #calculate peak power with 5 % CTM losses
-        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp)/100)*5
+        # calculate peak power with 5 % CTM losses
+        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp) / 100) * 5
 
         return (
-        greco_technologies.perosi.perosi.create_pero_si_timeseries(
-            year,
-            lat,
-            lon,
-            surface_azimuth,
-            surface_tilt,
-            number_hours=8760,
-            input_directory=None,
-            psi_type=psi_type,
-        )/ peak
+            greco_technologies.perosi.perosi.create_pero_si_timeseries(
+                year,
+                lat,
+                lon,
+                surface_azimuth,
+                surface_tilt,
+                number_hours=8760,
+                input_directory=None,
+                psi_type=psi_type,
+            )
+            / peak
         ).clip(0)
 
 
@@ -575,10 +577,10 @@ def nominal_values_pv(
             import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_pero as param1
             import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
-        #calculate peak power with 5 % CTM losses
-        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp)/100)*5
+        # calculate peak power with 5 % CTM losses
+        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp) / 100) * 5
         module_size = param1.A / 10000  # in m^2
-        nominal_value = (round((area / module_size) * peak) / 1000 )
+        nominal_value = round((area / module_size) * peak) / 1000
 
     logging.info(
         "The nominal value for %s" % technology  # todo technology instead of type?
