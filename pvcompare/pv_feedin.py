@@ -460,15 +460,15 @@ def create_psi_time_series(
          lon : float
              Longitude of the location for which the time series is calculated.
          weather : :pandas:`pandas.DataFrame<frame>`
-             DataFrame with time series for temperature `temp_air` in C�, wind speed
-             `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m�
+             DataFrame with time series for temperature `temp_air` in C°, wind speed
+             `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m^2
          surface_azimuth : float
-             Surface azimuth of the modules (180� for south, 270� for west, etc.).
+             Surface azimuth of the modules (180° for south, 270° for west, etc.).
          surface_tilt: float
-             Surface tilt of the modules. (horizontal=90� and vertical=0�)
+             Surface tilt of the modules. (horizontal=90° and vertical=0°)
          psi_type  : str
              Defines the type of module of which the time series is calculated.
-             Options: "Korte".
+             Options: "Korte", "Chen"
          normalized: bool
              If True, the time series is divided by the peak power of the CPV
              module. Default: False.
@@ -481,8 +481,34 @@ def create_psi_time_series(
              False).
 
          """
-    logging.info("Absolute PSI time series is calculated in kW.")
-    return (
+    if normalized == False:
+        logging.info("Absolute PSI time series is calculated in kW.")
+        return (
+            greco_technologies.perosi.perosi.create_pero_si_timeseries(
+                year,
+                lat,
+                lon,
+                surface_azimuth,
+                surface_tilt,
+                number_hours=8760,
+                input_directory=None,
+                psi_type=psi_type,
+            )
+            / 1000
+        )
+    else:
+        logging.info("Normalized PSI time series is calculated.")
+        if psi_type == "Korte":
+            import greco_technologies.perosi.data.cell_parameters_korte_pero as param1
+            import greco_technologies.perosi.data.cell_parameters_korte_si as param2
+        elif psi_type == "Chen":
+            import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_pero as param1
+            import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_si as param2
+
+        #calculate peak power with 5 % CTM losses
+        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp)/100)*5
+
+        return (
         greco_technologies.perosi.perosi.create_pero_si_timeseries(
             year,
             lat,
@@ -492,9 +518,8 @@ def create_psi_time_series(
             number_hours=8760,
             input_directory=None,
             psi_type=psi_type,
-        )
-        / 1000
-    )
+        )/ peak
+        ).clip(0)
 
 
 def nominal_values_pv(
@@ -546,9 +571,10 @@ def nominal_values_pv(
             import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_pero as param1
             import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
-        peak = param1.p_mp + param2.p_mp
-        module_size = param1.A / 10000  # in m�
-        nominal_value = round((area / module_size) * peak) / 1000
+        #calculate peak power with 5 % CTM losses
+        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp)/100)*5
+        module_size = param1.A / 10000  # in m^2
+        nominal_value = (round((area / module_size) * peak) / 1000 )
 
     logging.info(
         "The nominal value for %s" % technology  # todo technology instead of type?
