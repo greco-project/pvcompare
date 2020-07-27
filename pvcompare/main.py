@@ -1,15 +1,19 @@
-# import feedinlib.era5 as era
+# imports
 import pandas as pd
 import logging
 import sys
+import os
 import pvlib
+import mvs_tool as mvs
+# import feedinlib.era5 as era
+
+# internal imports
 from pvcompare import era5
 from pvcompare import demand
 from pvcompare import pv_feedin
 from pvcompare import constants
-import mvs_tool as mvs
 from pvcompare import check_inputs
-import os
+
 
 
 # Reconfiguring the logger here will also affect test running in the PyCharm IDE
