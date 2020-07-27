@@ -19,7 +19,10 @@ Here is a template for new release sections
 ## [Unreleased]
 
 ### Added
-- one thing
+- check if timeseries defined in pv_setup already exists for the specific year and location.
+    if it does the ts is not calculated again. (PR #55)
+- CTM losses are added to pero-si calculation of the peak power (PR #55)
+    
 
 ### Changed
 - another thing
