@@ -89,7 +89,7 @@ class TestDemandProfiles:
             mvs_input_directory=self.test_mvs_directory,
         )
 
-        assert a["h0"].sum() == 17.65950917551695
+        assert a["kWh"].sum() == 17.65950917551695
 
     def test_heat_demand_exists(self):
 
@@ -123,7 +123,7 @@ class TestDemandProfiles:
             mvs_input_directory=self.test_mvs_directory,
         )
 
-        assert a["h0"].sum() == 5.474071970330192
+        assert a["kWh"].sum() == 5.474071970330192
 
     def test_shift_working_hours(self):
 
