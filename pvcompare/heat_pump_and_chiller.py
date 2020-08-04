@@ -68,8 +68,13 @@ def calculate_cops_and_eers(
     if input_directory is None:
         input_directory = constants.DEFAULT_INPUT_DIRECTORY
     filename = os.path.join(input_directory, "heat_pumps_and_chillers.csv")
-    parameters = pd.read_csv(filename, header=0, index_col=0).loc[mode]
 
+    try:
+        parameters = pd.read_csv(filename, header=0, index_col=0).loc[mode]
+    except KeyError:
+        raise ValueError(
+            f"Parameter `mode` should be 'heat_pump' or 'chiller' but is {mode}"
+        )
     # prepare parameters for calc_cops
     start_temperature = float(parameters.start_temperature)
     room_temperature = [float(parameters.room_temperature)]
@@ -118,11 +123,6 @@ def calculate_cops_and_eers(
         )
         column_name = "eer"
         filename = f"eers_chiller{add_on}.csv"
-
-    else:
-        raise ValueError(
-            f"Parameter `mode` should be 'heat_pump' or 'chiller' but is {mode}"
-        )
 
     # add list of cops/eers to data frame
     df = pd.DataFrame(weather[temperature_col])
@@ -188,7 +188,7 @@ def add_sector_coupling(weather, lat, lon, mvs_input_directory=None):
     -------
     Depending on the case, updates energyConversion.csv and saves calculated cops to
     'data/mvs_inputs/time_series'.
-    
+
     """
     # read energyConversion.csv file
     if mvs_input_directory is None:
