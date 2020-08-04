@@ -32,6 +32,7 @@ setup(
         "numpy >= 1.12.0,  < 1.17",
         "pandas >= 0.18.1, < 0.25",
         "oemof == 0.3.1",
+        "oemof.thermal >= 0.0.3"
         "scipy",
         # "mvs_tool", # todo NOTE: fovr now clone mvs_tool and install via "pip install -e ..."
         "workalendar < 7.0.0",  # todo check if needed. Problems with installing skyfield in travis tests (from workalendar 7.0.0)
