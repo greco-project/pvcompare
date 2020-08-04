@@ -70,7 +70,11 @@ Some parameters can be calculated automatically by pvcompare and do not need to 
     6. **energyVector**: str, Electricity
     7. **inflow_direction**: str, Electricity
     8. **unit**: str, kW
+
 * energyConversion.csv
+    *If COPs should be calculated automatically the column name needs to start with "heat" (indicating the heat sector) followed by an underscore separating suffixes.*
+    *Default values and references for heat pumps will follow.*
+
     1. **age_installed**: year, 0 (for all components such as charge controllers and inverters)
     2. **development_costs**: currency, 0 (for all components)
     3. **specific_costs**: currency/kW
@@ -102,6 +106,7 @@ Some parameters can be calculated automatically by pvcompare and do not need to 
     13. **energyVector**: str, Electricity (same for all the components)
     14. **type_oemof**: str, transformer (same for all the components)
     15. **unit**: str, kW (applies to all the components)
+
 * energyProduction.csv:
     1. **age_installed**: year, 0 (for all the components)
     2. **development_costs**: currency, 0 (**TO BE DECIDED**)
@@ -218,6 +223,16 @@ The following list will give a brief introduction into the description of the cs
     11. **filename_elect_WH**: str, name of the csv file that contains the electrical water heating for EU countries in different years [2] *
     12. **filename_residential_electricity_demand**: str, name of the csv file that contains the total residential electricity demand for EU countries in different years [2] *
     13. **filename_country_population**: str, name of the csv file that contains population for EU countries in different years [2] *
+
+* heat_pumps_and_chillers:
+    *Parameters that describe characteristics of the heat pumps and chillers in the simulated energy system.*
+
+    1. **mode**: str, options: 'heat_pump' or 'chiller'
+    2. **quality_grade**: float, scale-down factor to determine the COP of a real machine, default: heat pump: 0.2, chiller 0.25 (tests were made with monitored data from the GRECO project, reference follows)
+    3. **room_temperature**: float, mean temperature of the room that is heated/cooled, will be adapted with issue #59
+    4. **start_temperature**: float, temperature at which the heating/cooling period starts, default: heating 17 °C (`Reference <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_)
+    5. **factor_icing**: float or None, COP reduction caused by icing, only for `mode` 'heat_pump', default: None
+    6. **temp_threshold_icing**: float or None, Temperature below which icing occurs, only for `mode` 'heat_pump', default: None
 
 * list_of_workalendar:
     *list of countries for which a python.workalendar [3] exists with the column name "country".*
