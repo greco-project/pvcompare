@@ -32,7 +32,7 @@ def calculate_cops_and_eers(
     For these calculations the oemof.thermal `calc_cops()` functionality is
     used. Data like quality grade, factor icing and the temperature from which
     heating is assumed to take place is read from the file
-    `heat_pump_and_chillers.csv` in the `input_directory`.
+    `heat_pumps_and_chillers.csv` in the `input_directory`.
 
     Parameters
     ----------
@@ -51,7 +51,7 @@ def calculate_cops_and_eers(
         ("chiller") are calculated. Default: "heat_pump".
     input_directory: str or None
         Path to input directory of pvcompare containing file
-        `heat_pump_and_chillers.csv` that specifies heat pump and/or chiller
+        `heat_pumps_and_chillers.csv` that specifies heat pump and/or chiller
         data. Default: DEFAULT_INPUT_DIRECTORY (see :func:`~pvcompare.constants`.
     mvs_input_directory: str or None
         Path to input directory containing files that describe the energy
@@ -67,7 +67,7 @@ def calculate_cops_and_eers(
     # read parameters from file
     if input_directory is None:
         input_directory = constants.DEFAULT_INPUT_DIRECTORY
-    filename = os.path.join(input_directory, "heat_pump_and_chillers.csv")
+    filename = os.path.join(input_directory, "heat_pumps_and_chillers.csv")
     parameters = pd.read_csv(filename, header=0, index_col=0).loc[mode]
 
     # prepare parameters for calc_cops
