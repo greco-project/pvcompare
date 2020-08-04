@@ -5,6 +5,7 @@ import sys
 import os
 import pvlib
 import mvs_tool as mvs
+
 # import feedinlib.era5 as era
 
 # internal imports
@@ -14,7 +15,6 @@ from pvcompare import pv_feedin
 from pvcompare import constants
 from pvcompare import heat_pump_and_chiller
 from pvcompare import check_inputs
-
 
 
 # Reconfiguring the logger here will also affect test running in the PyCharm IDE
@@ -87,7 +87,12 @@ def main(
 
     # add sector coupling in case heat pump or chiller exists in energyConversion.csv
     # note: chiller was not tested, yet.
-    heat_pump_and_chiller.add_sector_coupling()
+    heat_pump_and_chiller.add_sector_coupling(
+        mvs_input_directory=mvs_input_directory,
+        weather=weather,
+        lat=latitude,
+        lon=longitude,
+    )
 
     demand.calculate_load_profiles(
         country=country,

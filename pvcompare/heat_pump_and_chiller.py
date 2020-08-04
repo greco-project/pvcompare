@@ -158,16 +158,133 @@ def calculate_cops_and_eers(
 
     return efficiency_series
 
-def add_sector_coupling():
+
+def add_sector_coupling(weather, lat, lon, mvs_input_directory=None):
     """
-    Add heat sector if heat pump in `energyConversion.csv`.
+    Add heat sector if heat pump in 'energyConversion.csv'.
+
+    If COPs or EERS should be calculated automatically the column name needs to start
+    with "heat" (indicating the heat sector), respectively "chiller" (indicating the
+    cooling sector) followed by an underscore separating suffixes.
+
+    Parameters
+    ----------
+    weather : :pandas:`pandas.DataFrame<frame>`
+        DataFrame with time series for temperature in column 'temp_air' in °C.
+    lat : float
+        Latitude of ambient temperature location in `weather`.
+    lon : float
+        Longitude of ambient temperature location in `weather`.
+    mvs_input_directory: str or None
+        Path to input directory containing files that describe the energy
+        system and that are an input to MVS. Default:
+        DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`.
+
+    Notes
+    -----
+    Chillers were not tested, yet, and no automatic calculation of EERs is implemented.
+
+    Returns
+    -------
+
     """
-    pass
+    # read energyConversion.csv file
+    if mvs_input_directory is None:
+        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+    energy_conversion = pd.read_csv(
+        os.path.join(
+            mvs_input_directory, "csv_elements", "energyConversion.csv"
+        ),
+        header=0,
+        index_col=0,
+    )
+
+    # heat pump
+    heat_keys = [col for col in energy_conversion.keys() if "heat" in col]
+    if len(heat_keys) >= 1:
+        file_exists = True
+        for heat_pump in heat_keys:
+            eff = energy_conversion[heat_pump]["efficiency"]
+            try:
+                float(eff)
+                logging.info(
+                    f"Heat pump in column '{heat_pump}' of 'energyConversion.csv' has "
+                    + f"constant efficiency {eff}. For using temperature dependent COPs check the documentation."
+                )
+            except ValueError:
+                # check if COPs file provided in efficiency exists
+                cops_filename_csv_excl_path = eff.split("'")[5]
+                cops_filename_csv = os.path.join(
+                    mvs_input_directory,
+                    "time_series",
+                    cops_filename_csv_excl_path,
+                )
+                # if not os.path.isfile(cops_filename_csv):
+                if not os.path.isfile(cops_filename_csv):
+                    year = weather.index[int(len(weather) / 2)].year
+                    cops_filename = os.path.join(
+                        mvs_input_directory,
+                        "time_series",
+                        f"cops_heat_pump_{year}_{lat}_{lon}.csv",
+                    )
+                    logging.warning(
+                        f"File containing COPs is missing: {cops_filename_csv} \nCalculated COPs are used instead."
+                    )
+                    file_exists = False
+                    # write new filename into energy_conversion
+                    energy_conversion[heat_pump][
+                        "efficiency"
+                    ] = energy_conversion[heat_pump]["efficiency"].replace(
+                        cops_filename_csv_excl_path,
+                        f"cops_heat_pump_{year}_{lat}_{lon}.csv",
+                    )
+
+        if file_exists == False:
+            # write new filenames into energyConversion.csv
+            energy_conversion.to_csv(
+                os.path.join(
+                    mvs_input_directory, "csv_elements", "energyConversion.csv"
+                )
+            )
+            # calculate COPs of heat pump for location if not existent
+            if not os.path.isfile(cops_filename):
+                calculate_cops_and_eers(
+                    weather=weather, mode="heat_pump", lat=lat, lon=lon
+                )
+                logging.info(
+                    "COPs successfully calculated and saved in 'mvs_inputs/time_series'."
+                )
+
+        # display warning if heat demand seems not to be in energyConsumption.csv
+        energy_consumption = pd.read_csv(
+            os.path.join(
+                mvs_input_directory, "csv_elements", "energyConsumption.csv"
+            ),
+            header=0,
+            index_col=0,
+        )
+        if (
+            not "Heat" in energy_consumption.loc["inflow_direction"].values
+            and not "heat" in energy_consumption.loc["inflow_direction"].values
+        ):
+            logging.warning(
+                "Heat demand might be missing in 'energyConsumption.csv' as non of the "
+                + "assets' inflow direction is named 'Heat' nor 'heat'."
+            )
+
+    if "chiller" in [key.split("_")[0] for key in energy_conversion.keys()]:
+        logging.warning(
+            "Chillers were not tested, yet. Make sure to provide a cooling demand in "
+            + "'energyConsumption.csv' and a constant EER or to place a file containg "
+            + "EERs into 'mvs_inputs/time_series' directory."
+        )
 
 
 if __name__ == "__main__":
     weather = pd.read_csv("./data/inputs/weatherdata.csv").set_index("time")
 
-    cops = calculate_cops_and_eers(weather=weather, mode="heat_pump")
+    cops = calculate_cops_and_eers(
+        weather=weather, mode="heat_pump", lat=53.2, lon=13.2
+    )
     print(cops)
     print(f"Min: {round(min(cops), 2)}, Max: {round(max(cops), 2)}")
