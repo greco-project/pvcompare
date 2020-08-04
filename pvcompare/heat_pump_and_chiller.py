@@ -17,8 +17,13 @@ from pvcompare import constants
 
 
 def calculate_cops_and_eers(
-    weather, temperature_col="temp_air", mode="heat_pump",
-    input_directory=None, mvs_input_directory=None,
+    weather,
+    lat,
+    lon,
+    temperature_col="temp_air",
+    mode="heat_pump",
+    input_directory=None,
+    mvs_input_directory=None,
 ):
     r"""
     Calculates the COPs of a heat pump or EERs of a chiller depending on `mode`.
@@ -34,6 +39,10 @@ def calculate_cops_and_eers(
     weather : :pandas:`pandas.DataFrame<frame>`
         Contains weather data time series. Required: ambient temperature in
         column `temperature_col`.
+    lat : float
+        Latitude of ambient temperature location in `weather`.
+    lon : float
+        Longitude of ambient temperature location in `weather`.
     temperature_col : str
         Name of column in `weather` containing ambient temperature.
         Default: "temp_air".
@@ -69,12 +78,17 @@ def calculate_cops_and_eers(
     # prepare ambient temperature for calc_cops (list)
     ambient_temperature = weather[temperature_col].values.tolist()
 
+    # create add on to filename (year, lat, lon)
+    year = weather.index[int(len(weather) / 2)].year
+    add_on = f"_{year}_{lat}_{lon}"
+
     # calculate COPs or EERs with oemof thermal
     if mode == "heat_pump":
         # additional parameters for heat_pump mode
         factor_icing = (
-            None if parameters.factor_icing == "None" else float(
-                parameters.factor_icing)
+            None
+            if parameters.factor_icing == "None"
+            else float(parameters.factor_icing)
         )
         temp_threshold_icing = (
             None
@@ -93,7 +107,7 @@ def calculate_cops_and_eers(
 
         # define variables for later proceeding
         column_name = "cop"
-        filename = "cops_heat_pump.csv"
+        filename = f"cops_heat_pump{add_on}.csv"
 
     elif mode == "chiller":
         efficiency = cmpr_hp_chiller.calc_cops(
@@ -103,7 +117,7 @@ def calculate_cops_and_eers(
             mode=mode,
         )
         column_name = "eer"
-        filename = "eers_chiller.csv"
+        filename = f"eers_chiller{add_on}.csv"
 
     else:
         raise ValueError(
