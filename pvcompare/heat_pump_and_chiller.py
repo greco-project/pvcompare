@@ -164,8 +164,8 @@ def add_sector_coupling(weather, lat, lon, mvs_input_directory=None):
     Add heat sector if heat pump in 'energyConversion.csv'.
 
     If COPs or EERS should be calculated automatically the column name needs to start
-    with "heat" (indicating the heat sector), respectively "chiller" (indicating the
-    cooling sector) followed by an underscore separating suffixes.
+    with "heat" (indicating the heat sector). (Once implemented: respectively "chiller"
+    (indicating the cooling sector)) followed by an underscore separating suffixes.
 
     Parameters
     ----------
@@ -186,7 +186,9 @@ def add_sector_coupling(weather, lat, lon, mvs_input_directory=None):
 
     Returns
     -------
-
+    Depending on the case, updates energyConversion.csv and saves calculated cops to
+    'data/mvs_inputs/time_series'.
+    
     """
     # read energyConversion.csv file
     if mvs_input_directory is None:
@@ -252,7 +254,7 @@ def add_sector_coupling(weather, lat, lon, mvs_input_directory=None):
                     weather=weather, mode="heat_pump", lat=lat, lon=lon
                 )
                 logging.info(
-                    "COPs successfully calculated and saved in 'mvs_inputs/time_series'."
+                    "COPs successfully calculated and saved in 'data/mvs_inputs/time_series'."
                 )
 
         # display warning if heat demand seems not to be in energyConsumption.csv
@@ -276,8 +278,9 @@ def add_sector_coupling(weather, lat, lon, mvs_input_directory=None):
         logging.warning(
             "Chillers were not tested, yet. Make sure to provide a cooling demand in "
             + "'energyConsumption.csv' and a constant EER or to place a file containg "
-            + "EERs into 'mvs_inputs/time_series' directory."
+            + "EERs into 'data/mvs_inputs/time_series' directory."
         )
+    return None
 
 
 if __name__ == "__main__":
