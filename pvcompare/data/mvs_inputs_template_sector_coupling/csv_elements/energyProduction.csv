@@ -6,8 +6,8 @@ maximumCap,None or float,25454.87
 installedCap,kWp,0
 age_installed,year,0
 lifetime,year,25
-development_costs,currency,1350
-specific_costs,currency/unit,1220
+development_costs,currency,500
+specific_costs,currency/unit,500
 specific_costs_om,currency/unit/year,50
 dispatch_price,currency/kWh,0
 outflow_direction,str,PV bus
