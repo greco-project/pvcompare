@@ -1,6 +1,6 @@
 ,unit,DSO
-unit,str,kW
 label,str,Electricity grid DSO
+unit,str,kW
 optimizeCap,bool,True
 energy_price,currency/kWh,0.3
 feedin_tariff,currency/kWh,0.1
