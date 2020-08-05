@@ -159,7 +159,7 @@ def calculate_cops_and_eers(
     return efficiency_series
 
 
-def add_sector_coupling(weather, lat, lon, mvs_input_directory=None):
+def add_sector_coupling(weather, lat, lon, input_directory=None, mvs_input_directory=None):
     """
     Add heat sector if heat pump in 'energyConversion.csv'.
 
@@ -175,6 +175,10 @@ def add_sector_coupling(weather, lat, lon, mvs_input_directory=None):
         Latitude of ambient temperature location in `weather`.
     lon : float
         Longitude of ambient temperature location in `weather`.
+    input_directory: str or None
+        Path to input directory of pvcompare containing file
+        `heat_pumps_and_chillers.csv` that specifies heat pump and/or chiller
+        data. Default: DEFAULT_INPUT_DIRECTORY (see :func:`~pvcompare.constants`.
     mvs_input_directory: str or None
         Path to input directory containing files that describe the energy
         system and that are an input to MVS. Default:
@@ -251,7 +255,8 @@ def add_sector_coupling(weather, lat, lon, mvs_input_directory=None):
             # calculate COPs of heat pump for location if not existent
             if not os.path.isfile(cops_filename):
                 calculate_cops_and_eers(
-                    weather=weather, mode="heat_pump", lat=lat, lon=lon
+                    weather=weather, mode="heat_pump", lat=lat, lon=lon,
+                    mvs_input_directory=mvs_input_directory, input_directory=input_directory,
                 )
                 logging.info(
                     "COPs successfully calculated and saved in 'data/mvs_inputs/time_series'."
@@ -274,11 +279,12 @@ def add_sector_coupling(weather, lat, lon, mvs_input_directory=None):
                 + "assets' inflow direction is named 'Heat' nor 'heat'."
             )
 
+    # chiller
     if "chiller" in [key.split("_")[0] for key in energy_conversion.keys()]:
         logging.warning(
             "Chillers were not tested, yet. Make sure to provide a cooling demand in "
-            + "'energyConsumption.csv' and a constant EER or to place a file containg "
-            + "EERs into 'data/mvs_inputs/time_series' directory."
+            + "'energyConsumption.csv' and a constant EER or to place a file "
+            + "containing EERs into 'data/mvs_inputs/time_series' directory."
         )
     return None
 

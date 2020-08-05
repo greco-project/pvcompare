@@ -89,6 +89,7 @@ def main(
     # note: chiller was not tested, yet.
     heat_pump_and_chiller.add_sector_coupling(
         mvs_input_directory=mvs_input_directory,
+        input_directory=input_directory,
         weather=weather,
         lat=latitude,
         lon=longitude,
