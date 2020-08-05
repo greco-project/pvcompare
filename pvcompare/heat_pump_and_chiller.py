@@ -159,7 +159,9 @@ def calculate_cops_and_eers(
     return efficiency_series
 
 
-def add_sector_coupling(weather, lat, lon, input_directory=None, mvs_input_directory=None):
+def add_sector_coupling(
+    weather, lat, lon, input_directory=None, mvs_input_directory=None
+):
     """
     Add heat sector if heat pump in 'energyConversion.csv'.
 
@@ -255,8 +257,12 @@ def add_sector_coupling(weather, lat, lon, input_directory=None, mvs_input_direc
             # calculate COPs of heat pump for location if not existent
             if not os.path.isfile(cops_filename):
                 calculate_cops_and_eers(
-                    weather=weather, mode="heat_pump", lat=lat, lon=lon,
-                    mvs_input_directory=mvs_input_directory, input_directory=input_directory,
+                    weather=weather,
+                    mode="heat_pump",
+                    lat=lat,
+                    lon=lon,
+                    mvs_input_directory=mvs_input_directory,
+                    input_directory=input_directory,
                 )
                 logging.info(
                     "COPs successfully calculated and saved in 'data/mvs_inputs/time_series'."
