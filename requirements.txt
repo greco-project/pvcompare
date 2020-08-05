@@ -11,7 +11,6 @@ reverse_geocoder
 staticmap
 pyppeteer
 demandlib
-oemof
 pdfkit==0.6.1
 xarray==0.15.0
 feedinlib==0.1.0rc2
