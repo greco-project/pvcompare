@@ -519,7 +519,6 @@ def create_psi_time_series(
                 surface_tilt,
                 atmos_data=atmos_data,
                 number_hours=8760,
-                input_directory=None,
                 psi_type=psi_type,
             )
             / 1000
@@ -545,7 +544,6 @@ def create_psi_time_series(
                 surface_tilt,
                 atmos_data=atmos_data,
                 number_hours=8760,
-                input_directory=None,
                 psi_type=psi_type,
             )
             / peak
