@@ -21,7 +21,7 @@ Demand
 Functions for calculating the electrical demand profiles and heat demand profiles.
 
 .. autosummary::
-   :toctree: temp/
+    :toctree: temp/
 
     demand.calculate_load_profiles
     demand.calculate_power_demand
@@ -36,7 +36,7 @@ Feed-in time series of photovoltaic installations
 Functions for calculating the feed-in time series of different PV technologies.
 
 .. autosummary::
-   :toctree: temp/
+    :toctree: temp/
 
     pv_feedin.create_pv_components
     pv_feedin.create_si_time_series
@@ -53,7 +53,7 @@ Reading and Writing input csv's
 Functions that match manual inputs and calculated results with mvs_inputs/csv_elements/
 
 .. autosummary::
-   :toctree: temp/
+    :toctree: temp/
 
     check_inputs.check_for_valid_country_year
     check_inputs.add_project_data
@@ -71,7 +71,7 @@ Loading ERA5 weather data
 Functions that request the weather data of one year and one location from the ERA5 weather data set
 
 .. autosummary::
-   :toctree: temp/
+    :toctree: temp/
 
     era5.load_era5_weatherdata
     era5.get_era5_data_from_datespan_and_position
