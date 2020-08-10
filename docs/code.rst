@@ -10,7 +10,7 @@ Area potential
 Function for calculating the area potential of the rooftop and facades for a given population.
 
 .. autosummary::
-   :toctree: temp/
+    :toctree: temp/
 
     area_potential.calculate_area_potential
 
@@ -21,7 +21,7 @@ Demand
 Functions for calculating the electrical demand profiles and heat demand profiles.
 
 .. autosummary::
-   :toctree: temp/
+    :toctree: temp/
 
     demand.calculate_load_profiles
     demand.calculate_power_demand
@@ -36,7 +36,7 @@ Feed-in time series of photovoltaic installations
 Functions for calculating the feed-in time series of different PV technologies.
 
 .. autosummary::
-   :toctree: temp/
+    :toctree: temp/
 
     pv_feedin.create_pv_components
     pv_feedin.create_si_time_series
@@ -53,15 +53,15 @@ Reading and Writing input csv's
 Functions that match manual inputs and calculated results with mvs_inputs/csv_elements/
 
 .. autosummary::
-   :toctree: temp/
+    :toctree: temp/
 
-   check_inputs.check_for_valid_country_year
-   check_inputs.add_project_data
-   check_inputs.add_electricity_price
-   check_inputs.check_mvs_energy_production_file
-   check_inputs.create_mvs_energy_production_file
-   check_inputs.add_parameters_to_energy_production_file
-   check_inputs.add_evaluated_period_to_simulation_settings
+    check_inputs.check_for_valid_country_year
+    check_inputs.add_project_data
+    check_inputs.add_electricity_price
+    check_inputs.check_mvs_energy_production_file
+    check_inputs.create_mvs_energy_production_file
+    check_inputs.add_parameters_to_energy_production_file
+    check_inputs.add_evaluated_period_to_simulation_settings
 
 
 	
