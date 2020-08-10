@@ -155,7 +155,7 @@ Some parameters can be calculated automatically by pvcompare and do not need to 
     1. **age_installed**: year, 0 (for all components)
     2. **development_costs**: currency, 0 (for all components)
     3. **specific_costs**: currency/unit
-        a. **storage capacity**: 0.2 (Consult this `reference <https://www.energieheld.de/solaranlage/photovoltaik/kosten#vergleich>`_ for details.)
+        a. **storage capacity**: 0.2 (Consult this reference `<https://www.energieheld.de/solaranlage/photovoltaik/kosten#vergleich>`_ for details.)
         b. **input power** and **output power**: 0
     4. **c_rate**: factor of total capacity (kWh)
         a. **storage capacity**: NA (does not apply)

@@ -10,7 +10,7 @@ Area potential
 Function for calculating the area potential of the rooftop and facades for a given population.
 
 .. autosummary::
-   :toctree: temp/
+    :toctree: temp/
 
     area_potential.calculate_area_potential
 
@@ -46,7 +46,6 @@ Functions for calculating the feed-in time series of different PV technologies.
     pv_feedin.get_optimal_pv_angle
 
 
-
 Reading and Writing input csv's
 ===============================
 
@@ -62,7 +61,6 @@ Functions that match manual inputs and calculated results with mvs_inputs/csv_el
     check_inputs.create_mvs_energy_production_file
     check_inputs.add_parameters_to_energy_production_file
     check_inputs.add_evaluated_period_to_simulation_settings
-
 
 
 Loading ERA5 weather data
