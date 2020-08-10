@@ -67,10 +67,10 @@ def main(
     weather = pd.read_csv("./data/inputs/weatherdata.csv", index_col=0)
     weather.index = pd.to_datetime(weather.index)
     spa = pvlib.solarposition.spa_python(
-         time=weather.index, latitude=latitude, longitude=longitude
+        time=weather.index, latitude=latitude, longitude=longitude
     )
     weather["dni"] = pvlib.irradiance.dirint(
-         weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
+        weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
     )
 
     pv_feedin.create_pv_components(
@@ -82,7 +82,7 @@ def main(
         plot=plot,
         input_directory=input_directory,
         mvs_input_directory=mvs_input_directory,
-        year=year
+        year=year,
     )
 
     # add sector coupling in case heat pump or chiller exists in energyConversion.csv

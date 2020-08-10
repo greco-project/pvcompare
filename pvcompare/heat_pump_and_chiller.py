@@ -151,9 +151,7 @@ def calculate_cops_and_eers(
     )
 
     efficiency_series.to_csv(
-        os.path.join(time_series_directory, filename),
-        index=False,
-        header=True,
+        os.path.join(time_series_directory, filename), index=False, header=True,
     )
 
     return efficiency_series
@@ -200,9 +198,7 @@ def add_sector_coupling(
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     energy_conversion = pd.read_csv(
-        os.path.join(
-            mvs_input_directory, "csv_elements", "energyConversion.csv"
-        ),
+        os.path.join(mvs_input_directory, "csv_elements", "energyConversion.csv"),
         header=0,
         index_col=0,
     )
@@ -223,9 +219,7 @@ def add_sector_coupling(
                 # check if COPs file provided in efficiency exists
                 cops_filename_csv_excl_path = eff.split("'")[5]
                 cops_filename_csv = os.path.join(
-                    mvs_input_directory,
-                    "time_series",
-                    cops_filename_csv_excl_path,
+                    mvs_input_directory, "time_series", cops_filename_csv_excl_path,
                 )
                 # if not os.path.isfile(cops_filename_csv):
                 if not os.path.isfile(cops_filename_csv):
@@ -240,9 +234,9 @@ def add_sector_coupling(
                     )
                     file_exists = False
                     # write new filename into energy_conversion
-                    energy_conversion[heat_pump][
-                        "efficiency"
-                    ] = energy_conversion[heat_pump]["efficiency"].replace(
+                    energy_conversion[heat_pump]["efficiency"] = energy_conversion[
+                        heat_pump
+                    ]["efficiency"].replace(
                         cops_filename_csv_excl_path,
                         f"cops_heat_pump_{year}_{lat}_{lon}.csv",
                     )
@@ -270,9 +264,7 @@ def add_sector_coupling(
 
         # display warning if heat demand seems not to be in energyConsumption.csv
         energy_consumption = pd.read_csv(
-            os.path.join(
-                mvs_input_directory, "csv_elements", "energyConsumption.csv"
-            ),
+            os.path.join(mvs_input_directory, "csv_elements", "energyConsumption.csv"),
             header=0,
             index_col=0,
         )

@@ -55,9 +55,7 @@ class TestCalculateCopsAndEers:
         yield None  # provide the fixture value
         original_data.to_csv(filename)
 
-    def test_calculate_cops_and_eers_heat_pump_consider_icing(
-        self, add_icing_to_csv
-    ):
+    def test_calculate_cops_and_eers_heat_pump_consider_icing(self, add_icing_to_csv):
         cops = hc.calculate_cops_and_eers(
             weather=self.weather,
             lat=self.lat,
@@ -108,9 +106,7 @@ class TestCalculateCopsAndEers:
         )
         assert os.path.exists(
             os.path.join(
-                TEST_DATA_HEAT,
-                "time_series",
-                "cops_heat_pump_2018_53.2_13.2.csv",
+                TEST_DATA_HEAT, "time_series", "cops_heat_pump_2018_53.2_13.2.csv",
             )
         )
 
@@ -143,15 +139,11 @@ class TestAddSectorCoupling:
             data = pd.DataFrame(original_data[columns])
             data.to_csv(self.filename_conversion)
 
-        original_data = pd.read_csv(
-            self.filename_conversion, header=0, index_col=0
-        )
+        original_data = pd.read_csv(self.filename_conversion, header=0, index_col=0)
         yield _select_columns
         original_data.to_csv(self.filename_conversion)
 
-    def test_add_sector_coupling_heat_pump_file_already_exists(
-        self, select_conv_tech
-    ):
+    def test_add_sector_coupling_heat_pump_file_already_exists(self, select_conv_tech):
         select_conv_tech(columns="heat_pump_file_exists")
         hc.add_sector_coupling(
             weather=self.weather,
@@ -167,13 +159,9 @@ class TestAddSectorCoupling:
         assert os.path.exists(filename) == False
         # filename in energyConversion.csv does not change
         df = pd.read_csv(self.filename_conversion, header=0, index_col=0)
-        assert (
-            "file_exists.csv" in df.loc["efficiency"].heat_pump_file_exists
-        ) == True
+        assert ("file_exists.csv" in df.loc["efficiency"].heat_pump_file_exists) == True
 
-    def test_add_sector_coupling_heat_pump_file_created(
-        self, select_conv_tech
-    ):
+    def test_add_sector_coupling_heat_pump_file_created(self, select_conv_tech):
         select_conv_tech(columns="heat_pump_file_non_existent")
         hc.add_sector_coupling(
             weather=self.weather,
@@ -194,9 +182,7 @@ class TestAddSectorCoupling:
             in df.loc["efficiency"].heat_pump_file_non_existent
         ) == True
 
-    def test_add_sector_coupling_heat_pump_constant_efficiency(
-        self, select_conv_tech
-    ):
+    def test_add_sector_coupling_heat_pump_constant_efficiency(self, select_conv_tech):
         select_conv_tech(columns="heat_pump_constant_eff")
         hc.add_sector_coupling(
             weather=self.weather,
@@ -217,9 +203,7 @@ class TestAddSectorCoupling:
     def test_add_sector_coupling_multiple_heat_pumps(self):
         pass
 
-    def test_add_sector_coupling_warning_no_heat_demand_in_energy_consumption(
-        self,
-    ):
+    def test_add_sector_coupling_warning_no_heat_demand_in_energy_consumption(self,):
         pass
 
     def test_add_sector_coupling_no_warning(self):
