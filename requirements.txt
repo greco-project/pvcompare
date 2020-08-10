@@ -4,7 +4,7 @@ git+https://github.com/rl-institut/mvs_eland.git@dev
 dash
 scipy
 numpy
-pandas
+pandas==0.24.2
 folium
 gitpython
 reverse_geocoder
