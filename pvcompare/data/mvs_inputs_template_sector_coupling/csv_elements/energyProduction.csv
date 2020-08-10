@@ -1,0 +1,17 @@
+index,unit,pv_plant_01
+label,str,PV si_180_31_2013_45.641603_5.875387
+unit,str,kWp
+optimizeCap,bool,True
+maximumCap,None or float,25454.87
+installedCap,kWp,0
+age_installed,year,0
+lifetime,year,25
+development_costs,currency,500
+specific_costs,currency/unit,500
+specific_costs_om,currency/unit/year,50
+dispatch_price,currency/kWh,0
+outflow_direction,str,PV bus
+file_name,str,si_180_31_2013_45.641603_5.875387.csv
+energyVector,str,Electricity
+renewableAsset,bool,True
+type_oemof,str,source

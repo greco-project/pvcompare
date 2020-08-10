@@ -1,0 +1,15 @@
+,unit
+label,str
+unit,str
+installedCap,kWh
+age_installed,year
+lifetime,year
+development_costs,currency
+specific_costs,currency/kWh
+specific_costs_om,currency/kWh/year
+dispatch_price,currency/kWh
+c_rate,factor of total capacity (kWh)
+efficiency,factor
+soc_initial,None or factor
+soc_max,factor
+soc_min,factor
