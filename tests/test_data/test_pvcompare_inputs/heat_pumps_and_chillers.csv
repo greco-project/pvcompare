@@ -1,0 +1,3 @@
+mode,quality_grade,room_temperature,start_temperature,factor_icing,temp_threshold_icing
+heat_pump,0.2,20,17,None,None
+chiller,0.25,20,25,,
