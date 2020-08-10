@@ -55,13 +55,25 @@ Functions that match manual inputs and calculated results with mvs_inputs/csv_el
 .. autosummary::
    :toctree: temp/
 
-   check_inputs.check_for_valid_country_year
-   check_inputs.add_project_data
-   check_inputs.add_electricity_price
-   check_inputs.check_mvs_energy_production_file
-   check_inputs.create_mvs_energy_production_file
-   check_inputs.add_parameters_to_energy_production_file
-   check_inputs.add_evaluated_period_to_simulation_settings
+    check_inputs.check_for_valid_country_year
+    check_inputs.add_project_data
+    check_inputs.add_electricity_price
+    check_inputs.check_mvs_energy_production_file
+    check_inputs.create_mvs_energy_production_file
+    check_inputs.add_parameters_to_energy_production_file
+    check_inputs.add_evaluated_period_to_simulation_settings
 
 
-	
+
+Loading ERA5 weather data
+===============================
+
+Functions that request the weather data of one year and one location from the ERA5 weather data set
+
+.. autosummary::
+   :toctree: temp/
+
+    era5.load_era5_weatherdata
+    era5.get_era5_data_from_datespan_and_position
+    era5.format_pvcompare
+    era5.weather_df_from_era5

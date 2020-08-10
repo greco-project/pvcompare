@@ -3,7 +3,7 @@ git+https://github.com/greco-project/cpvtopvlib.git@master
 git+https://github.com/rl-institut/mvs_eland.git@dev
 dash
 scipy
-numpy
+numpy==1.15.1
 pandas
 folium
 gitpython
