@@ -15,6 +15,7 @@ from pvcompare import constants
 from pvcompare.pv_feedin import (
     create_pv_components,
     create_si_time_series,
+    create_psi_time_series,
     nominal_values_pv,
     create_cpv_time_series,
     get_optimal_pv_angle,
@@ -90,6 +91,21 @@ class TestPvtime_series:
         )
         output = ts.sum()
         assert output == 0.1351719011687128
+
+    def test_create_psi_time_series(self):
+
+        ts = create_psi_time_series(
+            lat=self.lat,
+            lon=self.lon,
+            year=self.year,
+            weather=self.weather,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            normalized=True,
+            psi_type="Chen",
+        )
+        output = ts.sum()
+        assert round(output, 1) == 56.3
 
     def test_get_optimal_pv_angle(self):
 
