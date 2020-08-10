@@ -17,7 +17,6 @@ from pvcompare.demand import (
     get_workalendar_class,
     calculate_heat_demand,
 )
-from pvcompare import constants
 
 
 class TestDemandProfiles:
@@ -27,7 +26,8 @@ class TestDemandProfiles:
         self.country = "Spain"
         self.population = 4800
         self.year = 2014
-        self.input_directory = constants.DEFAULT_INPUT_DIRECTORY
+        self.test_input_directory = os.path.join(
+            os.path.dirname(__file__), "test_data/test_pvcompare_inputs")
         self.test_mvs_directory = os.path.join(
             os.path.dirname(__file__), "test_data/test_mvs_inputs"
         )
@@ -72,7 +72,7 @@ class TestDemandProfiles:
             country=self.country,
             population=self.population,
             year=self.year,
-            input_directory=self.input_directory,
+            input_directory=self.test_input_directory,
             mvs_input_directory=self.test_mvs_directory,
         )
         assert os.path.exists(
@@ -85,7 +85,7 @@ class TestDemandProfiles:
             country=self.country,
             population=self.population,
             year=self.year,
-            input_directory=self.input_directory,
+            input_directory=self.test_input_directory,
             mvs_input_directory=self.test_mvs_directory,
         )
 
@@ -104,7 +104,7 @@ class TestDemandProfiles:
             country=self.country,
             population=self.population,
             year=self.year,
-            input_directory=self.input_directory,
+            input_directory=self.test_input_directory,
             weather=self.weather,
             mvs_input_directory=self.test_mvs_directory,
         )
@@ -118,7 +118,7 @@ class TestDemandProfiles:
             country=self.country,
             population=self.population,
             year=self.year,
-            input_directory=self.input_directory,
+            input_directory=self.test_input_directory,
             weather=self.weather,
             mvs_input_directory=self.test_mvs_directory,
         )
@@ -128,8 +128,6 @@ class TestDemandProfiles:
     def test_shift_working_hours(self):
 
         output = shift_working_hours(country=self.country, ts=self.ts)
-
-        a = output["h0"].sum()
 
         assert output["h0"].sum() == 104786
 
