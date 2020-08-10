@@ -37,17 +37,20 @@ class TestDemandProfiles:
         data_path = os.path.join(self.test_input_directory, "pv_setup.csv")
         self.pv_setup = pd.read_csv(data_path)
 
-
     def test_check_for_valid_country(self):
         with pytest.raises(ValueError):
             check_for_valid_country_year(
-                country="Uganda", year=self.year, input_directory=self.test_input_directory ,
+                country="Uganda",
+                year=self.year,
+                input_directory=self.test_input_directory,
             )
 
     def test_check_for_valid_year(self):
         with pytest.raises(ValueError):
             check_for_valid_country_year(
-                country=self.country, year=2001, input_directory=self.test_input_directory ,
+                country=self.country,
+                year=2001,
+                input_directory=self.test_input_directory,
             )
 
     def test_add_project_data(self):

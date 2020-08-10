@@ -144,20 +144,26 @@ def create_pv_components(
 
             if row["technology"] == "si":
                 time_series = create_si_time_series(
-                    lat=lat, lon=lon, weather=weather, surface_azimuth=j,
-                    surface_tilt=k
+                    lat=lat, lon=lon, weather=weather, surface_azimuth=j, surface_tilt=k
                 )
             elif row["technology"] == "cpv":
                 time_series = create_cpv_time_series(
-                    lat=lat, lon=lon, weather=weather, surface_azimuth=j,
-                    surface_tilt=k, cpv_type=cpv_type
+                    lat=lat,
+                    lon=lon,
+                    weather=weather,
+                    surface_azimuth=j,
+                    surface_tilt=k,
+                    cpv_type=cpv_type,
                 )
             elif row["technology"] == "psi":
-                time_series = create_psi_time_series(lat=lat, lon=lon,
-                                                     year=year,
-                                                     weather=weather,
-                                                     surface_azimuth=j,
-                                                     surface_tilt=k)
+                time_series = create_psi_time_series(
+                    lat=lat,
+                    lon=lon,
+                    year=year,
+                    weather=weather,
+                    surface_azimuth=j,
+                    surface_tilt=k,
+                )
             else:
                 raise ValueError(
                     row["technology"],
@@ -454,7 +460,14 @@ def create_cpv_time_series(
 
 
 def create_psi_time_series(
-    lat, lon, year, surface_azimuth, surface_tilt, weather, normalized=False, psi_type="Chen"
+    lat,
+    lon,
+    year,
+    surface_azimuth,
+    surface_tilt,
+    weather,
+    normalized=False,
+    psi_type="Chen",
 ):
 
     """
@@ -493,7 +506,7 @@ def create_psi_time_series(
              False).
 
          """
-    atmos_data=weather[["wind_speed", "temp_air"]]
+    atmos_data = weather[["wind_speed", "temp_air"]]
 
     if normalized == False:
         logging.info("Absolute PSI time series is calculated in kW.")
@@ -634,11 +647,10 @@ if __name__ == "__main__":
     weather_df["dhi"] = [100, 120]
     weather_df["dni"] = [120, 150]
     weather_df["ghi"] = [200, 220]
-    weather_df.index = ["2014-01-01 13:00:00+00:00",
-                        "2014-01-01 14:00:00+00:00"]
+    weather_df.index = ["2014-01-01 13:00:00+00:00", "2014-01-01 14:00:00+00:00"]
     weather_df.index = pd.to_datetime(weather_df.index)
     weather = weather_df
-    year=2014
+    year = 2014
 
     lat = 40.0
     lon = 5.2
@@ -653,7 +665,7 @@ if __name__ == "__main__":
         surface_azimuth=surface_azimuth,
         surface_tilt=surface_tilt,
         normalized=True,
-        psi_type="Chen"
+        psi_type="Chen",
     )
     print(output.sum())
     #

@@ -27,7 +27,8 @@ class TestDemandProfiles:
         self.population = 4800
         self.year = 2014
         self.test_input_directory = os.path.join(
-            os.path.dirname(__file__), "test_data/test_pvcompare_inputs")
+            os.path.dirname(__file__), "test_data/test_pvcompare_inputs"
+        )
         self.test_mvs_directory = os.path.join(
             os.path.dirname(__file__), "test_data/test_mvs_inputs"
         )
