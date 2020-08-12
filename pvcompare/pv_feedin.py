@@ -497,7 +497,6 @@ def create_psi_time_series(
                 surface_azimuth,
                 surface_tilt,
                 number_hours=8760,
-                input_directory=None,
                 psi_type=psi_type,
             )
             / 1000
