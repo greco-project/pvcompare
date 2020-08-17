@@ -87,36 +87,36 @@ def main(
 
     # add sector coupling in case heat pump or chiller exists in energyConversion.csv
     # note: chiller was not tested, yet.
-    heat_pump_and_chiller.add_sector_coupling(
-        mvs_input_directory=mvs_input_directory,
-        input_directory=input_directory,
-        weather=weather,
-        lat=latitude,
-        lon=longitude,
-    )
+    # heat_pump_and_chiller.add_sector_coupling(
+    #     mvs_input_directory=mvs_input_directory,
+    #     input_directory=input_directory,
+    #     weather=weather,
+    #     lat=latitude,
+    #     lon=longitude,
+    # )
+    #
+    # demand.calculate_load_profiles(
+    #     country=country,
+    #     population=population,
+    #     year=year,
+    #     input_directory=input_directory,
+    #     mvs_input_directory=mvs_input_directory,
+    #     weather=weather,
+    # )
 
-    demand.calculate_load_profiles(
-        country=country,
-        population=population,
-        year=year,
-        input_directory=input_directory,
-        mvs_input_directory=mvs_input_directory,
-        weather=weather,
-    )
-
-    mvs.main(
-        path_input_folder=mvs_input_directory,
-        path_output_folder=mvs_output_directory,
-        input_type="csv",
-        overwrite=True,
-    )
+    # mvs.main(
+    #     path_input_folder=mvs_input_directory,
+    #     path_output_folder=mvs_output_directory,
+    #     input_type="csv",
+    #     overwrite=True,
+    # )
 
 
 if __name__ == "__main__":
 
     latitude = 45.641603
     longitude = 5.875387
-    year = 2013  # a year between 2011-2013!!!
+    year = 2014
     population = 48000
     country = "Spain"
 
