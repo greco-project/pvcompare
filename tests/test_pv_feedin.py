@@ -92,13 +92,11 @@ class TestPvtime_series:
         output = ts.sum()
         assert output == 0.1351719011687128
 
-
     def test_get_optimal_pv_angle(self):
 
         output = get_optimal_pv_angle(self.lat)
 
         assert output == 25
-
 
     def test_create_create_pv_components_column_missing_in_pvsetup(self):
         pv_setup_filename = os.path.join(
