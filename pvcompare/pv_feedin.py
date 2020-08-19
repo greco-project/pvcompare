@@ -76,8 +76,7 @@ def create_pv_components(
     pv_setup: dict or None
         with collumns: surface_type, technology, surface_azimuth, surface_tilt
         a tilt of 0 resembles a vertical orientation.
-        if pv_setup=None loads example file data/inputs/pv_setup.csv
-        # todo If pv_setup is None, it is loaded from the input_directory
+        if pv_setup is None, it is loaded from the input_directory
     plot: bool
         if true plots created pv times series
     input_directory: str
@@ -127,6 +126,7 @@ def create_pv_components(
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     time_series_directory = os.path.join(mvs_input_directory, "time_series")
+
     # parse through pv_setup file and create time series for each technology
     for i, row in pv_setup.iterrows():
         j = row["surface_azimuth"]
@@ -151,10 +151,22 @@ def create_pv_components(
                 )
             elif row["technology"] == "cpv":
                 time_series = create_cpv_time_series(
-                    lat, lon, weather, j, k, cpv_type=cpv_type
+                    lat=lat,
+                    lon=lon,
+                    weather=weather,
+                    surface_azimuth=j,
+                    surface_tilt=k,
+                    cpv_type=cpv_type,
                 )
             elif row["technology"] == "psi":
-                time_series = create_psi_time_series(lat, lon, year, j, k)
+                time_series = create_psi_time_series(
+                    lat=lat,
+                    lon=lon,
+                    year=year,
+                    weather=weather,
+                    surface_azimuth=j,
+                    surface_tilt=k,
+                )
             else:
                 raise ValueError(
                     row["technology"],
@@ -228,7 +240,7 @@ def get_optimal_pv_angle(lat):
     """
     Calculates the optimal tilt angle depending on the latitude.
 
-    e.G. about 27� to 34� from ground in Germany.
+    e.G. about 27° to 34° from ground in Germany.
     The pvlib uses tilt angles horizontal=90� and up=0�. Therefore 90� minus
     the angle from the horizontal.
 
@@ -288,7 +300,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt, cpv_type):
     elif technology == "cpv":
 
         logging.debug(
-            "cpv module parameters are loaded from " "greco_technologies/inputs.py"
+            "cpv module parameters are loaded from greco_technologies/inputs.py"
         )
         module_params = greco_technologies.cpv.inputs.create_cpv_dict(cpv_type=cpv_type)
 
@@ -392,12 +404,12 @@ def create_cpv_time_series(
     lon : float
         Longitude of the location for which the time series is calculated.
     weather : :pandas:`pandas.DataFrame<frame>`
-        DataFrame with time series for temperature `temp_air` in C�, wind speed
-        `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m�
+        DataFrame with time series for temperature `temp_air` in C°, wind speed
+        `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m²
     surface_azimuth : float
-        Surface azimuth of the modules (180� for south, 270� for west, etc.).
+        Surface azimuth of the modules (180° for south, 270° for west, etc.).
     surface_tilt: float
-        Surface tilt of the modules. (horizontal=90� and vertical=0�)
+        Surface tilt of the modules. (horizontal=90° and vertical=0°)
     cpv_type  : str
         Defines the type of module of which the time series is calculated.
         Options: "ins", "m300".
@@ -408,7 +420,7 @@ def create_cpv_time_series(
     Returns
     -------
     :pandas:`pandas.Series<series>`
-        Power output of CPV module in W (if parameter `normalized` is False) or todo check unit.
+        Power output of CPV module in W (if parameter `normalized` is False) or todo: check unit.
         normalized power output of CPV module (if parameter `normalized` is
         False).
 
@@ -451,7 +463,14 @@ def create_cpv_time_series(
 
 
 def create_psi_time_series(
-    lat, lon, year, surface_azimuth, surface_tilt, normalized=False, psi_type="Chen"
+    lat,
+    lon,
+    year,
+    surface_azimuth,
+    surface_tilt,
+    weather,
+    normalized=False,
+    psi_type="Chen",
 ):
 
     """
@@ -490,6 +509,8 @@ def create_psi_time_series(
              False).
 
          """
+    atmos_data = weather[["ghi", "wind_speed", "temp_air"]]
+
     if normalized == False:
         logging.info("Absolute PSI time series is calculated in kW.")
         return (
@@ -499,6 +520,7 @@ def create_psi_time_series(
                 lon,
                 surface_azimuth,
                 surface_tilt,
+                atmos_data=atmos_data,
                 number_hours=8760,
                 psi_type=psi_type,
             )
@@ -523,8 +545,8 @@ def create_psi_time_series(
                 lon,
                 surface_azimuth,
                 surface_tilt,
+                atmos_data=atmos_data,
                 number_hours=8760,
-                input_directory=None,
                 psi_type=psi_type,
             )
             / peak
@@ -620,27 +642,33 @@ if __name__ == "__main__":
     #
     # create_pv_components(lat=40.3, lon=5.4, weather=weather_df, population=600)
 
-    # weather_df = pd.DataFrame()
-    # weather_df["temp_air"] = [4, 5]
-    # weather_df["wind_speed"] = [2, 2.5]
-    # weather_df["dhi"] = [100, 120]
-    # weather_df["dni"] = [120, 150]
-    # weather_df["ghi"] = [200, 220]
-    # weather_df.index = ["2014-01-01 13:00:00+00:00",
-    #                     "2014-01-01 14:00:00+00:00"]
-    # weather_df.index = pd.to_datetime(weather_df.index)
-    # weather = weather_df
-    #
-    # lat = 40.0
-    # lon = 5.2
-    # surface_azimuth = 180
-    # surface_tilt = 30
-    #
-    # output = create_cpv_time_series(
-    #     lat=lat, lon=lon, weather=weather, surface_azimuth=surface_azimuth,
-    #     surface_tilt=surface_tilt, normalized=True, cpv_type='m300'
-    # )
-    # print(output.sum())
+    weather_df = pd.DataFrame()
+    weather_df["temp_air"] = [4, 5]
+    weather_df["wind_speed"] = [2, 2.5]
+    weather_df["dhi"] = [100, 120]
+    weather_df["dni"] = [120, 150]
+    weather_df["ghi"] = [200, 220]
+    weather_df.index = ["2014-01-01 13:00:00+00:00", "2014-01-01 14:00:00+00:00"]
+    weather_df.index = pd.to_datetime(weather_df.index)
+    weather = weather_df
+    year = 2014
+
+    lat = 40.0
+    lon = 5.2
+    surface_azimuth = 180
+    surface_tilt = 30
+
+    output = create_psi_time_series(
+        lat=lat,
+        lon=lon,
+        year=year,
+        weather=weather,
+        surface_azimuth=surface_azimuth,
+        surface_tilt=surface_tilt,
+        normalized=True,
+        psi_type="Chen",
+    )
+    print(output.sum())
     #
     # output=get_optimal_pv_angle(lat=40.0)
     #
