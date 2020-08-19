@@ -141,6 +141,9 @@ def create_pv_components(
         output_csv = os.path.join(time_series_directory, ts_csv)
 
         if not os.path.isfile(output_csv):
+            logging.info(
+                "The timeseries does not exist yet and is therefore " "calculated."
+            )
 
             if row["technology"] == "si":
                 time_series = create_si_time_series(
@@ -179,7 +182,7 @@ def create_pv_components(
         else:
             time_series = pd.read_csv(output_csv)
             logging.info(
-                f"The timeseries of the {row['technology']} technology"
+                f"The timeseries {output_csv}"
                 "already exists and is therefore not calculated again."
             )
 
