@@ -141,7 +141,7 @@ def loop(
     shutil.copy(src_dir, dst_dir)
 
 
-def plot_total_costs_from_scalars(variable_name, stop, loop_output_directory=None):
+def plot_total_costs_from_scalars(variable_name, loop_output_directory=None):
 
     """
     plots the total costs from the scalars_**.xlsx files in loop_outputs over
@@ -151,8 +151,6 @@ def plot_total_costs_from_scalars(variable_name, stop, loop_output_directory=Non
     ----------
     variable_name: str
         name of the variable that is changed each loop
-    stop: int
-        last variable value todo:this is not needed
     loop_output_directory: str
         if None then value will be taken from constants.py
 
@@ -164,19 +162,22 @@ def plot_total_costs_from_scalars(variable_name, stop, loop_output_directory=Non
 
     if loop_output_directory == None:
         loop_output_directory = constants.DEFAULT_LOOP_OUTPUT_DIRECTORY
+    # get all different pv assets
     energyProduction = pd.read_csv(
         os.path.join(loop_output_directory, "energyProduction.csv"), index_col=0
     )
     energyProduction = energyProduction.drop(["unit"], axis=1)
     pv_labels = energyProduction.loc["label"].values
 
-    digits_index = len(str(stop))
     total_costs = pd.DataFrame()
+    # parse through scalars folder and read in all excel sheets
     for filepath in list(
         glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
     ):
         file = pd.read_excel(filepath, header=0, index_col=1)
-        i = filepath.split(".")[0][-digits_index:]
+        # get the
+        i_split_one = filepath.split("_")[::-1][0]
+        i = i_split_one.split(".")[0]
         for pv in pv_labels:
             total_costs.loc[int(i), pv] = file.at[pv, "costs_total"]
 
@@ -211,8 +212,6 @@ if __name__ == "__main__":
     #      stop=1000,
     #      step=200)
 
-    plot_total_costs_from_scalars(
-        variable="lifetime", stop=1000, loop_output_directory=None
-    )
+    plot_total_costs_from_scalars(variable_name="lifetime", loop_output_directory=None)
 
     print(loop)
