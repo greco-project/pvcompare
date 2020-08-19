@@ -1,3 +1,13 @@
+"""
+run these tests with `pytest tests/name_of_test_module.py` or `pytest tests`
+or simply `pytest` pytest will look for all files starting with "test_" and run
+all functions within this file starting with "test_". For basic example of
+tests you can look at our workshop
+https://github.com/rl-institut/workshop/tree/master/test-driven-development.
+Otherwise https://docs.pytest.org/en/latest/ and
+https://docs.python.org/3/library/unittest.html are also good support.
+"""
+
 import pandas as pd
 import os
 import pytest
@@ -9,8 +19,6 @@ from pvcompare.check_inputs import (
     add_electricity_price,
 )
 
-from pvcompare import constants
-
 
 class TestDemandProfiles:
     @classmethod
@@ -19,38 +27,31 @@ class TestDemandProfiles:
         self.year = 2014
         self.lat = 40.0
         self.lon = 5.2
-        self.input_directory = constants.DEFAULT_INPUT_DIRECTORY
         self.test_mvs_directory = os.path.join(
             os.path.dirname(__file__), "test_data/test_mvs_inputs"
         )
-        data_path = os.path.join(self.input_directory, "pv_setup.csv")
+
+        self.test_input_directory = os.path.join(
+            os.path.dirname(__file__), "test_data/test_pvcompare_inputs"
+        )
+        data_path = os.path.join(self.test_input_directory, "pv_setup.csv")
         self.pv_setup = pd.read_csv(data_path)
 
     def test_check_for_valid_country(self):
-        try:
+        with pytest.raises(ValueError):
             check_for_valid_country_year(
-                country="Uganda", year=self.year, input_directory=self.input_directory,
+                country="Uganda",
+                year=self.year,
+                input_directory=self.test_input_directory,
             )
-        except ValueError:
-            # The exception was raised as expected
-            pass
-        else:
-            # If we get here, then the ValueError was not raised
-            # raise an exception so that the test fails
-            raise AssertionError("ValueError was not raised")
 
     def test_check_for_valid_year(self):
-        try:
+        with pytest.raises(ValueError):
             check_for_valid_country_year(
-                country=self.country, year=2001, input_directory=self.input_directory,
+                country=self.country,
+                year=2001,
+                input_directory=self.test_input_directory,
             )
-        except ValueError:
-            # The exception was raised as expected
-            pass
-        else:
-            # If we get here, then the ValueError was not raised
-            # raise an exception so that the test fails
-            raise AssertionError("ValueError was not raised")
 
     def test_add_project_data(self):
 
@@ -135,19 +136,12 @@ class TestDemandProfiles:
 
     def test_check_mvs_energy_production_file(self):
 
-        try:
+        with pytest.raises(ValueError):
             check_mvs_energy_production_file(
                 pv_setup=self.pv_setup,
                 mvs_input_directory=self.test_mvs_directory,
                 overwrite=False,
             )
-        except ValueError:
-            # The exception was raised as expected
-            pass
-        else:
-            # If we get here, then the ValueError was not raised
-            # raise an exception so that the test fails
-            raise AssertionError("ValueError was not raised")
 
     def test_add_electricity_price(self):
         """

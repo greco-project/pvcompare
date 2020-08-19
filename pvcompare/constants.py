@@ -17,4 +17,4 @@ DEFAULT_LOOP_OUTPUT_DIRECTORY = os.path.join(
 )
 TEST_DATA_DIRECTORY = os.path.join(REPO_PATH, "tests/test_data/",)
 TEST_DATA_HEAT = os.path.join(REPO_PATH, "tests/test_data/test_inputs_heat",)
-DUMMY_TEST_DATA = os.path.join(REPO_PATH, "tests/test_data/dummy_data/",)
+DUMMY_TEST_DATA = os.path.join(REPO_PATH, "tests/test_data/test_pvcompare_inputs/",)

@@ -15,6 +15,7 @@ from pvcompare import constants
 from pvcompare.pv_feedin import (
     create_pv_components,
     create_si_time_series,
+    create_psi_time_series,
     nominal_values_pv,
     create_cpv_time_series,
     get_optimal_pv_angle,
