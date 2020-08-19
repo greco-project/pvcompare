@@ -141,8 +141,9 @@ def create_pv_components(
         output_csv = os.path.join(time_series_directory, ts_csv)
 
         if not os.path.isfile(output_csv):
-            logging.info("The timeseries does not exist yet and is therefore "
-                         "calculated.")
+            logging.info(
+                "The timeseries does not exist yet and is therefore " "calculated."
+            )
 
             if row["technology"] == "si":
                 time_series = create_si_time_series(
