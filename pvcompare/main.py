@@ -32,7 +32,8 @@ def main(
     mvs_input_directory=None,
     plot=False,
     mvs_output_directory=None,
-):
+    pv_setup=None
+    ):
 
     """
     loads weather data for the given year and location, calculates pv feedin
@@ -49,8 +50,6 @@ def main(
         input_directory = constants.DEFAULT_INPUT_DIRECTORY
     if mvs_input_directory == None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
-    if mvs_output_directory == None:
-        mvs_output_directory = constants.DEFAULT_MVS_OUTPUT_DIRECTORY
 
     if all([latitude, longitude, country, year]) == False:
         check_inputs.add_project_data(
@@ -78,7 +77,7 @@ def main(
         lon=longitude,
         weather=weather,
         population=population,
-        pv_setup=None,
+        pv_setup=pv_setup,
         plot=plot,
         input_directory=input_directory,
         mvs_input_directory=mvs_input_directory,
@@ -104,9 +103,18 @@ def main(
         weather=weather,
     )
 
+def apply_mvs(
+        mvs_input_directory,
+        mvs_output_directory):
+
+    if mvs_input_directory == None:
+        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+    if mvs_output_directory == None:
+        mvs_output_directory = constants.DEFAULT_MVS_OUTPUT_DIRECTORY
+
     mvs.main(
-        path_input_folder=mvs_input_directory,
-        path_output_folder=mvs_output_directory,
+        path_input_folder = mvs_input_directory,
+        path_output_folder= mvs_output_directory,
         input_type="csv",
         overwrite=True,
     )
@@ -127,3 +135,8 @@ if __name__ == "__main__":
         population=population,
         country=country,
     )
+    apply_mvs(path_input_directory=None,
+              path_output_folder=None,
+              input_type="csv",
+              overwrite=True
+              )
