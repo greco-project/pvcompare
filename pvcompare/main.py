@@ -135,8 +135,6 @@ if __name__ == "__main__":
         population=population,
         country=country,
     )
-    apply_mvs(path_input_directory=None,
-              path_output_folder=None,
-              input_type="csv",
-              overwrite=True
+    apply_mvs(mvs_input_directory=None,
+              mvs_output_directory=None
               )

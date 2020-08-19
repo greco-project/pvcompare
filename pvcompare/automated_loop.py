@@ -139,13 +139,12 @@ def plot_total_costs_from_scalars(variable, stop, loop_output_directory=None):
         for pv in pv_labels:
             total_costs.loc[int(i), pv] = file.at[pv, "costs_total"]
 
+    # Plotting
+    total_costs.plot(style='.-')
+    plt.legend(loc='best')
     plt.title(variable)
-    plt.plot(total_costs, "o-")
-    plt.legend()
     plt.savefig(os.path.join(loop_output_directory, 'plot_total_costs_' + str(variable) + ".png"))
     plt.show()
-
-
 
 
 
@@ -153,23 +152,23 @@ def plot_total_costs_from_scalars(variable, stop, loop_output_directory=None):
 if __name__ == "__main__":
     latitude = 45.641603
     longitude = 5.875387
-    year = 2014  # a year between 2011-2013!!!
+    year = 2013  # a year between 2011-2013!!!
     population = 48000
     country = "Spain"
 
-    loop(latitude=latitude,
-         longitude=longitude,
-         year=year,
-         population=population,
-         country=country,
-         variable_name="development_costs",
-         variable_column= "pv_plant_03",
-         csv_file_variable = "energyProduction.csv",
-         start=600,
-         stop=1400,
-         step=200)
+    # loop(latitude=latitude,
+    #      longitude=longitude,
+    #      year=year,
+    #      population=population,
+    #      country=country,
+    #      variable_name="development_costs",
+    #      variable_column= "pv_plant_03",
+    #      csv_file_variable = "energyProduction.csv",
+    #      start=600,
+    #      stop=1000,
+    #      step=200)
 
-    plot_total_costs_from_scalars(variable="lifetime", stop=15, loop_output_directory=None)
+    plot_total_costs_from_scalars(variable="lifetime", stop=1000, loop_output_directory=None)
 
 
 
