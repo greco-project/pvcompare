@@ -9,8 +9,8 @@ matrix:
 
 # To install packages which are not on pip
 before_install:
-#  - sudo apt-get update
-#  - sudo apt-get install gcc
+  - sudo apt-get update
+  - sudo apt-get install gcc
   - sudo apt-get install libgfortran4
 #
 #addons:
