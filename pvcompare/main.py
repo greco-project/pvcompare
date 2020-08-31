@@ -86,22 +86,22 @@ def main(
 
     # add sector coupling in case heat pump or chiller exists in energyConversion.csv
     # note: chiller was not tested, yet.
-    heat_pump_and_chiller.add_sector_coupling(
-        mvs_input_directory=mvs_input_directory,
-        input_directory=input_directory,
-        weather=weather,
-        lat=latitude,
-        lon=longitude,
-    )
-
-    demand.calculate_load_profiles(
-        country=country,
-        population=population,
-        year=year,
-        input_directory=input_directory,
-        mvs_input_directory=mvs_input_directory,
-        weather=weather,
-    )
+    # heat_pump_and_chiller.add_sector_coupling(
+    #     mvs_input_directory=mvs_input_directory,
+    #     input_directory=input_directory,
+    #     weather=weather,
+    #     lat=latitude,
+    #     lon=longitude,
+    # )
+    #
+    # demand.calculate_load_profiles(
+    #     country=country,
+    #     population=population,
+    #     year=year,
+    #     input_directory=input_directory,
+    #     mvs_input_directory=mvs_input_directory,
+    #     weather=weather,
+    #)
 
 
 def apply_mvs(mvs_input_directory, mvs_output_directory):
@@ -123,7 +123,7 @@ if __name__ == "__main__":
 
     latitude = 45.641603
     longitude = 5.875387
-    year = 2014
+    year = 2013
     population = 48000
     country = "Spain"
 
