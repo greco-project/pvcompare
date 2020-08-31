@@ -11,7 +11,7 @@ matrix:
 # To install packages which are not on pip
 before_install:
   - sudo apt-get update
-  - sudo apt-get install libgfortran-ng=7.2.0
+#  - sudo apt-get install libgfortran-ng=7.2.0
   - sudo apt-get install gfortran
 #addons:
 #  apt:
