@@ -12,14 +12,14 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install gcc
   - sudo apt-get install libgfortran4
-#
-#addons:
-#  apt:
-#    sources:
-#    - ubuntu-toolchain-r-test
-#    packages:
-#    - gfortran
-#    - gcc
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gfortran
+    - gcc
 
 # command to install dependencies
 install:
