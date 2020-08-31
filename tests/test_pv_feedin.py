@@ -98,7 +98,6 @@ class TestPvtime_series:
 
         assert output == 25
 
-
     def test_create_psi_time_series(self):
         ts = create_psi_time_series(
             lat=self.lat,
@@ -112,7 +111,6 @@ class TestPvtime_series:
         )
         output = ts.sum()
         assert round(output, 1) == 1.5
-
 
     def test_create_create_pv_components_column_missing_in_pvsetup(self):
         pv_setup_filename = os.path.join(
