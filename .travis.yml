@@ -8,17 +8,20 @@ matrix:
 #    - python: 3.8
 
 # To install packages which are not on pip
-# To install packages which are not on pip
 before_install:
   - sudo apt-get update
-#  - sudo apt-get install libgfortran-ng=7.2.0
   - sudo apt-get install gfortran
-#addons:
-#  apt:
-#    update: true
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gfortran
 
 # command to install dependencies
 install:
+  - conda install libgfortran-ng=7.2.0
   - pip install -r requirements.txt
   - python setup.py install
   - pip install -r tests/test_requirements.txt
