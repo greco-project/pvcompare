@@ -8,10 +8,10 @@ matrix:
 #    - python: 3.8
 
 # To install packages which are not on pip
-#before_install:
+before_install:
 #  - sudo apt-get update
 #  - sudo apt-get install gcc
-#  - sudo apt-get install libgfortran4
+  - sudo apt-get install libgfortran4
 #
 #addons:
 #  apt:
