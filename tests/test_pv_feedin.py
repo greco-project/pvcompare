@@ -110,7 +110,7 @@ class TestPvtime_series:
             psi_type="Chen",
         )
         output = ts.sum()
-        assert round(output, 1) == 1.5
+        assert round(output, 1) == 0.1
 
     def test_create_create_pv_components_column_missing_in_pvsetup(self):
         pv_setup_filename = os.path.join(
