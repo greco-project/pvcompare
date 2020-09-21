@@ -1,5 +1,5 @@
 language: python
-#dist: xenial   # required for Python >= 3.7
+dist: bionic   # required for Python >= 3.7
 
 matrix:
   include:
