@@ -379,7 +379,7 @@ def create_si_time_series(
         aoi_model="sapm",
         spectral_model="sapm",
     )
-    mc.run_model(times=weather.index, weather=weather)
+    mc.run_model(weather=weather)
     output = mc.dc
     if normalized == True:
         logging.info("normalized si time series is calculated.")
