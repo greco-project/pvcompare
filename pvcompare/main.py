@@ -84,24 +84,24 @@ def main(
         year=year,
     )
 
-    # add sector coupling in case heat pump or chiller exists in energyConversion.csv
-    # note: chiller was not tested, yet.
-    # heat_pump_and_chiller.add_sector_coupling(
-    #     mvs_input_directory=mvs_input_directory,
-    #     input_directory=input_directory,
-    #     weather=weather,
-    #     lat=latitude,
-    #     lon=longitude,
-    # )
-    #
-    # demand.calculate_load_profiles(
-    #     country=country,
-    #     population=population,
-    #     year=year,
-    #     input_directory=input_directory,
-    #     mvs_input_directory=mvs_input_directory,
-    #     weather=weather,
-    #)
+    #add sector coupling in case heat pump or chiller exists in energyConversion.csv
+    #note: chiller was not tested, yet.
+    heat_pump_and_chiller.add_sector_coupling(
+        mvs_input_directory=mvs_input_directory,
+        input_directory=input_directory,
+        weather=weather,
+        lat=latitude,
+        lon=longitude,
+    )
+
+    demand.calculate_load_profiles(
+        country=country,
+        population=population,
+        year=year,
+        input_directory=input_directory,
+        mvs_input_directory=mvs_input_directory,
+        weather=weather,
+    )
 
 
 def apply_mvs(mvs_input_directory, mvs_output_directory):
