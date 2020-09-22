@@ -34,7 +34,7 @@ from pvcompare import constants
 
 from cpvlib import cpvlib
 
-import greco_technologies.cpv.apply_cpvlib_StaticHybridSystem as cpv_app
+from greco_technologies.cpv import apply_cpvlib_StaticHybridSystem
 
 log_format = "%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s"
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
@@ -435,7 +435,7 @@ def create_cpv_time_series(
     if normalized == True:
         logging.info("Normalized CPV time series is calculated in kW.")
         return (
-            cpv_app.create_cpv_time_series(
+            apply_cpvlib_StaticHybridSystem.create_cpv_time_series(
                 lat, lon, weather, surface_azimuth, surface_tilt
             )
             / peak
@@ -443,7 +443,7 @@ def create_cpv_time_series(
     else:
         logging.info("Absolute CPV time series is calculated in kW.")
         return (
-            cpv_app.create_cpv_time_series(
+            apply_cpvlib_StaticHybridSystem.create_cpv_time_series(
                 lat, lon, weather, surface_azimuth, surface_tilt
             )
             / 1000
