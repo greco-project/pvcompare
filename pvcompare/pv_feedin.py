@@ -364,8 +364,7 @@ def create_si_time_series(
     system, module_parameters = set_up_system(
         technology="si",
         surface_azimuth=surface_azimuth,
-        surface_tilt=surface_tilt,
-        cpv_type=None,
+        surface_tilt=surface_tilt
     )
     location = Location(latitude=lat, longitude=lon)
 
@@ -620,7 +619,6 @@ if __name__ == "__main__":
         area=area,
         surface_azimuth=180,
         surface_tilt=30,
-        cpv_type=None,
         psi_type="Chen",
     )
     print(nominal_value_psi)
