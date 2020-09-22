@@ -26,15 +26,13 @@ try:
 except ImportError:
     plt = None
 
-import cpvtopvlib.cpvsystem as cpv
-import greco_technologies.cpv.hybrid
 import greco_technologies.cpv.inputs
 import greco_technologies.perosi.perosi
 from pvcompare import area_potential
 from pvcompare import check_inputs
 from pvcompare import constants
 
-import cpvlib
+from cpvlib import cpvlib
 
 import greco_technologies.cpv.apply_cpvlib_StaticHybridSystem as cpv_app
 
@@ -305,7 +303,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
         mod_params_cpv = greco_technologies.cpv.inputs.mod_params_cpv
         mod_params_diffuse = greco_technologies.cpv.inputs.mod_params_diffuse
 
-        static_hybrid_sys = cpvlib.cpvlib.StaticHybridSystem(
+        static_hybrid_sys = cpvlib.StaticHybridSystem(
             surface_tilt=surface_tilt,
             surface_azimuth=surface_azimuth,
             module_cpv=None,
