@@ -325,7 +325,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
             static_hybrid_sys,
             mod_params_cpv,
             mod_params_diffuse,
-        )  # todo: add diffuse parameters
+        )
 
     elif technology == "psi":
         pass
@@ -586,7 +586,8 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
         )
         peak = (
             mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]
-            + mod_params_diffuse["i_mp"] * mod_params_diffuse["v_mp"]
+            + mod_params_diffuse["i_mp"]
+            * mod_params_diffuse["v_mp"]  # todo: adjust pmp diffuse
         )
         module_size = mod_params_cpv["Area"]
         nominal_value = round(area / module_size * peak) / 1000
