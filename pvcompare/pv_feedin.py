@@ -321,7 +321,11 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
             name=None,
         )
 
-        return static_hybrid_sys, mod_params_cpv, mod_params_diffuse #todo: add diffuse parameters
+        return (
+            static_hybrid_sys,
+            mod_params_cpv,
+            mod_params_diffuse,
+        )  # todo: add diffuse parameters
 
     elif technology == "psi":
         pass
@@ -362,9 +366,7 @@ def create_si_time_series(
     """
 
     system, module_parameters = set_up_system(
-        technology="si",
-        surface_azimuth=surface_azimuth,
-        surface_tilt=surface_tilt
+        technology="si", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt
     )
     location = Location(latitude=lat, longitude=lon)
 
@@ -426,24 +428,26 @@ def create_cpv_time_series(
     """
 
     system, mod_params_cpv, mod_params_diffuse = set_up_system(
-        technology="cpv",
-        surface_azimuth=surface_azimuth,
-        surface_tilt=surface_tilt,
+        technology="cpv", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt,
     )
 
-    peak = (mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]) + (mod_params_diffuse["i_mp"] * mod_params_diffuse["v_mp"])
+    peak = (mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]) + (
+        mod_params_diffuse["i_mp"] * mod_params_diffuse["v_mp"]
+    )
     if normalized == True:
         logging.info("Normalized CPV time series is calculated in kW.")
         return (
-            cpv_app.create_cpv_time_series(lat, lon, weather,
-                                           surface_azimuth, surface_tilt)
+            cpv_app.create_cpv_time_series(
+                lat, lon, weather, surface_azimuth, surface_tilt
+            )
             / peak
         ).clip(0)
     else:
         logging.info("Absolute CPV time series is calculated in kW.")
         return (
-            cpv_app.create_cpv_time_series(lat, lon, weather,
-                                           surface_azimuth, surface_tilt)
+            cpv_app.create_cpv_time_series(
+                lat, lon, weather, surface_azimuth, surface_tilt
+            )
             / 1000
         )
 
@@ -539,9 +543,7 @@ def create_psi_time_series(
         ).clip(0)
 
 
-def nominal_values_pv(
-    technology, area, surface_azimuth, surface_tilt, psi_type
-):
+def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type):
 
     """
     calculates the maximum installed capacity for each pv module.
@@ -571,7 +573,7 @@ def nominal_values_pv(
         system, module_parameters = set_up_system(
             technology=technology,
             surface_azimuth=surface_azimuth,
-            surface_tilt=surface_tilt
+            surface_tilt=surface_tilt,
         )
         peak = module_parameters["Impo"] * module_parameters["Vmpo"]
         module_size = module_parameters["Area"]
@@ -580,9 +582,12 @@ def nominal_values_pv(
         system, mod_params_cpv, mod_params_diffuse = set_up_system(
             technology=technology,
             surface_azimuth=surface_azimuth,
-            surface_tilt=surface_tilt
+            surface_tilt=surface_tilt,
         )
-        peak = mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"] + mod_params_diffuse["i_mp"] * mod_params_diffuse["v_mp"]
+        peak = (
+            mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]
+            + mod_params_diffuse["i_mp"] * mod_params_diffuse["v_mp"]
+        )
         module_size = mod_params_cpv["Area"]
         nominal_value = round(area / module_size * peak) / 1000
     elif technology == "psi":  # todo: correct nominal value
