@@ -301,15 +301,15 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
             "cpv module parameters are loaded from greco_technologies/inputs.py"
         )
         mod_params_cpv = greco_technologies.cpv.inputs.mod_params_cpv
-        mod_params_diffuse = greco_technologies.cpv.inputs.mod_params_diffuse
+        mod_params_flatplate = greco_technologies.cpv.inputs.mod_params_flatplate
 
         static_hybrid_sys = cpvlib.StaticHybridSystem(
             surface_tilt=surface_tilt,
             surface_azimuth=surface_azimuth,
             module_cpv=None,
-            module_diffuse=None,
+            module_flatplate=None,
             module_parameters_cpv=mod_params_cpv,
-            module_parameters_diffuse=mod_params_diffuse,
+            module_parameters_flatplate=mod_params_flatplate,
             modules_per_string=1,
             strings_per_inverter=1,
             inverter=None,
@@ -322,7 +322,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
         return (
             static_hybrid_sys,
             mod_params_cpv,
-            mod_params_diffuse,
+            mod_params_flatplate,
         )
 
     elif technology == "psi":
@@ -425,12 +425,12 @@ def create_cpv_time_series(
 
     """
 
-    system, mod_params_cpv, mod_params_diffuse = set_up_system(
+    system, mod_params_cpv, mod_params_flatplate = set_up_system(
         technology="cpv", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt,
     )
 
     peak = (mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]) + (
-        mod_params_diffuse["i_mp"] * mod_params_diffuse["v_mp"]
+        mod_params_flatplate["i_mp"] * mod_params_flatplate["v_mp"]
     )
     if normalized == True:
         logging.info("Normalized CPV time series is calculated in kW.")
@@ -577,15 +577,15 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
         module_size = module_parameters["Area"]
         nominal_value = round(area / module_size * peak) / 1000
     elif technology == "cpv":
-        system, mod_params_cpv, mod_params_diffuse = set_up_system(
+        system, mod_params_cpv, mod_params_flatplate = set_up_system(
             technology=technology,
             surface_azimuth=surface_azimuth,
             surface_tilt=surface_tilt,
         )
         peak = (
             mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]
-            + mod_params_diffuse["i_mp"]
-            * mod_params_diffuse["v_mp"]  # todo: adjust pmp diffuse
+            + mod_params_flatplate["i_mp"]
+            * mod_params_flatplate["v_mp"]  # todo: adjust pmp flatplate
         )
         module_size = mod_params_cpv["Area"]
         nominal_value = round(area / module_size * peak) / 1000
