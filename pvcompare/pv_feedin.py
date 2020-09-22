@@ -36,7 +36,7 @@ from pvcompare import constants
 
 import cpvlib
 
-import greco_technologies.cpv.StaticHybridSystem_application as cpv_app
+import greco_technologies.cpv.apply_cpvlib_StaticHybridSystem as cpv_app
 
 log_format = "%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s"
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
@@ -302,8 +302,8 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
         logging.debug(
             "cpv module parameters are loaded from greco_technologies/inputs.py"
         )
-        mod_params_cpv = cpvlib.insolight_parameters.mod_params_cpv
-        mod_params_diffuse = cpvlib.insolight_parameters.mod_params_diffuse
+        mod_params_cpv = greco_technologies.cpv.inputs.mod_params_cpv
+        mod_params_diffuse = greco_technologies.cpv.inputs.mod_params_diffuse
 
         static_hybrid_sys = cpvlib.cpvlib.StaticHybridSystem(
             surface_tilt=surface_tilt,
@@ -321,7 +321,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
             name=None,
         )
 
-        return static_hybrid_sys, mod_params_cpv #todo: add diffuse parameters
+        return static_hybrid_sys, mod_params_cpv, mod_params_diffuse #todo: add diffuse parameters
 
     elif technology == "psi":
         pass
@@ -426,13 +426,13 @@ def create_cpv_time_series(
 
     """
 
-    system, module_parameters = set_up_system(
+    system, mod_params_cpv, mod_params_diffuse = set_up_system(
         technology="cpv",
         surface_azimuth=surface_azimuth,
         surface_tilt=surface_tilt,
     )
 
-    peak = module_parameters["i_mp"] * module_parameters["v_mp"]
+    peak = (mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]) + (mod_params_diffuse["i_mp"] * mod_params_diffuse["v_mp"])
     if normalized == True:
         logging.info("Normalized CPV time series is calculated in kW.")
         return (
@@ -568,17 +568,23 @@ def nominal_values_pv(
         the rounded possible installed capacity for an area
     """
 
-    if technology == "si" or technology == "cpv":
+    if technology == "si":
         system, module_parameters = set_up_system(
             technology=technology,
             surface_azimuth=surface_azimuth,
             surface_tilt=surface_tilt
         )
-        if technology == "si":
-            peak = module_parameters["Impo"] * module_parameters["Vmpo"]
-        else:
-            peak = module_parameters["i_mp"] * module_parameters["v_mp"]
+        peak = module_parameters["Impo"] * module_parameters["Vmpo"]
         module_size = module_parameters["Area"]
+        nominal_value = round(area / module_size * peak) / 1000
+    elif technology == "cpv":
+        system, mod_params_cpv, mod_params_diffuse = set_up_system(
+            technology=technology,
+            surface_azimuth=surface_azimuth,
+            surface_tilt=surface_tilt
+        )
+        peak = mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"] + mod_params_diffuse["i_mp"] * mod_params_diffuse["v_mp"]
+        module_size = mod_params_cpv["Area"]
         nominal_value = round(area / module_size * peak) / 1000
     elif technology == "psi":  # todo: correct nominal value
         if psi_type == "Korte":
