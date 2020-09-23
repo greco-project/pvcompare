@@ -4,7 +4,7 @@ import logging
 import sys
 import os
 import pvlib
-import mvs_tool as mvs
+import mvs_eland.cli as mvs
 
 # import feedinlib.era5 as era
 
@@ -116,6 +116,7 @@ def apply_mvs(mvs_input_directory, mvs_output_directory):
         path_output_folder=mvs_output_directory,
         input_type="csv",
         overwrite=True,
+        save_png=True,  # save network graph
     )
 
 

@@ -6,5 +6,3 @@ timestep,minutes,60
 output_lp_file,bool,False
 restore_from_oemof_file,bool,True
 store_oemof_results,bool,True
-display_nx_graph,bool,True
-store_nx_graph,bool,True
