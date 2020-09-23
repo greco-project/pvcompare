@@ -72,7 +72,6 @@ class TestPvtime_series:
             area=area,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            cpv_type="m300",
             psi_type="Chen",
         )
 
@@ -87,16 +86,29 @@ class TestPvtime_series:
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
             normalized=True,
-            cpv_type="m300",
         )
         output = ts.sum()
-        assert output == 0.1351719011687128
+        assert output == 0.18128488964465903
 
     def test_get_optimal_pv_angle(self):
 
         output = get_optimal_pv_angle(self.lat)
 
         assert output == 25
+
+    def test_create_psi_time_series(self):
+        ts = create_psi_time_series(
+            lat=self.lat,
+            lon=self.lon,
+            year=self.year,
+            weather=self.weather,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            normalized=False,
+            psi_type="Chen",
+        )
+        output = ts.sum()
+        assert round(output, 1) == 0.1
 
     def test_create_create_pv_components_column_missing_in_pvsetup(self):
         pv_setup_filename = os.path.join(
@@ -115,7 +127,6 @@ class TestPvtime_series:
                 input_directory=constants.DUMMY_TEST_DATA,
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
-                cpv_type="m300",
                 year=self.year,
             )
 
@@ -136,7 +147,6 @@ class TestPvtime_series:
                 input_directory=constants.DUMMY_TEST_DATA,
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
-                cpv_type="m300",
                 year=self.year,
             )
 
@@ -157,7 +167,6 @@ class TestPvtime_series:
                 input_directory=constants.DUMMY_TEST_DATA,
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
-                cpv_type="m300",
                 year=self.year,
             )
 

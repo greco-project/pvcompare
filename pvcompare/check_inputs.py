@@ -2,27 +2,15 @@
 This module reads existing csv files from "mvs_input_directory/csv_elements/"
 and adapts the values of parameters according to the current simulation.
 """
-from pvlib.location import Location
-import pvlib.atmosphere
-from pvlib.pvsystem import PVSystem
-from pvlib.modelchain import ModelChain
 import pandas as pd
 import os
-import pvlib
-import glob
 import logging
-import sys
+from pvcompare import constants
 
 try:
     import matplotlib.pyplot as plt
 except ImportError:
     plt = None
-
-import cpvtopvlib.cpvsystem as cpv
-import greco_technologies.cpv.hybrid
-import greco_technologies.cpv.inputs
-from pvcompare import area_potential
-from pvcompare import constants
 
 
 def check_for_valid_country_year(country, year, input_directory):
