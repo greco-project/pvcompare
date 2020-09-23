@@ -13,8 +13,6 @@ except ImportError:
     plt = None
 
 
-
-
 def check_for_valid_country_year(country, year, input_directory):
     """
     checks if the input country is available in all input data
