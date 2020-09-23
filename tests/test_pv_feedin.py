@@ -72,7 +72,6 @@ class TestPvtime_series:
             area=area,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            cpv_type="m300",
             psi_type="Chen",
         )
 
@@ -87,10 +86,9 @@ class TestPvtime_series:
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
             normalized=True,
-            cpv_type="m300",
         )
         output = ts.sum()
-        assert output == 0.1351719011687128
+        assert output == 0.18128488964465903
 
     def test_get_optimal_pv_angle(self):
 
@@ -129,7 +127,6 @@ class TestPvtime_series:
                 input_directory=constants.DUMMY_TEST_DATA,
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
-                cpv_type="m300",
                 year=self.year,
             )
 
@@ -150,7 +147,6 @@ class TestPvtime_series:
                 input_directory=constants.DUMMY_TEST_DATA,
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
-                cpv_type="m300",
                 year=self.year,
             )
 
@@ -171,7 +167,6 @@ class TestPvtime_series:
                 input_directory=constants.DUMMY_TEST_DATA,
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
-                cpv_type="m300",
                 year=self.year,
             )
 
