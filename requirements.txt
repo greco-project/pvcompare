@@ -1,7 +1,7 @@
 git+https://github.com/greco-project/greco_technologies.git@dev
 git+https://github.com/greco-project/cpvtopvlib.git@master
 git+https://github.com/rl-institut/mvs_eland.git@dev
-git+https://github.com/isi-ies-group/cpvlib.git@ieee-talk
+git+https://github.com/isi-ies-group/cpvlib.git
 dash
 scipy
 numpy
@@ -13,6 +13,7 @@ staticmap
 pyppeteer
 demandlib
 pdfkit==0.6.1
+pvlib
 xarray==0.15.0
 feedinlib==0.1.0rc2
 oemof.thermal==0.0.3
