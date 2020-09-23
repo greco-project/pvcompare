@@ -94,14 +94,14 @@ def main(
         lon=longitude,
     )
 
-    # demand.calculate_load_profiles(
-    #     country=country,
-    #     population=population,
-    #     year=year,
-    #     input_directory=input_directory,
-    #     mvs_input_directory=mvs_input_directory,
-    #     weather=weather,
-    # )
+    demand.calculate_load_profiles(
+        country=country,
+        population=population,
+        year=year,
+        input_directory=input_directory,
+        mvs_input_directory=mvs_input_directory,
+        weather=weather,
+    )
 
 
 def apply_mvs(mvs_input_directory, mvs_output_directory):
