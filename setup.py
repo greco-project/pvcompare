@@ -28,13 +28,15 @@ setup(
     install_requires=[
         "pvlib",
         "demandlib",
-        # "feedinlib == v0.1.0rc2",  # travis has problems with installment todo
+        "feedinlib == v0.1.0rc2",  # travis has problems with installment todo
         "numpy >= 1.12.0,  < 1.17",
         "pandas >= 0.18.1, < 0.25",
         "oemof.thermal >= 0.0.3",
         "scipy",
-        # "mvs_tool", # todo NOTE: for now clone mvs_tool and install via "pip install -e ..."
         "workalendar < 7.0.0",  # todo check if needed. Problems with installing skyfield in travis tests (from workalendar 7.0.0)
+        'greco_technologies @ git+https://github.com/greco-project/greco_technologies.git@dev',
+        'cpvlib @ git+https://github.com/isi-ies-group/cpvlib.git',
+        'mvs_eland @ git+https://github.com/rl-institut/mvs_eland.git@dev',
     ],
     extras_require={"dev": ["pytest"]},
 )
