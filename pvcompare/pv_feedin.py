@@ -18,7 +18,6 @@ from pvlib.modelchain import ModelChain
 import pandas as pd
 import os
 import pvlib
-import glob
 import logging
 import sys
 
@@ -27,13 +26,15 @@ try:
 except ImportError:
     plt = None
 
-import cpvtopvlib.cpvsystem as cpv
-import greco_technologies.cpv.hybrid
 import greco_technologies.cpv.inputs
 import greco_technologies.perosi.perosi
 from pvcompare import area_potential
 from pvcompare import check_inputs
 from pvcompare import constants
+
+from cpvlib import cpvlib
+
+from greco_technologies.cpv import apply_cpvlib_StaticHybridSystem
 
 log_format = "%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s"
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
@@ -50,7 +51,6 @@ def create_pv_components(
     input_directory=None,
     mvs_input_directory=None,
     directory_energy_production=None,
-    cpv_type="m300",
     psi_type="Chen",
 ):
     """
@@ -156,7 +156,6 @@ def create_pv_components(
                     weather=weather,
                     surface_azimuth=j,
                     surface_tilt=k,
-                    cpv_type=cpv_type,
                 )
             elif row["technology"] == "psi":
                 time_series = create_psi_time_series(
@@ -223,7 +222,6 @@ def create_pv_components(
             area=area,
             surface_azimuth=j,
             surface_tilt=k,
-            cpv_type=cpv_type,
             psi_type=psi_type,
         )
         # save the file name of the time series and the nominal value to
@@ -258,7 +256,7 @@ def get_optimal_pv_angle(lat):
     return round(lat - 15)
 
 
-def set_up_system(technology, surface_azimuth, surface_tilt, cpv_type):
+def set_up_system(technology, surface_azimuth, surface_tilt):
 
     """
     Sets up pvlibPVSystems.
@@ -302,13 +300,16 @@ def set_up_system(technology, surface_azimuth, surface_tilt, cpv_type):
         logging.debug(
             "cpv module parameters are loaded from greco_technologies/inputs.py"
         )
-        module_params = greco_technologies.cpv.inputs.create_cpv_dict(cpv_type=cpv_type)
+        mod_params_cpv = greco_technologies.cpv.inputs.mod_params_cpv
+        mod_params_flatplate = greco_technologies.cpv.inputs.mod_params_flatplate
 
-        cpv_sys = cpv.StaticCPVSystem(
+        static_hybrid_sys = cpvlib.StaticHybridSystem(
             surface_tilt=surface_tilt,
             surface_azimuth=surface_azimuth,
-            module=None,
-            module_parameters=module_params,
+            module_cpv=None,
+            module_flatplate=None,
+            module_parameters_cpv=mod_params_cpv,
+            module_parameters_flatplate=mod_params_flatplate,
             modules_per_string=1,
             strings_per_inverter=1,
             inverter=None,
@@ -318,7 +319,11 @@ def set_up_system(technology, surface_azimuth, surface_tilt, cpv_type):
             name=None,
         )
 
-        return cpv_sys, module_params
+        return (
+            static_hybrid_sys,
+            mod_params_cpv,
+            mod_params_flatplate,
+        )
 
     elif technology == "psi":
         pass
@@ -359,10 +364,7 @@ def create_si_time_series(
     """
 
     system, module_parameters = set_up_system(
-        technology="si",
-        surface_azimuth=surface_azimuth,
-        surface_tilt=surface_tilt,
-        cpv_type=None,
+        technology="si", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt
     )
     location = Location(latitude=lat, longitude=lon)
 
@@ -375,7 +377,7 @@ def create_si_time_series(
         aoi_model="sapm",
         spectral_model="sapm",
     )
-    mc.run_model(times=weather.index, weather=weather)
+    mc.run_model(weather=weather)
     output = mc.dc
     if normalized == True:
         logging.info("normalized si time series is calculated.")
@@ -386,7 +388,7 @@ def create_si_time_series(
 
 
 def create_cpv_time_series(
-    lat, lon, weather, surface_azimuth, surface_tilt, cpv_type, normalized=False
+    lat, lon, weather, surface_azimuth, surface_tilt, normalized=False
 ):
 
     """
@@ -410,9 +412,6 @@ def create_cpv_time_series(
         Surface azimuth of the modules (180° for south, 270° for west, etc.).
     surface_tilt: float
         Surface tilt of the modules. (horizontal=90° and vertical=0°)
-    cpv_type  : str
-        Defines the type of module of which the time series is calculated.
-        Options: "ins", "m300".
     normalized: bool
         If True, the time series is divided by the peak power of the CPV
         module. Default: False.
@@ -426,37 +425,26 @@ def create_cpv_time_series(
 
     """
 
-    system, module_parameters = set_up_system(
-        technology="cpv",
-        surface_azimuth=surface_azimuth,
-        surface_tilt=surface_tilt,
-        cpv_type=cpv_type,
+    system, mod_params_cpv, mod_params_flatplate = set_up_system(
+        technology="cpv", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt,
     )
 
-    peak = module_parameters["i_mp"] * module_parameters["v_mp"]
+    peak = (mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]) + (
+        mod_params_flatplate["i_mp"] * mod_params_flatplate["v_mp"]
+    )
     if normalized == True:
         logging.info("Normalized CPV time series is calculated in kW.")
         return (
-            greco_technologies.cpv.cpv.create_cpv_time_series(
-                lat=lat,
-                lon=lon,
-                weather=weather,
-                surface_tilt=surface_tilt,
-                surface_azimuth=surface_azimuth,
-                cpv_type=cpv_type,
+            apply_cpvlib_StaticHybridSystem.create_cpv_time_series(
+                lat, lon, weather, surface_azimuth, surface_tilt
             )
             / peak
         ).clip(0)
     else:
         logging.info("Absolute CPV time series is calculated in kW.")
         return (
-            greco_technologies.cpv.cpv.create_cpv_time_series(
-                lat=lat,
-                lon=lon,
-                weather=weather,
-                surface_tilt=surface_tilt,
-                surface_azimuth=surface_azimuth,
-                cpv_type=cpv_type,
+            apply_cpvlib_StaticHybridSystem.create_cpv_time_series(
+                lat, lon, weather, surface_azimuth, surface_tilt
             )
             / 1000
         )
@@ -553,9 +541,7 @@ def create_psi_time_series(
         ).clip(0)
 
 
-def nominal_values_pv(
-    technology, area, surface_azimuth, surface_tilt, cpv_type, psi_type
-):
+def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type):
 
     """
     calculates the maximum installed capacity for each pv module.
@@ -581,18 +567,27 @@ def nominal_values_pv(
         the rounded possible installed capacity for an area
     """
 
-    if technology == "si" or technology == "cpv":
+    if technology == "si":
         system, module_parameters = set_up_system(
             technology=technology,
             surface_azimuth=surface_azimuth,
             surface_tilt=surface_tilt,
-            cpv_type=cpv_type,
         )
-        if technology == "si":
-            peak = module_parameters["Impo"] * module_parameters["Vmpo"]
-        else:
-            peak = module_parameters["i_mp"] * module_parameters["v_mp"]
+        peak = module_parameters["Impo"] * module_parameters["Vmpo"]
         module_size = module_parameters["Area"]
+        nominal_value = round(area / module_size * peak) / 1000
+    elif technology == "cpv":
+        system, mod_params_cpv, mod_params_flatplate = set_up_system(
+            technology=technology,
+            surface_azimuth=surface_azimuth,
+            surface_tilt=surface_tilt,
+        )
+        peak = (
+            mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]
+            + mod_params_flatplate["i_mp"]
+            * mod_params_flatplate["v_mp"]  # todo: adjust pmp flatplate
+        )
+        module_size = mod_params_cpv["Area"]
         nominal_value = round(area / module_size * peak) / 1000
     elif technology == "psi":  # todo: correct nominal value
         if psi_type == "Korte":
@@ -628,7 +623,6 @@ if __name__ == "__main__":
         area=area,
         surface_azimuth=180,
         surface_tilt=30,
-        cpv_type=None,
         psi_type="Chen",
     )
     print(nominal_value_psi)
