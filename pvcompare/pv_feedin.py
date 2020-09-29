@@ -282,8 +282,8 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
 
     if technology == "si":
 
-        sandia_modules = pvlib.pvsystem.retrieve_sam("SandiaMod")
-        sandia_module = sandia_modules["Canadian_Solar_CS5P_220M___2009_"]
+        sandia_modules = pvlib.pvsystem.retrieve_sam("cecmod")
+        sandia_module = sandia_modules["Aleo_Solar_S59y280"]
         cec_inverters = pvlib.pvsystem.retrieve_sam("cecinverter")
         cec_inverter = cec_inverters["ABB__MICRO_0_25_I_OUTD_US_208__208V_"]
         system = PVSystem(
@@ -368,14 +368,14 @@ def create_si_time_series(
     )
     location = Location(latitude=lat, longitude=lon)
 
-    peak = module_parameters["Impo"] * module_parameters["Vmpo"]
+    peak = module_parameters["I_mp_ref"] * module_parameters["V_mp_ref"]
 
     mc = ModelChain(
         system,
         location,
         orientation_strategy=None,
-        aoi_model="sapm",
-        spectral_model="sapm",
+        aoi_model="ashrae",
+        spectral_model="no_loss",
     )
     mc.run_model(weather=weather)
     output = mc.dc
@@ -573,8 +573,8 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
             surface_azimuth=surface_azimuth,
             surface_tilt=surface_tilt,
         )
-        peak = module_parameters["Impo"] * module_parameters["Vmpo"]
-        module_size = module_parameters["Area"]
+        peak = module_parameters["I_mp_ref"] * module_parameters["V_mp_ref"]
+        module_size = module_parameters["A_c"]
         nominal_value = round(area / module_size * peak) / 1000
     elif technology == "cpv":
         system, mod_params_cpv, mod_params_flatplate = set_up_system(

@@ -60,7 +60,7 @@ class TestPvtime_series:
             normalized=False,
         )
         output = round(ts.values.sum(), 3)
-        assert output == 0.098
+        assert output == 0.129
 
     def test_nominal_values_pv(self):
 
@@ -75,7 +75,7 @@ class TestPvtime_series:
             psi_type="Chen",
         )
 
-        assert nominal_value == 129.134
+        assert nominal_value == 170.337
 
     def test_create_cpv_time_series(self):
 
