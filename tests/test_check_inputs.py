@@ -138,8 +138,7 @@ class TestDemandProfiles:
 
         with pytest.raises(ValueError):
             check_mvs_energy_production_file(
-                pv_setup=self.pv_setup,
-                mvs_input_directory=self.test_mvs_directory
+                pv_setup=self.pv_setup, mvs_input_directory=self.test_mvs_directory
             )
 
     def test_add_electricity_price(self):
