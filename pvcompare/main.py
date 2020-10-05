@@ -4,7 +4,7 @@ import logging
 import sys
 import os
 import pvlib
-import mvs_eland.cli as mvs
+import multi_vector_simulator.cli as mvs
 
 # import feedinlib.era5 as era
 
