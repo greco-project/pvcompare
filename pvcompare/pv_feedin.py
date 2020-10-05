@@ -501,7 +501,7 @@ def create_psi_time_series(
              False).
 
          """
-    atmos_data = weather[["ghi", "wind_speed", "temp_air"]]
+    atmos_data = weather[["ghi", "dhi", "dni", "wind_speed", "temp_air"]]
 
     if normalized == False:
         logging.info("Absolute PSI time series is calculated in kW.")
