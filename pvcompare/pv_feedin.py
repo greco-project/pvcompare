@@ -171,6 +171,10 @@ def create_pv_components(
                     row["technology"],
                     "is not in technologies. Please " "choose 'si', 'cpv' or " "'psi'.",
                 )
+            #create tieseries directory if it does not exists
+            if not os.path.isdir(time_series_directory):
+                os.mkdir(time_series_directory)
+
             # save time series into mvs_inputs
             time_series.fillna(0, inplace=True)
             time_series.to_csv(output_csv, header=["kW"], index=False)
@@ -334,7 +338,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
 
 
 def create_si_time_series(
-    lat, lon, weather, surface_azimuth, surface_tilt, normalized=False
+    lat, lon, weather, surface_azimuth, surface_tilt, normalized=True
 ):
 
     """
@@ -388,7 +392,7 @@ def create_si_time_series(
 
 
 def create_cpv_time_series(
-    lat, lon, weather, surface_azimuth, surface_tilt, normalized=False
+    lat, lon, weather, surface_azimuth, surface_tilt, normalized=True
 ):
 
     """
@@ -457,7 +461,7 @@ def create_psi_time_series(
     surface_azimuth,
     surface_tilt,
     weather,
-    normalized=False,
+    normalized=True,
     psi_type="Chen",
 ):
 

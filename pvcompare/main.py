@@ -4,7 +4,7 @@ import logging
 import sys
 import os
 import pvlib
-import mvs_tool as mvs
+import mvs_eland as mvs
 
 # import feedinlib.era5 as era
 
