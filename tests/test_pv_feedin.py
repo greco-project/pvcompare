@@ -85,7 +85,7 @@ class TestPvtime_series:
             normalized=True,
         )
         output = ts.sum()
-        assert output == 0.20401583868676115
+        assert output == 0.21475351440711704
 
     def test_get_optimal_pv_angle(self):
 
