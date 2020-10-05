@@ -34,10 +34,10 @@ def check_for_valid_country_year(country, year, input_directory):
     """
 
     pop = pd.read_csv(
-        os.path.join(input_directory, "EUROSTAT_population.csv"), header=0, sep=",",
+        os.path.join(input_directory, "EUROSTAT_population.csv"), header=0, sep=","
     )
     workalendar = pd.read_csv(
-        os.path.join(input_directory, "list_of_workalender_countries.csv"), header=0,
+        os.path.join(input_directory, "list_of_workalender_countries.csv"), header=0
     )
     consumption = pd.read_csv(
         os.path.join(input_directory, "total_electricity_consumption_residential.csv"),
@@ -112,11 +112,7 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
     if os.path.isfile(project_data_filename):
         project_data = pd.read_csv(project_data_filename, index_col=0)
 
-        params = {
-            "latitude": latitude,
-            "longitude": longitude,
-            "country": country,
-        }
+        params = {"latitude": latitude, "longitude": longitude, "country": country}
         for key in params:
             if params[key] is None:
                 logging.info(f"The parameter {key} is taken " f"from project_data.csv.")
@@ -267,9 +263,7 @@ def add_electricity_price(mvs_input_directory=None):
     return electricity_price
 
 
-def check_mvs_energy_production_file(
-    pv_setup, mvs_input_directory=None
-):
+def check_mvs_energy_production_file(pv_setup, mvs_input_directory=None):
     """
     checks if energyProduction.csv file with correct number of collumns exists.
 
@@ -317,7 +311,6 @@ def check_mvs_energy_production_file(
             "The file %s" % energy_production_filename + " does not"
             "exist. Please create energyProduction.csv."
         )
-
 
 
 def add_parameters_to_energy_production_file(

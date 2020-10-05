@@ -151,11 +151,7 @@ def create_pv_components(
                 )
             elif row["technology"] == "cpv":
                 time_series = create_cpv_time_series(
-                    lat=lat,
-                    lon=lon,
-                    weather=weather,
-                    surface_azimuth=j,
-                    surface_tilt=k,
+                    lat=lat, lon=lon, weather=weather, surface_azimuth=j, surface_tilt=k
                 )
             elif row["technology"] == "psi":
                 time_series = create_psi_time_series(
@@ -171,7 +167,7 @@ def create_pv_components(
                     row["technology"],
                     "is not in technologies. Please " "choose 'si', 'cpv' or " "'psi'.",
                 )
-            #create tieseries directory if it does not exists
+            # create tieseries directory if it does not exists
             if not os.path.isdir(time_series_directory):
                 os.mkdir(time_series_directory)
 
@@ -231,7 +227,7 @@ def create_pv_components(
         # save the file name of the time series and the nominal value to
         # mvs_inputs/elements/csv/energyProduction.csv
         check_inputs.add_parameters_to_energy_production_file(
-            pp_number=i + 1, ts_filename=ts_csv, nominal_value=nominal_value,
+            pp_number=i + 1, ts_filename=ts_csv, nominal_value=nominal_value
         )
     if plot == True:
         plt.show()
@@ -323,11 +319,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
             name=None,
         )
 
-        return (
-            static_hybrid_sys,
-            mod_params_cpv,
-            mod_params_flatplate,
-        )
+        return (static_hybrid_sys, mod_params_cpv, mod_params_flatplate)
 
     elif technology == "psi":
         pass
@@ -430,7 +422,7 @@ def create_cpv_time_series(
     """
 
     system, mod_params_cpv, mod_params_flatplate = set_up_system(
-        technology="cpv", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt,
+        technology="cpv", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt
     )
 
     peak = (mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]) + (

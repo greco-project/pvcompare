@@ -151,7 +151,7 @@ def calculate_cops_and_eers(
     )
 
     efficiency_series.to_csv(
-        os.path.join(time_series_directory, filename), index=False, header=True,
+        os.path.join(time_series_directory, filename), index=False, header=True
     )
 
     return efficiency_series
@@ -219,7 +219,7 @@ def add_sector_coupling(
                 # check if COPs file provided in efficiency exists
                 cops_filename_csv_excl_path = eff.split("'")[5]
                 cops_filename_csv = os.path.join(
-                    mvs_input_directory, "time_series", cops_filename_csv_excl_path,
+                    mvs_input_directory, "time_series", cops_filename_csv_excl_path
                 )
                 # if not os.path.isfile(cops_filename_csv):
                 if not os.path.isfile(cops_filename_csv):
