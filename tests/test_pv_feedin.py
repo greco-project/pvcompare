@@ -32,6 +32,7 @@ class TestPvtime_series:
         weather_df["dhi"] = [100, 120]
         weather_df["dni"] = [120, 150]
         weather_df["ghi"] = [200, 220]
+        weather_df["precipitable_water"] = [1, 2]
         weather_df.index = ["2014-01-01 13:00:00+00:00", "2014-01-01 14:00:00+00:00"]
         weather_df.index = pd.to_datetime(weather_df.index)
         self.test_mvs_directory = os.path.join(
@@ -57,7 +58,7 @@ class TestPvtime_series:
             normalized=False,
         )
         output = round(ts.values.sum(), 3)
-        assert output == 0.129
+        assert output == 0.131
 
     def test_nominal_values_pv(self):
 
