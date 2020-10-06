@@ -363,6 +363,46 @@ def add_parameters_to_energy_production_file(
     # save energyProduction.csv
     energy_production.to_csv(energy_production_filename)
 
+def add_parameters_to_energy_consumption_file(
+    column, ts_filename, mvs_input_directory=None
+):
+
+    """
+    enters new parameters into energyProduction.csv
+
+    Parameters
+    ---------
+    column: str
+        demand_01 or demand_02
+    ts_filename: str
+        file name of the demand time series
+    directory_energy_consumption: str
+        default: DEFAULT_MVS_INPUT_DIRECTORY/csc_elements/
+
+    Returns
+    -------
+    None
+    """
+
+    if mvs_input_directory == None:
+        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+    energy_consumption_filename = os.path.join(
+        mvs_input_directory, "csv_elements/energyConsumption.csv"
+    )
+    # load energyConsumption.csv
+    energy_consumption = pd.read_csv(energy_consumption_filename, index_col=0)
+    # insert parameter values
+    energy_consumption.loc[
+        ["file_name"], [column]
+    ] = ts_filename
+
+    logging.info(
+        "The file_name of the demand time series "
+        "has been added to energyProduction.csv."
+    )
+    # save energyProduction.csv
+    energy_consumption.to_csv(energy_consumption_filename)
+
 
 def add_evaluated_period_to_simulation_settings(time_series, mvs_input_directory):
     """
