@@ -371,8 +371,11 @@ def create_si_time_series(
         location,
         orientation_strategy=None,
         aoi_model="ashrae",
-        spectral_model="no_loss",
+        spectral_model="first_solar",
+        temperature_model = 'sapm',
+
     )
+
     mc.run_model(weather=weather)
     output = mc.dc
     if normalized == True:
