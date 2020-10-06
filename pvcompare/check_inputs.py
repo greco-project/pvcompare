@@ -34,10 +34,10 @@ def check_for_valid_country_year(country, year, input_directory):
     """
 
     pop = pd.read_csv(
-        os.path.join(input_directory, "EUROSTAT_population.csv"), header=0, sep=",",
+        os.path.join(input_directory, "EUROSTAT_population.csv"), header=0, sep=","
     )
     workalendar = pd.read_csv(
-        os.path.join(input_directory, "list_of_workalender_countries.csv"), header=0,
+        os.path.join(input_directory, "list_of_workalender_countries.csv"), header=0
     )
     consumption = pd.read_csv(
         os.path.join(input_directory, "total_electricity_consumption_residential.csv"),
@@ -112,11 +112,7 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
     if os.path.isfile(project_data_filename):
         project_data = pd.read_csv(project_data_filename, index_col=0)
 
-        params = {
-            "latitude": latitude,
-            "longitude": longitude,
-            "country": country,
-        }
+        params = {"latitude": latitude, "longitude": longitude, "country": country}
         for key in params:
             if params[key] is None:
                 logging.info(f"The parameter {key} is taken " f"from project_data.csv.")
@@ -267,17 +263,13 @@ def add_electricity_price(mvs_input_directory=None):
     return electricity_price
 
 
-def check_mvs_energy_production_file(
-    pv_setup, mvs_input_directory=None, overwrite=True
-):
+def check_mvs_energy_production_file(pv_setup, mvs_input_directory=None):
     """
     checks if energyProduction.csv file with correct number of collumns exists.
 
     This function compares the number of powerplants in energyProduction.csv
-    with the number of rows in pv_setup.csv. If the number differs and
-    overwrite=True, a new energyProduction.csv file is created with the correct
-    number of columns and default values. The old file is overwritten. If
-    overwrite=False, the process throws an error.
+    with the number of rows in pv_setup.csv. If the number differs the process
+    throws an error.
 
 
     Parameters
@@ -287,7 +279,6 @@ def check_mvs_energy_production_file(
         orientation
     directory_energy_production: str
         path to the energyProduction.csv
-    overwrite: bool
 
     Returns
     ---------
@@ -304,126 +295,22 @@ def check_mvs_energy_production_file(
 
         if len(energy_production.columns) - 1 == len(pv_setup.index):
             logging.info(
-                "mvs_input file energyProduction.csv contains the correct"
+                "the mvs_input file energyProduction.csv contains the correct"
                 "number of pv powerplants."
             )
-        elif overwrite == False:
+        else:
             raise ValueError(
                 "The number of pv powerplants in energyProduction.csv"
                 " differs from the number of powerplants listed in "
-                "pv_setup.csv. Please check energyProduction.csv or "
-                "allow overwrite=True to have energyProduction.csv "
-                "set up automatically with default values. "
+                "pv_setup.csv. Please correct the number of columns in"
+                " energyProduction.csv"
             )
-        else:
-            logging.warning(
-                "The number of pv powerplants in energyProduction.csv"
-                " differs from the number of powerplants listed in "
-                "pv_setup.csv. The file energyProduction.csv will thus "
-                "be overwritten and created anew with default values."
-            )
-            create_mvs_energy_production_file(pv_setup, energy_production_filename)
 
-    elif overwrite == False:
+    else:
         raise ValueError(
             "The file %s" % energy_production_filename + " does not"
-            "exist. Please create energyProduction.csv or "
-            "allow overwrite=True to have energyProduction.csv "
-            "set up automatically with default values."
+            "exist. Please create energyProduction.csv."
         )
-    else:
-        logging.warning(
-            "The file %s" % energy_production_filename + "does not"
-            "exist. It will thus be created anew with default "
-            "values."
-        )
-
-
-def create_mvs_energy_production_file(pv_setup, energy_production_filename):
-
-    """
-    creates a new energyProduction.csv file
-
-    creates a new energyProduction.csv file with the correct number of pv
-    powerplants as defined in pv_setup.py and saves it into ./data/mvs_inputs/
-    csv_elements/csv/energyProduction.csv
-
-    Parameters
-    ----------
-    pv_setup: dict
-        dictionary that contains details on the pv-surfaces
-    energy_production_filename: str
-        default: /data/mvs_inputs/csv_elements/csv/energyProduction.csv
-
-    Returns
-    ---------
-    None
-    """
-
-    # hardcoded list of parameters
-    data = {
-        "index": [
-            "label",
-            "unit",
-            "optimizeCap",
-            "maximumCap",
-            "installedCap",
-            "age_installed",
-            "lifetime",
-            "development_costs",
-            "specific_costs",
-            "specific_costs_om",
-            "dispatch_price",
-            "outflow_direction",
-            "file_name",
-            "energyVector",
-            "renewableAsset",
-            "type_oemof",
-        ],
-        "unit": [
-            "str",
-            "str",
-            "bool",
-            "None or float",
-            "kWp",
-            "year",
-            "year",
-            "currency",
-            "currency/unit",
-            "currency/unit/year",
-            "currency/kWh",
-            "str",
-            "str",
-            "str",
-            "bool",
-            "str",
-        ],
-    }
-    df = pd.DataFrame(data, columns=["index", "unit"])
-    df.set_index("index", inplace=True)
-    for i, row in pv_setup.iterrows():
-        # hardcoded default parameters
-        pp = [
-            "PV plant",
-            "kWp",
-            "True",
-            "0",
-            "0",
-            "0",
-            "25",
-            "1350",
-            "1220",
-            "50",
-            "0",
-            "PV bus",
-            "si_180_31.csv",
-            "Electricity",
-            "True",
-            "source",
-        ]
-        df["pv_plant_0" + str(i + 1)] = pp
-
-    df.to_csv(energy_production_filename)
 
 
 def add_parameters_to_energy_production_file(

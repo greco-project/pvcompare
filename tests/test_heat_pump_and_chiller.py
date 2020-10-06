@@ -31,14 +31,7 @@ class TestCalculateCopsAndEers:
             mvs_input_directory=TEST_DATA_HEAT,
         )
         cops_exp = pd.Series(
-            [
-                4.0,
-                3.0,
-                2.4144869215291727,
-                2.234636871508378,
-                2.01005025125628,
-                np.nan,
-            ],
+            [4.0, 3.0, 2.4144869215291727, 2.234636871508378, 2.01005025125628, np.nan],
             index=self.date_range,
             name="no_unit",
         )
@@ -106,7 +99,7 @@ class TestCalculateCopsAndEers:
         )
         assert os.path.exists(
             os.path.join(
-                TEST_DATA_HEAT, "time_series", "cops_heat_pump_2018_53.2_13.2.csv",
+                TEST_DATA_HEAT, "time_series", "cops_heat_pump_2018_53.2_13.2.csv"
             )
         )
 

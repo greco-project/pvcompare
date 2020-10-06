@@ -153,12 +153,12 @@ def format_pvcompare(ds):
     ds["dhi"] = (ds.ghi - ds.dirhi).assign_attrs(
         units="W/m^2", long_name="direct irradiation"
     )
-    ds["pw"] = (ds.tcwv / 10).assign_attrs(
+    ds["precipitable_water"] = (ds.tcwv / 10).assign_attrs(
         units="kg/m^2", long_name="total column water vapour"
     )
 
     # drop not needed variables
-    pvlib_vars = ["ghi", "dhi", "wind_speed", "temp_air", "pw"]
+    pvlib_vars = ["ghi", "dhi", "wind_speed", "temp_air", "precipitable_water"]
     ds_vars = list(ds.variables)
     drop_vars = [
         _ for _ in ds_vars if _ not in pvlib_vars + ["latitude", "longitude", "time"]
@@ -177,7 +177,17 @@ def format_pvcompare(ds):
     df.sort_index(inplace=True)
     df = df.tz_localize("UTC", level=0)
 
-    df = df[["latitude", "longitude", "wind_speed", "temp_air", "ghi", "dhi", "pw"]]
+    df = df[
+        [
+            "latitude",
+            "longitude",
+            "wind_speed",
+            "temp_air",
+            "ghi",
+            "dhi",
+            "precipitable_water",
+        ]
+    ]
     df.dropna(inplace=True)
 
     return df
