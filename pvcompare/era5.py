@@ -177,7 +177,17 @@ def format_pvcompare(ds):
     df.sort_index(inplace=True)
     df = df.tz_localize("UTC", level=0)
 
-    df = df[["latitude", "longitude", "wind_speed", "temp_air", "ghi", "dhi", "precipitable_water"]]
+    df = df[
+        [
+            "latitude",
+            "longitude",
+            "wind_speed",
+            "temp_air",
+            "ghi",
+            "dhi",
+            "precipitable_water",
+        ]
+    ]
     df.dropna(inplace=True)
 
     return df

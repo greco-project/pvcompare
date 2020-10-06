@@ -372,8 +372,7 @@ def create_si_time_series(
         orientation_strategy=None,
         aoi_model="ashrae",
         spectral_model="first_solar",
-        temperature_model = 'sapm',
-
+        temperature_model="sapm",
     )
 
     mc.run_model(weather=weather)
