@@ -363,6 +363,7 @@ def add_parameters_to_energy_production_file(
     # save energyProduction.csv
     energy_production.to_csv(energy_production_filename)
 
+
 def add_parameters_to_energy_consumption_file(
     column, ts_filename, mvs_input_directory=None
 ):
@@ -389,19 +390,27 @@ def add_parameters_to_energy_consumption_file(
     energy_consumption_filename = os.path.join(
         mvs_input_directory, "csv_elements/energyConsumption.csv"
     )
+
     # load energyConsumption.csv
     energy_consumption = pd.read_csv(energy_consumption_filename, index_col=0)
-    # insert parameter values
-    energy_consumption.loc[
-        ["file_name"], [column]
-    ] = ts_filename
 
-    logging.info(
-        "The file_name of the demand time series "
-        "has been added to energyProduction.csv."
-    )
-    # save energyProduction.csv
-    energy_consumption.to_csv(energy_consumption_filename)
+    # check if demand column is available
+    if not column in energy_consumption.columns:
+        logging.warning(
+            f"The demand {column} is not in energyConsumption.csv. "
+            f"Please make sure you insert the column if the demand "
+            f"is needed in further simulations."
+        )
+    else:
+        # insert parameter values
+        energy_consumption.loc[["file_name"], [column]] = ts_filename
+
+        logging.info(
+            "The file_name of the demand time series "
+            "has been added to energyProduction.csv."
+        )
+        # save energyProduction.csv
+        energy_consumption.to_csv(energy_consumption_filename)
 
 
 def add_evaluated_period_to_simulation_settings(time_series, mvs_input_directory):
