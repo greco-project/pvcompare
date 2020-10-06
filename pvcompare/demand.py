@@ -23,6 +23,7 @@ import inspect
 from pkgutil import iter_modules
 from importlib import import_module
 from pvcompare import constants
+from pvcompare import check_inputs
 
 import logging
 
@@ -192,8 +193,19 @@ def calculate_power_demand(
         "The electrical load profile is completly calculated and "
         "being saved under %s." % timeseries_directory
     )
-    filename = os.path.join(timeseries_directory, "electricity_load.csv")
+
+    # define the name of the output file of the time series
+    el_demand_csv = f"electricity_load_{country}_{population}_{year}.csv"
+
+    filename = os.path.join(timeseries_directory, el_demand_csv)
     shifted_elec_demand.to_csv(filename, index=False)
+
+    # save the file name of the time series and the nominal value to
+    # mvs_inputs/elements/csv/energyProduction.csv
+    check_inputs.add_parameters_to_energy_consumption_file(
+        column="demand_01", ts_filename=shifted_elec_demand,
+        mvs_input_directory=None
+    )
 
     return shifted_elec_demand
 
@@ -321,9 +333,20 @@ def calculate_heat_demand(
         "The electrical load profile is completely calculated and "
         "being saved under %s." % timeseries_directory
     )
+    # define the name of the output file of the time series
+    h_demand_csv = f"heat_load_{country}_{population}_{year}.csv"
+
+    filename = os.path.join(timeseries_directory, h_demand_csv)
+
     shifted_heat_demand.to_csv(
-        os.path.join(timeseries_directory, "heat_load.csv"), index=False
+        filename, index=False
     )
+    # save the file name of the time series and the nominal value to
+    # mvs_inputs/elements/csv/energyProduction.csv
+    check_inputs.add_parameters_to_energy_consumption_file(
+        column="demand_02", ts_filename=shifted_heat_demand,
+        mvs_input_directory=None
+        )
     return shifted_heat_demand
 
 
