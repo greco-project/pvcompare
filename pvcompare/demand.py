@@ -203,8 +203,7 @@ def calculate_power_demand(
     # save the file name of the time series and the nominal value to
     # mvs_inputs/elements/csv/energyProduction.csv
     check_inputs.add_parameters_to_energy_consumption_file(
-        column="demand_01", ts_filename=shifted_elec_demand,
-        mvs_input_directory=None
+        column="demand_01", ts_filename=shifted_elec_demand, mvs_input_directory=None
     )
 
     return shifted_elec_demand
@@ -276,33 +275,33 @@ def calculate_heat_demand(
     filename_total_SH = os.path.join(
         input_directory, bp.at["filename_total_SH", "value"]
     )
-#    filename_total_WH = os.path.join(
-#        input_directory, bp.at["filename_total_WH", "value"]
-#    )
+    #    filename_total_WH = os.path.join(
+    #        input_directory, bp.at["filename_total_WH", "value"]
+    #    )
     filename_electr_SH = os.path.join(
         input_directory, bp.at["filename_elect_SH", "value"]
     )
-#    filename_electr_WH = os.path.join(
-#        input_directory, bp.at["filename_elect_WH", "value"]
-#    )
+    #    filename_electr_WH = os.path.join(
+    #        input_directory, bp.at["filename_elect_WH", "value"]
+    #    )
 
     total_SH = pd.read_csv(filename_total_SH, sep=":", index_col=0, header=1)
-#    total_WH = pd.read_csv(filename_total_WH, sep=":", index_col=0, header=1)
+    #    total_WH = pd.read_csv(filename_total_WH, sep=":", index_col=0, header=1)
     electr_SH = pd.read_csv(filename_electr_SH, sep=":", index_col=0, header=1)
-#   electr_WH = pd.read_csv(filename_electr_WH, sep=":", index_col=0, header=1)
+    #   electr_WH = pd.read_csv(filename_electr_WH, sep=":", index_col=0, header=1)
 
     total_SH[str(year)] = pd.to_numeric(total_SH[str(year)], errors="coerce")
-#    total_WH[str(year)] = pd.to_numeric(total_WH[str(year)], errors="coerce")
+    #    total_WH[str(year)] = pd.to_numeric(total_WH[str(year)], errors="coerce")
     electr_SH[str(year)] = pd.to_numeric(electr_SH[str(year)], errors="coerce")
-#   electr_WH[str(year)] = pd.to_numeric(electr_WH[str(year)], errors="coerce")
+    #   electr_WH[str(year)] = pd.to_numeric(electr_WH[str(year)], errors="coerce")
 
     filename_population = bp.at["filename_country_population", "value"]
     filename1 = os.path.join(input_directory, filename_population)
     populations = pd.read_csv(filename1, index_col=0, sep=",")
     # convert Mtoe in kWh
     heat_demand = (
-        total_SH.at[country, str(year)]    #       + total_WH.at[country, str(year)]
-        - electr_SH.at[country, str(year)]   #       - electr_WH.at[country, str(year)]
+        total_SH.at[country, str(year)]  #       + total_WH.at[country, str(year)]
+        - electr_SH.at[country, str(year)]  #       - electr_WH.at[country, str(year)]
     ) * 11630
     annual_heat_demand_per_population = (
         heat_demand / populations.at[country, str(year)]
@@ -336,15 +335,12 @@ def calculate_heat_demand(
 
     filename = os.path.join(timeseries_directory, h_demand_csv)
 
-    shifted_heat_demand.to_csv(
-        filename, index=False
-    )
+    shifted_heat_demand.to_csv(filename, index=False)
     # save the file name of the time series and the nominal value to
     # mvs_inputs/elements/csv/energyProduction.csv
     check_inputs.add_parameters_to_energy_consumption_file(
-        column="demand_02", ts_filename=shifted_heat_demand,
-        mvs_input_directory=None
-        )
+        column="demand_02", ts_filename=shifted_heat_demand, mvs_input_directory=None
+    )
     return shifted_heat_demand
 
 
