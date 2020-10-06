@@ -151,11 +151,7 @@ def create_pv_components(
                 )
             elif row["technology"] == "cpv":
                 time_series = create_cpv_time_series(
-                    lat=lat,
-                    lon=lon,
-                    weather=weather,
-                    surface_azimuth=j,
-                    surface_tilt=k,
+                    lat=lat, lon=lon, weather=weather, surface_azimuth=j, surface_tilt=k
                 )
             elif row["technology"] == "psi":
                 time_series = create_psi_time_series(
@@ -171,6 +167,10 @@ def create_pv_components(
                     row["technology"],
                     "is not in technologies. Please " "choose 'si', 'cpv' or " "'psi'.",
                 )
+            # create time series directory if it does not exists
+            if not os.path.isdir(time_series_directory):
+                os.mkdir(time_series_directory)
+
             # save time series into mvs_inputs
             time_series.fillna(0, inplace=True)
             time_series.to_csv(output_csv, header=["kW"], index=False)
@@ -227,7 +227,7 @@ def create_pv_components(
         # save the file name of the time series and the nominal value to
         # mvs_inputs/elements/csv/energyProduction.csv
         check_inputs.add_parameters_to_energy_production_file(
-            pp_number=i + 1, ts_filename=ts_csv, nominal_value=nominal_value,
+            pp_number=i + 1, ts_filename=ts_csv, nominal_value=nominal_value
         )
     if plot == True:
         plt.show()
@@ -319,11 +319,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
             name=None,
         )
 
-        return (
-            static_hybrid_sys,
-            mod_params_cpv,
-            mod_params_flatplate,
-        )
+        return (static_hybrid_sys, mod_params_cpv, mod_params_flatplate)
 
     elif technology == "psi":
         pass
@@ -334,7 +330,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
 
 
 def create_si_time_series(
-    lat, lon, weather, surface_azimuth, surface_tilt, normalized=False
+    lat, lon, weather, surface_azimuth, surface_tilt, normalized=True
 ):
 
     """
@@ -375,8 +371,10 @@ def create_si_time_series(
         location,
         orientation_strategy=None,
         aoi_model="ashrae",
-        spectral_model="no_loss",
+        spectral_model="first_solar",
+        temperature_model="sapm",
     )
+
     mc.run_model(weather=weather)
     output = mc.dc
     if normalized == True:
@@ -388,7 +386,7 @@ def create_si_time_series(
 
 
 def create_cpv_time_series(
-    lat, lon, weather, surface_azimuth, surface_tilt, normalized=False
+    lat, lon, weather, surface_azimuth, surface_tilt, normalized=True
 ):
 
     """
@@ -426,7 +424,7 @@ def create_cpv_time_series(
     """
 
     system, mod_params_cpv, mod_params_flatplate = set_up_system(
-        technology="cpv", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt,
+        technology="cpv", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt
     )
 
     peak = (mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]) + (
@@ -457,7 +455,7 @@ def create_psi_time_series(
     surface_azimuth,
     surface_tilt,
     weather,
-    normalized=False,
+    normalized=True,
     psi_type="Chen",
 ):
 
@@ -497,7 +495,7 @@ def create_psi_time_series(
              False).
 
          """
-    atmos_data = weather[["ghi", "wind_speed", "temp_air"]]
+    atmos_data = weather[["ghi", "dhi", "dni", "wind_speed", "temp_air"]]
 
     if normalized == False:
         logging.info("Absolute PSI time series is calculated in kW.")
