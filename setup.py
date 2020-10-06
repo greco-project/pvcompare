@@ -36,7 +36,7 @@ setup(
         "workalendar < 7.0.0",  # todo check if needed. Problems with installing skyfield in travis tests (from workalendar 7.0.0)
         'greco_technologies @ git+https://github.com/greco-project/greco_technologies.git@dev',
         'cpvlib @ git+https://github.com/isi-ies-group/cpvlib.git@pvlib=0.8_fix',
-        'multi-vector-simulator[report] @ git+https://github.com/rl-institut/multi-vector-simulator.git@v0.5.0',
+        'multi_vector_simulator[report] @ git+https://github.com/rl-institut/multi-vector-simulator.git@v0.5.0',
     ],
     extras_require={"dev": ["pytest"]},
 )
