@@ -52,6 +52,7 @@ def create_pv_components(
     mvs_input_directory=None,
     directory_energy_production=None,
     psi_type="Chen",
+    normalized=False
 ):
     """
     creates feedin time series for all surface types in pv_setup.csv
@@ -147,11 +148,13 @@ def create_pv_components(
 
             if row["technology"] == "si":
                 time_series = create_si_time_series(
-                    lat=lat, lon=lon, weather=weather, surface_azimuth=j, surface_tilt=k
+                    lat=lat, lon=lon, weather=weather, surface_azimuth=j,
+                    surface_tilt=k, normalized=normalized
                 )
             elif row["technology"] == "cpv":
                 time_series = create_cpv_time_series(
-                    lat=lat, lon=lon, weather=weather, surface_azimuth=j, surface_tilt=k
+                    lat=lat, lon=lon, weather=weather, surface_azimuth=j,
+                    surface_tilt=k, normalized=normalized
                 )
             elif row["technology"] == "psi":
                 time_series = create_psi_time_series(
@@ -161,11 +164,13 @@ def create_pv_components(
                     weather=weather,
                     surface_azimuth=j,
                     surface_tilt=k,
+                    normalized=normalized
                 )
             else:
                 raise ValueError(
                     row["technology"],
-                    "is not in technologies. Please " "choose 'si', 'cpv' or " "'psi'.",
+                    "is not in technologies. Please " "choose 'si', 'cpv' or " 
+                    "'psi'.",
                 )
             # create tieseries directory if it does not exists
             if not os.path.isdir(time_series_directory):
@@ -330,7 +335,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
 
 
 def create_si_time_series(
-    lat, lon, weather, surface_azimuth, surface_tilt, normalized=True
+    lat, lon, weather, surface_azimuth, surface_tilt, normalized
 ):
 
     """
@@ -386,7 +391,7 @@ def create_si_time_series(
 
 
 def create_cpv_time_series(
-    lat, lon, weather, surface_azimuth, surface_tilt, normalized=True
+    lat, lon, weather, surface_azimuth, surface_tilt, normalized
 ):
 
     """
@@ -455,7 +460,7 @@ def create_psi_time_series(
     surface_azimuth,
     surface_tilt,
     weather,
-    normalized=True,
+    normalized,
     psi_type="Chen",
 ):
 
@@ -581,9 +586,9 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
             surface_tilt=surface_tilt,
         )
         peak = (
-            mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]
-            + mod_params_flatplate["i_mp"]
-            * mod_params_flatplate["v_mp"]  # todo: adjust pmp flatplate
+                   (mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"])
+            + (mod_params_flatplate["i_mp"]
+            * mod_params_flatplate["v_mp"])  # todo: adjust pmp flatplate
         )
         module_size = mod_params_cpv["Area"]
         nominal_value = round(area / module_size * peak) / 1000
