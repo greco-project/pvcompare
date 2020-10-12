@@ -69,6 +69,7 @@ class TestDemandProfiles:
             year=self.year,
             input_directory=self.test_input_directory,
             mvs_input_directory=self.test_mvs_directory,
+            column="demand_01"
         )
         assert os.path.exists(
             os.path.join(self.test_mvs_directory, "time_series", filename)
@@ -82,6 +83,7 @@ class TestDemandProfiles:
             year=self.year,
             input_directory=self.test_input_directory,
             mvs_input_directory=self.test_mvs_directory,
+            column="demand_01"
         )
 
         assert a["kWh"].sum() == 32.66654223990299
@@ -101,6 +103,7 @@ class TestDemandProfiles:
             input_directory=self.test_input_directory,
             weather=self.weather,
             mvs_input_directory=self.test_mvs_directory,
+            column="demand_02"
         )
         assert os.path.exists(
             os.path.join(self.test_mvs_directory, "time_series", filename)
@@ -115,6 +118,7 @@ class TestDemandProfiles:
             input_directory=self.test_input_directory,
             weather=self.weather,
             mvs_input_directory=self.test_mvs_directory,
+            column="demand_02"
         )
 
         assert a["kWh"].sum() == 10.969639113628691
