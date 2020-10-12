@@ -383,6 +383,7 @@ def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt, norm
         aoi_model="ashrae",
         spectral_model="first_solar",
         temperature_model="sapm",
+        losses_model="pvwatts",
     )
 
     mc.run_model(weather=weather)
@@ -596,8 +597,8 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
             import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_pero as param1
             import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
-        # calculate peak power with 5 % CTM losses
-        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp) / 100) * 5
+        # calculate peak power with 5 % CTM losses nad 5 % cell connection losses
+        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp) / 100) * 10
         module_size = param1.A / 10000  # in m^2
         nominal_value = round((area / module_size) * peak) / 1000
 
