@@ -606,7 +606,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
         nominal_value = round((area / module_size) * peak) / 1000
 
     logging.info(
-        "The nominal value for %s" % technology  # todo technology instead of type?
+        "The nominal value for %s" % technology
         + " is %s" % nominal_value
         + " kWp for an area of %s" % area
         + " qm."
