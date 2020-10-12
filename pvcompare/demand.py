@@ -76,8 +76,10 @@ def calculate_load_profiles(
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
-    #load eneryConsumption.csv
-    energyConsumption = pd.read_csv(os.path.join(mvs_input_directory, "energyConsumption.csv"))
+    # load eneryConsumption.csv
+    energyConsumption = pd.read_csv(
+        os.path.join(mvs_input_directory, "energyConsumption.csv")
+    )
 
     for column in energyConsumption:
         if column is not "unit":
@@ -89,7 +91,7 @@ def calculate_load_profiles(
                     weather=weather,
                     input_directory=input_directory,
                     mvs_input_directory=mvs_input_directory,
-                    label=energyConsumption.at["label", column]
+                    label=energyConsumption.at["label", column],
                 )
             elif energyConsumption.at["energyVector", column] is "Electricity":
                 calculate_heat_demand(
@@ -99,13 +101,14 @@ def calculate_load_profiles(
                     weather=weather,
                     input_directory=input_directory,
                     mvs_input_directory=mvs_input_directory,
-                    column=column
+                    column=column,
                 )
             else:
-                logging.warning("the given energyVector in energyConsumption.csv"
-                                "is not recognized. Please enter either >Heat< "
-                                "or >Electricity<")
-
+                logging.warning(
+                    "the given energyVector in energyConsumption.csv"
+                    "is not recognized. Please enter either >Heat< "
+                    "or >Electricity<"
+                )
 
     calculate_power_demand(
         country=country,
@@ -116,10 +119,8 @@ def calculate_load_profiles(
     )
 
 
-
 def calculate_power_demand(
-    country, population, year, column, input_directory=None,
-        mvs_input_directory=None
+    country, population, year, column, input_directory=None, mvs_input_directory=None
 ):
     """
     Calculates electricity demand profile for `population` and `country`.
@@ -237,8 +238,13 @@ def calculate_power_demand(
 
 
 def calculate_heat_demand(
-    country, population, year, weather, column, input_directory=None,
-        mvs_input_directory=None
+    country,
+    population,
+    year,
+    weather,
+    column,
+    input_directory=None,
+    mvs_input_directory=None,
 ):
     """
     Calculates heat demand profile for `population` and `country`.
