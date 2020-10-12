@@ -23,6 +23,7 @@ import inspect
 from pkgutil import iter_modules
 from importlib import import_module
 from pvcompare import constants
+from pvcompare import check_inputs
 
 import logging
 
@@ -75,6 +76,40 @@ def calculate_load_profiles(
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
+    # load eneryConsumption.csv
+    energyConsumption = pd.read_csv(
+        os.path.join(mvs_input_directory, "energyConsumption.csv")
+    )
+
+    for column in energyConsumption:
+        if column is not "unit":
+            if energyConsumption.at["energyVector", column] is "Heat":
+                calculate_heat_demand(
+                    country=country,
+                    population=population,
+                    year=year,
+                    weather=weather,
+                    input_directory=input_directory,
+                    mvs_input_directory=mvs_input_directory,
+                    label=energyConsumption.at["label", column],
+                )
+            elif energyConsumption.at["energyVector", column] is "Electricity":
+                calculate_heat_demand(
+                    country=country,
+                    population=population,
+                    year=year,
+                    weather=weather,
+                    input_directory=input_directory,
+                    mvs_input_directory=mvs_input_directory,
+                    column=column,
+                )
+            else:
+                logging.warning(
+                    "the given energyVector in energyConsumption.csv"
+                    "is not recognized. Please enter either >Heat< "
+                    "or >Electricity<"
+                )
+
     calculate_power_demand(
         country=country,
         population=population,
@@ -82,18 +117,10 @@ def calculate_load_profiles(
         input_directory=input_directory,
         mvs_input_directory=mvs_input_directory,
     )
-    calculate_heat_demand(
-        country=country,
-        population=population,
-        year=year,
-        weather=weather,
-        input_directory=input_directory,
-        mvs_input_directory=mvs_input_directory,
-    )
 
 
 def calculate_power_demand(
-    country, population, year, input_directory=None, mvs_input_directory=None
+    country, population, year, column, input_directory=None, mvs_input_directory=None
 ):
     """
     Calculates electricity demand profile for `population` and `country`.
@@ -119,6 +146,8 @@ def calculate_power_demand(
         The district population.
     year: int
         Year for which power demand time series is calculated. # todo needs to be between 2011 - 2015 like above?
+    column: str
+        name of the demand column
     weather: pd.DataFrame
         # todo
     input_directory: str or None
@@ -192,14 +221,30 @@ def calculate_power_demand(
         "The electrical load profile is completly calculated and "
         "being saved under %s." % timeseries_directory
     )
-    filename = os.path.join(timeseries_directory, "electricity_load.csv")
+
+    # define the name of the output file of the time series
+    el_demand_csv = f"electricity_load_{country}_{population}_{year}.csv"
+
+    filename = os.path.join(timeseries_directory, el_demand_csv)
     shifted_elec_demand.to_csv(filename, index=False)
+
+    # save the file name of the time series and the nominal value to
+    # mvs_inputs/elements/csv/energyProduction.csv
+    check_inputs.add_parameters_to_energy_consumption_file(
+        column=column, ts_filename=shifted_elec_demand, mvs_input_directory=None
+    )
 
     return shifted_elec_demand
 
 
 def calculate_heat_demand(
-    country, population, year, weather, input_directory=None, mvs_input_directory=None
+    country,
+    population,
+    year,
+    weather,
+    column,
+    input_directory=None,
+    mvs_input_directory=None,
 ):
     """
     Calculates heat demand profile for `population` and `country`.
@@ -223,6 +268,8 @@ def calculate_heat_demand(
         The district population.
     year: int
         Year for which heat demand time series is calculated. # todo needs to be between 2011 - 2015 like above?
+    column: str
+        name of the demand
     weather: :pandas:`pandas.DataFrame<frame>`
         weather Data Frame # todo add requirements
     input_directory: str or None
@@ -264,35 +311,33 @@ def calculate_heat_demand(
     filename_total_SH = os.path.join(
         input_directory, bp.at["filename_total_SH", "value"]
     )
-    filename_total_WH = os.path.join(
-        input_directory, bp.at["filename_total_WH", "value"]
-    )
+    #    filename_total_WH = os.path.join(
+    #        input_directory, bp.at["filename_total_WH", "value"]
+    #    )
     filename_electr_SH = os.path.join(
         input_directory, bp.at["filename_elect_SH", "value"]
     )
-    filename_electr_WH = os.path.join(
-        input_directory, bp.at["filename_elect_WH", "value"]
-    )
+    #    filename_electr_WH = os.path.join(
+    #        input_directory, bp.at["filename_elect_WH", "value"]
+    #    )
 
     total_SH = pd.read_csv(filename_total_SH, sep=":", index_col=0, header=1)
-    total_WH = pd.read_csv(filename_total_WH, sep=":", index_col=0, header=1)
+    #    total_WH = pd.read_csv(filename_total_WH, sep=":", index_col=0, header=1)
     electr_SH = pd.read_csv(filename_electr_SH, sep=":", index_col=0, header=1)
-    electr_WH = pd.read_csv(filename_electr_WH, sep=":", index_col=0, header=1)
+    #   electr_WH = pd.read_csv(filename_electr_WH, sep=":", index_col=0, header=1)
 
     total_SH[str(year)] = pd.to_numeric(total_SH[str(year)], errors="coerce")
-    total_WH[str(year)] = pd.to_numeric(total_WH[str(year)], errors="coerce")
+    #    total_WH[str(year)] = pd.to_numeric(total_WH[str(year)], errors="coerce")
     electr_SH[str(year)] = pd.to_numeric(electr_SH[str(year)], errors="coerce")
-    electr_WH[str(year)] = pd.to_numeric(electr_WH[str(year)], errors="coerce")
+    #   electr_WH[str(year)] = pd.to_numeric(electr_WH[str(year)], errors="coerce")
 
     filename_population = bp.at["filename_country_population", "value"]
     filename1 = os.path.join(input_directory, filename_population)
     populations = pd.read_csv(filename1, index_col=0, sep=",")
     # convert Mtoe in kWh
     heat_demand = (
-        total_SH.at[country, str(year)]
-        + total_WH.at[country, str(year)]
-        - electr_SH.at[country, str(year)]
-        - electr_WH.at[country, str(year)]
+        total_SH.at[country, str(year)]  #       + total_WH.at[country, str(year)]
+        - electr_SH.at[country, str(year)]  #       - electr_WH.at[country, str(year)]
     ) * 11630
     annual_heat_demand_per_population = (
         heat_demand / populations.at[country, str(year)]
@@ -321,8 +366,16 @@ def calculate_heat_demand(
         "The electrical load profile is completely calculated and "
         "being saved under %s." % timeseries_directory
     )
-    shifted_heat_demand.to_csv(
-        os.path.join(timeseries_directory, "heat_load.csv"), index=False
+    # define the name of the output file of the time series
+    h_demand_csv = f"heat_load_{country}_{population}_{year}.csv"
+
+    filename = os.path.join(timeseries_directory, h_demand_csv)
+
+    shifted_heat_demand.to_csv(filename, index=False)
+    # save the file name of the time series and the nominal value to
+    # mvs_inputs/elements/csv/energyProduction.csv
+    check_inputs.add_parameters_to_energy_consumption_file(
+        column=column, ts_filename=shifted_heat_demand, mvs_input_directory=None
     )
     return shifted_heat_demand
 
