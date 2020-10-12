@@ -78,12 +78,13 @@ def calculate_load_profiles(
 
     # load eneryConsumption.csv
     energyConsumption = pd.read_csv(
-        os.path.join(mvs_input_directory, "energyConsumption.csv")
+        os.path.join(mvs_input_directory, "csv_elements/energyConsumption.csv"),
+        index_col=0,
     )
 
     for column in energyConsumption:
         if column is not "unit":
-            if energyConsumption.at["energyVector", column] is "Heat":
+            if energyConsumption.at["energyVector", column] == "Heat":
                 calculate_heat_demand(
                     country=country,
                     population=population,
@@ -93,12 +94,11 @@ def calculate_load_profiles(
                     mvs_input_directory=mvs_input_directory,
                     label=energyConsumption.at["label", column],
                 )
-            elif energyConsumption.at["energyVector", column] is "Electricity":
-                calculate_heat_demand(
+            elif energyConsumption.at["energyVector", column] == "Electricity":
+                calculate_power_demand(
                     country=country,
                     population=population,
                     year=year,
-                    weather=weather,
                     input_directory=input_directory,
                     mvs_input_directory=mvs_input_directory,
                     column=column,
@@ -109,14 +109,6 @@ def calculate_load_profiles(
                     "is not recognized. Please enter either >Heat< "
                     "or >Electricity<"
                 )
-
-    calculate_power_demand(
-        country=country,
-        population=population,
-        year=year,
-        input_directory=input_directory,
-        mvs_input_directory=mvs_input_directory,
-    )
 
 
 def calculate_power_demand(
