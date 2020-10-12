@@ -1,0 +1,11 @@
+pvlib
+demandlib
+feedinlib==v0.1.0rc2
+numpy>=1.12.0,< 1.17
+pandas>=0.18.1,< 0.25
+oemof.thermal>=0.0.3
+scipy
+workalendar<7.0.0
+multi_vector_simulator
+git+https://github.com/greco-project/greco_technologies.git@dev
+git+https://github.com/isi-ies-group/cpvlib.git@pvlib=0.8_fix
