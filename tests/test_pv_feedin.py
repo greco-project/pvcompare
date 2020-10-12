@@ -58,7 +58,7 @@ class TestPvtime_series:
             normalized=False,
         )
         output = round(ts.values.sum(), 3)
-        assert output == 0.131
+        assert output == 0.113
 
     def test_nominal_values_pv(self):
 
