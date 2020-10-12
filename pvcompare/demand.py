@@ -76,6 +76,37 @@ def calculate_load_profiles(
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
+    #load eneryConsumption.csv
+    energyConsumption = pd.read_csv(os.path.join(mvs_input_directory, "energyConsumption.csv"))
+
+    for column in energyConsumption:
+        if column is not "unit":
+            if energyConsumption.at["energyVector", column] is "Heat":
+                calculate_heat_demand(
+                    country=country,
+                    population=population,
+                    year=year,
+                    weather=weather,
+                    input_directory=input_directory,
+                    mvs_input_directory=mvs_input_directory,
+                    label=energyConsumption.at["label", column]
+                )
+            elif energyConsumption.at["energyVector", column] is "Electricity":
+                calculate_heat_demand(
+                    country=country,
+                    population=population,
+                    year=year,
+                    weather=weather,
+                    input_directory=input_directory,
+                    mvs_input_directory=mvs_input_directory,
+                    column=column
+                )
+            else:
+                logging.warning("the given energyVector in energyConsumption.csv"
+                                "is not recognized. Please enter either >Heat< "
+                                "or >Electricity<")
+
+
     calculate_power_demand(
         country=country,
         population=population,
@@ -83,18 +114,12 @@ def calculate_load_profiles(
         input_directory=input_directory,
         mvs_input_directory=mvs_input_directory,
     )
-    calculate_heat_demand(
-        country=country,
-        population=population,
-        year=year,
-        weather=weather,
-        input_directory=input_directory,
-        mvs_input_directory=mvs_input_directory,
-    )
+
 
 
 def calculate_power_demand(
-    country, population, year, input_directory=None, mvs_input_directory=None
+    country, population, year, column, input_directory=None,
+        mvs_input_directory=None
 ):
     """
     Calculates electricity demand profile for `population` and `country`.
@@ -120,6 +145,8 @@ def calculate_power_demand(
         The district population.
     year: int
         Year for which power demand time series is calculated. # todo needs to be between 2011 - 2015 like above?
+    column: str
+        name of the demand column
     weather: pd.DataFrame
         # todo
     input_directory: str or None
@@ -203,14 +230,15 @@ def calculate_power_demand(
     # save the file name of the time series and the nominal value to
     # mvs_inputs/elements/csv/energyProduction.csv
     check_inputs.add_parameters_to_energy_consumption_file(
-        column="demand_01", ts_filename=shifted_elec_demand, mvs_input_directory=None
+        column=column, ts_filename=shifted_elec_demand, mvs_input_directory=None
     )
 
     return shifted_elec_demand
 
 
 def calculate_heat_demand(
-    country, population, year, weather, input_directory=None, mvs_input_directory=None
+    country, population, year, weather, column, input_directory=None,
+        mvs_input_directory=None
 ):
     """
     Calculates heat demand profile for `population` and `country`.
@@ -234,6 +262,8 @@ def calculate_heat_demand(
         The district population.
     year: int
         Year for which heat demand time series is calculated. # todo needs to be between 2011 - 2015 like above?
+    column: str
+        name of the demand
     weather: :pandas:`pandas.DataFrame<frame>`
         weather Data Frame # todo add requirements
     input_directory: str or None
@@ -339,7 +369,7 @@ def calculate_heat_demand(
     # save the file name of the time series and the nominal value to
     # mvs_inputs/elements/csv/energyProduction.csv
     check_inputs.add_parameters_to_energy_consumption_file(
-        column="demand_02", ts_filename=shifted_heat_demand, mvs_input_directory=None
+        column=column, ts_filename=shifted_heat_demand, mvs_input_directory=None
     )
     return shifted_heat_demand
 
