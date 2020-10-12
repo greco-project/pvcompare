@@ -78,7 +78,7 @@ def calculate_load_profiles(
 
     # load eneryConsumption.csv
     energyConsumption = pd.read_csv(
-        os.path.join(mvs_input_directory, "energyConsumption.csv")
+        os.path.join(mvs_input_directory, "csv_elements/energyConsumption.csv")
     )
 
     for column in energyConsumption:
