@@ -23,9 +23,9 @@ class TestDemandProfiles:
     @classmethod
     def setup_class(self):
         """Setup variables for all tests in this class"""
-        self.country = "Spain"
+        self.country = "France"
         self.population = 4800
-        self.year = 2014
+        self.year = 2015
         self.test_input_directory = os.path.join(
             os.path.dirname(__file__), "test_data/test_pvcompare_inputs"
         )
@@ -58,23 +58,21 @@ class TestDemandProfiles:
 
     def test_power_demand_exists(self):
 
+        filename = f"electricity_load_{self.country}_{self.population}_{self.year}.csv"
         if os.path.exists(
-            os.path.join(self.test_mvs_directory, "time_series/electricity_load.csv")
+            os.path.join(self.test_mvs_directory, "time_series", filename)
         ):
-            os.remove(
-                os.path.join(
-                    self.test_mvs_directory, "time_series/electricity_load.csv"
-                )
-            )
+            os.remove(os.path.join(self.test_mvs_directory, "time_series", filename))
         calculate_power_demand(
             country=self.country,
             population=self.population,
             year=self.year,
             input_directory=self.test_input_directory,
             mvs_input_directory=self.test_mvs_directory,
+            column="demand_01",
         )
         assert os.path.exists(
-            os.path.join(self.test_mvs_directory, "time_series/electricity_load.csv")
+            os.path.join(self.test_mvs_directory, "time_series", filename)
         )
 
     def test_calculate_power_demand(self):
@@ -85,18 +83,18 @@ class TestDemandProfiles:
             year=self.year,
             input_directory=self.test_input_directory,
             mvs_input_directory=self.test_mvs_directory,
+            column="demand_01",
         )
 
-        assert a["kWh"].sum() == 17.65950917551695
+        assert a["kWh"].sum() == 32.66654223990299
 
     def test_heat_demand_exists(self):
 
+        filename = f"heat_load_{self.country}_{self.population}_{self.year}.csv"
         if os.path.exists(
-            os.path.join(self.test_mvs_directory, "time_series/heat_load.csv")
+            os.path.join(self.test_mvs_directory, "time_series", filename)
         ):
-            os.remove(
-                os.path.join(self.test_mvs_directory, "time_series/heat_load.csv")
-            )
+            os.remove(os.path.join(self.test_mvs_directory, "time_series", filename))
 
         calculate_heat_demand(
             country=self.country,
@@ -105,9 +103,10 @@ class TestDemandProfiles:
             input_directory=self.test_input_directory,
             weather=self.weather,
             mvs_input_directory=self.test_mvs_directory,
+            column="demand_02",
         )
         assert os.path.exists(
-            os.path.join(self.test_mvs_directory, "time_series/heat_load.csv")
+            os.path.join(self.test_mvs_directory, "time_series", filename)
         )
 
     def test_calculate_heat_demand(self):
@@ -119,9 +118,10 @@ class TestDemandProfiles:
             input_directory=self.test_input_directory,
             weather=self.weather,
             mvs_input_directory=self.test_mvs_directory,
+            column="demand_02",
         )
 
-        assert a["kWh"].sum() == 5.474071970330192
+        assert a["kWh"].sum() == 10.969639113628691
 
     def test_shift_working_hours(self):
 
@@ -133,4 +133,4 @@ class TestDemandProfiles:
 
         cal = get_workalendar_class(self.country)
 
-        assert cal.__class__.__name__ == "Spain"
+        assert cal.__class__.__name__ == "France"
