@@ -38,5 +38,12 @@ setup(
     #     # 'greco_technologies @ git+https://github.com/greco-project/greco_technologies.git@dev#egg=greco_technologies-0',
     #     # 'cpvlib @ git+https://github.com/isi-ies-group/cpvlib.git@pvlib=0.8_fix#egg=cpvlib-0',
     # ],
-    extras_require={"dev": ["pytest"]},
+    extras_require={
+        "dev": [
+            "pytest==5.3.5",
+            "black==19.10b0",
+            "coverage==5.0.3",
+            "coveralls==1.11.0",
+        ]
+    },
 )
