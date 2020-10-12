@@ -179,7 +179,7 @@ def create_pv_components(
                     row["technology"],
                     "is not in technologies. Please " "choose 'si', 'cpv' or " "'psi'.",
                 )
-            # create tieseries directory if it does not exists
+            # create time series directory if it does not exists
             if not os.path.isdir(time_series_directory):
                 os.mkdir(time_series_directory)
 
