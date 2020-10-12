@@ -1,19 +1,11 @@
-git+https://github.com/greco-project/greco_technologies.git@dev
-git+https://github.com/rl-institut/mvs_eland.git@dev
-git+https://github.com/isi-ies-group/cpvlib.git@pvlib=0.8_fix
-dash
-scipy
-numpy
-pandas==0.24.2
-folium
-gitpython
-reverse_geocoder
-staticmap
-pyppeteer
-demandlib
-pdfkit==0.6.1
 pvlib
-xarray==0.15.0
-feedinlib==0.1.0rc2
-oemof.thermal==0.0.3
-importlib_resources
+demandlib
+feedinlib==v0.1.0rc2
+numpy>=1.12.0,< 1.17
+pandas>=0.18.1,< 0.25
+oemof.thermal>=0.0.3
+scipy
+workalendar<7.0.0
+multi_vector_simulator
+git+https://github.com/greco-project/greco_technologies.git@dev
+git+https://github.com/isi-ies-group/cpvlib.git@pvlib=0.8_fix
