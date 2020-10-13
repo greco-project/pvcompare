@@ -34,7 +34,7 @@ class TestPvtime_series:
         weather_df["ghi"] = [200, 220]
         weather_df["precipitable_water"] = [1, 2]
         weather_df.index = ["2014-01-01 13:00:00+00:00", "2014-01-01 14:00:00+00:00"]
-        weather_df.index = pd.to_datetime(weather_df.index)
+        weather_df.index = pd.to_datetime(weather_df.index, utc=True)
         self.test_mvs_directory = os.path.join(
             os.path.dirname(__file__), "test_data/test_mvs_inputs"
         )
