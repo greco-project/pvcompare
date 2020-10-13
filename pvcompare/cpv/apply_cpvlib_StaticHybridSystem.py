@@ -26,9 +26,7 @@ def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
     :return: pd.DataFrame()
     """
 
-    location = pvlib.location.Location(
-        latitude=lat, longitude=lon, tz="utc"
-    )
+    location = pvlib.location.Location(latitude=lat, longitude=lon, tz="utc")
 
     weather.index = pd.to_datetime(weather.index)
     spa = pvlib.solarposition.spa_python(

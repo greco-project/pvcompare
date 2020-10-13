@@ -199,14 +199,7 @@ def calculate_smarts_parameters(
 
 
 def create_timeseries(
-    lat,
-    lon,
-    surface_azimuth,
-    surface_tilt,
-    atmos_data,
-    year,
-    cell_type,
-    number_hours,
+    lat, lon, surface_azimuth, surface_tilt, atmos_data, year, cell_type, number_hours
 ):
 
     """
@@ -279,8 +272,8 @@ def create_timeseries(
             1 + (param.alpha * (t_cell - param.temp_ref))
         )
         # add CTM losses of 5%
-        result[str(x) + "_p_mp"] = (
-            result[str(x) + "_p_mp"] - ((result[str(x) + "_p_mp"] / 100) * param.losses)
+        result[str(x) + "_p_mp"] = result[str(x) + "_p_mp"] - (
+            (result[str(x) + "_p_mp"] / 100) * param.losses
         )
 
     return result

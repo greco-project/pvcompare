@@ -309,9 +309,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
 
     elif technology == "cpv":
 
-        logging.debug(
-            "cpv module parameters are loaded from pvcompare/cpv/inputs.py"
-        )
+        logging.debug("cpv module parameters are loaded from pvcompare/cpv/inputs.py")
         mod_params_cpv = pvcompare.cpv.inputs.mod_params_cpv
         mod_params_flatplate = pvcompare.cpv.inputs.mod_params_flatplate
 

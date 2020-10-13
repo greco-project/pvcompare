@@ -16,7 +16,8 @@ from pvcompare.perosi.pvlib_smarts import SMARTSSpectra
 
 from pvcompare.perosi.perosi import (
     calculate_smarts_parameters,
-    create_pero_si_timeseries)
+    create_pero_si_timeseries,
+)
 
 from pvcompare.cpv.apply_cpvlib_StaticHybridSystem import create_cpv_time_series
 
@@ -40,35 +41,48 @@ class TestPvtime_series:
         self.weather = weather_df
 
         self.population = 4600
-        self.lat = 40.
+        self.lat = 40.0
         self.lon = 5.2
         self.surface_azimuth = 180
         self.surface_tilt = 30
         self.year = 2015
 
-
     def test_smarts_spectra(self):
 
         # def SMARTSSpectra(IOUT, YEAR, MONTH, DAY, HOUR, LATIT, LONGIT, WLMN, 'WLMX', 'TAIR', 'TDAY', 'SEASON', 'ZONE', 'TILT', and 'WAZIM')
-        df = SMARTSSpectra("2 3", str(self.year), "6", "1", "12", str(self.lat), str(self.lon),
-                           "400", "1200", "15", "10", "SUMMER", "1", str(self.surface_tilt), str(self.surface_azimuth))
+        df = SMARTSSpectra(
+            "2 3",
+            str(self.year),
+            "6",
+            "1",
+            "12",
+            str(self.lat),
+            str(self.lon),
+            "400",
+            "1200",
+            "15",
+            "10",
+            "SUMMER",
+            "1",
+            str(self.surface_tilt),
+            str(self.surface_azimuth),
+        )
 
         assert df["Direct_normal_irradiance"].sum() == 805.50805
 
-
     def test_calculate_smarts_parameters(self):
 
-        output=calculate_smarts_parameters(
-                year=self.year,
-                lat=self.lat,
-                lon=self.lon,
-                number_hours=2,
-                cell_type=["Chen_pero"],
-                surface_tilt=self.surface_tilt,
-                surface_azimuth=self.surface_azimuth,
-                atmos_data=self.weather,
-                WLMN=350,
-                WLMX=1200,
+        output = calculate_smarts_parameters(
+            year=self.year,
+            lat=self.lat,
+            lon=self.lon,
+            number_hours=2,
+            cell_type=["Chen_pero"],
+            surface_tilt=self.surface_tilt,
+            surface_azimuth=self.surface_azimuth,
+            atmos_data=self.weather,
+            WLMN=350,
+            WLMX=1200,
         )
 
         assert output["Jsc_Chen_pero"].sum() == 0.010268298713826984
@@ -90,9 +104,12 @@ class TestPvtime_series:
 
     def test_create_cpv_time_series(self):
 
-        output = create_cpv_time_series(lat=self.lat, lon=self.lon,
-                                       weather=self.weather,
-                                       surface_azimuth=self.surface_azimuth,
-                                       surface_tilt=self.surface_tilt)
+        output = create_cpv_time_series(
+            lat=self.lat,
+            lon=self.lon,
+            weather=self.weather,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+        )
 
-        assert output.sum()== 6.42515680176969
+        assert output.sum() == 6.42515680176969

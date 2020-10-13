@@ -1027,8 +1027,7 @@ def _smartsAll(
 
     command = [
         "yes | "
-        + os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                       "program.exe")
+        + os.path.join(os.path.dirname(os.path.abspath(__file__)), "program.exe")
     ]
     #    command = os.path.join(os.path.abspath(os.path.dirname(__file__)), "program.exe")
     p = subprocess.Popen(command, stdin=subprocess.PIPE, shell=True, cwd=file_directory)
@@ -1066,6 +1065,21 @@ def _smartsAll(
 
 if __name__ == "__main__":
     # def SMARTSSpectra(IOUT, YEAR, MONTH, DAY, HOUR, LATIT, LONGIT, WLMN, 'WLMX', 'TAIR', 'TDAY', 'SEASON', 'ZONE', 'TILT', and 'WAZIM')
-    df = SMARTSSpectra("2 3", "2010", "6", "1", "12", "40.", "-3.703790", "400", "1200", "15", "10", "SUMMER", "1", "30", "180")
+    df = SMARTSSpectra(
+        "2 3",
+        "2010",
+        "6",
+        "1",
+        "12",
+        "40.",
+        "-3.703790",
+        "400",
+        "1200",
+        "15",
+        "10",
+        "SUMMER",
+        "1",
+        "30",
+        "180",
+    )
     print(df["Direct_normal_irradiance"].sum())
-
