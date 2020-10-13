@@ -19,6 +19,12 @@ setup(
         "pvcompare": [
             os.path.join("data", "load_profiles", "*.csv"),
             os.path.join("data", "pv", "*.csv"),
+            os.path.join("perosi", "*.exe"),
+            os.path.join("perosi", "*.dat"),
+            os.path.join("perosi", "Solar", "*.dat"),
+            os.path.join("perosi", "Albedo", "*.dat"),
+            os.path.join("perosi", "data", "CHEN_2020_EQE_curve_pero_corrected.csv"),
+            os.path.join("perosi", "data", "CHEN_2020_EQE_curve_si_corrected.csv"),
         ]
     },
     long_description=read("README.rst"),
