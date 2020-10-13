@@ -57,8 +57,14 @@ def main(
         )
     check_inputs.add_electricity_price()
 
-    # if era5 import works this line can be used
-    weather = era5.load_era5_weatherdata(lat=latitude, lon=longitude, year=year)
+    # check if weather data already exists
+    weather_file = os.path.join(input_directory, f"weatherdata_{country}_{year}.csv")
+    if os.path.isfile(weather_file):
+        weather = pd.read_csv(os.path.join(input_directory, f"weatherdata_{country}_{year}.csv"), index_col=0)
+    else:
+        # if era5 import works this line can be used
+        weather = era5.load_era5_weatherdata(lat=latitude, lon=longitude, year=year)
+        weather.to_csv(weather_file)
 
     #  otherwise this example weather data for one year (2014) can be used for now
     # weather = pd.read_csv("./data/inputs/weatherdata_Germany_2016.csv", index_col=0)
