@@ -100,7 +100,8 @@ class TestPvtime_series:
             psi_type="Chen",
         )
 
-        assert output.sum() == 105.12756447863947
+        sum = output.sum()
+        assert sum == 105.12756447863947
 
     def test_create_cpv_time_series(self):
 
@@ -112,4 +113,6 @@ class TestPvtime_series:
             surface_tilt=self.surface_tilt,
         )
 
-        assert output.sum() == 6.42515680176969
+        sum = output.sum()
+
+        assert sum == 6.42515680176969

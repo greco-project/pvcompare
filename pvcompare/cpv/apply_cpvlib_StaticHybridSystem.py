@@ -119,5 +119,4 @@ def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
 
     total = energy_cpv + energy_flatplate
 
-
     return total
