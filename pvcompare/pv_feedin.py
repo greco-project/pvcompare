@@ -462,41 +462,41 @@ def create_psi_time_series(
 ):
 
     """
-         Creates power time series of a Perovskite-Silicone module.
+    Creates power time series of a Perovskite-Silicone module.
 
-         The PSI time series is created for a given weather data frame
-         (`weather`). If `normalized` is set to True, the time
-         series is divided by the peak power of the module.
+    The PSI time series is created for a given weather data frame
+    (`weather`). If `normalized` is set to True, the time
+    series is divided by the peak power of the module.
 
 
-         Parameters
-         ----------
-         lat : float
-             Latitude of the location for which the time series is calculated.
-         lon : float
-             Longitude of the location for which the time series is calculated.
-         weather : :pandas:`pandas.DataFrame<frame>`
-             DataFrame with time series for temperature `temp_air` in C°, wind speed
-             `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m^2
-         surface_azimuth : float
-             Surface azimuth of the modules (180° for south, 270° for west, etc.).
-         surface_tilt: float
-             Surface tilt of the modules. (horizontal=90° and vertical=0°)
-         psi_type  : str
-             Defines the type of module of which the time series is calculated.
-             Options: "Korte", "Chen"
-         normalized: bool
-             If True, the time series is divided by the peak power of the CPV
-             module. Default: False.
+    Parameters
+    ----------
+    lat : float
+        Latitude of the location for which the time series is calculated.
+    lon : float
+        Longitude of the location for which the time series is calculated.
+    weather : :pandas:`pandas.DataFrame<frame>`
+        DataFrame with time series for temperature `temp_air` in C°, wind speed
+        `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m^2
+    surface_azimuth : float
+        Surface azimuth of the modules (180° for south, 270° for west, etc.).
+    surface_tilt: float
+        Surface tilt of the modules. (horizontal=90° and vertical=0°)
+    psi_type  : str
+        Defines the type of module of which the time series is calculated.
+        Options: "Korte", "Chen"
+    normalized: bool
+        If True, the time series is divided by the peak power of the CPV
+        module. Default: False.
 
-         Returns
-         -------
-         :pandas:`pandas.Series<series>`
-             Power output of PSI module in W (if parameter `normalized` is False) or todo check unit.
-             normalized power output of CPV module (if parameter `normalized` is
-             False).
+    Returns
+    -------
+    :pandas:`pandas.Series<series>`
+        Power output of PSI module in W (if parameter `normalized` is False) or todo check unit.
+        normalized power output of CPV module (if parameter `normalized` is
+        False).
 
-         """
+    """
     atmos_data = weather[["ghi", "dhi", "dni", "wind_speed", "temp_air"]]
 
     if normalized == False:

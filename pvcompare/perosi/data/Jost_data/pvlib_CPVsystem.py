@@ -605,7 +605,7 @@ def calculate_utilization_factor(
 
 
 def fit_sde_sandia(V, I, Voc, Isc, Vmp, Imp, vlim=0.2, ilim=0.1):
-    """ Fits the single diode equation to an IV curve.
+    """Fits the single diode equation to an IV curve.
     If fitting fails, returns NaN in each parameter.
     Parameters
     ----------
