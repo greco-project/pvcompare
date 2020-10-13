@@ -119,20 +119,5 @@ def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
 
     total = energy_cpv + energy_flatplate
 
-    import matplotlib.pyplot as plt
-
-    week_cpv = energy_cpv.iloc[4400:4500]
-    week_flatplate = energy_flatplate.iloc[4400:4500]
-    plt.figure(figsize=(15, 10))
-    plt.plot(week_cpv, label="cpv")
-    plt.plot(week_flatplate, label="flatplate")
-    plt.legend()
-    plt.savefig("/home/inia/Dokumente/greco_env/Compare_Technologies/cpv_flatplate.png")
-
-    plt.figure(figsize=(15, 10))
-    plt.plot(weather["dni"].iloc[4400:4500], label="dni")
-    plt.plot(weather["dhi"].iloc[4400:4500], label="dhi")
-    plt.legend()
-    plt.savefig("/home/inia/Dokumente/greco_env/Compare_Technologies/cpv_dni_dhi.png")
 
     return total
