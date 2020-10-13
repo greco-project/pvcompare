@@ -33,8 +33,8 @@ class TestPvtime_series:
         weather_df["dni"] = [120, 150]
         weather_df["ghi"] = [200, 220]
         weather_df["precipitable_water"] = [1, 2]
-        weather_df.index = ["2014-01-01 13:00:00+00:00", "2014-01-01 14:00:00+00:00"]
-        weather_df.index = pd.to_datetime(weather_df.index, utc=True)
+        weather_df.index = pd.date_range(start='2014-08-01 09:00',
+                                         freq='H', periods=2, tz='Europe/Berlin')
         self.test_mvs_directory = os.path.join(
             os.path.dirname(__file__), "test_data/test_mvs_inputs"
         )
@@ -85,7 +85,7 @@ class TestPvtime_series:
             WLMX=1200,
         )
 
-        assert output["Jsc_Chen_pero"].sum() == 0.010268298713826984
+        assert output["Jsc_Chen_pero"].sum() == 0.009782887660475342
 
     def test_create_perosi_timeseries(self):
 
@@ -101,7 +101,7 @@ class TestPvtime_series:
         )
 
         sum = output.sum()
-        assert sum == 105.12756447863947
+        assert sum == 104.41709853453722
 
     def test_create_cpv_time_series(self):
 
@@ -115,4 +115,4 @@ class TestPvtime_series:
 
         sum = output.sum()
 
-        assert sum == 6.42515680176969
+        assert sum == 3.000180095297516
