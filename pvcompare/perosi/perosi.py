@@ -3,13 +3,12 @@ import logging
 import sys
 import os
 import matplotlib.pyplot as plt
+import decimal
 
 import pvlib
-import greco_technologies.perosi.pvlib_smarts as smarts
-import greco_technologies.perosi.era5 as era5
+import pvcompare.perosi.pvlib_smarts as smarts
+import pvcompare.perosi.era5 as era5
 
-import requests
-import io
 
 # Reconfiguring the logger here will also affect test running in the PyCharm IDE
 log_format = "%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s"
@@ -30,6 +29,13 @@ def calculate_smarts_parameters(
 ):
 
     """
+    calculates the short current density Jsc for each timestep.
+
+    For each timestep the spectrum is calculated using SMARTS. After that the
+    short current density is calculated by multiplying the number of photons on
+    the tilted surface by the EQE of the given cell. A dataframe is returned
+    with ghi, temperature, wind_speed and the Jsc for each time step
+
     Parameters
     ----------
     year: int
@@ -43,7 +49,7 @@ def calculate_smarts_parameters(
     cell_type: list
         list of cells for which the Jsc should be calculated.
     atmos_data: :pd.Dataframe()
-        with datetimeindex and columns for 'temp_air' and 'wind_speed'
+        with datetimeindex and columns for 'temp_air' and 'wind_speed' and 'ghi'
     WLMN: int
         minimum wavelength of the spectrum. By default this is 280 nm.
     WLMX: int
@@ -60,8 +66,9 @@ def calculate_smarts_parameters(
     if atmos_data is None:
         logging.info("loading atmos data from era5 data set")
         atmos_data = era5.load_era5_weatherdata(lat, lon, year, variable="perosi")
-    delta = pd.to_timedelta(30, unit="m")
-    atmos_data.index = atmos_data.index + delta
+#    delta = pd.to_timedelta(30, unit="m")
+#    atmos_data.index = atmos_data.index + delta
+    atmos_data.index= pd.to_datetime(atmos_data.index)
     atmos_data["davt"] = atmos_data["temp_air"].resample("D").mean()
     atmos_data = atmos_data.fillna(method="ffill")
 
@@ -103,7 +110,6 @@ def calculate_smarts_parameters(
             season = "WINTER"
 
         # load spectral data from SMARTS
-        import decimal
 
         d = decimal.Decimal(str(lat))
         decimals_lat = d.as_tuple().exponent
@@ -129,17 +135,17 @@ def calculate_smarts_parameters(
         # load EQE data
         for x in cell_type:
             if x == "Korte_pero":
-                import greco_technologies.perosi.data.cell_parameters_korte_pero as param
+                import pvcompare.perosi.data.cell_parameters_korte_pero as param
             elif x == "Korte_si":
-                import greco_technologies.perosi.data.cell_parameters_korte_si as param
+                import pvcompare.perosi.data.cell_parameters_korte_si as param
             elif x == "Chen_pero":
-                import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_pero as param
+                import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_pero as param
 
-                url = "https://raw.githubusercontent.com/greco-project/greco_technologies/dev/greco_technologies/perosi/data/CHEN_2020_EQE_curve_pero_corrected.csv"
+                url = "https://raw.githubusercontent.com/greco-project/pvcompare/dev/pvcompare/perosi/data/CHEN_2020_EQE_curve_pero_corrected.csv"
             elif x == "Chen_si":
-                import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_si as param
+                import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_si as param
 
-                url = "https://raw.githubusercontent.com/greco-project/greco_technologies/dev/greco_technologies/perosi/data/CHEN_2020_EQE_curve_si_corrected.csv"
+                url = "https://raw.githubusercontent.com/greco-project/pvcompare/dev/pvcompare/perosi/data/CHEN_2020_EQE_curve_si_corrected.csv"
             else:
                 logging.error(
                     "The cell type is not recognized. Please "
@@ -201,8 +207,13 @@ def calculate_smarts_parameters(
 def create_timeseries(
     lat, lon, surface_azimuth, surface_tilt, atmos_data, year, cell_type, number_hours
 ):
-
     """
+    calculates a timeseries for each cell type in list cell_type.
+
+    The spectrum is calculated with calculate_smarts_parameters(). After that
+    the specific cell parameters are loaded. Finally the p_mp of each timestep
+     is calculated by the pvlib.singlediode() fuction.
+
     :param year: int
         year of interest
     :param lat: str
@@ -212,11 +223,14 @@ def create_timeseries(
     :param number_hours: int
         number of hours until simulation stops. For one year enter 8760.
     :param cell_type: list
-        list of cells for which the Jsc should be calculated.
-    :param input_directory: str
-        name of the input directory
-    :param surface_azimuth:
-    :param surface_tilt:
+        list of cells for which the Jsc should be calculated. Allowed values:
+        'Korte_pero', 'Korte_si', 'Chen_si', 'Chen_pero'
+    :param surface_azimuth: int
+        surface azimuth
+    :param surface_tilt: int
+        surface tilt
+    :param atmos_data: :pd.Dataframe
+        with datetimeindex and columns for 'temp_air' and 'wind_speed' and 'ghi'
 
     :return: :pd.Dataframe()
         maximum power point of each time step for each cell type
@@ -246,17 +260,17 @@ def create_timeseries(
     result = pd.DataFrame()
     for x in cell_type:
         if x == "Korte_pero":
-            import greco_technologies.perosi.data.cell_parameters_korte_pero as param
+            import pvcompare.perosi.data.cell_parameters_korte_pero as param
         elif x == "Korte_si":
-            import greco_technologies.perosi.data.cell_parameters_korte_si as param
+            import pvcompare.perosi.data.cell_parameters_korte_si as param
         elif x == "Chen_pero":
-            import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_pero as param
+            import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_pero as param
         elif x == "Chen_si":
-            import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_si as param
+            import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_si as param
 
-        nNsVth = param.n * 1 * (kB * (t_cell + 273.15) / q)
+        nNsVth = param.n * (kB * (t_cell + 273.15) / q)
 
-        Isc = smarts_parameters["Jsc_" + str(x)] * param.A_cell * param.Ns
+        Isc = smarts_parameters["Jsc_" + str(x)] * param.A_cell
         singlediode = pvlib.pvsystem.singlediode(
             photocurrent=Isc,
             saturation_current=param.I_0,
@@ -291,18 +305,27 @@ def create_pero_si_timeseries(
 ):
 
     """
-    creates a time series for the output power of a pero-si module
+    creates a time series for the output power of a pero-si module.
+
+    Wrapper for create_timeseries() function.
 
     :param year: int
         year of interest
     :param lat: str
-        latitude ending with a ".", e.g. "45."
+        latitude
     :param lon: int
         longitude
     :param number_hours: int
         number of hours until simulation stops. For one year enter 8760.
-    :param surface_azimuth:
-    :param surface_tilt:
+    :param surface_azimuth: int
+        surface azimuth
+    :param surface_tilt: int
+        surface tilt
+    :param atmos_data: :pd.Dataframe().
+        weather data with datetimeindex and columns for 'temp_air' and
+        'wind_speed' and 'ghi'. If None weather data is loaded from era5 weather data set.
+    :param psi_type: str
+        Type of pero_si cell. Either "Chen" or "Korte"
 
     :return:pd. series()
         time series of the output power
@@ -327,26 +350,24 @@ def create_pero_si_timeseries(
         cell_type=cell_type,
         number_hours=number_hours,
     )
-    output = timeseries.iloc[:, 0] + timeseries.iloc[:, 1]
+    output = (timeseries.iloc[:, 0] + timeseries.iloc[:, 1])*20000
 
     return output
 
 
 if __name__ == "__main__":
-
-    # output = create_timeseries(
-    #     lat="45.", lon=5.87, surface_azimuth=180,
-    #     surface_tilt=30, year=2015,
-    #     input_directory=None, number_hours=300, cell_type=["Korte_pero"], plot=True
-    # )
+    weather = pd.read_csv("/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/inputs/weatherdata_France_2014.csv",
+        index_col=0,
+    )
     output1 = create_pero_si_timeseries(
         lat=45.0,
         lon=5.87,
         surface_azimuth=180,
         surface_tilt=30,
         year=2015,
-        number_hours=400,
+        number_hours=40,
         psi_type="Chen",
+        atmos_data=weather,
     )
     output2 = create_pero_si_timeseries(
         lat=45.0,
@@ -354,8 +375,9 @@ if __name__ == "__main__":
         surface_azimuth=180,
         surface_tilt=30,
         year=201,
-        number_hours=400,
+        number_hours=40,
         psi_type="Korte",
+        atmos_data=weather,
     )
     plt.plot(output1, "r-", label="Chen")
     plt.plot(output2, "b-", label="Korte")
