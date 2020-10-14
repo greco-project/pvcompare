@@ -58,8 +58,9 @@ mod_params_flatplate = {
     "cells_in_series": 4,  # 60,
     "eta_m": 0.95,  # pvsyst_celltemp() default value
     "alpha_absorption": 0.97,  # pvsyst_celltemp() default value
-    "i_mp": 0.0,
-    "v_mp": 0.0,
+    "i_mp": 3.51,
+    "v_mp": 1.26,
+    "p_mp": 4.44,
 }
 
 
