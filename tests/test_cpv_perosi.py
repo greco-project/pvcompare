@@ -45,7 +45,7 @@ class TestPvtime_series:
         self.lon = 5.2
         self.surface_azimuth = 180
         self.surface_tilt = 30
-        self.year = 2015
+        self.year = 2014
 
     def test_smarts_spectra(self):
 
@@ -53,9 +53,9 @@ class TestPvtime_series:
         df = SMARTSSpectra(
             "2 3",
             str(self.year),
-            "6",
+            "8",
             "1",
-            "12",
+            "9",
             str(self.lat),
             str(self.lon),
             "400",
@@ -68,7 +68,7 @@ class TestPvtime_series:
             str(self.surface_azimuth),
         )
 
-        assert df["Direct_normal_irradiance"].sum() == 805.50805
+        assert df["Direct_normal_irradiance"].sum() == 750.29952
 
     def test_calculate_smarts_parameters(self):
 
@@ -85,7 +85,7 @@ class TestPvtime_series:
             WLMX=1200,
         )
 
-        assert output["Jsc_Chen_pero"].sum() == 0.009782887660475342
+        assert output["Jsc_Chen_pero"].sum() == 0.009034273174998176
 
     def test_create_perosi_timeseries(self):
 
@@ -101,7 +101,7 @@ class TestPvtime_series:
         )
 
         sum = output.sum()
-        assert sum == 104.41709853453722
+        assert sum == 57.81695705506873
 
     def test_create_cpv_time_series(self):
 
@@ -115,4 +115,4 @@ class TestPvtime_series:
 
         sum = output.sum()
 
-        assert sum == 3.000180095297516
+        assert sum == 3.2195140126743436
