@@ -285,10 +285,6 @@ def create_timeseries(
         result[str(x) + "_p_mp"] = result[str(x) + "_p_mp"] * (
             1 + (param.alpha * (t_cell - param.temp_ref))
         )
-        # add CTM losses of 5%
-        result[str(x) + "_p_mp"] = result[str(x) + "_p_mp"] - (
-            (result[str(x) + "_p_mp"] / 100) * param.losses
-        )
 
     return result
 
@@ -351,6 +347,8 @@ def create_pero_si_timeseries(
         number_hours=number_hours,
     )
     output = (timeseries.iloc[:, 0] + timeseries.iloc[:, 1])*20000
+    #add losses
+    output = output - (output*0.2)
 
     return output
 
