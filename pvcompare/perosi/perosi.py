@@ -348,7 +348,7 @@ def create_pero_si_timeseries(
     )
     output = (timeseries.iloc[:, 0] + timeseries.iloc[:, 1]) * 20000
     # add losses
-    output = output - (output * 0.2)
+    output = output - (output * 0.25)
 
     return output
 
