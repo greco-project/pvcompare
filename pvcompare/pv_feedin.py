@@ -524,7 +524,7 @@ def create_psi_time_series(
             import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
         # calculate peak power with 5 % CTM losses
-        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp) / 100) * 5
+        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp) / 100) * 10
 
         return (
             pvcompare.perosi.perosi.create_pero_si_timeseries(
@@ -584,10 +584,10 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
         )
         peak = (mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]) + (
             mod_params_flatplate["i_mp"] * mod_params_flatplate["v_mp"]
-        )  # todo: adjust pmp flatplate
+        )
         module_size = mod_params_cpv["Area"]
         nominal_value = round(area / module_size * peak) / 1000
-    elif technology == "psi":  # todo: correct nominal value
+    elif technology == "psi":
         if psi_type == "Korte":
             import pvcompare.perosi.data.cell_parameters_korte_pero as param1
             import pvcompare.perosi.data.cell_parameters_korte_si as param2
@@ -596,7 +596,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
             import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
         # calculate peak power with 5 % CTM losses nad 5 % cell connection losses
-        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp) / 100) * 10
+        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp) / 100) *10
         module_size = param1.A / 10000  # in m^2
         nominal_value = round((area / module_size) * peak) / 1000
 
