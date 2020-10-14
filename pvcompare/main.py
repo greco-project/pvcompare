@@ -130,7 +130,6 @@ if __name__ == "__main__":
     population = 48000
     country = "France"
 
-
     main(
         latitude=latitude,
         longitude=longitude,
@@ -139,4 +138,3 @@ if __name__ == "__main__":
         country=country,
     )
     apply_mvs(mvs_input_directory=None, mvs_output_directory=None)
-
