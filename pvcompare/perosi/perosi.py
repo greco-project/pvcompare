@@ -66,9 +66,9 @@ def calculate_smarts_parameters(
     if atmos_data is None:
         logging.info("loading atmos data from era5 data set")
         atmos_data = era5.load_era5_weatherdata(lat, lon, year, variable="perosi")
-#    delta = pd.to_timedelta(30, unit="m")
-#    atmos_data.index = atmos_data.index + delta
-    atmos_data.index= pd.to_datetime(atmos_data.index)
+    #    delta = pd.to_timedelta(30, unit="m")
+    #    atmos_data.index = atmos_data.index + delta
+    atmos_data.index = pd.to_datetime(atmos_data.index)
     atmos_data["davt"] = atmos_data["temp_air"].resample("D").mean()
     atmos_data = atmos_data.fillna(method="ffill")
 
@@ -346,15 +346,16 @@ def create_pero_si_timeseries(
         cell_type=cell_type,
         number_hours=number_hours,
     )
-    output = (timeseries.iloc[:, 0] + timeseries.iloc[:, 1])*20000
-    #add losses
-    output = output - (output*0.2)
+    output = (timeseries.iloc[:, 0] + timeseries.iloc[:, 1]) * 20000
+    # add losses
+    output = output - (output * 0.2)
 
     return output
 
 
 if __name__ == "__main__":
-    weather = pd.read_csv("/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/inputs/weatherdata_France_2014.csv",
+    weather = pd.read_csv(
+        "/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/inputs/weatherdata_France_2014.csv",
         index_col=0,
     )
     output1 = create_pero_si_timeseries(

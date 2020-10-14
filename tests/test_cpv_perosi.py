@@ -33,8 +33,9 @@ class TestPvtime_series:
         weather_df["dni"] = [120, 150]
         weather_df["ghi"] = [200, 220]
         weather_df["precipitable_water"] = [1, 2]
-        weather_df.index = pd.date_range(start='2014-08-01 09:00',
-                                         freq='H', periods=2, tz='Europe/Berlin')
+        weather_df.index = pd.date_range(
+            start="2014-08-01 09:00", freq="H", periods=2, tz="Europe/Berlin"
+        )
         self.test_mvs_directory = os.path.join(
             os.path.dirname(__file__), "test_data/test_mvs_inputs"
         )
