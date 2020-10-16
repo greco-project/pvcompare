@@ -10,7 +10,7 @@ development_costs,currency,0,0
 specific_costs,currency/kW,230,7000
 specific_costs_om,currency/kW/year,6,0
 dispatch_price,currency/kWh,0,0
-efficiency,factor,0.95,"{'value': {'file_name': 'cops_heat_pump_2014_45.641603_5.875387.csv', 'header': 'no_unit'}, 'unit': ''}"
+efficiency,factor,0.95,"{'file_name': 'cops_heat_pump_2014_45.641603_5.875387.csv', 'header': 'no_unit', 'unit': ''}"
 inflow_direction,str,PV bus,Electricity
 outflow_direction,str,Electricity,Heat
 energyVector,str,Electricity,Electricity
