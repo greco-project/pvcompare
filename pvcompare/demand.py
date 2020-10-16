@@ -83,7 +83,7 @@ def calculate_load_profiles(
     )
 
     for column in energyConsumption:
-        if column is not "unit":
+        if column != "unit":
             if energyConsumption.at["energyVector", column] == "Heat":
                 calculate_heat_demand(
                     country=country,
@@ -92,7 +92,7 @@ def calculate_load_profiles(
                     weather=weather,
                     input_directory=input_directory,
                     mvs_input_directory=mvs_input_directory,
-                    label=energyConsumption.at["label", column],
+                    column=energyConsumption.at["label", column],
                 )
             elif energyConsumption.at["energyVector", column] == "Electricity":
                 calculate_power_demand(
@@ -105,7 +105,7 @@ def calculate_load_profiles(
                 )
             else:
                 logging.warning(
-                    "the given energyVector in energyConsumption.csv"
+                    "the given energyVector in energyConsumption.csv "
                     "is not recognized. Please enter either >Heat< "
                     "or >Electricity<"
                 )
