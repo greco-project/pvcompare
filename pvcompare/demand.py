@@ -92,7 +92,7 @@ def calculate_load_profiles(
                     weather=weather,
                     input_directory=input_directory,
                     mvs_input_directory=mvs_input_directory,
-                    column=energyConsumption.at["label", column],
+                    column=column,
                 )
             elif energyConsumption.at["energyVector", column] == "Electricity":
                 calculate_power_demand(
