@@ -163,9 +163,10 @@ def add_sector_coupling(
     """
     Add heat sector if heat pump in 'energyConversion.csv'.
 
-    If COPs or EERS should be calculated automatically the column name needs to start
-    with "heat" (indicating the heat sector). (Once implemented: respectively "chiller"
-    (indicating the cooling sector)) followed by an underscore separating suffixes.
+    COPs or EERS are calculated automatically as long as the parameters
+    `inflow_direction` and `outflow_direction` give a hint that the respective asset is
+    a heat pump (inflow_direction: "Electricity", outflow_direction: "Heat") or chiller
+    (Not implemented, yet.).
 
     Parameters
     ----------
@@ -203,46 +204,51 @@ def add_sector_coupling(
         index_col=0,
     )
 
-    # heat pump
-    heat_keys = [col for col in energy_conversion.keys() if "heat" in col]
-    if len(heat_keys) >= 1:
-        file_exists = True
-        for heat_pump in heat_keys:
-            eff = energy_conversion[heat_pump]["efficiency"]
-            try:
-                float(eff)
-                logging.info(
-                    f"Heat pump in column '{heat_pump}' of 'energyConversion.csv' has "
-                    + f"constant efficiency {eff}. For using temperature dependent COPs check the documentation."
+    # Check if heat pump exists in specified system
+    heat_pumps = []
+    for col in energy_conversion.keys():
+        outflow = energy_conversion[col]["outflow_direction"]
+        inflow = energy_conversion[col]["inflow_direction"]
+        if outflow == "Heat" and inflow == "Electricity":
+            heat_pumps.extend([col])
+
+    file_exists = True
+    for heat_pump in heat_pumps:
+        eff = energy_conversion[heat_pump]["efficiency"]
+        try:
+            float(eff)
+            logging.info(
+                f"Heat pump in column '{heat_pump}' of 'energyConversion.csv' has "
+                + f"constant efficiency {eff}. For using temperature dependent COPs check the documentation."
+            )
+        except ValueError:
+            # check if COPs file provided in efficiency exists
+            cops_filename_csv_excl_path = eff.split("'")[3]
+            cops_filename_csv = os.path.join(
+                mvs_input_directory, "time_series", cops_filename_csv_excl_path
+            )
+
+            if not os.path.isfile(cops_filename_csv):
+                year = weather.index[int(len(weather) / 2)].year
+                cops_filename = os.path.join(
+                    mvs_input_directory,
+                    "time_series",
+                    f"cops_heat_pump_{year}_{lat}_{lon}.csv",
                 )
-            except ValueError:
-                # check if COPs file provided in efficiency exists
-                cops_filename_csv_excl_path = eff.split("'")[5]
-                cops_filename_csv = os.path.join(
-                    mvs_input_directory, "time_series", cops_filename_csv_excl_path
+                logging.warning(
+                    f"File containing COPs is missing: {cops_filename_csv} \nCalculated COPs are used instead."
                 )
-                # if not os.path.isfile(cops_filename_csv):
-                if not os.path.isfile(cops_filename_csv):
-                    year = weather.index[int(len(weather) / 2)].year
-                    cops_filename = os.path.join(
-                        mvs_input_directory,
-                        "time_series",
-                        f"cops_heat_pump_{year}_{lat}_{lon}.csv",
-                    )
-                    logging.warning(
-                        f"File containing COPs is missing: {cops_filename_csv} \nCalculated COPs are used instead."
-                    )
-                    file_exists = False
-                    # write new filename into energy_conversion
-                    energy_conversion[heat_pump]["efficiency"] = energy_conversion[
-                        heat_pump
-                    ]["efficiency"].replace(
-                        cops_filename_csv_excl_path,
-                        f"cops_heat_pump_{year}_{lat}_{lon}.csv",
-                    )
+                file_exists = False
+                # write new filename into energy_conversion
+                energy_conversion[heat_pump]["efficiency"] = energy_conversion[
+                    heat_pump
+                ]["efficiency"].replace(
+                    cops_filename_csv_excl_path,
+                    f"cops_heat_pump_{year}_{lat}_{lon}.csv",
+                )
 
         if file_exists == False:
-            # write new filenames into energyConversion.csv
+            # update energyConversion.csv
             energy_conversion.to_csv(
                 os.path.join(
                     mvs_input_directory, "csv_elements", "energyConversion.csv"
