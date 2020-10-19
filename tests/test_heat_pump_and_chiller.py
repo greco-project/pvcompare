@@ -31,7 +31,7 @@ class TestCalculateCopsAndEers:
             mvs_input_directory=TEST_DATA_HEAT,
         )
         cops_exp = pd.Series(
-            [4.0, 3.0, 2.4144869215291727, 2.234636871508378, 2.01005025125628, np.nan],
+            [4.0, 3.0, 2.4144869215291727, 2.234636871508378, 2.01005025125628, 0.0],
             index=self.date_range,
             name="no_unit",
         )
@@ -65,7 +65,7 @@ class TestCalculateCopsAndEers:
                 2.4144869215291727,
                 1.7877094972067027,
                 1.608040201005024,
-                np.nan,
+                0.0,
             ],
             index=self.date_range,
             name="no_unit",
