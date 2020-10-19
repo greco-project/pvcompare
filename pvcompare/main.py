@@ -57,18 +57,23 @@ def main(
         )
     check_inputs.add_electricity_price()
 
-    # if era5 import works this line can be used
-    weather = era5.load_era5_weatherdata(lat=latitude, lon=longitude, year=year)
-
-    #  otherwise this example weather data for one year (2014) can be used for now
-    # weather = pd.read_csv("./data/inputs/weatherdata_Germany_2016.csv", index_col=0)
-    # weather.index = pd.to_datetime(weather.index)
-    # spa = pvlib.solarposition.spa_python(
-    #     time=weather.index, latitude=latitude, longitude=longitude
-    # )
-    # weather["dni"] = pvlib.irradiance.dirint(
-    #     weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
-    # )
+    # check if weather data already exists
+    weather_file = os.path.join(
+        input_directory, f"weatherdata_{latitude}_{longitude}_{year}.csv"
+    )
+    if os.path.isfile(weather_file):
+        weather = pd.read_csv(
+            os.path.join(
+                input_directory, f"weatherdata_{latitude}_{longitude}_{year}.csv"
+            ),
+            index_col=0,
+        )
+    else:
+        # if era5 import works this line can be used
+        weather = era5.load_era5_weatherdata(lat=latitude, lon=longitude, year=year)
+        weather.to_csv(weather_file)
+    # add datetimeindex
+    weather.index = pd.to_datetime(weather.index)
 
     pv_feedin.create_pv_components(
         lat=latitude,
@@ -121,8 +126,9 @@ def apply_mvs(mvs_input_directory, mvs_output_directory):
 
 if __name__ == "__main__":
 
-    latitude = 48.864716  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
-    longitude = 2.349014  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
+    latitude = 52.5243700  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
+
+    longitude = 13.4105300  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
     year = 2014
     population = 48000
     country = "France"
@@ -134,4 +140,4 @@ if __name__ == "__main__":
         population=population,
         country=country,
     )
-    apply_mvs(mvs_input_directory=None, mvs_output_directory=None)
+apply_mvs(mvs_input_directory=None, mvs_output_directory=None)
