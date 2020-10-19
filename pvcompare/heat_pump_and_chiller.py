@@ -32,6 +32,8 @@ def calculate_cops_and_eers(
     For these calculations the oemof.thermal `calc_cops()` functionality is
     used. Data like quality grade and factor icing is read from the file
     `heat_pumps_and_chillers.csv` in the `input_directory`.
+    Negative values, which might occur due to high ambient temperatures in summer are
+    set to zero.
 
     Parameters
     ----------
