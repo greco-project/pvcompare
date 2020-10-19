@@ -183,11 +183,14 @@ def add_sector_coupling(
     mvs_input_directory: str or None
         Path to input directory containing files that describe the energy
         system and that are an input to MVS. Default:
-        DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`.
+        DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`).
 
     Notes
     -----
     Chillers were not tested, yet, and no automatic calculation of EERs is implemented.
+    Attention: the above mentioned characteristics (inflow_direction: "Electricity",
+    outflow_direction: "Heat") could also account for other heating elements. This
+    function could be enhanced.
 
     Returns
     -------
@@ -235,7 +238,7 @@ def add_sector_coupling(
                     "time_series",
                     f"cops_heat_pump_{year}_{lat}_{lon}.csv",
                 )
-                logging.warning(
+                logging.info(
                     f"File containing COPs is missing: {cops_filename_csv} \nCalculated COPs are used instead."
                 )
                 file_exists = False
