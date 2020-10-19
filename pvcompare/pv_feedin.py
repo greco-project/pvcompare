@@ -26,15 +26,15 @@ try:
 except ImportError:
     plt = None
 
-import greco_technologies.cpv.inputs
-import greco_technologies.perosi.perosi
+import pvcompare.cpv.inputs
+import pvcompare.perosi.perosi
 from pvcompare import area_potential
 from pvcompare import check_inputs
 from pvcompare import constants
 
 from cpvlib import cpvlib
 
-from greco_technologies.cpv import apply_cpvlib_StaticHybridSystem
+from pvcompare.cpv import apply_cpvlib_StaticHybridSystem
 
 log_format = "%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s"
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
@@ -309,11 +309,9 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
 
     elif technology == "cpv":
 
-        logging.debug(
-            "cpv module parameters are loaded from greco_technologies/inputs.py"
-        )
-        mod_params_cpv = greco_technologies.cpv.inputs.mod_params_cpv
-        mod_params_flatplate = greco_technologies.cpv.inputs.mod_params_flatplate
+        logging.debug("cpv module parameters are loaded from pvcompare/cpv/inputs.py")
+        mod_params_cpv = pvcompare.cpv.inputs.mod_params_cpv
+        mod_params_flatplate = pvcompare.cpv.inputs.mod_params_flatplate
 
         static_hybrid_sys = cpvlib.StaticHybridSystem(
             surface_tilt=surface_tilt,
@@ -464,47 +462,47 @@ def create_psi_time_series(
 ):
 
     """
-         Creates power time series of a Perovskite-Silicone module.
+    Creates power time series of a Perovskite-Silicone module.
 
-         The PSI time series is created for a given weather data frame
-         (`weather`). If `normalized` is set to True, the time
-         series is divided by the peak power of the module.
+    The PSI time series is created for a given weather data frame
+    (`weather`). If `normalized` is set to True, the time
+    series is divided by the peak power of the module.
 
 
-         Parameters
-         ----------
-         lat : float
-             Latitude of the location for which the time series is calculated.
-         lon : float
-             Longitude of the location for which the time series is calculated.
-         weather : :pandas:`pandas.DataFrame<frame>`
-             DataFrame with time series for temperature `temp_air` in C°, wind speed
-             `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m^2
-         surface_azimuth : float
-             Surface azimuth of the modules (180° for south, 270° for west, etc.).
-         surface_tilt: float
-             Surface tilt of the modules. (horizontal=90° and vertical=0°)
-         psi_type  : str
-             Defines the type of module of which the time series is calculated.
-             Options: "Korte", "Chen"
-         normalized: bool
-             If True, the time series is divided by the peak power of the CPV
-             module. Default: False.
+    Parameters
+    ----------
+    lat : float
+        Latitude of the location for which the time series is calculated.
+    lon : float
+        Longitude of the location for which the time series is calculated.
+    weather : :pandas:`pandas.DataFrame<frame>`
+        DataFrame with time series for temperature `temp_air` in C°, wind speed
+        `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m^2
+    surface_azimuth : float
+        Surface azimuth of the modules (180° for south, 270° for west, etc.).
+    surface_tilt: float
+        Surface tilt of the modules. (horizontal=90° and vertical=0°)
+    psi_type  : str
+        Defines the type of module of which the time series is calculated.
+        Options: "Korte", "Chen"
+    normalized: bool
+        If True, the time series is divided by the peak power of the CPV
+        module. Default: False.
 
-         Returns
-         -------
-         :pandas:`pandas.Series<series>`
-             Power output of PSI module in W (if parameter `normalized` is False) or todo check unit.
-             normalized power output of CPV module (if parameter `normalized` is
-             False).
+    Returns
+    -------
+    :pandas:`pandas.Series<series>`
+        Power output of PSI module in W (if parameter `normalized` is False) or todo check unit.
+        normalized power output of CPV module (if parameter `normalized` is
+        False).
 
-         """
+    """
     atmos_data = weather[["ghi", "dhi", "dni", "wind_speed", "temp_air"]]
 
     if normalized == False:
         logging.info("Absolute PSI time series is calculated in kW.")
         return (
-            greco_technologies.perosi.perosi.create_pero_si_timeseries(
+            pvcompare.perosi.perosi.create_pero_si_timeseries(
                 year,
                 lat,
                 lon,
@@ -519,17 +517,17 @@ def create_psi_time_series(
     else:
         logging.info("Normalized PSI time series is calculated.")
         if psi_type == "Korte":
-            import greco_technologies.perosi.data.cell_parameters_korte_pero as param1
-            import greco_technologies.perosi.data.cell_parameters_korte_si as param2
+            import pvcompare.perosi.data.cell_parameters_korte_pero as param1
+            import pvcompare.perosi.data.cell_parameters_korte_si as param2
         elif psi_type == "Chen":
-            import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_pero as param1
-            import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_si as param2
+            import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_pero as param1
+            import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
         # calculate peak power with 5 % CTM losses
-        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp) / 100) * 5
+        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp) / 100) * 10
 
         return (
-            greco_technologies.perosi.perosi.create_pero_si_timeseries(
+            pvcompare.perosi.perosi.create_pero_si_timeseries(
                 year,
                 lat,
                 lon,
@@ -586,16 +584,16 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
         )
         peak = (mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]) + (
             mod_params_flatplate["i_mp"] * mod_params_flatplate["v_mp"]
-        )  # todo: adjust pmp flatplate
+        )
         module_size = mod_params_cpv["Area"]
         nominal_value = round(area / module_size * peak) / 1000
-    elif technology == "psi":  # todo: correct nominal value
+    elif technology == "psi":
         if psi_type == "Korte":
-            import greco_technologies.perosi.data.cell_parameters_korte_pero as param1
-            import greco_technologies.perosi.data.cell_parameters_korte_si as param2
+            import pvcompare.perosi.data.cell_parameters_korte_pero as param1
+            import pvcompare.perosi.data.cell_parameters_korte_si as param2
         elif psi_type == "Chen":
-            import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_pero as param1
-            import greco_technologies.perosi.data.cell_parameters_Chen_2020_4T_si as param2
+            import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_pero as param1
+            import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
         # calculate peak power with 5 % CTM losses nad 5 % cell connection losses
         peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp) / 100) * 10

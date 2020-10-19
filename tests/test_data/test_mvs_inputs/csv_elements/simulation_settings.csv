@@ -4,7 +4,7 @@ label,str,simulation_settings
 oemof_file_name,str,MVS_results.oemof
 output_lp_file,bool,False
 restore_from_oemof_file,bool,False
-start_date,str,None
+start_date,str,2014-01-01 00:00:00
 store_oemof_results,bool,True
 timestep,minutes,60
 display_nx_graph,bool,False
