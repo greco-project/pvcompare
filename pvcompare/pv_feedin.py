@@ -547,8 +547,9 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
     calculates the maximum installed capacity for each pv module.
 
     The nominal value for each PV technology is constructed by the size of
-    the module, its peak power and the total available area. The nominal value
-    functions as a limit for the potential installed capacity of pv in oemof.
+    the module, its peak power and the total available area. It is given in
+    the unit of kWh. The nominal value functions as a limit for the potential
+    installed capacity of pv in oemof.
 
     Parameters
     ----------
