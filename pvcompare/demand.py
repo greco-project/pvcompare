@@ -83,7 +83,7 @@ def calculate_load_profiles(
     )
 
     for column in energyConsumption:
-        if column is not "unit":
+        if column != "unit":
             if energyConsumption.at["energyVector", column] == "Heat":
                 calculate_heat_demand(
                     country=country,
@@ -92,7 +92,7 @@ def calculate_load_profiles(
                     weather=weather,
                     input_directory=input_directory,
                     mvs_input_directory=mvs_input_directory,
-                    label=energyConsumption.at["label", column],
+                    column=column,
                 )
             elif energyConsumption.at["energyVector", column] == "Electricity":
                 calculate_power_demand(
@@ -105,7 +105,7 @@ def calculate_load_profiles(
                 )
             else:
                 logging.warning(
-                    "the given energyVector in energyConsumption.csv"
+                    "the given energyVector in energyConsumption.csv "
                     "is not recognized. Please enter either >Heat< "
                     "or >Electricity<"
                 )
@@ -223,7 +223,7 @@ def calculate_power_demand(
     # save the file name of the time series and the nominal value to
     # mvs_inputs/elements/csv/energyProduction.csv
     check_inputs.add_parameters_to_energy_consumption_file(
-        column=column, ts_filename=shifted_elec_demand, mvs_input_directory=None
+        column=column, ts_filename=el_demand_csv, mvs_input_directory=None
     )
 
     return shifted_elec_demand
@@ -367,7 +367,7 @@ def calculate_heat_demand(
     # save the file name of the time series and the nominal value to
     # mvs_inputs/elements/csv/energyProduction.csv
     check_inputs.add_parameters_to_energy_consumption_file(
-        column=column, ts_filename=shifted_heat_demand, mvs_input_directory=None
+        column=column, ts_filename=h_demand_csv, mvs_input_directory=None
     )
     return shifted_heat_demand
 

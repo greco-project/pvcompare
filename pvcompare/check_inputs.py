@@ -395,7 +395,7 @@ def add_parameters_to_energy_consumption_file(
     energy_consumption = pd.read_csv(energy_consumption_filename, index_col=0)
 
     # check if demand column is available
-    if not column in energy_consumption.columns:
+    if column not in energy_consumption.columns:
         logging.warning(
             f"The demand {column} is not in energyConsumption.csv. "
             f"Please make sure you insert the column if the demand "
