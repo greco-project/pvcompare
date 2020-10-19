@@ -345,6 +345,7 @@ def calculate_heat_demand(
         wind_class=0,
         annual_heat_demand=annual_heat_demand_per_population,
         name="MFH",
+        ww_incl=False,
     ).get_bdew_profile()
 
     shifted_heat_demand = shift_working_hours(country=country, ts=demand)
