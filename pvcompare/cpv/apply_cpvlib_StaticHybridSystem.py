@@ -20,8 +20,6 @@ def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
         surface azimuth
     :param surface_tilt: int
         surface tilt
-    :param cpv_type: str
-        possible cpv_types integrated up to this point: "ins", "m300"
     :return: pd.DataFrame()
     """
 
