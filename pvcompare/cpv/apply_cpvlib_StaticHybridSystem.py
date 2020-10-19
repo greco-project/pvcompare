@@ -8,7 +8,6 @@ from pvcompare.cpv.inputs import mod_params_cpv, mod_params_flatplate
 
 def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
     """
-
     creates a time series for a type of cpv module
 
     :param lat: num
