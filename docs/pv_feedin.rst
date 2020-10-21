@@ -215,7 +215,7 @@ subcell.
 3.2 losses due to cell connection (5%) and cell to module connection (5%) are
 taken into account
 
-4. The temperature dependency is accounted for by: (see `Jost2020<https://onlinelibrary.wiley.com/doi/full/10.1002/aenm.202000454>`_)
+4. The temperature dependency is accounted for by: (see `Jost2020 <https://onlinelibrary.wiley.com/doi/full/10.1002/aenm.202000454>`_)
 
 .. math::
         Pmp = Pmp - Pmp \cdot \alpha  \cdot (T-T_0)
