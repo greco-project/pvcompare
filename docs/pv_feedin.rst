@@ -22,8 +22,8 @@ selected by default is the "Aleo_Solar_S59y280" module with a 17% efficiency.
 But any other module can be selected.
 
 The timeseries is calculating making usage of the `Modelchain  <https://pvlib-python.readthedocs.io/en/stable/modelchain.html>`_
-functionality in pvlib. In order to make the results compareable for real world
-conditions the following methods are added to the modelchain object:
+functionality in `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_. In order to make the results compareable for real world
+conditions the following methods are added to the `modelchain object <https://pvlib-python.readthedocs.io/en/stable/api.html#modelchain>`_ :
 
 - aoi_model="ashrae"
 - spectral_model="first_solar"
@@ -41,7 +41,7 @@ collection of the company INSOLIGHT.
 The following Image describes the composition of the module:
 
 .. image:: ./images/scheme_cpv.png
-  :width: 400
+  :width: 100%
   :alt: composition scheme of the hybrid module. Direct beam irradiance is
         collected by 1mm III-V cells, while diffuse light is collected by
         the Si cell. For AOI not equal to 0°, the biconvex lens maintains
@@ -51,7 +51,7 @@ The following Image describes the composition of the module:
 "The Insolight technology employs a biconvex lens designed
 such that focusing is possible when the angle of incidence
 (AOI) approaches 60°, although the focal spot does travel as the
-sun moves, as shown in Fig. 2, and the entire back plane is
+sun moves and the entire back plane is
 translated to follow it, and maintain alignment. The back plane
 consists of an array of commercial triple junction microcells
 with approximately 42% efficiency combined with
@@ -61,13 +61,13 @@ concentration ratio is 180X. Because the optical elements are
 refractive, diffuse light which is not focused onto the III-V cells
 is instead collected by the Si cells, which cover the area not
 taken up by III-V cells. Voltages are not matched between III-
-V and Si cells, so a four terminal output is provided." (From `Askins 2019 <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_
+V and Si cells, so a four terminal output is provided." (From `Askins 2019 <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_)
 
 Modeling the hybrid system
 --------------------------
 The model of the cpv technology is outsourced from pvcompare and can be found in the
 `cpvlib <https://github.com/isi-ies-group/cpvlib>`_ repository. PVcompare
-contains the wrapper function :ref:`RST Overview`apply_cpvlib_StaticHybridSystem.py.(LINK)
+contains the wrapper function `apply_cpvlib_StaticHybridSystem`.
 
 In order to model the dependencies of AOI, temperature and spectrum of the cpv
 module, the model follows an approach of `[Gerstmeier, 2011] <https://www.researchgate.net/publication/234976094_Validation_of_the_PVSyst_Performance_Model_for_the_Concentrix_CPV_Technology>`_
@@ -78,27 +78,48 @@ losses due to spectral and lens temperature variations.
 The utilization factors are defined as follows:
 
 .. math::
-        UF = ...
+        UF = \sum_{i=1}^{n} UF_i \cdot w_i
+
+.. math::
+        \[
+        UF_i =
+        \left\{
+        \begin{array}{
+            @{}% no padding
+            l@{\quad}% some padding
+            r@{}% no padding
+            >{{}}r@{}% no padding
+            >{{}}l@{}% no padding
+        }
+            1 + (x - x_{thrd}) \cdot S_{x\leq x_{thrd}}&         & \text{if }   x &\leq x_{thrd} \\
+            1 + (x - x_{thrd}) \cdot S_{x\leq x_{thrd}}&         & \text{if }    x &\geq x_{thrd}
+        \end{array}
+        \right.
+        \]
+
 
 The overall model for the hybrid system is illustrated in the next figure.
 
-.. image:: ./images/StaticHybridSystem block_diagram.png
-  :width: 400
+.. image:: ./images/StaticHybridSystem_block_diagram.png
+  :width: 100%
   :alt: modeling scheme of the hybrid micro-concentrator module
 
-**cpv part**
+CPV submodule
+-------------
 
 Input parameters are weather data with AM (airmass), Temoerature,
 DNI (direct normal irradiance), GHI (global horizontal irradiance) over time.
-The CPV part only takes DNI into account. The angle of incidence (AOI) is calculated it pvlib (LINK).
-Further the single diode eequation is solved for the given module parameters.
+The CPV part only takes DNI into account. The angle of incidence (AOI) is calculated
+by `pvlib.irradiance.aoi() <https://pvlib-python.readthedocs.io/en/stable/generated/pvlib.irradiance.aoi.html?highlight=pvlib.irradiance.aoi#pvlib.irradiance.aoi>`_.
+Further the `pvlib.pvsystem.singlediode() <https://pvlib-python.readthedocs.io/en/stable/generated/pvlib.pvsystem.singlediode.html?highlight=singlediode>`_ function is solved for the given module parameters.
 The utilization factors have been defined before by correlation analysis of
 outdoor measurements. The given utilization factors for temperature and airmass
 are then multiplied with the output power of the single diode functions. They
 function as temperature and airmass corrections due to spectral and temperature
 losses.
 
-**flatplate part**
+flatplate submodule
+-------------------
 
 For AOI < 60° the flatplate part only takes GII (global inclined irradiance) -
 DII (direct inclined irradiance). So only the diffuse part of the irradiance
@@ -134,14 +155,14 @@ Modeling PeroSi
 
 The following model for generating an output timeseries under real world conditions
 is therefore based on cells that were up to now only tested in the laboratory.
-Spectral correlations were explicitly calculated by applying SMARTS
+Spectral correlations were explicitly calculated by applying `SMARTS <https://www.nrel.gov/grid/solar-resource/smarts.html>`_
 (a Simple Model of the Atmospheric Radiative Transfer of Sunshine) to the given
 EQE curves of our model. Temperature dependencies are covered by a temperature
 coefficient for each sub cell. The dependence of AOI is taken into account
-by SMARTS.
+by `SMARTS <https://www.nrel.gov/grid/solar-resource/smarts.html>`_.
 
 .. image:: ./images/schema_modell.jpg
-  :width: 400
+  :width: 100%
   :alt: modeling scheme of the perovskite silicone tandem cell
 
 input data
@@ -166,13 +187,16 @@ and j_0 are found by fitting the IV curve.
 modeling procedure
 ------------------
 1. **weather data**
-The POA_global (plane of array) irradiance is calculated with pvlib ...
+The POA_global (plane of array) irradiance is calculated with `pvlib.irradiance.get_total_irradiance() <https://pvlib-python.readthedocs.io/en/stable/generated/pvlib.irradiance.get_total_irradiance.html#pvlib.irradiance.get_total_irradiance>`_ function
+
 2. **SMARTS**
-The SMARTS spectrum is calculated for each time step
+The `SMARTS <https://www.nrel.gov/grid/solar-resource/smarts.html>`_ spectrum is calculated for each time step
+
 2.1. the output values (ghi_for_tilted surface and
-photon_flux_for_tilted_surface) are scaled with the ghi from ERA5
-weather data. A test showed that the photon_flux_for_tilted_surface
-is scaled linearly to the POA_global.
+photon_flux_for_tilted_surface) are scaled with the ghi from `ERA5 <https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-pressure-levels?tab=overview>`_
+weather data. The parameter photon_flux_for_tilted_surface scales linear to
+the POA_global.
+
 2.2 the short circuit current (Jsc) is calculated for each timestep:
 
 .. math::
@@ -180,23 +204,29 @@ is scaled linearly to the POA_global.
 
         \text{with } \Phi : \text{photon flux for tilted surface}
 
-        \text q : elementary electric charge
+        \text q : \text{elementary electric charge}
 
-3. The pvlib singlediode function is used to evaluate the output power of each
+3. The `pvlib.pvsystem.singlediode() <https://pvlib-python.readthedocs.io/en/stable/generated/pvlib.pvsystem.singlediode.html?highlight=singlediode>`_
+function is used to evaluate the output power of each
 subcell.
+
 3.1 The output power Pmp is multiplied by the number of cells in series
+
 3.2 losses due to cell connection (5%) and cell to module connection (5%) are
 taken into account
-4. The temperature dependency is accounted for by see (ref)
+
+4. The temperature dependency is accounted for by: (see `Jost2020<https://onlinelibrary.wiley.com/doi/full/10.1002/aenm.202000454>`_)
 
 .. math::
         Pmp = Pmp - Pmp \cdot \alpha  \cdot (T-T_0)
 
 5. In order to get the module output the cell outputs are added up.
 
+NOTICE: losses
+
 
 -------------
-Normalization
+3. Normalization
 -------------
 
 For the energy system optimization normalized timeseries are needed, which can

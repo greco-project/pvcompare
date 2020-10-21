@@ -54,7 +54,7 @@ Function for calculating the feed-in time series for the CPV technology.
 .. autosummary::
     :toctree: temp/
 
-    cpv.apply_cpvlib_StaticHybridSystem
+    cpv.apply_cpvlib_StaticHybridSystem.create_cpv_time_series
 
 
 Modeling PSI timeseries
