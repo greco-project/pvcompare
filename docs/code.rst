@@ -46,6 +46,33 @@ Functions for calculating the feed-in time series of different PV technologies.
     pv_feedin.get_optimal_pv_angle
 
 
+Modeling CPV timeseries
+=================================================
+
+Function for calculating the feed-in time series for the CPV technology.
+
+.. autosummary::
+    :toctree: temp/
+
+    cpv.apply_cpvlib_StaticHybridSystem
+
+
+Modeling PSI timeseries
+=================================================
+
+Function for calculating the feed-in time series for the perovskite silicone technology.
+
+.. autosummary::
+    :toctree: temp/
+
+    perosi.perosi.create_pero_si_timeseries
+    perosi.perosi.create_timeseries
+    perosi.perosi.calculate_smarts_parameters
+    perosi.pvlib_smarts.SMARTSSpectra
+    perosi.pvlib_smarts._smartsAll
+
+
+
 Reading and Writing input csv's
 ===============================
 
