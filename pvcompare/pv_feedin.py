@@ -662,6 +662,8 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
 
 def get_peak(technology, normalization, module_parameters_1, module_parameters_2):
     """
+    this function returns the peak value for the given technology and the given
+    type of normalization.
 
     :param technology: str
         "si", "cpv" or "psi"
@@ -698,6 +700,19 @@ def get_peak(technology, normalization, module_parameters_1, module_parameters_2
 
 
 def calculate_NREA_peak(technology):
+    """
+    calculates the peak value of a technology under real world conditions.
+
+    Using weather year of Madrid, Spain, 2014 the dataframe is filtered to find
+    the timestep where irradiance and temperature come closest to reference
+    conditions of ghi=1000 W/m and temp_air= 25 °C. #todo: cell temperature instead of air temperature?
+    The p_mp at this timestep is taken as the reference peak value for normalization.
+
+    :param technology: str
+        `si`, `cpv` or `psi`
+    :return: numeric
+        peak value
+    """
 
     irr_ref = 1000
     temp_ref = 25
