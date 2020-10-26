@@ -530,6 +530,7 @@ def create_psi_time_series(
 
     """
     atmos_data = weather[["ghi", "dhi", "dni", "wind_speed", "temp_air"]]
+    number_rows=atmos_data["ghi"].count()
 
     if normalization is None:
         logging.info("Absolute PSI time series is calculated in kW.")
@@ -541,7 +542,7 @@ def create_psi_time_series(
                 surface_azimuth,
                 surface_tilt,
                 atmos_data=atmos_data,
-                number_hours=8760,
+                number_hours=number_rows,
                 psi_type=psi_type,
             )
             / 1000
@@ -571,7 +572,7 @@ def create_psi_time_series(
                 surface_azimuth,
                 surface_tilt,
                 atmos_data=atmos_data,
-                number_hours=8760,
+                number_hours=number_rows,
                 psi_type=psi_type,
             )
             / peak
@@ -683,20 +684,22 @@ def get_peak(technology, normalization, module_parameters_1, module_parameters_2
     if normalization == "NREF":
         if technology == "si":
             peak = module_parameters_1["I_mp_ref"] * module_parameters_1["V_mp_ref"]
+            return peak
         elif technology == "cpv":
             peak = (module_parameters_1["i_mp"] * module_parameters_1["v_mp"]) + (
                 module_parameters_2["i_mp"] * module_parameters_2["v_mp"]
             )
+            return peak
         elif technology == "psi":
 
             # calculate peak power with 5 % CTM losses
             peak = (module_parameters_1.p_mp + module_parameters_1.p_mp) - (
                 (module_parameters_2.p_mp + module_parameters_2.p_mp) / 100
             ) * 10
+            return peak
     elif normalization == "NREA":
-        peak = calculate_NREA_peak(technology=technology)
+        return calculate_NREA_peak(technology=technology)
 
-    return peak
 
 
 def calculate_NREA_peak(technology):
@@ -716,14 +719,14 @@ def calculate_NREA_peak(technology):
 
     irr_ref = 1000
     temp_ref = 25
-    lat = 40.416775
-    lon = -3.70379
+    lat = 52.52437
+    lon = 13.41053
     year = 2014
     surface_tilt = get_optimal_pv_angle(lat=lat)
 
     input_directory = constants.DEFAULT_INPUT_DIRECTORY
     weather_file = os.path.join(
-        input_directory, "weatherdata_40.416775_-3.70379_2014.csv"
+        input_directory, "weatherdata_52.52437_13.41053_2014.csv"
     )
     if os.path.isfile(weather_file):
         weather = pd.read_csv(weather_file, index_col=0)
@@ -732,9 +735,34 @@ def calculate_NREA_peak(technology):
             f"the weather file {weather_file} does not exist. Please"
             f"make sure the weather file is in {input_directory}."
         )
+    weather.index = pd.to_datetime(weather.index, utc=True)
+    # calculate poa_global for tilted surface
+    spa = pvlib.solarposition.spa_python(
+        time=weather.index, latitude=lat, longitude=lon
+    )
+    #check if poa_global = irr_ref
+    poa = pvlib.irradiance.get_total_irradiance(
+        surface_tilt=surface_tilt,
+        surface_azimuth=180,
+        solar_zenith=spa["zenith"],
+        solar_azimuth=spa["azimuth"],
+        dni=weather["dni"],
+        ghi=weather["ghi"],
+        dhi=weather["dhi"],
+    )
+    weather["poa_global"] = poa["poa_global"]
 
-    peak_irr = weather.iloc[(weather["ghi"] - irr_ref).abs().argsort()[:2]]
-    peak_hour = peak_irr.iloc[(peak_irr["temp_air"] - temp_ref).abs().argsort()[:1]]
+    #check if cell temperature = temp_ref
+    weather["cell_temperature"] = pvlib.temperature.pvsyst_cell(
+        poa_global=weather["poa_global"],
+        temp_air=weather["temp_air"],
+        wind_speed=weather["wind_speed"],
+    )
+
+    peak_irr = weather.iloc[(weather["poa_global"] - irr_ref).abs().argsort()[:2]]
+    peak_hour = peak_irr.iloc[(peak_irr["cell_temperature"] - temp_ref).abs().argsort()[:1]]
+
+    peak_hour=peak_hour[["latitude", "longitude", "dhi", "ghi", "dni", "temp_air", "wind_speed", "precipitable_water"]]
 
     if technology == "si":
 
@@ -746,7 +774,7 @@ def calculate_NREA_peak(technology):
             surface_tilt=surface_tilt,
             normalization=None,
         )
-        peak = timeseries[0] * 1000
+
     elif technology == "cpv":
         timeseries = create_cpv_time_series(
             lat=lat,
@@ -756,7 +784,7 @@ def calculate_NREA_peak(technology):
             surface_tilt=surface_tilt,
             normalization=None,
         )
-        peak = timeseries[0] * 1000
+
     elif technology == "psi":
         timeseries = create_psi_time_series(
             lat=lat,
@@ -768,14 +796,11 @@ def calculate_NREA_peak(technology):
             psi_type="Chen",
             year=year,
         )
-        peak = timeseries[0] * 1000
 
-    return peak
+    return timeseries[0] * 1000
 
 
 if __name__ == "__main__":
 
-    peak = calculate_NREA_peak(
-        input_directory=constants.DEFAULT_INPUT_DIRECTORY, technology="cpv"
-    )
+    peak = calculate_NREA_peak(technology="psi")
     print(peak)
