@@ -30,9 +30,10 @@ def calculate_cops_and_eers(
 
     Temperature dependency is taken into consideration.
     For these calculations the oemof.thermal `calc_cops()` functionality is
-    used. Data like quality grade, factor icing and the temperature from which
-    heating is assumed to take place is read from the file
+    used. Data like quality grade and factor icing is read from the file
     `heat_pumps_and_chillers.csv` in the `input_directory`.
+    Negative values, which might occur due to high ambient temperatures in summer are
+    set to zero.
 
     Parameters
     ----------
@@ -47,7 +48,7 @@ def calculate_cops_and_eers(
         Name of column in `weather` containing ambient temperature.
         Default: "temp_air".
     mode : str
-        Defines whether COPs ot heat pump ("heat_pump") or EERs of chiller
+        Defines whether COPs of heat pump ("heat_pump") or EERs of chiller
         ("chiller") are calculated. Default: "heat_pump".
     input_directory: str or None
         Path to input directory of pvcompare containing file
@@ -128,14 +129,9 @@ def calculate_cops_and_eers(
     df = pd.DataFrame(weather[temperature_col])
     df[column_name] = efficiency
 
-    # set COP to nan where ambient temperature > heating period temperature
-    # or respectively set EER to nan where ambient temperature < cooling
-    # period temperature
-    if mode == "heat_pump":
-        indices = df.loc[df[temperature_col] > start_temperature].index
-    else:
-        indices = df.loc[df[temperature_col] < start_temperature].index
-    df[column_name][indices] = np.nan
+    # set negative COPs/EERs to nan
+    indices = df.loc[df[column_name] < 0].index
+    df[column_name][indices] = 0
 
     # extract COPs/EERs as pd.Series from data frame
     efficiency_series = df[column_name]

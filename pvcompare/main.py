@@ -31,7 +31,6 @@ def main(
     input_directory=None,
     mvs_input_directory=None,
     plot=False,
-    mvs_output_directory=None,
     pv_setup=None,
 ):
 
