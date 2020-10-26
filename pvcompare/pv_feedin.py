@@ -530,7 +530,7 @@ def create_psi_time_series(
 
     """
     atmos_data = weather[["ghi", "dhi", "dni", "wind_speed", "temp_air"]]
-    number_rows=atmos_data["ghi"].count()
+    number_rows = atmos_data["ghi"].count()
 
     if normalization is None:
         logging.info("Absolute PSI time series is calculated in kW.")
@@ -701,7 +701,6 @@ def get_peak(technology, normalization, module_parameters_1, module_parameters_2
         return calculate_NREA_peak(technology=technology)
 
 
-
 def calculate_NREA_peak(technology):
     """
     calculates the peak value of a technology under real world conditions.
@@ -740,7 +739,7 @@ def calculate_NREA_peak(technology):
     spa = pvlib.solarposition.spa_python(
         time=weather.index, latitude=lat, longitude=lon
     )
-    #check if poa_global = irr_ref
+    # check if poa_global = irr_ref
     poa = pvlib.irradiance.get_total_irradiance(
         surface_tilt=surface_tilt,
         surface_azimuth=180,
@@ -752,7 +751,7 @@ def calculate_NREA_peak(technology):
     )
     weather["poa_global"] = poa["poa_global"]
 
-    #check if cell temperature = temp_ref
+    # check if cell temperature = temp_ref
     weather["cell_temperature"] = pvlib.temperature.pvsyst_cell(
         poa_global=weather["poa_global"],
         temp_air=weather["temp_air"],
@@ -760,9 +759,22 @@ def calculate_NREA_peak(technology):
     )
 
     peak_irr = weather.iloc[(weather["poa_global"] - irr_ref).abs().argsort()[:2]]
-    peak_hour = peak_irr.iloc[(peak_irr["cell_temperature"] - temp_ref).abs().argsort()[:1]]
+    peak_hour = peak_irr.iloc[
+        (peak_irr["cell_temperature"] - temp_ref).abs().argsort()[:1]
+    ]
 
-    peak_hour=peak_hour[["latitude", "longitude", "dhi", "ghi", "dni", "temp_air", "wind_speed", "precipitable_water"]]
+    peak_hour = peak_hour[
+        [
+            "latitude",
+            "longitude",
+            "dhi",
+            "ghi",
+            "dni",
+            "temp_air",
+            "wind_speed",
+            "precipitable_water",
+        ]
+    ]
 
     if technology == "si":
 
