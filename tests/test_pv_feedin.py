@@ -20,7 +20,7 @@ from pvcompare.pv_feedin import (
     create_cpv_time_series,
     get_optimal_pv_angle,
     calculate_NREA_peak,
-    get_peak
+    get_peak,
 )
 
 
@@ -252,11 +252,13 @@ class TestPvtime_series:
                 year=self.year,
             )
 
+
 def test_calculate_NREA_peak_si():
 
     peak1 = calculate_NREA_peak(technology="si")
 
-    assert round(peak1, 2)== 213.9
+    assert round(peak1, 2) == 213.9
+
 
 def test_calculate_NREA_peak_cpv():
 
@@ -264,11 +266,13 @@ def test_calculate_NREA_peak_cpv():
 
     assert round(peak2, 2) == 25.73
 
+
 def test_calculate_NREA_peak_psi():
 
     peak3 = calculate_NREA_peak(technology="psi")
 
     assert round(peak3, 2) == 261.26
+
 
 # # one can test that exception are raised
 # def test_addition_wrong_argument_number():

@@ -347,7 +347,9 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
         )
 
 
-def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt, normalization):
+def create_si_time_series(
+    lat, lon, weather, surface_azimuth, surface_tilt, normalization
+):
 
     """
     Calculates feed-in time series for a silicon PV module.
@@ -401,13 +403,14 @@ def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt, norm
         logging.info("Absolute si time series is calculated in kW.")
         return output["p_mp"] / 1000
     else:
-        peak = get_peak(technology = "si", normalization=normalization,
-                                 module_parameters_1=module_parameters,
-                                module_parameters_2=None)
+        peak = get_peak(
+            technology="si",
+            normalization=normalization,
+            module_parameters_1=module_parameters,
+            module_parameters_2=None,
+        )
         logging.info("Normalized si time series is calculated in kW.")
         return (output["p_mp"] / peak).clip(0)
-
-
 
 
 def create_cpv_time_series(
@@ -454,18 +457,21 @@ def create_cpv_time_series(
     if normalization is None:
         logging.info("Absolute CPV time series is calculated in kW.")
         return (
-                apply_cpvlib_StaticHybridSystem.create_cpv_time_series(
-                    lat, lon, weather, surface_azimuth, surface_tilt
-                )
-                / 1000
+            apply_cpvlib_StaticHybridSystem.create_cpv_time_series(
+                lat, lon, weather, surface_azimuth, surface_tilt
+            )
+            / 1000
         )
 
     else:
         logging.info("Normalized CPV time series is calculated in kW.")
 
-        peak = get_peak(technology="cpv", normalization=normalization,
-                        module_parameters_1=mod_params_cpv,
-                        module_parameters_2=mod_params_flatplate)
+        peak = get_peak(
+            technology="cpv",
+            normalization=normalization,
+            module_parameters_1=mod_params_cpv,
+            module_parameters_2=mod_params_flatplate,
+        )
         return (
             apply_cpvlib_StaticHybridSystem.create_cpv_time_series(
                 lat, lon, weather, surface_azimuth, surface_tilt
@@ -474,9 +480,15 @@ def create_cpv_time_series(
         ).clip(0)
 
 
-
 def create_psi_time_series(
-    lat, lon, year, surface_azimuth, surface_tilt, weather, normalization, psi_type="Chen"
+    lat,
+    lon,
+    year,
+    surface_azimuth,
+    surface_tilt,
+    weather,
+    normalization,
+    psi_type="Chen",
 ):
 
     """
@@ -544,8 +556,12 @@ def create_psi_time_series(
             import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_pero as param1
             import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
-        peak = get_peak(technology="psi", normalization=normalization,
-                        module_parameters_1=param1, module_parameters_2=param2)
+        peak = get_peak(
+            technology="psi",
+            normalization=normalization,
+            module_parameters_1=param1,
+            module_parameters_2=param2,
+        )
 
         return (
             pvcompare.perosi.perosi.create_pero_si_timeseries(
@@ -595,9 +611,11 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
             surface_azimuth=surface_azimuth,
             surface_tilt=surface_tilt,
         )
-        peak = get_peak(technology, normalization="NREF",
-                        module_parameters_1=module_parameters,
-             module_parameters_2=None
+        peak = get_peak(
+            technology,
+            normalization="NREF",
+            module_parameters_1=module_parameters,
+            module_parameters_2=None,
         )
         module_size = module_parameters["A_c"]
         nominal_value = round(area / module_size * peak) / 1000
@@ -607,9 +625,11 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
             surface_azimuth=surface_azimuth,
             surface_tilt=surface_tilt,
         )
-        peak = get_peak(technology, normalization="NREF",
-                        module_parameters_1=mod_params_cpv,
-             module_parameters_2=mod_params_flatplate
+        peak = get_peak(
+            technology,
+            normalization="NREF",
+            module_parameters_1=mod_params_cpv,
+            module_parameters_2=mod_params_flatplate,
         )
         module_size = mod_params_cpv["Area"]
         nominal_value = round(area / module_size * peak) / 1000
@@ -622,8 +642,12 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
             import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
         # calculate peak power with 5 % CTM losses nad 5 % cell connection losses
-        peak = get_peak(technology, normalization="NREF", module_parameters_1=param1,
-             module_parameters_2=param2)
+        peak = get_peak(
+            technology,
+            normalization="NREF",
+            module_parameters_1=param1,
+            module_parameters_2=param2,
+        )
         module_size = param1.A / 10000  # in m^2
         nominal_value = round((area / module_size) * peak) / 1000
 
@@ -636,8 +660,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
     return nominal_value
 
 
-def get_peak(technology, normalization, module_parameters_1,
-             module_parameters_2):
+def get_peak(technology, normalization, module_parameters_1, module_parameters_2):
     """
 
     :param technology: str
@@ -657,21 +680,22 @@ def get_peak(technology, normalization, module_parameters_1,
 
     if normalization == "NREF":
         if technology == "si":
-            peak = module_parameters_1["I_mp_ref"] * module_parameters_1[
-                "V_mp_ref"]
+            peak = module_parameters_1["I_mp_ref"] * module_parameters_1["V_mp_ref"]
         elif technology == "cpv":
             peak = (module_parameters_1["i_mp"] * module_parameters_1["v_mp"]) + (
-                    module_parameters_2["i_mp"] * module_parameters_2["v_mp"]
+                module_parameters_2["i_mp"] * module_parameters_2["v_mp"]
             )
         elif technology == "psi":
 
             # calculate peak power with 5 % CTM losses
             peak = (module_parameters_1.p_mp + module_parameters_1.p_mp) - (
-                        (module_parameters_2.p_mp + module_parameters_2.p_mp) / 100) * 10
+                (module_parameters_2.p_mp + module_parameters_2.p_mp) / 100
+            ) * 10
     elif normalization == "NREA":
         peak = calculate_NREA_peak(technology=technology)
 
     return peak
+
 
 def calculate_NREA_peak(technology):
 
@@ -679,45 +703,64 @@ def calculate_NREA_peak(technology):
     temp_ref = 25
     lat = 40.416775
     lon = -3.70379
-    year=2014
+    year = 2014
     surface_tilt = get_optimal_pv_angle(lat=lat)
 
     input_directory = constants.DEFAULT_INPUT_DIRECTORY
-    weather_file = os.path.join(input_directory, "weatherdata_40.416775_-3.70379_2014.csv")
+    weather_file = os.path.join(
+        input_directory, "weatherdata_40.416775_-3.70379_2014.csv"
+    )
     if os.path.isfile(weather_file):
-        weather=pd.read_csv(weather_file, index_col=0)
+        weather = pd.read_csv(weather_file, index_col=0)
     else:
-        logging.error(f"the weather file {weather_file} does not exist. Please"
-                      f"make sure the weather file is in {input_directory}.")
+        logging.error(
+            f"the weather file {weather_file} does not exist. Please"
+            f"make sure the weather file is in {input_directory}."
+        )
 
-    peak_irr = weather.iloc[(weather['ghi'] - irr_ref).abs().argsort()[:2]]
-    peak_hour = peak_irr.iloc[(peak_irr['temp_air'] - temp_ref).abs().argsort()[:1]]
+    peak_irr = weather.iloc[(weather["ghi"] - irr_ref).abs().argsort()[:2]]
+    peak_hour = peak_irr.iloc[(peak_irr["temp_air"] - temp_ref).abs().argsort()[:1]]
 
     if technology == "si":
 
-        timeseries= create_si_time_series(lat=lat, lon=lon, weather=peak_hour,
-                                          surface_azimuth=180,
-                                          surface_tilt=surface_tilt,
-                                          normalization=None)
-        peak = timeseries[0]*1000
+        timeseries = create_si_time_series(
+            lat=lat,
+            lon=lon,
+            weather=peak_hour,
+            surface_azimuth=180,
+            surface_tilt=surface_tilt,
+            normalization=None,
+        )
+        peak = timeseries[0] * 1000
     elif technology == "cpv":
-        timeseries = create_cpv_time_series(lat=lat, lon=lon, weather=peak_hour,
-                                           surface_azimuth=180,
-                                           surface_tilt=surface_tilt,
-                                            normalization=None)
-        peak = timeseries[0]*1000
+        timeseries = create_cpv_time_series(
+            lat=lat,
+            lon=lon,
+            weather=peak_hour,
+            surface_azimuth=180,
+            surface_tilt=surface_tilt,
+            normalization=None,
+        )
+        peak = timeseries[0] * 1000
     elif technology == "psi":
-        timeseries = create_psi_time_series(lat=lat, lon=lon, weather=peak_hour,
-                                           surface_azimuth=180,
-                                           surface_tilt=surface_tilt,
-                                            normalization=None, psi_type="Chen",
-                                            year=year)
-        peak = timeseries[0]*1000
+        timeseries = create_psi_time_series(
+            lat=lat,
+            lon=lon,
+            weather=peak_hour,
+            surface_azimuth=180,
+            surface_tilt=surface_tilt,
+            normalization=None,
+            psi_type="Chen",
+            year=year,
+        )
+        peak = timeseries[0] * 1000
 
     return peak
 
 
-
-
 if __name__ == "__main__":
 
+    peak = calculate_NREA_peak(
+        input_directory=constants.DEFAULT_INPUT_DIRECTORY, technology="cpv"
+    )
+    print(peak)
