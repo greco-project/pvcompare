@@ -101,7 +101,7 @@ class TestPvtime_series:
             normalization="NREA",
         )
         output = round(ts.values.sum(), 3)
-        assert output == 1.011
+        assert output == 0.959
 
     def test_create_cpv_time_series(self):
 
@@ -140,7 +140,7 @@ class TestPvtime_series:
             normalization="NREA",
         )
         output = ts.sum()
-        assert round(output, 2) == 0.81
+        assert round(output, 2) == 0.87
 
     def test_get_optimal_pv_angle(self):
 
@@ -257,21 +257,21 @@ def test_calculate_NREA_peak_si():
 
     peak1 = calculate_NREA_peak(technology="si")
 
-    assert round(peak1, 2) == 213.9
+    assert round(peak1, 2) == 225.51
 
 
 def test_calculate_NREA_peak_cpv():
 
     peak2 = calculate_NREA_peak(technology="cpv")
 
-    assert round(peak2, 2) == 25.73
+    assert round(peak2, 2) == 23.97
 
 
 def test_calculate_NREA_peak_psi():
 
     peak3 = calculate_NREA_peak(technology="psi")
 
-    assert round(peak3, 2) == 261.26
+    assert round(peak3, 2) == 248.24
 
 
 # # one can test that exception are raised
