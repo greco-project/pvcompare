@@ -816,7 +816,7 @@ def calculate_NRWC_peak(technology):
         f"a peak power of {timeseries[0]} kW at reference conditions of"
         f"poa_global: {irrad} and cell_temp: {cell_temp} ."
     )
-    #return peak power in Watts
+    # return peak power in Watts
     return timeseries[0] * 1000
 
 

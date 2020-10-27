@@ -246,7 +246,6 @@ class TestPvtime_series:
                 year=self.year,
             )
 
-
     def test_get_optimal_pv_angle(self):
 
         output = get_optimal_pv_angle(self.lat)
