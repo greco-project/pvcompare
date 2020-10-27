@@ -208,31 +208,35 @@ def create_timeseries(
     lat, lon, surface_azimuth, surface_tilt, atmos_data, year, cell_type, number_hours
 ):
     """
-    calculates a timeseries for each cell type in list cell_type.
+    Calculates a timeseries for each cell type in list cell_type.
 
     The spectrum is calculated with calculate_smarts_parameters(). After that
     the specific cell parameters are loaded. Finally the p_mp of each timestep
      is calculated by the pvlib.singlediode() fuction.
 
-    :param year: int
+    Parameters
+    ----------
+    year: int
         year of interest
-    :param lat: str
+    lat: str
         latitude ending with a ".", e.g. "45."
-    :param lon: int
+    lon: int
         longitude
-    :param number_hours: int
+    number_hours: int
         number of hours until simulation stops. For one year enter 8760.
-    :param cell_type: list
+    cell_type: list
         list of cells for which the Jsc should be calculated. Allowed values:
         'Korte_pero', 'Korte_si', 'Chen_si', 'Chen_pero'
-    :param surface_azimuth: int
+    surface_azimuth: int
         surface azimuth
-    :param surface_tilt: int
+    surface_tilt: int
         surface tilt
-    :param atmos_data: :pd.Dataframe
+    atmos_data: :pd.Dataframe
         with datetimeindex and columns for 'temp_air' and 'wind_speed' and 'ghi'
 
-    :return: :pd.Dataframe()
+    Returns
+    -------
+    :pd.Dataframe()
         maximum power point of each time step for each cell type
     """
     q = 1.602176634 / (10 ** (19))  # in Coulomb = A/s
@@ -301,29 +305,33 @@ def create_pero_si_timeseries(
 ):
 
     """
-    creates a time series for the output power of a pero-si module.
+    Creates a time series for the output power of a pero-si module.
 
     Wrapper for create_timeseries() function.
 
-    :param year: int
+    Parameters
+    ----------
+    year: int
         year of interest
-    :param lat: str
+    lat: str
         latitude
-    :param lon: int
+    lon: int
         longitude
-    :param number_hours: int
+    number_hours: int
         number of hours until simulation stops. For one year enter 8760.
-    :param surface_azimuth: int
+    surface_azimuth: int
         surface azimuth
-    :param surface_tilt: int
+    surface_tilt: int
         surface tilt
-    :param atmos_data: :pd.Dataframe().
+    atmos_data: :pd.Dataframe().
         weather data with datetimeindex and columns for 'temp_air' and
         'wind_speed' and 'ghi'. If None weather data is loaded from era5 weather data set.
-    :param psi_type: str
+    psi_type: str
         Type of pero_si cell. Either "Chen" or "Korte"
 
-    :return:pd. series()
+    Returns
+    ---------
+    :pd.Series()
         time series of the output power
     """
     if psi_type == "Chen":

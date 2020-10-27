@@ -28,10 +28,12 @@ def SMARTSSpectra(
            E_theor=SMARTSSpectra('2 3','2001','6','21','12','32.','-110.92')
 
     IMPORTANT: Latit must end with a period. i.e. '32.'
+
     Parameters
     ----------
     IOUT: String
-        Specifications: specifiying the desired spectrum output separated by space:
+        Specifications:
+            specifiying the desired spectrum output separated by space:
             1 Extraterrestrial spectrum W m-2
             2 Direct normal irradiance W m-2
             3 Diffuse horizontal irradiance W m-2
@@ -87,6 +89,7 @@ def SMARTSSpectra(
         Latitude of the location, Latit must end with a period. i.e. '32.'
     LONGIT : string
         Longitude of the location.
+
     Returns
     -------
     data : pandas
@@ -94,10 +97,6 @@ def SMARTSSpectra(
         (:,2) elements being the spectrum in the units as specified above.
          status (string) with error string.
 
-     Updates:
-           9/14 - Creation of wrapper. J.Russo
-           06/18 - Set Lat and Long as inputs. S. Ayala.
-           01/20 - Ported to python S. Ayala
     """
 
     ## Card 1: Comment

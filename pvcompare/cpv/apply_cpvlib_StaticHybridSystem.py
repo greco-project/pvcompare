@@ -14,18 +14,22 @@ def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
     notice: right now only module parameters for the hybrid INSOLIGHT module is
     provided. If you want to add you own module data please do this in
 
-    :param lat: num
+    Parameters
+    ----------
+    lat: num
         latitude
-    :param lon: num
+    lon: num
         longitude
-    :param weather: pd.DataFrame()
+    weather: :pd.DataFrame()
         weather dataframe according to pvlib standards
-    :param surface_azimuth: int
+    surface_azimuth: int
         surface azimuth
-    :param surface_tilt: int
+    surface_tilt: int
         surface tilt
 
-    :return: :pd.DataFrame()
+    Returns
+    --------
+    :pd.DataFrame()
     """
 
     location = pvlib.location.Location(latitude=lat, longitude=lon, tz="utc")

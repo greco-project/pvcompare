@@ -222,12 +222,11 @@ taken into account
 
 5. In order to get the module output the cell outputs are added up.
 
-NOTICE: losses
 
 
--------------
+----------------
 3. Normalization
--------------
+----------------
 
 For the energy system optimization normalized timeseries are needed, which can
 then be scaled to the optimal installation size of the system.
@@ -239,12 +238,12 @@ There is three different ways to normalize the PV timeseries.
 * This procedure takes into account the impacts of the weather on the profile, but not on the scaling of the timeseries
 
 
-2) **Normalize by reference p_mp (power at maximum powerpoint) (NREF)**
+2) **Normalize by p_mp at standard test conditions (power at maximum powerpoint) (NSTC)**
 
 * This procedure accounts for all losses under real world conditions and displays the difference between ideal operation and real world operation
 
 
-3) **Normalize by realworld p_mp (NREA)**
+3) **Normalize by p_mp at real world conditions (NRWC)**
 
 * This procedure calculates the maximum powerpoint for realorld conditions at irr_ref = 1000 W/qm and temp_ref = 25 °.
 
