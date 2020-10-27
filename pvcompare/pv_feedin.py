@@ -426,7 +426,7 @@ def create_cpv_time_series(
     Returns
     -------
     :pandas:`pandas.Series<series>`
-        Power output of CPV module in W (if parameter `normalized` is False) or todo: check unit.
+        Power output of CPV module in W (if parameter `normalized` is False) or
         normalized power output of CPV module (if parameter `normalized` is
         False).
 

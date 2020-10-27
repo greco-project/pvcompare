@@ -32,51 +32,7 @@ def SMARTSSpectra(
     Parameters
     ----------
     IOUT: String
-        Specifications:
-            specifiying the desired spectrum output separated by space:
-            1 Extraterrestrial spectrum W m-2
-            2 Direct normal irradiance W m-2
-            3 Diffuse horizontal irradiance W m-2
-            4 Global horizontal irradiance W m-2
-            5 Direct horizontal irradiance W m-2
-            6 Direct tilted irradiance W m-2
-            7 Diffuse tilted irradiance W m-2
-            8 Global tilted irradiance W m-2
-            9 Experimental direct normal irradiance (with circumsolar) W m-2
-            10 Experimental diffuse horizontal irradiance W m-2
-            11 Circumsolar irradiance within radiometer field of view W m-2
-            12* Global tilted photon flux per wavelength cm-2 s-1 nm-1
-            13 Direct normal photon flux per wavelength cm-2 s-1 nm-1
-            14 Diffuse horizontal photon flux per wavelength cm-2 s-1 nm-1
-            15 Rayleigh transmittance 
-            16 Ozone transmittance 
-            17 Transmittance from all trace gases 
-            18 Water vapor transmittance 
-            19 Mixed gas transmittance 
-            20 Aerosol transmittance 
-            21 Beam radiation transmittance 
-            22 Rayleigh optical thickness 
-            23 Ozone optical thickness 
-            24 Optical thickness from all trace gases 
-            25 Water vapor optical thickness 
-            26 Mixed gas optical thickness 
-            27 Aerosol optical thickness 
-            28 Aerosol single scattering albedo 
-            29 Aerosol asymmetry factor 
-            30 Zonal surface reflectance 
-            31 Local ground reflectance 
-            32 Atmospheric reflectance 
-            33* Global foreground reflected irradiance on tilted surface W m-2
-            34* Upward hemispheric ground-reflected irradiance W m-2
-            35* Global horizontal photosynthetic photon flux ?mol m-2 s-1 nm-1
-            36* Direct normal photosynthetic photon flux ?mol m-2 s-1 nm-1
-            37* Diffuse horizontal photosynthetic photon flux ?mol m-2 s-1 nm-1
-            38* Global tilted photosynthetic photon flux ?mol m-2 s-1 nm-1
-            39* Spectral photonic energy eV
-            40* Global horizontal photon flux per eV cm-2 s-1 eV-1
-            41* Direct normal photon flux per eV cm-2 s-1 eV-1
-            42* Diffuse horizontal photon flux per eV cm-2 s-1 eV-1
-            43* Global tilted photon flux per eV cm-2 s-1 eV-1
+        all output variables can be found in the SMARTS 2.9.5 documentation
     YEAR : string
         Year
     MONTH : string
@@ -92,7 +48,7 @@ def SMARTSSpectra(
 
     Returns
     -------
-    data : pandas
+    :pandas:`pandas.DataFrame<frame>`
         MAtrix with (:,1) elements being wavelength in nm and
         (:,2) elements being the spectrum in the units as specified above.
          status (string) with error string.
@@ -734,19 +690,21 @@ def _smartsAll(
     DSTEP,
 ):
     r"""
-    #data = smartsAll(CMNT, ISPR, SPR, ALTIT, HEIGHT, LATIT, IATMOS, ATMOS, RH, TAIR, SEASON, TDAY, IH2O, W, IO3, IALT, AbO3, IGAS, ILOAD, ApCH2O, ApCH4, ApCO, ApHNO2, ApHNO3, ApNO,ApNO2, ApNO3, ApO3, ApSO2, qCO2, ISPCTR, AEROS, ALPHA1, ALPHA2, OMEGL, GG, ITURB, TAU5, BETA, BCHUEP, RANGE, VISI, TAU550, IALBDX, RHOX, ITILT, IALBDG,TILT, WAZIM,  RHOG, WLMN, WLMX, SUNCOR, SOLARC, IPRT, WPMN, WPMX, INTVL, IOUT, ICIRC, SLOPE, APERT, LIMIT, ISCAN, IFILT, WV1, WV2, STEP, FWHM, ILLUM,IUV, IMASS, ZENITH, ELEV, AMASS, YEAR, MONTH, DAY, HOUR, LONGIT, ZONE, DSTEP)
-    # SMARTS Control Function
-    #
-    #   Inputs:
-    #       All variables are labeled according to the SMARTS 2.9.5 documentation.
-    #       NOTICE THAT "IOTOT" is not an input variable of the function since is determined in the function
-    #       by sizing the IOUT variable.
-    #   Outputs:
-    #       data, is a matrix containing the outputs with as many rows as
-    #       wavelengths+1 (includes header) and as many columns as IOTOT+1 (column 1 is wavelengths)
-    #
-    # Juan Russo (c) 2011
-    # Silvana Ayala (c) 2018-2020
+
+
+    Parameter
+    ---------
+       All variables are labeled according to the SMARTS 2.9.5 documentation.
+        NOTICE THAT "IOTOT" is not an input variable of the function since is determined in the function
+          by sizing the IOUT variable.
+    Returns
+    --------
+        :pandas:`pandas.DataFrame<frame>`
+            matrix containing the outputs with as many rows as
+           wavelengths+1 (includes header) and as many columns as IOTOT+1 (column 1 is wavelengths)
+
+     Juan Russo (c) 2011
+     Silvana Ayala (c) 2018-2020
     """
 
     ## Init

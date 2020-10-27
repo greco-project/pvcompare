@@ -29,7 +29,7 @@ def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
 
     Returns
     --------
-    :pd.DataFrame()
+    :pandas:`pandas.DataFrame<frame>`
     """
 
     location = pvlib.location.Location(latitude=lat, longitude=lon, tz="utc")

@@ -236,7 +236,7 @@ def create_timeseries(
 
     Returns
     -------
-    :pd.Dataframe()
+    :pandas:`pandas.DataFrame<frame>`
         maximum power point of each time step for each cell type
     """
     q = 1.602176634 / (10 ** (19))  # in Coulomb = A/s
@@ -331,7 +331,7 @@ def create_pero_si_timeseries(
 
     Returns
     ---------
-    :pd.Series()
+    :pandas:`pandas.Series<series>`
         time series of the output power
     """
     if psi_type == "Chen":
