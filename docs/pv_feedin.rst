@@ -78,23 +78,22 @@ losses due to spectral and lens temperature variations.
 The utilization factors are defined as follows:
 
 .. math::
-        UF = \sum_{i=1}^{n} UF_i \cdot w_i
+    UF = \sum_{i=1}^{n} UF_i \cdot w_i
 
 .. math::
-
-        UF_i =
-        \left\{
-        \begin{array}{
-            @{}% no padding
-            l@{\quad}% some padding
-            r@{}% no padding
-            >{{}}r@{}% no padding
-            >{{}}l@{}% no padding
-        }
-            1 + (x - x_{thrd}) \cdot S_{x\leq x_{thrd}}&         & \text{if }   x &\leq x_{thrd} \\
-            1 + (x - x_{thrd}) \cdot S_{x\leq x_{thrd}}&         & \text{if }    x &\geq x_{thrd}
-        \end{array}
-        \right.
+    UF_i =
+    \left\{
+    \begin{array}{
+        @{}% no padding
+        l@{\quad}% some padding
+        r@{}% no padding
+        >{{}}r@{}% no padding
+        >{{}}l@{}% no padding
+    }
+        1 + (x - x_{thrd}) \cdot S_{x\leq x_{thrd}}&         & \text{if }   x &\leq x_{thrd} \\
+        1 + (x - x_{thrd}) \cdot S_{x\leq x_{thrd}}&         & \text{if }    x &\geq x_{thrd}
+    \end{array}
+    \right.
 
 The overall model for the hybrid system is illustrated in the next figure.
 
@@ -198,11 +197,11 @@ the POA_global.
 2.2 the short circuit current (Jsc) is calculated for each timestep:
 
 .. math::
-        Jsc = \int_\lambda EQE(\lambda) \cdot \Phi (\lambda) \cdot q d\lambda
+    Jsc = \int_\lambda EQE(\lambda) \cdot \Phi (\lambda) \cdot q d\lambda
 
-        \text{with } \Phi : \text{photon flux for tilted surface}
+    \text{with } \Phi : \text{photon flux for tilted surface}
 
-        \text q : \text{elementary electric charge}
+    \text q : \text{elementary electric charge}
 
 3. The `pvlib.pvsystem.singlediode() <https://pvlib-python.readthedocs.io/en/stable/generated/pvlib.pvsystem.singlediode.html?highlight=singlediode>`_
 function is used to evaluate the output power of each
