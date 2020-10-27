@@ -101,7 +101,7 @@ class TestPvtime_series:
             normalization="NREA",
         )
         output = round(ts.values.sum(), 3)
-        assert output == 0.959
+        assert output == 0.937
 
     def test_create_cpv_time_series(self):
 
@@ -257,7 +257,7 @@ def test_calculate_NREA_peak_si():
 
     peak1 = calculate_NREA_peak(technology="si")
 
-    assert round(peak1, 2) == 225.51
+    assert round(peak1, 2) == 230.91
 
 
 def test_calculate_NREA_peak_cpv():
