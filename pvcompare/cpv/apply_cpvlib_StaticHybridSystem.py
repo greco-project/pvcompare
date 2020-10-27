@@ -26,12 +26,6 @@ def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
     location = pvlib.location.Location(latitude=lat, longitude=lon, tz="utc")
 
     weather.index = pd.to_datetime(weather.index)
-    spa = pvlib.solarposition.spa_python(
-        time=weather.index, latitude=lat, longitude=lon
-    )
-    weather["dni"] = pvlib.irradiance.dirint(
-        weather["ghi"], solar_zenith=spa["zenith"], times=weather.index
-    )
 
     solar_zenith = location.get_solarposition(weather.index).zenith
     solar_azimuth = location.get_solarposition(weather.index).azimuth

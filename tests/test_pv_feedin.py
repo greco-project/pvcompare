@@ -19,6 +19,8 @@ from pvcompare.pv_feedin import (
     nominal_values_pv,
     create_cpv_time_series,
     get_optimal_pv_angle,
+    calculate_NRWC_peak,
+    get_peak,
 )
 
 
@@ -27,13 +29,13 @@ class TestPvtime_series:
     def setup_class(self):
         """Setup variables for all tests in this class"""
         weather_df = pd.DataFrame()
-        weather_df["temp_air"] = [4, 5]
+        weather_df["temp_air"] = [25, 30]
         weather_df["wind_speed"] = [2, 2.5]
         weather_df["dhi"] = [100, 120]
-        weather_df["dni"] = [120, 150]
-        weather_df["ghi"] = [200, 220]
+        weather_df["dni"] = [700, 150]
+        weather_df["ghi"] = [800, 220]
         weather_df["precipitable_water"] = [1, 2]
-        weather_df.index = ["2014-01-01 13:00:00+00:00", "2014-01-01 14:00:00+00:00"]
+        weather_df.index = ["2014-07-01 13:00:00+00:00", "2014-07-01 14:00:00+00:00"]
         weather_df.index = pd.to_datetime(weather_df.index, utc=True)
         self.test_mvs_directory = os.path.join(
             os.path.dirname(__file__), "test_data/test_mvs_inputs"
@@ -46,19 +48,6 @@ class TestPvtime_series:
         self.surface_azimuth = 180
         self.surface_tilt = 30
         self.year = 2015
-
-    def test_create_si_times_eries(self):
-
-        ts = create_si_time_series(
-            lat=self.lat,
-            lon=self.lon,
-            weather=self.weather,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            normalized=False,
-        )
-        output = round(ts.values.sum(), 3)
-        assert output == 0.113
 
     def test_nominal_values_pv(self):
 
@@ -75,6 +64,45 @@ class TestPvtime_series:
 
         assert nominal_value == 170.337
 
+    def test_create_si_times_eries(self):
+
+        ts = create_si_time_series(
+            lat=self.lat,
+            lon=self.lon,
+            weather=self.weather,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            normalization=None,
+        )
+        output = round(ts.values.sum(), 3)
+        assert output == 0.216
+
+    def test_create_si_times_eries__NSTC_normalization(self):
+
+        ts = create_si_time_series(
+            lat=self.lat,
+            lon=self.lon,
+            weather=self.weather,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            normalization="NSTC",
+        )
+        output = round(ts.values.sum(), 3)
+        assert output == 0.773
+
+    def test_create_si_times_eries__NRWC_normalization(self):
+
+        ts = create_si_time_series(
+            lat=self.lat,
+            lon=self.lon,
+            weather=self.weather,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            normalization="NRWC",
+        )
+        output = round(ts.values.sum(), 3)
+        assert output == 0.937
+
     def test_create_cpv_time_series(self):
 
         ts = create_cpv_time_series(
@@ -83,16 +111,36 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalized=True,
+            normalization=None,
         )
         output = ts.sum()
-        assert round(output, 1) == 0.2
+        assert round(output, 2) == 0.02
 
-    def test_get_optimal_pv_angle(self):
+    def test_create_cpv_time_series_NSTC_normalization(self):
 
-        output = get_optimal_pv_angle(self.lat)
+        ts = create_cpv_time_series(
+            lat=self.lat,
+            lon=self.lon,
+            weather=self.weather,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            normalization="NSTC",
+        )
+        output = ts.sum()
+        assert round(output, 2) == 0.61
 
-        assert output == 25
+    def test_create_cpv_time_series_NRWC_normalization(self):
+
+        ts = create_cpv_time_series(
+            lat=self.lat,
+            lon=self.lon,
+            weather=self.weather,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            normalization="NRWC",
+        )
+        output = ts.sum()
+        assert round(output, 2) == 0.87
 
     def test_create_psi_time_series(self):
         ts = create_psi_time_series(
@@ -102,11 +150,39 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalized=False,
+            normalization=None,
             psi_type="Chen",
         )
         output = ts.sum()
-        assert round(output, 1) == 0.1
+        assert round(output, 1) == 0.2
+
+    def test_create_psi_time_series_NSTC_normalization(self):
+        ts = create_psi_time_series(
+            lat=self.lat,
+            lon=self.lon,
+            year=self.year,
+            weather=self.weather,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            normalization="NSTC",
+            psi_type="Chen",
+        )
+        output = ts.sum()
+        assert round(output, 1) == 0.6
+
+    def test_create_psi_time_series_NRWC_normalization(self):
+        ts = create_psi_time_series(
+            lat=self.lat,
+            lon=self.lon,
+            year=self.year,
+            weather=self.weather,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            normalization="NRWC",
+            psi_type="Chen",
+        )
+        output = ts.sum()
+        assert round(output, 1) == 0.9
 
     def test_create_create_pv_components_column_missing_in_pvsetup(self):
         pv_setup_filename = os.path.join(
@@ -125,6 +201,7 @@ class TestPvtime_series:
                 input_directory=constants.DUMMY_TEST_DATA,
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
+                normalization="NRWC",
                 year=self.year,
             )
 
@@ -145,6 +222,7 @@ class TestPvtime_series:
                 input_directory=constants.DUMMY_TEST_DATA,
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
+                normalization="NRWC",
                 year=self.year,
             )
 
@@ -167,6 +245,33 @@ class TestPvtime_series:
                 directory_energy_production=None,
                 year=self.year,
             )
+
+    def test_get_optimal_pv_angle(self):
+
+        output = get_optimal_pv_angle(self.lat)
+
+        assert output == 25
+
+
+def test_calculate_NRWC_peak_si():
+
+    peak1 = calculate_NRWC_peak(technology="si")
+
+    assert round(peak1, 2) == 230.91
+
+
+def test_calculate_NRWC_peak_cpv():
+
+    peak2 = calculate_NRWC_peak(technology="cpv")
+
+    assert round(peak2, 2) == 23.97
+
+
+def test_calculate_NRWC_peak_psi():
+
+    peak3 = calculate_NRWC_peak(technology="psi")
+
+    assert round(peak3, 2) == 248.24
 
 
 # # one can test that exception are raised
