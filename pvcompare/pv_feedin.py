@@ -374,7 +374,7 @@ def create_si_time_series(
     normalization: str
         "NP": Normalize by peak power
         "NSTC": Normalize by reference p_mp
-        "NRWCL": Normalize by realworld p_mp
+        "NRWC": Normalize by realworld p_mp
         None: no normalization
 
     Returns
