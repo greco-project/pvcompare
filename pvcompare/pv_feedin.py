@@ -649,6 +649,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
             module_parameters_1=param1,
             module_parameters_2=param2,
         )
+        peak = peak * 0.9
         module_size = param1.A / 10000  # in m^2
         nominal_value = round((area / module_size) * peak) / 1000
 
@@ -707,7 +708,7 @@ def calculate_NRWC_peak(technology):
 
     Using weather year of Madrid, Spain, 2014 the dataframe is filtered to find
     the timestep where irradiance and temperature come closest to reference
-    conditions of ghi=1000 W/m and temp_air= 25 °C. #todo: cell temperature instead of air temperature?
+    conditions of ghi=1000 W/m and temp_air= 25 °C.
     The p_mp at this timestep is taken as the reference peak value for normalization.
 
     :param technology: str
@@ -739,7 +740,6 @@ def calculate_NRWC_peak(technology):
     spa = pvlib.solarposition.spa_python(
         time=weather.index, latitude=lat, longitude=lon
     )
-    # check if poa_global = irr_ref
     poa = pvlib.irradiance.get_total_irradiance(
         surface_tilt=surface_tilt,
         surface_azimuth=180,
@@ -751,7 +751,7 @@ def calculate_NRWC_peak(technology):
     )
     weather["poa_global"] = poa["poa_global"]
 
-    # check if cell temperature = temp_ref
+    # calculate cell temperature
     weather["cell_temperature"] = pvlib.temperature.pvsyst_cell(
         poa_global=weather["poa_global"],
         temp_air=weather["temp_air"],
@@ -760,6 +760,8 @@ def calculate_NRWC_peak(technology):
     cell_temp = weather["cell_temperature"]
     irrad = weather["poa_global"]
 
+    # filter weather data for poa_global = irr_ref
+    # filter weather data for temperature = temp_ref
     peak_irr = weather.iloc[(weather["poa_global"] - irr_ref).abs().argsort()[:2]]
     peak_hour = peak_irr.iloc[
         (peak_irr["cell_temperature"] - temp_ref).abs().argsort()[:1]
@@ -803,7 +805,7 @@ def calculate_NRWC_peak(technology):
         f"a peak power of {timeseries[0]} kW at reference conditions of"
         f"poa_global: {irrad} and cell_temp: {cell_temp} ."
     )
-
+    #return peak power in Watts
     return timeseries[0] * 1000
 
 
