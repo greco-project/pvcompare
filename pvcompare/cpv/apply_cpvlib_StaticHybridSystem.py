@@ -16,11 +16,11 @@ def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
 
     Parameters
     ----------
-    lat: num
+    lat: float
         latitude
-    lon: num
+    lon: float
         longitude
-    weather: :pd.DataFrame()
+    weather: :pandas:`pandas.DataFrame<frame>`
         weather dataframe according to pvlib standards
     surface_azimuth: int
         surface azimuth

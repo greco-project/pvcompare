@@ -48,7 +48,7 @@ def calculate_smarts_parameters(
         number of hours until simulation stops. For one year enter 8760.
     cell_type: list
         list of cells for which the Jsc should be calculated.
-    atmos_data: :pd.Dataframe()
+    atmos_data: :pandas:`pandas.DataFrame<frame>`
         with datetimeindex and columns for 'temp_air' and 'wind_speed' and 'ghi'
     WLMN: int
         minimum wavelength of the spectrum. By default this is 280 nm.
@@ -58,8 +58,8 @@ def calculate_smarts_parameters(
 
     Returns
     --------
-    :pd.Dataframe()
-        including ghi, temperature, wind_speed, Jsc_"cell_type"
+    :pandas:`pandas.DataFrame<frame>`
+        including ghi, temperature, wind_speed, Jsc for each cell_type
     """
 
     # check if atmos_data is in given as an input variable
@@ -231,7 +231,7 @@ def create_timeseries(
         surface azimuth
     surface_tilt: int
         surface tilt
-    atmos_data: :pd.Dataframe
+    atmos_data: :pandas:`pandas.DataFrame<frame>`
         with datetimeindex and columns for 'temp_air' and 'wind_speed' and 'ghi'
 
     Returns

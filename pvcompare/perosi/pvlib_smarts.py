@@ -26,19 +26,19 @@ def SMARTSSpectra(
 
     Parameters
     ----------
-    IOUT: String
+    IOUT: str
         all output variables can be found in the SMARTS 2.9.5 documentation
     YEAR : string
         Year
-    MONTH : string
+    MONTH : str
         Month
-    DAY : string
+    DAY : str
         Day
-    HOUR : string
+    HOUR : str
         Hour, in 24 hour format.
-    LATIT : string
+    LATIT : str
         Latitude of the location, Latit must end with a period. i.e. '32.'
-    LONGIT : string
+    LONGIT : str
         Longitude of the location.
 
     Returns
