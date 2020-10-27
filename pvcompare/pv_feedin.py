@@ -757,23 +757,12 @@ def calculate_NREA_peak(technology):
         temp_air=weather["temp_air"],
         wind_speed=weather["wind_speed"],
     )
+    cell_temp=weather["cell_temperature"]
+    irrad=weather["poa_global"]
 
     peak_irr = weather.iloc[(weather["poa_global"] - irr_ref).abs().argsort()[:2]]
     peak_hour = peak_irr.iloc[
         (peak_irr["cell_temperature"] - temp_ref).abs().argsort()[:1]
-    ]
-
-    peak_hour = peak_hour[
-        [
-            "latitude",
-            "longitude",
-            "dhi",
-            "ghi",
-            "dni",
-            "temp_air",
-            "wind_speed",
-            "precipitable_water",
-        ]
     ]
 
     if technology == "si":
@@ -808,6 +797,11 @@ def calculate_NREA_peak(technology):
             psi_type="Chen",
             year=year,
         )
+
+    logging.info(
+        f"The timeseries of technology {technology} is normalized with"
+        f"a peak power of {timeseries[0]} kW at reference conditions of"
+        f"poa_global: {irrad} and cell_temp: {cell_temp} .")
 
     return timeseries[0] * 1000
 
