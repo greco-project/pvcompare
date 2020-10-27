@@ -20,12 +20,7 @@ def SMARTSSpectra(
     WAZIM,
 ):
     r"""
-
-    function output = smartsRun(IOUT,YEAR,MONTH,DAY,HOUR, LATIT, LONGIT)
     Function that runs the smartsAll function to get a standard spectrum
-    specified by IOUT, YEAR,MONTH,DAY,HOUR, LATIT, LONGIT)
-    Example to get Direct and Diffuse Spectra :
-           E_theor=SMARTSSpectra('2 3','2001','6','21','12','32.','-110.92')
 
     IMPORTANT: Latit must end with a period. i.e. '32.'
 
@@ -51,7 +46,6 @@ def SMARTSSpectra(
     :pandas:`pandas.DataFrame<frame>`
         MAtrix with (:,1) elements being wavelength in nm and
         (:,2) elements being the spectrum in the units as specified above.
-         status (string) with error string.
 
     """
 
@@ -694,9 +688,9 @@ def _smartsAll(
 
     Parameter
     ---------
-       All variables are labeled according to the SMARTS 2.9.5 documentation.
+        All variables are labeled according to the SMARTS 2.9.5 documentation.
         NOTICE THAT "IOTOT" is not an input variable of the function since is determined in the function
-          by sizing the IOUT variable.
+        by sizing the IOUT variable.
     Returns
     --------
         :pandas:`pandas.DataFrame<frame>`

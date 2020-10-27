@@ -81,7 +81,7 @@ The utilization factors are defined as follows:
         UF = \sum_{i=1}^{n} UF_i \cdot w_i
 
 .. math::
-        \[
+
         UF_i =
         \left\{
         \begin{array}{
@@ -95,8 +95,6 @@ The utilization factors are defined as follows:
             1 + (x - x_{thrd}) \cdot S_{x\leq x_{thrd}}&         & \text{if }    x &\geq x_{thrd}
         \end{array}
         \right.
-        \]
-
 
 The overall model for the hybrid system is illustrated in the next figure.
 
