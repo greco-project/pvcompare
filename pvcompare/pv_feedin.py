@@ -518,7 +518,7 @@ def create_psi_time_series(
     normalization: str
         "NP": Normalize by peak power
         "NSTC": Normalize by reference p_mp
-        "NRWCL": Normalize by realworld p_mp
+        "NRWC": Normalize by realworld p_mp
         None: no normalization
 
     Returns
@@ -667,18 +667,25 @@ def get_peak(technology, normalization, module_parameters_1, module_parameters_2
     this function returns the peak value for the given technology and the given
     type of normalization.
 
-    :param technology: str
+    Parameter
+    ---------
+    technology: str
         "si", "cpv" or "psi"
-    :param normalization: str
-        kind of normalization
-    :param module_parameters_1: dict
+    normalization: str
+        "NP": Normalize by peak power
+        "NSTC": Normalize by reference p_mp
+        "NRWC": Normalize by realworld p_mp
+        None: no normalization
+    module_parameters_1: dict
         module parameters of cell 1 or module
-    :param module_parameters_2:
+    module_parameters_2: dict
         if technology == si, set parameter to None
-    :param psi_type: str
+    psi_type: str
         "Korte" or "Chen"
 
-    :return: numeric
+    Returns
+    --------
+    numeric
         peak value used for normalization
     """
 
@@ -706,14 +713,18 @@ def calculate_NRWC_peak(technology):
     """
     calculates the peak value of a technology under real world conditions.
 
-    Using weather year of Madrid, Spain, 2014 the dataframe is filtered to find
-    the timestep where irradiance and temperature come closest to reference
-    conditions of ghi=1000 W/m and temp_air= 25 °C.
+    Using weather year of Berlin, Germany, 2014 the dataframe is filtered to find
+    the timestep where irradiance (poa_global) and cell temperature come
+    closest to reference conditions of ghi=1000 W/m and temp_air= 25 °C.
     The p_mp at this timestep is taken as the reference peak value for normalization.
 
-    :param technology: str
+    Parameters
+    ---------
+    technology: str
         `si`, `cpv` or `psi`
-    :return: numeric
+    Returns
+    --------
+    numeric
         peak value
     """
 
