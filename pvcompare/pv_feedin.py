@@ -409,7 +409,7 @@ def create_si_time_series(
             module_parameters_1=module_parameters,
             module_parameters_2=None,
         )
-        logging.info("Normalized si time series is calculated in kW.")
+        logging.info("Normalized si time series is calculated in kW/kWp.")
         return (output["p_mp"] / peak).clip(0)
 
 
@@ -464,7 +464,7 @@ def create_cpv_time_series(
         )
 
     else:
-        logging.info("Normalized CPV time series is calculated in kW.")
+        logging.info("Normalized CPV time series is calculated in kW/kWp.")
 
         peak = get_peak(
             technology="cpv",
@@ -548,7 +548,7 @@ def create_psi_time_series(
             / 1000
         )
     else:
-        logging.info("Normalized PSI time series is calculated in kW.")
+        logging.info("Normalized PSI time series is calculated in kW/kWp.")
 
         if psi_type == "Korte":
             import pvcompare.perosi.data.cell_parameters_korte_pero as param1
