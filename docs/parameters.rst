@@ -72,9 +72,6 @@ Some parameters can be calculated automatically by pvcompare and do not need to 
     8. **unit**: str, kW
 
 * energyConversion.csv
-    *If COPs should be calculated automatically the column name needs to start with "heat" (indicating the heat sector) followed by an underscore separating suffixes.*
-    *Default values and references for heat pumps will follow.*
-
     1. **age_installed**: year, 0 (for all components such as charge controllers and inverters)
     2. **development_costs**: currency, 0 (for all components)
     3. **specific_costs**: currency/kW

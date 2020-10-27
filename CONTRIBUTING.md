@@ -3,10 +3,12 @@
 ### Prerequisites
 
 - [Git](https://git-scm.com/)
-- Clone https://github.com/greco-project/pvcompare.git or `git@github.com:greco-project/pvcompare.git` (SSH) and install the cloned repository using pip:
+- Clone https://github.com/greco-project/pvcompare.git or `git@github.com:greco-project/pvcompare.git` (SSH) and install the cloned repository using pip with the developer extras:
 
 ```bash
-pip install -e /path/to/the/repository
+cd pvcompare
+pip install -r requirements.txt
+pip install -e .[dev]
 ```
 
 ### Philosophy
