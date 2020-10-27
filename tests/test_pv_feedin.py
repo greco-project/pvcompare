@@ -142,12 +142,6 @@ class TestPvtime_series:
         output = ts.sum()
         assert round(output, 2) == 0.87
 
-    def test_get_optimal_pv_angle(self):
-
-        output = get_optimal_pv_angle(self.lat)
-
-        assert output == 25
-
     def test_create_psi_time_series(self):
         ts = create_psi_time_series(
             lat=self.lat,
@@ -251,6 +245,13 @@ class TestPvtime_series:
                 directory_energy_production=None,
                 year=self.year,
             )
+
+
+    def test_get_optimal_pv_angle(self):
+
+        output = get_optimal_pv_angle(self.lat)
+
+        assert output == 25
 
 
 def test_calculate_NRWC_peak_si():
