@@ -52,7 +52,7 @@ def create_pv_components(
     mvs_input_directory=None,
     directory_energy_production=None,
     psi_type="Chen",
-    normalization="NREA",
+    normalization="NRWC",
 ):
     """
     creates feedin time series for all surface types in pv_setup.csv
@@ -90,8 +90,8 @@ def create_pv_components(
         "Korte" or "Chen"
     normalization: str
         "NP": Normalize by peak power
-        "NREF": Normalize by reference p_mp
-        "NREAL": Normalize by realworld p_mp
+        "NSTC": Normalize by reference p_mp
+        "NRWCL": Normalize by realworld p_mp
         None: no normalization
 
 
@@ -373,8 +373,8 @@ def create_si_time_series(
         surface tilt of the modules
     normalization: str
         "NP": Normalize by peak power
-        "NREF": Normalize by reference p_mp
-        "NREAL": Normalize by realworld p_mp
+        "NSTC": Normalize by reference p_mp
+        "NRWCL": Normalize by realworld p_mp
         None: no normalization
 
     Returns
@@ -439,8 +439,8 @@ def create_cpv_time_series(
         Surface tilt of the modules. (horizontal=90° and vertical=0°)
     normalization: str
         "NP": Normalize by peak power
-        "NREF": Normalize by reference p_mp
-        "NREAL": Normalize by realworld p_mp
+        "NSTC": Normalize by reference p_mp
+        "NRWCL": Normalize by realworld p_mp
         None: no normalization
 
     Returns
@@ -517,8 +517,8 @@ def create_psi_time_series(
         Options: "Korte", "Chen"
     normalization: str
         "NP": Normalize by peak power
-        "NREF": Normalize by reference p_mp
-        "NREAL": Normalize by realworld p_mp
+        "NSTC": Normalize by reference p_mp
+        "NRWCL": Normalize by realworld p_mp
         None: no normalization
 
     Returns
@@ -614,7 +614,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
         )
         peak = get_peak(
             technology,
-            normalization="NREF",
+            normalization="NSTC",
             module_parameters_1=module_parameters,
             module_parameters_2=None,
         )
@@ -628,7 +628,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
         )
         peak = get_peak(
             technology,
-            normalization="NREF",
+            normalization="NSTC",
             module_parameters_1=mod_params_cpv,
             module_parameters_2=mod_params_flatplate,
         )
@@ -645,7 +645,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
         # calculate peak power with 5 % CTM losses nad 5 % cell connection losses
         peak = get_peak(
             technology,
-            normalization="NREF",
+            normalization="NSTC",
             module_parameters_1=param1,
             module_parameters_2=param2,
         )
@@ -681,7 +681,7 @@ def get_peak(technology, normalization, module_parameters_1, module_parameters_2
         peak value used for normalization
     """
 
-    if normalization == "NREF":
+    if normalization == "NSTC":
         if technology == "si":
             peak = module_parameters_1["I_mp_ref"] * module_parameters_1["V_mp_ref"]
             return peak
@@ -697,11 +697,11 @@ def get_peak(technology, normalization, module_parameters_1, module_parameters_2
                 (module_parameters_2.p_mp + module_parameters_2.p_mp) / 100
             ) * 10
             return peak
-    elif normalization == "NREA":
-        return calculate_NREA_peak(technology=technology)
+    elif normalization == "NRWC":
+        return calculate_NRWC_peak(technology=technology)
 
 
-def calculate_NREA_peak(technology):
+def calculate_NRWC_peak(technology):
     """
     calculates the peak value of a technology under real world conditions.
 
@@ -809,5 +809,5 @@ def calculate_NREA_peak(technology):
 
 if __name__ == "__main__":
 
-    peak = calculate_NREA_peak(technology="psi")
+    peak = calculate_NRWC_peak(technology="psi")
     print(peak)

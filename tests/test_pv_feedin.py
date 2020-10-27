@@ -19,7 +19,7 @@ from pvcompare.pv_feedin import (
     nominal_values_pv,
     create_cpv_time_series,
     get_optimal_pv_angle,
-    calculate_NREA_peak,
+    calculate_NRWC_peak,
     get_peak,
 )
 
@@ -77,7 +77,7 @@ class TestPvtime_series:
         output = round(ts.values.sum(), 3)
         assert output == 0.216
 
-    def test_create_si_times_eries__NREF_normalization(self):
+    def test_create_si_times_eries__NSTC_normalization(self):
 
         ts = create_si_time_series(
             lat=self.lat,
@@ -85,12 +85,12 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalization="NREF",
+            normalization="NSTC",
         )
         output = round(ts.values.sum(), 3)
         assert output == 0.773
 
-    def test_create_si_times_eries__NREA_normalization(self):
+    def test_create_si_times_eries__NRWC_normalization(self):
 
         ts = create_si_time_series(
             lat=self.lat,
@@ -98,7 +98,7 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalization="NREA",
+            normalization="NRWC",
         )
         output = round(ts.values.sum(), 3)
         assert output == 0.937
@@ -116,7 +116,7 @@ class TestPvtime_series:
         output = ts.sum()
         assert round(output, 2) == 0.02
 
-    def test_create_cpv_time_series_NREF_normalization(self):
+    def test_create_cpv_time_series_NSTC_normalization(self):
 
         ts = create_cpv_time_series(
             lat=self.lat,
@@ -124,12 +124,12 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalization="NREF",
+            normalization="NSTC",
         )
         output = ts.sum()
         assert round(output, 2) == 0.61
 
-    def test_create_cpv_time_series_NREA_normalization(self):
+    def test_create_cpv_time_series_NRWC_normalization(self):
 
         ts = create_cpv_time_series(
             lat=self.lat,
@@ -137,7 +137,7 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalization="NREA",
+            normalization="NRWC",
         )
         output = ts.sum()
         assert round(output, 2) == 0.87
@@ -162,7 +162,7 @@ class TestPvtime_series:
         output = ts.sum()
         assert round(output, 1) == 0.2
 
-    def test_create_psi_time_series_NREF_normalization(self):
+    def test_create_psi_time_series_NSTC_normalization(self):
         ts = create_psi_time_series(
             lat=self.lat,
             lon=self.lon,
@@ -170,13 +170,13 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalization="NREF",
+            normalization="NSTC",
             psi_type="Chen",
         )
         output = ts.sum()
         assert round(output, 1) == 0.6
 
-    def test_create_psi_time_series_NREA_normalization(self):
+    def test_create_psi_time_series_NRWC_normalization(self):
         ts = create_psi_time_series(
             lat=self.lat,
             lon=self.lon,
@@ -184,7 +184,7 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalization="NREA",
+            normalization="NRWC",
             psi_type="Chen",
         )
         output = ts.sum()
@@ -207,7 +207,7 @@ class TestPvtime_series:
                 input_directory=constants.DUMMY_TEST_DATA,
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
-                normalization="NREA",
+                normalization="NRWC",
                 year=self.year,
             )
 
@@ -228,7 +228,7 @@ class TestPvtime_series:
                 input_directory=constants.DUMMY_TEST_DATA,
                 mvs_input_directory=self.test_mvs_directory,
                 directory_energy_production=None,
-                normalization="NREA",
+                normalization="NRWC",
                 year=self.year,
             )
 
@@ -253,23 +253,23 @@ class TestPvtime_series:
             )
 
 
-def test_calculate_NREA_peak_si():
+def test_calculate_NRWC_peak_si():
 
-    peak1 = calculate_NREA_peak(technology="si")
+    peak1 = calculate_NRWC_peak(technology="si")
 
     assert round(peak1, 2) == 230.91
 
 
-def test_calculate_NREA_peak_cpv():
+def test_calculate_NRWC_peak_cpv():
 
-    peak2 = calculate_NREA_peak(technology="cpv")
+    peak2 = calculate_NRWC_peak(technology="cpv")
 
     assert round(peak2, 2) == 23.97
 
 
-def test_calculate_NREA_peak_psi():
+def test_calculate_NRWC_peak_psi():
 
-    peak3 = calculate_NREA_peak(technology="psi")
+    peak3 = calculate_NRWC_peak(technology="psi")
 
     assert round(peak3, 2) == 248.24
 
