@@ -52,7 +52,7 @@ def create_pv_components(
     mvs_input_directory=None,
     directory_energy_production=None,
     psi_type="Chen",
-    normalized=False,
+    normalization="NRWC",
 ):
     """
     creates feedin time series for all surface types in pv_setup.csv
@@ -86,6 +86,14 @@ def create_pv_components(
         if None: ./data/mvs_inputs/
     directory_energy_production: str
         if None: ./data/mvs_inputs/elements/csv/
+    psi_type: str
+        "Korte" or "Chen"
+    normalization: str
+        "NP": Normalize by peak power
+        "NSTC": Normalize by reference p_mp
+        "NRWC": Normalize by realworld p_mp
+        None: no normalization
+
 
     Returns
     -------
@@ -153,7 +161,7 @@ def create_pv_components(
                     weather=weather,
                     surface_azimuth=j,
                     surface_tilt=k,
-                    normalized=normalized,
+                    normalization=normalization,
                 )
             elif row["technology"] == "cpv":
                 time_series = create_cpv_time_series(
@@ -162,7 +170,7 @@ def create_pv_components(
                     weather=weather,
                     surface_azimuth=j,
                     surface_tilt=k,
-                    normalized=normalized,
+                    normalization=normalization,
                 )
             elif row["technology"] == "psi":
                 time_series = create_psi_time_series(
@@ -172,7 +180,7 @@ def create_pv_components(
                     weather=weather,
                     surface_azimuth=j,
                     surface_tilt=k,
-                    normalized=normalized,
+                    normalization=normalization,
                 )
             else:
                 raise ValueError(
@@ -339,14 +347,17 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
         )
 
 
-def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt, normalized):
+def create_si_time_series(
+    lat, lon, weather, surface_azimuth, surface_tilt, normalization
+):
 
     """
     Calculates feed-in time series for a silicon PV module.
 
     The cpv time series is created for a given weather data frame, at a given
     orientation for the flat plate module 'Canadian_Solar_CS5P_220M___2009_'.
-    The time series is normalized by the peak power of the module.
+    If `normalization`is not None the time
+    series is normalized according to the normalization method
 
 
     Parameters
@@ -360,7 +371,11 @@ def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt, norm
         surface azimuth of the modules
     surface_tilt: float
         surface tilt of the modules
-    normalized: boolean
+    normalization: str
+        "NP": Normalize by peak power
+        "NSTC": Normalize by reference p_mp
+        "NRWC": Normalize by realworld p_mp
+        None: no normalization
 
     Returns
     -------
@@ -371,8 +386,6 @@ def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt, norm
         technology="si", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt
     )
     location = Location(latitude=lat, longitude=lon)
-
-    peak = module_parameters["I_mp_ref"] * module_parameters["V_mp_ref"]
 
     mc = ModelChain(
         system,
@@ -386,24 +399,29 @@ def create_si_time_series(lat, lon, weather, surface_azimuth, surface_tilt, norm
 
     mc.run_model(weather=weather)
     output = mc.dc
-    if normalized == True:
-        logging.info("normalized si time series is calculated.")
-        return (output["p_mp"] / peak).clip(0)
-    else:
-        logging.info("si time series is calculated in kW without normalization.")
+    if normalization is None:
+        logging.info("Absolute si time series is calculated in kW.")
         return output["p_mp"] / 1000
+    else:
+        peak = get_peak(
+            technology="si",
+            normalization=normalization,
+            module_parameters_1=module_parameters,
+            module_parameters_2=None,
+        )
+        logging.info("Normalized si time series is calculated in kW/kWp.")
+        return (output["p_mp"] / peak).clip(0)
 
 
 def create_cpv_time_series(
-    lat, lon, weather, surface_azimuth, surface_tilt, normalized
+    lat, lon, weather, surface_azimuth, surface_tilt, normalization
 ):
-
     """
     Creates power time series of a CPV module.
 
     The CPV time series is created for a given weather data frame (`weather`)
-    for the INSOLIGHT CPV module. If `normalized` is set to True, the time
-    series is divided by the peak power of the module.
+    for the INSOLIGHT CPV module. If `normalization`is not None the time
+    series is normalized according to the normalization method
 
 
     Parameters
@@ -419,16 +437,20 @@ def create_cpv_time_series(
         Surface azimuth of the modules (180° for south, 270° for west, etc.).
     surface_tilt: float
         Surface tilt of the modules. (horizontal=90° and vertical=0°)
-    normalized: bool
-        If True, the time series is divided by the peak power of the CPV
-        module. Default: False.
+    normalization: str
+        "NP": Normalize by peak power
+        "NSTC": Normalize by reference p_mp
+        "NRWC": Normalize by realworld p_mp
+        None: no normalization
 
     Returns
     -------
     :pandas:`pandas.Series<series>`
+
         Power output of CPV module in W (if parameter `normalized` is False) or
         normalized power output of CPV module (if parameter `normalized` is
         False).
+
 
     """
 
@@ -436,18 +458,7 @@ def create_cpv_time_series(
         technology="cpv", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt
     )
 
-    peak = (mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]) + (
-        mod_params_flatplate["i_mp"] * mod_params_flatplate["v_mp"]
-    )
-    if normalized == True:
-        logging.info("Normalized CPV time series is calculated in kW.")
-        return (
-            apply_cpvlib_StaticHybridSystem.create_cpv_time_series(
-                lat, lon, weather, surface_azimuth, surface_tilt
-            )
-            / peak
-        ).clip(0)
-    else:
+    if normalization is None:
         logging.info("Absolute CPV time series is calculated in kW.")
         return (
             apply_cpvlib_StaticHybridSystem.create_cpv_time_series(
@@ -456,17 +467,40 @@ def create_cpv_time_series(
             / 1000
         )
 
+    else:
+        logging.info("Normalized CPV time series is calculated in kW/kWp.")
+
+        peak = get_peak(
+            technology="cpv",
+            normalization=normalization,
+            module_parameters_1=mod_params_cpv,
+            module_parameters_2=mod_params_flatplate,
+        )
+        return (
+            apply_cpvlib_StaticHybridSystem.create_cpv_time_series(
+                lat, lon, weather, surface_azimuth, surface_tilt
+            )
+            / peak
+        ).clip(0)
+
 
 def create_psi_time_series(
-    lat, lon, year, surface_azimuth, surface_tilt, weather, normalized, psi_type="Chen"
+    lat,
+    lon,
+    year,
+    surface_azimuth,
+    surface_tilt,
+    weather,
+    normalization,
+    psi_type="Chen",
 ):
 
     """
     Creates power time series of a Perovskite-Silicone module.
 
     The PSI time series is created for a given weather data frame
-    (`weather`). If `normalized` is set to True, the time
-    series is divided by the peak power of the module.
+    (`weather`). If `normalization`is not None the time
+    series is normalized according to the normalization method.
 
 
     Parameters
@@ -485,9 +519,11 @@ def create_psi_time_series(
     psi_type  : str
         Defines the type of module of which the time series is calculated.
         Options: "Korte", "Chen"
-    normalized: bool
-        If True, the time series is divided by the peak power of the CPV
-        module. Default: False.
+    normalization: str
+        "NP": Normalize by peak power
+        "NSTC": Normalize by reference p_mp
+        "NRWC": Normalize by realworld p_mp
+        None: no normalization
 
     Returns
     -------
@@ -498,8 +534,9 @@ def create_psi_time_series(
 
     """
     atmos_data = weather[["ghi", "dhi", "dni", "wind_speed", "temp_air"]]
+    number_rows = atmos_data["ghi"].count()
 
-    if normalized == False:
+    if normalization is None:
         logging.info("Absolute PSI time series is calculated in kW.")
         return (
             pvcompare.perosi.perosi.create_pero_si_timeseries(
@@ -509,13 +546,14 @@ def create_psi_time_series(
                 surface_azimuth,
                 surface_tilt,
                 atmos_data=atmos_data,
-                number_hours=8760,
+                number_hours=number_rows,
                 psi_type=psi_type,
             )
             / 1000
         )
     else:
-        logging.info("Normalized PSI time series is calculated.")
+        logging.info("Normalized PSI time series is calculated in kW/kWp.")
+
         if psi_type == "Korte":
             import pvcompare.perosi.data.cell_parameters_korte_pero as param1
             import pvcompare.perosi.data.cell_parameters_korte_si as param2
@@ -523,8 +561,12 @@ def create_psi_time_series(
             import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_pero as param1
             import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
-        # calculate peak power with 5 % CTM losses
-        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp) / 100) * 10
+        peak = get_peak(
+            technology="psi",
+            normalization=normalization,
+            module_parameters_1=param1,
+            module_parameters_2=param2,
+        )
 
         return (
             pvcompare.perosi.perosi.create_pero_si_timeseries(
@@ -534,7 +576,7 @@ def create_psi_time_series(
                 surface_azimuth,
                 surface_tilt,
                 atmos_data=atmos_data,
-                number_hours=8760,
+                number_hours=number_rows,
                 psi_type=psi_type,
             )
             / peak
@@ -574,7 +616,12 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
             surface_azimuth=surface_azimuth,
             surface_tilt=surface_tilt,
         )
-        peak = module_parameters["I_mp_ref"] * module_parameters["V_mp_ref"]
+        peak = get_peak(
+            technology,
+            normalization="NSTC",
+            module_parameters_1=module_parameters,
+            module_parameters_2=None,
+        )
         module_size = module_parameters["A_c"]
         nominal_value = round(area / module_size * peak) / 1000
     elif technology == "cpv":
@@ -583,8 +630,11 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
             surface_azimuth=surface_azimuth,
             surface_tilt=surface_tilt,
         )
-        peak = (mod_params_cpv["i_mp"] * mod_params_cpv["v_mp"]) + (
-            mod_params_flatplate["i_mp"] * mod_params_flatplate["v_mp"]
+        peak = get_peak(
+            technology,
+            normalization="NSTC",
+            module_parameters_1=mod_params_cpv,
+            module_parameters_2=mod_params_flatplate,
         )
         module_size = mod_params_cpv["Area"]
         nominal_value = round(area / module_size * peak) / 1000
@@ -597,7 +647,13 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
             import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
         # calculate peak power with 5 % CTM losses nad 5 % cell connection losses
-        peak = (param1.p_mp + param2.p_mp) - ((param1.p_mp + param2.p_mp) / 100) * 10
+        peak = get_peak(
+            technology,
+            normalization="NSTC",
+            module_parameters_1=param1,
+            module_parameters_2=param2,
+        )
+        peak = peak * 0.9
         module_size = param1.A / 10000  # in m^2
         nominal_value = round((area / module_size) * peak) / 1000
 
@@ -610,59 +666,165 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
     return nominal_value
 
 
-if __name__ == "__main__":
-    area = area_potential.calculate_area_potential(
-        population=48000,
-        input_directory=constants.DEFAULT_INPUT_DIRECTORY,
-        surface_type="flat_roof",
-    )
+def get_peak(technology, normalization, module_parameters_1, module_parameters_2):
+    """
+    this function returns the peak value for the given technology and the given
+    type of normalization.
 
-    nominal_value_psi = nominal_values_pv(
-        technology="psi",
-        area=area,
-        surface_azimuth=180,
-        surface_tilt=30,
-        psi_type="Chen",
-    )
-    print(nominal_value_psi)
+    Parameter
+    ---------
+    technology: str
+        "si", "cpv" or "psi"
+    normalization: str
+        "NP": Normalize by peak power
+        "NSTC": Normalize by reference p_mp
+        "NRWC": Normalize by realworld p_mp
+        None: no normalization
+    module_parameters_1: dict
+        module parameters of cell 1 or module
+    module_parameters_2: dict
+        if technology == si, set parameter to None
+    psi_type: str
+        "Korte" or "Chen"
 
-    # filename = os.path.abspath("./data/inputs/weatherdata.csv")
-    # weather_df = pd.read_csv(
-    #     filename, index_col=0, date_parser=lambda idx: pd.to_datetime(idx, utc=True)
-    # )
-    # weather_df.index = pd.to_datetime(weather_df.index).tz_convert("Europe/Berlin")
-    # weather_df["dni"] = weather_df["ghi"] - weather_df["dhi"]
-    #
-    # create_pv_components(lat=40.3, lon=5.4, weather=weather_df, population=600)
+    Returns
+    --------
+    numeric
+        peak value used for normalization
+    """
 
-    weather_df = pd.DataFrame()
-    weather_df["temp_air"] = [4, 5]
-    weather_df["wind_speed"] = [2, 2.5]
-    weather_df["dhi"] = [100, 120]
-    weather_df["dni"] = [120, 150]
-    weather_df["ghi"] = [200, 220]
-    weather_df.index = ["2014-01-01 13:00:00+00:00", "2014-01-01 14:00:00+00:00"]
-    weather_df.index = pd.to_datetime(weather_df.index)
-    weather = weather_df
+    if normalization == "NSTC":
+        if technology == "si":
+            peak = module_parameters_1["I_mp_ref"] * module_parameters_1["V_mp_ref"]
+            return peak
+        elif technology == "cpv":
+            peak = (module_parameters_1["i_mp"] * module_parameters_1["v_mp"]) + (
+                module_parameters_2["i_mp"] * module_parameters_2["v_mp"]
+            )
+            return peak
+        elif technology == "psi":
+
+            # calculate peak power with 5 % CTM losses
+            peak = (module_parameters_1.p_mp + module_parameters_1.p_mp) - (
+                (module_parameters_2.p_mp + module_parameters_2.p_mp) / 100
+            ) * 10
+            return peak
+    elif normalization == "NRWC":
+        return calculate_NRWC_peak(technology=technology)
+
+
+def calculate_NRWC_peak(technology):
+    """
+    calculates the peak value of a technology under real world conditions.
+
+    Using weather year of Berlin, Germany, 2014 the dataframe is filtered to find
+    the timestep where irradiance (poa_global) and cell temperature come
+    closest to reference conditions of ghi=1000 W/m and temp_air= 25 °C.
+    The p_mp at this timestep is taken as the reference peak value for normalization.
+
+    Parameters
+    ---------
+    technology: str
+        `si`, `cpv` or `psi`
+    Returns
+    --------
+    numeric
+        peak value
+    """
+
+    irr_ref = 1000
+    temp_ref = 25
+    lat = 52.52437
+    lon = 13.41053
     year = 2014
+    surface_tilt = get_optimal_pv_angle(lat=lat)
 
-    lat = 40.0
-    lon = 5.2
-    surface_azimuth = 180
-    surface_tilt = 30
-
-    output = create_psi_time_series(
-        lat=lat,
-        lon=lon,
-        year=year,
-        weather=weather,
-        surface_azimuth=surface_azimuth,
-        surface_tilt=surface_tilt,
-        normalized=True,
-        psi_type="Chen",
+    input_directory = constants.DEFAULT_INPUT_DIRECTORY
+    weather_file = os.path.join(
+        input_directory, "weatherdata_52.52437_13.41053_2014.csv"
     )
-    print(output.sum())
-    #
-    # output=get_optimal_pv_angle(lat=40.0)
-    #
-    # print(output)
+    if os.path.isfile(weather_file):
+        weather = pd.read_csv(weather_file, index_col=0)
+    else:
+        logging.error(
+            f"the weather file {weather_file} does not exist. Please"
+            f"make sure the weather file is in {input_directory}."
+        )
+    weather.index = pd.to_datetime(weather.index, utc=True)
+    # calculate poa_global for tilted surface
+    spa = pvlib.solarposition.spa_python(
+        time=weather.index, latitude=lat, longitude=lon
+    )
+    poa = pvlib.irradiance.get_total_irradiance(
+        surface_tilt=surface_tilt,
+        surface_azimuth=180,
+        solar_zenith=spa["zenith"],
+        solar_azimuth=spa["azimuth"],
+        dni=weather["dni"],
+        ghi=weather["ghi"],
+        dhi=weather["dhi"],
+    )
+    weather["poa_global"] = poa["poa_global"]
+
+    # calculate cell temperature
+    weather["cell_temperature"] = pvlib.temperature.pvsyst_cell(
+        poa_global=weather["poa_global"],
+        temp_air=weather["temp_air"],
+        wind_speed=weather["wind_speed"],
+    )
+    cell_temp = weather["cell_temperature"]
+    irrad = weather["poa_global"]
+
+    # filter weather data for poa_global = irr_ref
+    # filter weather data for temperature = temp_ref
+    peak_irr = weather.iloc[(weather["poa_global"] - irr_ref).abs().argsort()[:2]]
+    peak_hour = peak_irr.iloc[
+        (peak_irr["cell_temperature"] - temp_ref).abs().argsort()[:1]
+    ]
+
+    if technology == "si":
+
+        timeseries = create_si_time_series(
+            lat=lat,
+            lon=lon,
+            weather=peak_hour,
+            surface_azimuth=180,
+            surface_tilt=surface_tilt,
+            normalization=None,
+        )
+
+    elif technology == "cpv":
+        timeseries = create_cpv_time_series(
+            lat=lat,
+            lon=lon,
+            weather=peak_hour,
+            surface_azimuth=180,
+            surface_tilt=surface_tilt,
+            normalization=None,
+        )
+
+    elif technology == "psi":
+        timeseries = create_psi_time_series(
+            lat=lat,
+            lon=lon,
+            weather=peak_hour,
+            surface_azimuth=180,
+            surface_tilt=surface_tilt,
+            normalization=None,
+            psi_type="Chen",
+            year=year,
+        )
+
+    logging.info(
+        f"The timeseries of technology {technology} is normalized with"
+        f"a peak power of {timeseries[0]} kW at reference conditions of"
+        f"poa_global: {irrad} and cell_temp: {cell_temp} ."
+    )
+    # return peak power in Watts
+    return timeseries[0] * 1000
+
+
+if __name__ == "__main__":
+
+    peak = calculate_NRWC_peak(technology="psi")
+    print(peak)

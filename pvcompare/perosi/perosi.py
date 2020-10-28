@@ -260,7 +260,7 @@ def create_timeseries(
         smarts_parameters["temp"],
         smarts_parameters["wind_speed"],
     )
-    # temperature effect on saturation current
+
     result = pd.DataFrame()
     for x in cell_type:
         if x == "Korte_pero":
