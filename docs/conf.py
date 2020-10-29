@@ -42,7 +42,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.autosummary",
     "sphinx.ext.mathjax",
-    "sphinx.ext.pngmath",
+    "sphinx.ext.imgmath",
     # 'nbsphinx'
 ]
 
