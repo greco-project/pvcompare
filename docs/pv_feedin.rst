@@ -16,13 +16,13 @@ approaches.
 ------------------
 1. SI
 ------------------
-The silicone module parameters are loaded from cec module database. The module
+The silicone module parameters are loaded from `cec module <https://github.com/NREL/SAM/tree/develop/deploy/libraries>`_ database. The module
 selected by default is the "Aleo_Solar_S59y280" module with a 17% efficiency.
 But any other module can be selected.
 
 The timeseries is calculating making usage of the `Modelchain  <https://pvlib-python.readthedocs.io/en/stable/modelchain.html>`_
 functionality in `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_. In order to make the results compareable for real world
-conditions the following methods are added to the `modelchain object <https://pvlib-python.readthedocs.io/en/stable/api.html#modelchain>`_ :
+conditions the following methods are selected from `modelchain object <https://pvlib-python.readthedocs.io/en/stable/api.html#modelchain>`_ :
 
 - aoi_model="ashrae"
 - spectral_model="first_solar"
@@ -34,7 +34,7 @@ conditions the following methods are added to the `modelchain object <https://pv
 2. CPV
 -------
 
-The CPV technology that is used in the pvcopare simulations is a hybrid
+The CPV technology that is used in the *pvcompare* simulations is a hybrid
 micro-Concentrator module with integrated planar tracking and diffuse light
 collection of the company INSOLIGHT.
 The following image describes the composition of the module.
@@ -113,9 +113,9 @@ losses.
 flatplate submodule
 -------------------
 
-For AOI < 60° the flatplate part only takes GII (global inclined irradiance) -
-DII (direct inclined irradiance). So only the diffuse part of the irradiance
-is considered. For Aoi > 60 ° GII is considered because DII and DHI come through.
+For AOI < 60° only the diffuse irradiance reaches the flate plate module:
+GII (global inclined irradiance) - DII (direct inclined irradiance).
+For Aoi > 60 ° also DII and DHI fall onto the flate plate module.
 The single diode equation is then solved for all timesteps with the specific
 input irradiance. No module connection is assumed, so cpv and flatplate output
 power are added up as in a four terminal cell.
@@ -135,8 +135,8 @@ be found here `Askins_2019 <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_
 ------------------
 The perovskite silicone cell is a high efficiency cell that is still in it's
 test phase. Because perovskite is a material that is easily accessible many
-researchers around the world are investigating the potential of perovskite and
-tandem e.g perovskite - silicone cells, which we will focus on here.
+researchers around the world are investigating the potential of single junction
+perovskite and perovskite tandem cells cells, which we will focus on here.
 Because of the early stage of the
 development of the technology, no outdoor measurement data is available to
 draw correlations for temperature dependencies or spectral dependencies which

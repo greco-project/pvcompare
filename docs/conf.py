@@ -350,7 +350,7 @@ epub_exclude_files = ["search.html"]
 
 # Fix unsupported image types using the PIL.
 # epub_fix_images = False
-numfig = True
+#gnumfig = True
 
 # Scale large images.
 # epub_max_image_width = 0
