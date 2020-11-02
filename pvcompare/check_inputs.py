@@ -377,8 +377,8 @@ def add_parameters_to_energy_consumption_file(
         demand_01 or demand_02
     ts_filename: str
         file name of the demand time series
-    directory_energy_consumption: str
-        default: DEFAULT_MVS_INPUT_DIRECTORY/csv_elements/
+    mvs_input_directory: str
+        default: DEFAULT_MVS_INPUT_DIRECTORY
 
     Returns
     -------
