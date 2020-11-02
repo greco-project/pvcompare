@@ -6,7 +6,7 @@ PVcompare provides the possibility to calculate feed-in time series for the
 following PV technologies under real world conditions:
 
 a) flatplate silicon PV module (SI)
-b) a hybrid CPV (concentrator) module mounted on a flatplate SI module (CPV)
+b) hybrid CPV (concentrator-PV) module: CPV cells mounted on a flat plate SI module (CPV)
 c) multijunction perovskite/silicone module (PeroSi)
 
 While the SI module feedin timeseries is completely calculated with `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_ ,
