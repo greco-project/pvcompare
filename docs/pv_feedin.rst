@@ -104,7 +104,7 @@ The overall model for the hybrid system is illustrated in the next figure.
     :width: 100%
     :alt: modeling scheme of the hybrid micro-concentrator module
 
-    Modeling scheme of the hybrid micro-concentrator module. REFERENCE
+    Modeling scheme of the hybrid micro-concentrator module (see `cpvlib <https://github.com/isi-ies-group/cpvlib/blob/master/cpvlib/data/StaticHybridSystem%20block_diagram.png>`_).
 
 CPV submodule
 -------------
