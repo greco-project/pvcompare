@@ -44,6 +44,7 @@ The following image describes the composition of the module.
 .. figure:: ./images/scheme_cpv.png
     :width: 100%
     :alt: composition scheme of the hybrid module.
+    :align: center
 
     composition scheme of the hybrid module. Direct beam irradiance is
     collected by 1mm III-V cells, while diffuse light is collected by
@@ -88,15 +89,18 @@ The utilization factors are defined as follows:
 .. figure:: ./images/Equation_UF.png
     :width: 60%
     :align: center
-    :alt: modeling scheme of the hybrid micro-concentrator module
+
+    ".."
 
 The overall model for the hybrid system is illustrated in the next figure.
 
+
 .. figure:: ./images/StaticHybridSystem_block_diagram.png
     :width: 100%
-    :alt: modeling scheme of the hybrid micro-concentrator module
+    :align: center
 
-    Modeling scheme of the hybrid micro-concentrator module (see `cpvlib <https://github.com/isi-ies-group/cpvlib/blob/master/cpvlib/data/StaticHybridSystem%20block_diagram.png>`_).
+    Modeling scheme of the hybrid micro-concentrator module
+    (see `cpvlib on github <https://github.com/isi-ies-group/cpvlib>`_).
 
 CPV submodule
 -------------
@@ -159,8 +163,9 @@ The functions for the following calculations can be found here :ref:`psi`.
 .. figure:: ./images/schema_modell.jpg
     :width: 100%
     :alt: modeling scheme of the perovskite silicone tandem cell
+    :align: center
 
-    Modeling scheme of the perovskite silicone tandem cell
+    Modeling scheme of the perovskite silicone tandem cell.
 
 Input data
 ----------
