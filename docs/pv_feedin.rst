@@ -1,8 +1,7 @@
 =========================================================
 PV feedin - Modeling of different PV Technologies
 =========================================================
-
-PVcompare provides the possibility to calculate feed-in time series for the
+*pvcompare* provides the possibility to calculate feed-in time series for the
 following PV technologies under real world conditions:
 
 a) flatplate silicon PV module (SI)
@@ -41,12 +40,13 @@ collection of the company INSOLIGHT.
 The following Image describes the composition of the module:
 
 .. image:: ./images/scheme_cpv.png
-  :width: 100%
-  :alt: composition scheme of the hybrid module. Direct beam irradiance is
+    :caption: composition scheme of the hybrid module. Direct beam irradiance is
         collected by 1mm III-V cells, while diffuse light is collected by
         the Si cell. For AOI not equal to 0°, the biconvex lens maintains
         a tight but translating focus. A simple mechanism causes the
-        backplane to follow the focal point
+        backplane to follow the focal point (see `Askins 2019 <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_)
+    :width: 100%
+    :alt: composition scheme of the hybrid module.
 
 "The Insolight technology employs a biconvex lens designed
 such that focusing is possible when the angle of incidence
@@ -65,7 +65,7 @@ V and Si cells, so a four terminal output is provided." (From `Askins 2019 <http
 
 Modeling the hybrid system
 --------------------------
-The model of the cpv technology is outsourced from pvcompare and can be found in the
+The model of the cpv technology is outsourced from *pvcompare* and can be found in the
 `cpvlib <https://github.com/isi-ies-group/cpvlib>`_ repository. PVcompare
 contains the wrapper function `apply_cpvlib_StaticHybridSystem`.
 
@@ -91,15 +91,16 @@ The utilization factors are defined as follows:
         >{{}}l@{}% no padding
     }
         1 + (x - x_{thrd}) \cdot S_{x\leq x_{thrd}}&         & \text{if }   x &\leq x_{thrd} \\
-        1 + (x - x_{thrd}) \cdot S_{x\leq x_{thrd}}&         & \text{if }    x &\geq x_{thrd}
+        1 + (x - x_{thrd}) \cdot S_{x\geq x_{thrd}}&         & \text{if }    x &\geq x_{thrd}
     \end{array}
     \right.
 
 The overall model for the hybrid system is illustrated in the next figure.
 
 .. image:: ./images/StaticHybridSystem_block_diagram.png
-  :width: 100%
-  :alt: modeling scheme of the hybrid micro-concentrator module
+    :width: 100%
+    :caption: modeling scheme of the hybrid micro-concentrator module
+    :alt: modeling scheme of the hybrid micro-concentrator module
 
 CPV submodule
 -------------
@@ -159,8 +160,9 @@ coefficient for each sub cell. The dependence of AOI is taken into account
 by `SMARTS <https://www.nrel.gov/grid/solar-resource/smarts.html>`_.
 
 .. image:: ./images/schema_modell.jpg
-  :width: 100%
-  :alt: modeling scheme of the perovskite silicone tandem cell
+    :width: 100%
+    :caption: modeling scheme of the perovskite silicone tandem cell
+    :alt: modeling scheme of the perovskite silicone tandem cell
 
 input data
 ----------
@@ -177,9 +179,9 @@ The following input data is needed:
     * cell size
     * external quantum efficiency curve (EQE-curve)
 
-The cell parameters provided in pvcompare are for the cells (Korte...) ith 17 %
-efficiency and (Chen) bin 29% efficiency. For Chen the parameters Rs, R_shunt
-and j_0 are found by fitting the IV curve.
+The cell parameters provided in *pvcompare* are for the cells (`[Korte2020] <https://pubs.acs.org/doi/10.1021/acsaem.9b01800>`_) ith 17 %
+efficiency and (`[Chen2020] <https://www.nature.com/articles/s41467-020-15077-3>`_) bin 28.2% efficiency. For Chen the parameters Rs, R_shunt
+and j_0 are evaluated by fitting the IV curve.
 
 modeling procedure
 ------------------
