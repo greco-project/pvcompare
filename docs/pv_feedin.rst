@@ -159,7 +159,7 @@ by `SMARTS <https://www.nrel.gov/grid/solar-resource/smarts.html>`_.
 
     Modeling scheme of the perovskite silicone tandem cell
 
-input data
+Input data
 ----------
 
 The following input data is needed:
