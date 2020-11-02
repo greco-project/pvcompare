@@ -179,7 +179,7 @@ def calculate_power_demand(
     filename1 = os.path.join(input_directory, filename_population)
     populations = pd.read_csv(filename1, index_col=0, sep=",")
     # convert mtoe in kWh
-    national_energyconsumption = powerstat.at[country, str(year)] * 11630
+    national_energyconsumption = powerstat.at[country, str(year)] * 11630000000
     annual_demand_per_population = (
         national_energyconsumption / populations.at[country, str(year)]
     ) * population
@@ -332,7 +332,7 @@ def calculate_heat_demand(
     heat_demand = (
         total_SH.at[country, str(year)]  #       + total_WH.at[country, str(year)]
         - electr_SH.at[country, str(year)]  #       - electr_WH.at[country, str(year)]
-    ) * 11630
+    ) * 11630000000
     annual_heat_demand_per_population = (
         heat_demand / populations.at[country, str(year)]
     ) * population
