@@ -99,7 +99,7 @@ The overall model for the hybrid system is illustrated in the next figure.
 CPV submodule
 -------------
 
-Input parameters are weather data with AM (airmass), Temoerature,
+Input parameters are weather data with AM (airmass), temperature,
 DNI (direct normal irradiance), GHI (global horizontal irradiance) over time.
 The CPV part only takes DNI into account. The angle of incidence (AOI) is calculated
 by `pvlib.irradiance.aoi() <https://pvlib-python.readthedocs.io/en/stable/generated/pvlib.irradiance.aoi.html?highlight=pvlib.irradiance.aoi#pvlib.irradiance.aoi>`_.
