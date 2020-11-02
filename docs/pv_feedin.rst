@@ -2,14 +2,14 @@
 PV feedin - Modeling of different PV Technologies
 =========================================================
 
-PVcompare provides the possibility to calculate feedin timeseries for the
+PVcompare provides the possibility to calculate feed-in time series for the
 following PV technologies under real world conditions:
 
-a) flatplate silicone PV module (SI)
-b) a hybrid CPV (concentrator) module mounted on a flatplate SI module (CPV)
-c) multijunction perovskite/silicone module (PeroSi)
+a) flatplate silicon PV module (SI)
+b) hybrid CPV (concentrator-PV) module: CPV cells mounted on a flat plate SI module (CPV)
+c) multi-junction perovskite/silicon module (PeroSi)
 
-While the SI module feedin timeseries is completely calculated with `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_ ,
+While the SI module feed-in time series is completely calculated with `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_ ,
 unique models were developed for the CPV and PeroSi technologies. The next
 sections will provide a detailed descriptions of the different modeling
 approaches.
@@ -210,7 +210,7 @@ subcell.
 3.1 The output power Pmp is multiplied by the number of cells in series
 
 3.2 losses due to cell connection (5%) and cell to module connection (5%) are
-taken into account
+taken into account.
 
 4. The temperature dependency is accounted for by: (see `Jost2020 <https://onlinelibrary.wiley.com/doi/full/10.1002/aenm.202000454>`_)
 
@@ -242,7 +242,7 @@ There is three different ways to normalize the PV timeseries.
 
 3) **Normalize by p_mp at real world conditions (NRWC)**
 
-* This procedure calculates the maximum powerpoint for realorld conditions at irr_ref = 1000 W/qm and temp_ref = 25 °.
+* This procedure calculates the maximum power point for real world conditions at irr_ref = 1000 W/qm and temp_ref = 25°C.
 
 * This way it treats the technology as if it was "ideal" under real world conditions.
 * This normalization is of great importance when it comes to estimating technologies that are still under development and do not reach their reference p_mp yet.
