@@ -20,7 +20,7 @@ The silicone module parameters are loaded from cec module database. The module
 selected by default is the "Aleo_Solar_S59y280" module with a 17% efficiency.
 But any other module can be selected.
 
-The timeseries is calculating making usage of the `Modelchain  <https://pvlib-python.readthedocs.io/en/stable/modelchain.html>`_
+The time series is calculated by making usage of the `Modelchain  <https://pvlib-python.readthedocs.io/en/stable/modelchain.html>`_
 functionality in `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_. In order to make the results compareable for real world
 conditions the following methods are added to the `modelchain object <https://pvlib-python.readthedocs.io/en/stable/api.html#modelchain>`_ :
 
