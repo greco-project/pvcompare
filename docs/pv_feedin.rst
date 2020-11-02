@@ -2,7 +2,7 @@
 PV feedin - Modeling of different PV Technologies
 =========================================================
 
-PVcompare provides the possibility to calculate feedin timeseries for the
+PVcompare provides the possibility to calculate feed-in time series for the
 following PV technologies under real world conditions:
 
 a) flatplate silicone PV module (SI)
