@@ -3,6 +3,7 @@
 ==================
 Code documentation
 ==================
+.. _area_potential:
 
 Area potential
 ==============
@@ -14,7 +15,7 @@ Function for calculating the area potential of the rooftop and facades for a giv
 
     area_potential.calculate_area_potential
 
-
+.. _demand:
 Demand
 ======
 
@@ -29,6 +30,7 @@ Functions for calculating the electrical demand profiles and heat demand profile
     demand.shift_working_hours
     demand.get_workalendar_class
 
+.. _pv_feedin:
 
 Feed-in time series of photovoltaic installations
 =================================================
@@ -45,6 +47,36 @@ Functions for calculating the feed-in time series of different PV technologies.
     pv_feedin.set_up_system
     pv_feedin.get_optimal_pv_angle
 
+.. _cpv:
+
+Modeling CPV timeseries
+=================================================
+
+Function for calculating the feed-in time series for the CPV technology.
+
+.. autosummary::
+    :toctree: temp/
+
+    cpv.apply_cpvlib_StaticHybridSystem.create_cpv_time_series
+
+.. _psi:
+
+Modeling PSI timeseries
+=================================================
+
+Function for calculating the feed-in time series for the perovskite silicone technology.
+
+.. autosummary::
+    :toctree: temp/
+
+    perosi.perosi.create_pero_si_timeseries
+    perosi.perosi.create_timeseries
+    perosi.perosi.calculate_smarts_parameters
+    perosi.pvlib_smarts.SMARTSSpectra
+    perosi.pvlib_smarts._smartsAll
+
+
+.. _check_inputs:
 
 Reading and Writing input csv's
 ===============================
@@ -62,6 +94,7 @@ Functions that match manual inputs and calculated results with mvs_inputs/csv_el
     check_inputs.add_parameters_to_energy_production_file
     check_inputs.add_evaluated_period_to_simulation_settings
 
+.. _era5:
 
 Loading ERA5 weather data
 ===============================

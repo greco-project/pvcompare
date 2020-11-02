@@ -14,6 +14,7 @@ Contents:
 
    getting_started
    examples
+   pv_feedin
    code
    parameters
 

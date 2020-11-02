@@ -191,12 +191,12 @@ def add_electricity_price(mvs_input_directory=None):
     If the value is already provided in the 'energyProviders.csv' and this value
     differs from the one in 'electricity_prices.csv' a warning is returned.
 
-    Parameters:
+    Parameters
     -----------
     mvs_input_directory : str
         directory to "mvs_inputs/"
 
-    Returns:
+    Returns
     --------
     None
     """
