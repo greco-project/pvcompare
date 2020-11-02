@@ -26,7 +26,7 @@ def load_era5_weatherdata(lat, lon, year):
 
     Returns
     ---------
-    pd.DataFrame
+    :pandas:`pandas.DataFrame<frame>`
     """
 
     start_date = str(year) + "-01-01"
@@ -134,7 +134,7 @@ def format_pvcompare(ds):
 
     Returns
     --------
-    pd.DataFrame
+    :pandas:`pandas.DataFrame<frame>`
         Dataframe formatted for the pvlib.
     """
 
@@ -222,7 +222,7 @@ def weather_df_from_era5(era5_netcdf_filename, lib, start=None, end=None):
 
     Returns
     -------
-    pd.DataFrame
+    :pandas:`pandas.DataFrame<frame>`
         Dataframe with ERA5 weather data in format required by the lib. In
         case a single location is provided in parameter `area` index of the
         dataframe is a datetime index. Otherwise the index is a multiindex

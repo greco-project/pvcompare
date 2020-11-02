@@ -7,20 +7,29 @@ from pvcompare.cpv.inputs import mod_params_cpv, mod_params_flatplate
 
 
 def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
-    """
-    creates a time series for a type of cpv module
 
-    :param lat: num
+    """
+    creates a time series for a cpv module.
+
+    notice: right now only module parameters for the hybrid INSOLIGHT module is
+    provided. If you want to add you own module data please add it to `cpv/inputs.py`.
+
+    Parameters
+    ----------
+    lat: float
         latitude
-    :param lon: num
+    lon: float
         longitude
-    :param weather: pd.DataFrame()
+    weather: :pandas:`pandas.DataFrame<frame>`
         weather dataframe according to pvlib standards
-    :param surface_azimuth: int
+    surface_azimuth: int
         surface azimuth
-    :param surface_tilt: int
+    surface_tilt: int
         surface tilt
-    :return: pd.DataFrame()
+
+    Returns
+    --------
+    :pandas:`pandas.DataFrame<frame>`
     """
 
     location = pvlib.location.Location(latitude=lat, longitude=lon, tz="utc")

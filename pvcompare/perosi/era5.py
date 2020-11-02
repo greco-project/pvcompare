@@ -11,10 +11,15 @@ def load_era5_weatherdata(lat, lon, year, variable):
     """
     loads era5 weatherdata and converts it into pvlib standart format
 
-    :param lat: numeric
-    :param lon: numeric
-    :param year: str
-    :return: pd.DataFrame
+    Parameters
+    ----------
+    lat: numeric
+    lon: numeric
+    year: str
+
+    Returns
+    --------
+    :pd.DataFrame
     """
 
     start_date = str(year) + "-01-01"
@@ -61,27 +66,39 @@ def get_era5_data_from_datespan_and_position(
 ):
     """
     Send request for era5 data to the Climate Data Store (CDS)
-    :param variable: (str or list of str) ERA5 variables to download. If you
+
+    Parameters
+    ----------
+    variable: str or list
+        of str ERA5 variables to download. If you
         want to download all variables necessary to use the pvlib, set
         `variable` to 'pvlib'. If you want to download all variables necessary
         to use the windpowerlib, set `variable` to 'windpowerlib'. To download
         both variable sets for pvlib and windpowerlib, set `variable` to
         'feedinlib'.
-    :param start_date: (str) start date of the date span in YYYY-MM-DD format
-    :param end_date: (str) end date of the date span in YYYY-MM-DD format
-    :param latitude: (number) latitude in the range [-90, 90] relative to the
+    start_date: str
+        start date of the date span in YYYY-MM-DD format
+    end_date: str
+        end date of the date span in YYYY-MM-DD format
+    latitude: number latitude in the range [-90, 90] relative to the
         equator, north corresponds to positive latitude.
-    :param longitude: (number) longitude in the range [-180, 180] relative to
+    longitude: number
+        longitude in the range [-180, 180] relative to
         Greenwich Meridian, east relative to the meridian corresponds to
         positive longitude.
-    :param grid: (list of float) provide the latitude and longitude grid
+    grid: list of float
+        provide the latitude and longitude grid
         resolutions in deg. It needs to be an integer fraction of 90 deg.
-    :param target_file: (str) name of the file in which to store downloaded
+    target_file: str
+        name of the file in which to store downloaded
         data locally
-    :param chunks: (dict)
-    :param cds_client: handle to CDS client (if none is provided, then it is
+    chunks: dict
+    cds_client: handle to CDS client (if none is provided, then it is
         created)
-    :return: CDS data in an xarray format
+
+    Returns
+    --------
+    CDS data in an xarray format
     """
     if variable == "pvcompare":
         variable = ["fdir", "ssrd", "2t", "10u", "10v", "tcwv"]
@@ -102,13 +119,14 @@ def format_pvcompare(ds):
     - direct irradiation 'dni' in W/m² (calculated later),
     - global horizontal irradiation 'ghi' in W/m²,
     - diffuse horizontal irradiation 'dhi' in W/m²
+
     Parameters
     ----------
     ds : xarray.Dataset
         Dataset with ERA5 weather data.
     Returns
     --------
-    pd.DataFrame
+    :pd.DataFrame
         Dataframe formatted for the pvlib.
     """
 
@@ -171,7 +189,7 @@ def format_perosi(ds):
         Dataset with ERA5 weather data.
     Returns
     --------
-    pd.DataFrame
+    :pd.DataFrame
         Dataframe formatted for the pvlib.
     """
 
@@ -242,7 +260,7 @@ def weather_df_from_era5(era5_netcdf_filename, lib, start=None, end=None):
         form [(lon west, lon east), (lat south, lat north)].
     Returns
     -------
-    pd.DataFrame
+    :pd.DataFrame
         Dataframe with ERA5 weather data in format required by the lib. In
         case a single location is provided in parameter `area` index of the
         dataframe is a datetime index. Otherwise the index is a multiindex

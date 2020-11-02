@@ -259,7 +259,7 @@ def get_optimal_pv_angle(lat):
     Calculates the optimal tilt angle depending on the latitude.
 
     e.G. about 27° to 34° from ground in Germany.
-    The pvlib uses tilt angles horizontal=90� and up=0�. Therefore 90� minus
+    The pvlib uses tilt angles horizontal=90° and up=0°. Therefore 90° minus
     the angle from the horizontal.
 
     Parameters
