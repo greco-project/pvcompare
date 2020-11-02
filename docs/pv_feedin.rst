@@ -242,7 +242,7 @@ There is three different ways to normalize the PV timeseries.
 
 3) **Normalize by p_mp at real world conditions (NRWC)**
 
-* This procedure calculates the maximum powerpoint for realorld conditions at irr_ref = 1000 W/qm and temp_ref = 25 °.
+* This procedure calculates the maximum power point for real world conditions at irr_ref = 1000 W/qm and temp_ref = 25°C.
 
 * This way it treats the technology as if it was "ideal" under real world conditions.
 * This normalization is of great importance when it comes to estimating technologies that are still under development and do not reach their reference p_mp yet.
