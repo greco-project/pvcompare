@@ -10,7 +10,7 @@ c) multi-junction perovskite/silicon module (PeroSi)
 
 While the SI module feed-in time series is completely calculated with `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_ ,
 unique models were developed for the CPV and PeroSi technologies. The next
-sections will provide a detailed descriptions of the different modeling
+sections will provide a detailed description of the different modeling
 approaches.
 
 ------------------
@@ -20,7 +20,7 @@ The silicone module parameters are loaded from `cec module <https://github.com/N
 selected by default is the "Aleo_Solar_S59y280" module with a 17% efficiency.
 But any other module can be selected.
 
-The timeseries is calculating making usage of the `Modelchain  <https://pvlib-python.readthedocs.io/en/stable/modelchain.html>`_
+The time series is calculated by making usage of the `Modelchain  <https://pvlib-python.readthedocs.io/en/stable/modelchain.html>`_
 functionality in `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_. In order to make the results compareable for real world
 conditions the following methods are selected from `modelchain object <https://pvlib-python.readthedocs.io/en/stable/api.html#modelchain>`_ :
 
@@ -74,7 +74,7 @@ contains the wrapper function `apply_cpvlib_StaticHybridSystem`.
 
 In order to model the dependencies of AOI, temperature and spectrum of the cpv
 module, the model follows an approach of `[Gerstmeier, 2011] <https://www.researchgate.net/publication/234976094_Validation_of_the_PVSyst_Performance_Model_for_the_Concentrix_CPV_Technology>`_
-Previously implemented for CPV in PVSYST. The approach uses the single diode
+previously implemented for CPV in PVSYST. The approach uses the single diode
 model and adds so called "utilization factors" to the output power to account
 losses due to spectral and lens temperature variations.
 
@@ -99,7 +99,7 @@ The overall model for the hybrid system is illustrated in the next figure.
 CPV submodule
 -------------
 
-Input parameters are weather data with AM (airmass), Temoerature,
+Input parameters are weather data with AM (airmass), temperature,
 DNI (direct normal irradiance), GHI (global horizontal irradiance) over time.
 The CPV part only takes DNI into account. The angle of incidence (AOI) is calculated
 by `pvlib.irradiance.aoi() <https://pvlib-python.readthedocs.io/en/stable/generated/pvlib.irradiance.aoi.html?highlight=pvlib.irradiance.aoi#pvlib.irradiance.aoi>`_.
@@ -110,14 +110,14 @@ are then multiplied with the output power of the single diode functions. They
 function as temperature and airmass corrections due to spectral and temperature
 losses.
 
-flatplate submodule
+Flatplate submodule
 -------------------
 
 For AOI < 60° only the diffuse irradiance reaches the flate plate module:
 GII (global inclined irradiance) - DII (direct inclined irradiance).
 For Aoi > 60 ° also DII and DHI fall onto the flate plate module.
 The single diode equation is then solved for all timesteps with the specific
-input irradiance. No module connection is assumed, so cpv and flatplate output
+input irradiance. No module connection is assumed, so CPV and flat plate output
 power are added up as in a four terminal cell.
 
 
@@ -133,14 +133,14 @@ be found here `Askins_2019 <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_
 ------------------
 2. PeroSi
 ------------------
-The perovskite silicone cell is a high efficiency cell that is still in it's
+The perovskite-silicon cell is a high-efficiency cell that is still in its
 test phase. Because perovskite is a material that is easily accessible many
 researchers around the world are investigating the potential of single junction
 perovskite and perovskite tandem cells cells, which we will focus on here.
 Because of the early stage of the
 development of the technology, no outdoor measurement data is available to
 draw correlations for temperature dependencies or spectral dependencies which
-are of great impact for multijunction cells.
+are of great impact for multi-junction cells.
 
 Modeling PeroSi
 ---------------
@@ -159,7 +159,7 @@ by `SMARTS <https://www.nrel.gov/grid/solar-resource/smarts.html>`_.
 
     Modeling scheme of the perovskite silicone tandem cell
 
-input data
+Input data
 ----------
 
 The following input data is needed:
@@ -178,10 +178,10 @@ The cell parameters provided in *pvcompare* are for the cells (`[Korte2020] <htt
 efficiency and (`[Chen2020] <https://www.nature.com/articles/s41467-020-15077-3>`_) bin 28.2% efficiency. For Chen the parameters Rs, R_shunt
 and j_0 are evaluated by fitting the IV curve.
 
-modeling procedure
+Modeling procedure
 ------------------
 1. **weather data**
-The POA_global (plane of array) irradiance is calculated with `pvlib.irradiance.get_total_irradiance() <https://pvlib-python.readthedocs.io/en/stable/generated/pvlib.irradiance.get_total_irradiance.html#pvlib.irradiance.get_total_irradiance>`_ function
+The POA_global (plane of array) irradiance is calculated with the `pvlib.irradiance.get_total_irradiance() <https://pvlib-python.readthedocs.io/en/stable/generated/pvlib.irradiance.get_total_irradiance.html#pvlib.irradiance.get_total_irradiance>`_ function
 
 2. **SMARTS**
 The `SMARTS <https://www.nrel.gov/grid/solar-resource/smarts.html>`_ spectrum is calculated for each time step
@@ -206,7 +206,7 @@ subcell.
 
 3.1 The output power Pmp is multiplied by the number of cells in series
 
-3.2 losses due to cell connection (5%) and cell to module connection (5%) are
+3.2 Losses due to cell connection (5%) and cell to module connection (5%) are
 taken into account.
 
 4. The temperature dependency is accounted for by: (see `Jost2020 <https://onlinelibrary.wiley.com/doi/full/10.1002/aenm.202000454>`_)
