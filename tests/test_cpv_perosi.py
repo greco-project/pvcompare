@@ -116,4 +116,4 @@ class TestPvtime_series:
 
         sum = output.sum()
 
-        assert sum == 3.2195140126743436
+        assert round(sum, 2) == 4.35

@@ -84,7 +84,7 @@ def main(
         input_directory=input_directory,
         mvs_input_directory=mvs_input_directory,
         year=year,
-        normalized=True,
+        normalization="NRWC",
     )
 
     # add sector coupling in case heat pump or chiller exists in energyConversion.csv
