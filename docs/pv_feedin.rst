@@ -110,7 +110,7 @@ are then multiplied with the output power of the single diode functions. They
 function as temperature and airmass corrections due to spectral and temperature
 losses.
 
-flatplate submodule
+Flatplate submodule
 -------------------
 
 For AOI < 60° the flatplate part only takes GII (global inclined irradiance) -
