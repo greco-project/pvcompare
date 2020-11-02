@@ -117,7 +117,7 @@ For AOI < 60° the flatplate part only takes GII (global inclined irradiance) -
 DII (direct inclined irradiance). So only the diffuse part of the irradiance
 is considered. For Aoi > 60 ° GII is considered because DII and DHI come through.
 The single diode equation is then solved for all timesteps with the specific
-input irradiance. No module connection is assumed, so cpv and flatplate output
+input irradiance. No module connection is assumed, so CPV and flat plate output
 power are added up as in a four terminal cell.
 
 
