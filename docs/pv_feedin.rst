@@ -83,20 +83,10 @@ The utilization factors are defined as follows:
 .. math::
     UF = \sum_{i=1}^{n} UF_i \cdot w_i
 
-.. math::
-    UF_i =
-    \left\{
-    \begin{array}{
-        @{}% no padding
-        l@{\quad}% some padding
-        r@{}% no padding
-        >{{}}r@{}% no padding
-        >{{}}l@{}% no padding
-    }
-        1 + (x - x_{thrd}) \cdot S_{x\leq x_{thrd}}&         & \text{if }   x &\leq x_{thrd} \\
-        1 + (x - x_{thrd}) \cdot S_{x\geq x_{thrd}}&         & \text{if }    x &\geq x_{thrd}
-    \end{array}
-    \right.
+.. figure:: ./images/Equation_UF.png
+    :width: 60%
+    :align: center
+    :alt: modeling scheme of the hybrid micro-concentrator module
 
 The overall model for the hybrid system is illustrated in the next figure.
 
