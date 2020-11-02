@@ -210,7 +210,7 @@ subcell.
 3.1 The output power Pmp is multiplied by the number of cells in series
 
 3.2 losses due to cell connection (5%) and cell to module connection (5%) are
-taken into account
+taken into account.
 
 4. The temperature dependency is accounted for by: (see `Jost2020 <https://onlinelibrary.wiley.com/doi/full/10.1002/aenm.202000454>`_)
 
