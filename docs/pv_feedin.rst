@@ -10,7 +10,7 @@ c) multi-junction perovskite/silicon module (PeroSi)
 
 While the SI module feed-in time series is completely calculated with `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_ ,
 unique models were developed for the CPV and PeroSi technologies. The next
-sections will provide a detailed descriptions of the different modeling
+sections will provide a detailed description of the different modeling
 approaches.
 
 ------------------
