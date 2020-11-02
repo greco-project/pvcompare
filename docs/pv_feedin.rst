@@ -37,17 +37,20 @@ conditions the following methods are added to the `modelchain object <https://pv
 The CPV technology that is used in the pvcopare simulations is a hybrid
 micro-Concentrator module with integrated planar tracking and diffuse light
 collection of the company INSOLIGHT.
-The following Image describes the composition of the module:
 
-.. image:: ./images/scheme_cpv.png
-    :caption: composition scheme of the hybrid module. Direct beam irradiance is
-        collected by 1mm III-V cells, while diffuse light is collected by
-        the Si cell. For AOI not equal to 0°, the biconvex lens maintains
-        a tight but translating focus. A simple mechanism causes the
-        backplane to follow the focal point (see `Askins 2019 <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_)
+.. _cpv_scheme:
+
+.. figure:: ./images/scheme_cpv.png
     :width: 100%
     :alt: composition scheme of the hybrid module.
 
+    composition scheme of the hybrid module. Direct beam irradiance is
+    collected by 1mm III-V cells, while diffuse light is collected by
+    the Si cell. For AOI not equal to 0°, the biconvex lens maintains
+    a tight but translating focus. A simple mechanism causes the
+    backplane to follow the focal point (see `Askins 2019 <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_).
+
+Image :numref:`cpv_scheme` describes the composition of the module:
 "The Insolight technology employs a biconvex lens designed
 such that focusing is possible when the angle of incidence
 (AOI) approaches 60°, although the focal spot does travel as the
