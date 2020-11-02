@@ -74,7 +74,7 @@ contains the wrapper function `apply_cpvlib_StaticHybridSystem`.
 
 In order to model the dependencies of AOI, temperature and spectrum of the cpv
 module, the model follows an approach of `[Gerstmeier, 2011] <https://www.researchgate.net/publication/234976094_Validation_of_the_PVSyst_Performance_Model_for_the_Concentrix_CPV_Technology>`_
-Previously implemented for CPV in PVSYST. The approach uses the single diode
+previously implemented for CPV in PVSYST. The approach uses the single diode
 model and adds so called "utilization factors" to the output power to account
 losses due to spectral and lens temperature variations.
 
