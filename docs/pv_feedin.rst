@@ -5,7 +5,7 @@ PV feedin - Modeling of different PV Technologies
 PVcompare provides the possibility to calculate feed-in time series for the
 following PV technologies under real world conditions:
 
-a) flatplate silicone PV module (SI)
+a) flatplate silicon PV module (SI)
 b) a hybrid CPV (concentrator) module mounted on a flatplate SI module (CPV)
 c) multijunction perovskite/silicone module (PeroSi)
 
