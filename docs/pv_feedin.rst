@@ -37,6 +37,7 @@ conditions the following methods are added to the `modelchain object <https://pv
 The CPV technology that is used in the pvcopare simulations is a hybrid
 micro-Concentrator module with integrated planar tracking and diffuse light
 collection of the company INSOLIGHT.
+The following image describes the composition of the module.
 
 .. _cpv_scheme:
 
@@ -50,7 +51,6 @@ collection of the company INSOLIGHT.
     a tight but translating focus. A simple mechanism causes the
     backplane to follow the focal point (see `Askins 2019 <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_).
 
-Image :numref:`cpv_scheme` describes the composition of the module:
 "The Insolight technology employs a biconvex lens designed
 such that focusing is possible when the angle of incidence
 (AOI) approaches 60°, although the focal spot does travel as the
@@ -100,10 +100,11 @@ The utilization factors are defined as follows:
 
 The overall model for the hybrid system is illustrated in the next figure.
 
-.. image:: ./images/StaticHybridSystem_block_diagram.png
+.. figure:: ./images/StaticHybridSystem_block_diagram.png
     :width: 100%
-    :caption: modeling scheme of the hybrid micro-concentrator module
     :alt: modeling scheme of the hybrid micro-concentrator module
+
+    Modeling scheme of the hybrid micro-concentrator module. REFERENCE
 
 CPV submodule
 -------------
@@ -162,10 +163,11 @@ EQE curves of our model. Temperature dependencies are covered by a temperature
 coefficient for each sub cell. The dependence of AOI is taken into account
 by `SMARTS <https://www.nrel.gov/grid/solar-resource/smarts.html>`_.
 
-.. image:: ./images/schema_modell.jpg
+.. figure:: ./images/schema_modell.jpg
     :width: 100%
-    :caption: modeling scheme of the perovskite silicone tandem cell
     :alt: modeling scheme of the perovskite silicone tandem cell
+
+    Modeling scheme of the perovskite silicone tandem cell
 
 input data
 ----------
