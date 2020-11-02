@@ -50,7 +50,6 @@ def create_pv_components(
     plot=True,
     input_directory=None,
     mvs_input_directory=None,
-    directory_energy_production=None,
     psi_type="Chen",
     normalization="NRWC",
 ):
@@ -84,8 +83,6 @@ def create_pv_components(
         if None: ./data/inputs/
     mvs_input_directory: str
         if None: ./data/mvs_inputs/
-    directory_energy_production: str
-        if None: ./data/mvs_inputs/elements/csv/
     psi_type: str
         "Korte" or "Chen"
     normalization: str
@@ -129,7 +126,7 @@ def create_pv_components(
         )
 
     # check if mvs_input/energyProduction.csv contains all power plants
-    check_inputs.check_mvs_energy_production_file(pv_setup, directory_energy_production)
+    check_inputs.check_mvs_energy_production_file(pv_setup, mvs_input_directory)
 
     #  define time series directory
     if mvs_input_directory is None:

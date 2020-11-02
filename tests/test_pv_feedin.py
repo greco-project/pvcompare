@@ -200,7 +200,6 @@ class TestPvtime_series:
                 plot=False,
                 input_directory=constants.DUMMY_TEST_DATA,
                 mvs_input_directory=self.test_mvs_directory,
-                directory_energy_production=None,
                 normalization="NRWC",
                 year=self.year,
             )
@@ -221,7 +220,6 @@ class TestPvtime_series:
                 plot=False,
                 input_directory=constants.DUMMY_TEST_DATA,
                 mvs_input_directory=self.test_mvs_directory,
-                directory_energy_production=None,
                 normalization="NRWC",
                 year=self.year,
             )
@@ -242,7 +240,6 @@ class TestPvtime_series:
                 plot=False,
                 input_directory=constants.DUMMY_TEST_DATA,
                 mvs_input_directory=self.test_mvs_directory,
-                directory_energy_production=None,
                 year=self.year,
             )
 
