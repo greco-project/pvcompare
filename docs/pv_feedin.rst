@@ -178,7 +178,7 @@ The cell parameters provided in *pvcompare* are for the cells (`[Korte2020] <htt
 efficiency and (`[Chen2020] <https://www.nature.com/articles/s41467-020-15077-3>`_) bin 28.2% efficiency. For Chen the parameters Rs, R_shunt
 and j_0 are evaluated by fitting the IV curve.
 
-modeling procedure
+Modeling procedure
 ------------------
 1. **weather data**
 The POA_global (plane of array) irradiance is calculated with `pvlib.irradiance.get_total_irradiance() <https://pvlib-python.readthedocs.io/en/stable/generated/pvlib.irradiance.get_total_irradiance.html#pvlib.irradiance.get_total_irradiance>`_ function
