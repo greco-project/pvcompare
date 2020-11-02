@@ -7,7 +7,7 @@ following PV technologies under real world conditions:
 
 a) flatplate silicon PV module (SI)
 b) hybrid CPV (concentrator-PV) module: CPV cells mounted on a flat plate SI module (CPV)
-c) multijunction perovskite/silicone module (PeroSi)
+c) multi-junction perovskite/silicon module (PeroSi)
 
 While the SI module feedin timeseries is completely calculated with `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_ ,
 unique models were developed for the CPV and PeroSi technologies. The next
