@@ -42,7 +42,8 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.autosummary",
     "sphinx.ext.mathjax",
-    'sphinx.ext.autosectionlabel',
+    "sphinx.ext.imgmath",
+    "sphinx.ext.autosectionlabel",
     # 'nbsphinx'
 ]
 
