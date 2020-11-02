@@ -140,7 +140,7 @@ tandem e.g perovskite - silicone cells, which we will focus on here.
 Because of the early stage of the
 development of the technology, no outdoor measurement data is available to
 draw correlations for temperature dependencies or spectral dependencies which
-are of great impact for multijunction cells.
+are of great impact for multi-junction cells.
 
 Modeling PeroSi
 ---------------
