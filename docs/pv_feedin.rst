@@ -66,11 +66,13 @@ is instead collected by the Si cells, which cover the area not
 taken up by III-V cells. Voltages are not matched between III-
 V and Si cells, so a four terminal output is provided." (From `Askins 2019 <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_)
 
+.. _hybrid_system:
+
 Modeling the hybrid system
 --------------------------
 The model of the cpv technology is outsourced from *pvcompare* and can be found in the
 `cpvlib <https://github.com/isi-ies-group/cpvlib>`_ repository. PVcompare
-contains the wrapper function `apply_cpvlib_StaticHybridSystem`.
+contains the wrapper function :ref:`cpv`.
 
 In order to model the dependencies of AOI, temperature and spectrum of the cpv
 module, the model follows an approach of `[Gerstmeier, 2011] <https://www.researchgate.net/publication/234976094_Validation_of_the_PVSyst_Performance_Model_for_the_Concentrix_CPV_Technology>`_
@@ -152,6 +154,7 @@ Spectral correlations were explicitly calculated by applying `SMARTS <https://ww
 EQE curves of our model. Temperature dependencies are covered by a temperature
 coefficient for each sub cell. The dependence of AOI is taken into account
 by `SMARTS <https://www.nrel.gov/grid/solar-resource/smarts.html>`_.
+The functions for the following calculations can be found here :ref:`psi`.
 
 .. figure:: ./images/schema_modell.jpg
     :width: 100%
