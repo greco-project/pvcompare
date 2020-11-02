@@ -1,29 +1,28 @@
 =========================================================
 PV feedin - Modeling of different PV Technologies
 =========================================================
-
-PVcompare provides the possibility to calculate feedin timeseries for the
+*pvcompare* provides the possibility to calculate feed-in time series for the
 following PV technologies under real world conditions:
 
-a) flatplate silicone PV module (SI)
-b) a hybrid CPV (concentrator) module mounted on a flatplate SI module (CPV)
-c) multijunction perovskite/silicone module (PeroSi)
+a) flatplate silicon PV module (SI)
+b) hybrid CPV (concentrator-PV) module: CPV cells mounted on a flat plate SI module (CPV)
+c) multi-junction perovskite/silicon module (PeroSi)
 
-While the SI module feedin timeseries is completely calculated with `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_ ,
+While the SI module feed-in time series is completely calculated with `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_ ,
 unique models were developed for the CPV and PeroSi technologies. The next
-sections will provide a detailed descriptions of the different modeling
+sections will provide a detailed description of the different modeling
 approaches.
 
 ------------------
 1. SI
 ------------------
-The silicone module parameters are loaded from cec module database. The module
+The silicone module parameters are loaded from `cec module <https://github.com/NREL/SAM/tree/develop/deploy/libraries>`_ database. The module
 selected by default is the "Aleo_Solar_S59y280" module with a 17% efficiency.
 But any other module can be selected.
 
-The timeseries is calculating making usage of the `Modelchain  <https://pvlib-python.readthedocs.io/en/stable/modelchain.html>`_
+The time series is calculated by making usage of the `Modelchain  <https://pvlib-python.readthedocs.io/en/stable/modelchain.html>`_
 functionality in `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_. In order to make the results compareable for real world
-conditions the following methods are added to the `modelchain object <https://pvlib-python.readthedocs.io/en/stable/api.html#modelchain>`_ :
+conditions the following methods are selected from `modelchain object <https://pvlib-python.readthedocs.io/en/stable/api.html#modelchain>`_ :
 
 - aoi_model="ashrae"
 - spectral_model="first_solar"
@@ -35,18 +34,23 @@ conditions the following methods are added to the `modelchain object <https://pv
 2. CPV
 -------
 
-The CPV technology that is used in the pvcopare simulations is a hybrid
+The CPV technology that is used in the *pvcompare* simulations is a hybrid
 micro-Concentrator module with integrated planar tracking and diffuse light
 collection of the company INSOLIGHT.
-The following Image describes the composition of the module:
+The following image describes the composition of the module.
 
-.. image:: ./images/scheme_cpv.png
-  :width: 100%
-  :alt: composition scheme of the hybrid module. Direct beam irradiance is
-        collected by 1mm III-V cells, while diffuse light is collected by
-        the Si cell. For AOI not equal to 0°, the biconvex lens maintains
-        a tight but translating focus. A simple mechanism causes the
-        backplane to follow the focal point
+.. _cpv_scheme:
+
+.. figure:: ./images/scheme_cpv.png
+    :width: 100%
+    :alt: composition scheme of the hybrid module.
+    :align: center
+
+    composition scheme of the hybrid module. Direct beam irradiance is
+    collected by 1mm III-V cells, while diffuse light is collected by
+    the Si cell. For AOI not equal to 0°, the biconvex lens maintains
+    a tight but translating focus. A simple mechanism causes the
+    backplane to follow the focal point (see `Askins 2019 <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_).
 
 "The Insolight technology employs a biconvex lens designed
 such that focusing is possible when the angle of incidence
@@ -63,15 +67,17 @@ is instead collected by the Si cells, which cover the area not
 taken up by III-V cells. Voltages are not matched between III-
 V and Si cells, so a four terminal output is provided." (From `Askins 2019 <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_)
 
+.. _hybrid_system:
+
 Modeling the hybrid system
 --------------------------
-The model of the cpv technology is outsourced from pvcompare and can be found in the
+The model of the cpv technology is outsourced from *pvcompare* and can be found in the
 `cpvlib <https://github.com/isi-ies-group/cpvlib>`_ repository. PVcompare
-contains the wrapper function `apply_cpvlib_StaticHybridSystem`.
+contains the wrapper function :ref:`cpv`.
 
 In order to model the dependencies of AOI, temperature and spectrum of the cpv
 module, the model follows an approach of `[Gerstmeier, 2011] <https://www.researchgate.net/publication/234976094_Validation_of_the_PVSyst_Performance_Model_for_the_Concentrix_CPV_Technology>`_
-Previously implemented for CPV in PVSYST. The approach uses the single diode
+previously implemented for CPV in PVSYST. The approach uses the single diode
 model and adds so called "utilization factors" to the output power to account
 losses due to spectral and lens temperature variations.
 
@@ -80,31 +86,26 @@ The utilization factors are defined as follows:
 .. math::
     UF = \sum_{i=1}^{n} UF_i \cdot w_i
 
-.. math::
-    UF_i =
-    \left\{
-    \begin{array}{
-        @{}% no padding
-        l@{\quad}% some padding
-        r@{}% no padding
-        >{{}}r@{}% no padding
-        >{{}}l@{}% no padding
-    }
-        1 + (x - x_{thrd}) \cdot S_{x\leq x_{thrd}}&         & \text{if }   x &\leq x_{thrd} \\
-        1 + (x - x_{thrd}) \cdot S_{x\leq x_{thrd}}&         & \text{if }    x &\geq x_{thrd}
-    \end{array}
-    \right.
+.. figure:: ./images/Equation_UF.png
+    :width: 60%
+    :align: center
+
+    ".."
 
 The overall model for the hybrid system is illustrated in the next figure.
 
-.. image:: ./images/StaticHybridSystem_block_diagram.png
-  :width: 100%
-  :alt: modeling scheme of the hybrid micro-concentrator module
+
+.. figure:: ./images/StaticHybridSystem_block_diagram.png
+    :width: 100%
+    :align: center
+
+    Modeling scheme of the hybrid micro-concentrator module
+    (see `cpvlib on github <https://github.com/isi-ies-group/cpvlib>`_).
 
 CPV submodule
 -------------
 
-Input parameters are weather data with AM (airmass), Temoerature,
+Input parameters are weather data with AM (airmass), temperature,
 DNI (direct normal irradiance), GHI (global horizontal irradiance) over time.
 The CPV part only takes DNI into account. The angle of incidence (AOI) is calculated
 by `pvlib.irradiance.aoi() <https://pvlib-python.readthedocs.io/en/stable/generated/pvlib.irradiance.aoi.html?highlight=pvlib.irradiance.aoi#pvlib.irradiance.aoi>`_.
@@ -115,14 +116,14 @@ are then multiplied with the output power of the single diode functions. They
 function as temperature and airmass corrections due to spectral and temperature
 losses.
 
-flatplate submodule
+Flatplate submodule
 -------------------
 
-For AOI < 60° the flatplate part only takes GII (global inclined irradiance) -
-DII (direct inclined irradiance). So only the diffuse part of the irradiance
-is considered. For Aoi > 60 ° GII is considered because DII and DHI come through.
+For AOI < 60° only the diffuse irradiance reaches the flate plate module:
+GII (global inclined irradiance) - DII (direct inclined irradiance).
+For Aoi > 60 ° also DII and DHI fall onto the flate plate module.
 The single diode equation is then solved for all timesteps with the specific
-input irradiance. No module connection is assumed, so cpv and flatplate output
+input irradiance. No module connection is assumed, so CPV and flat plate output
 power are added up as in a four terminal cell.
 
 
@@ -138,14 +139,14 @@ be found here `Askins_2019 <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_
 ------------------
 2. PeroSi
 ------------------
-The perovskite silicone cell is a high efficiency cell that is still in it's
+The perovskite-silicon cell is a high-efficiency cell that is still in its
 test phase. Because perovskite is a material that is easily accessible many
-researchers around the world are investigating the potential of perovskite and
-tandem e.g perovskite - silicone cells, which we will focus on here.
+researchers around the world are investigating the potential of single junction
+perovskite and perovskite tandem cells cells, which we will focus on here.
 Because of the early stage of the
 development of the technology, no outdoor measurement data is available to
 draw correlations for temperature dependencies or spectral dependencies which
-are of great impact for multijunction cells.
+are of great impact for multi-junction cells.
 
 Modeling PeroSi
 ---------------
@@ -157,12 +158,16 @@ Spectral correlations were explicitly calculated by applying `SMARTS <https://ww
 EQE curves of our model. Temperature dependencies are covered by a temperature
 coefficient for each sub cell. The dependence of AOI is taken into account
 by `SMARTS <https://www.nrel.gov/grid/solar-resource/smarts.html>`_.
+The functions for the following calculations can be found here :ref:`psi`.
 
-.. image:: ./images/schema_modell.jpg
-  :width: 100%
-  :alt: modeling scheme of the perovskite silicone tandem cell
+.. figure:: ./images/schema_modell.jpg
+    :width: 100%
+    :alt: modeling scheme of the perovskite silicone tandem cell
+    :align: center
 
-input data
+    Modeling scheme of the perovskite silicone tandem cell.
+
+Input data
 ----------
 
 The following input data is needed:
@@ -177,14 +182,14 @@ The following input data is needed:
     * cell size
     * external quantum efficiency curve (EQE-curve)
 
-The cell parameters provided in pvcompare are for the cells (Korte...) ith 17 %
-efficiency and (Chen) bin 29% efficiency. For Chen the parameters Rs, R_shunt
-and j_0 are found by fitting the IV curve.
+The cell parameters provided in *pvcompare* are for the cells (`[Korte2020] <https://pubs.acs.org/doi/10.1021/acsaem.9b01800>`_) ith 17 %
+efficiency and (`[Chen2020] <https://www.nature.com/articles/s41467-020-15077-3>`_) bin 28.2% efficiency. For Chen the parameters Rs, R_shunt
+and j_0 are evaluated by fitting the IV curve.
 
-modeling procedure
+Modeling procedure
 ------------------
 1. **weather data**
-The POA_global (plane of array) irradiance is calculated with `pvlib.irradiance.get_total_irradiance() <https://pvlib-python.readthedocs.io/en/stable/generated/pvlib.irradiance.get_total_irradiance.html#pvlib.irradiance.get_total_irradiance>`_ function
+The POA_global (plane of array) irradiance is calculated with the `pvlib.irradiance.get_total_irradiance() <https://pvlib-python.readthedocs.io/en/stable/generated/pvlib.irradiance.get_total_irradiance.html#pvlib.irradiance.get_total_irradiance>`_ function
 
 2. **SMARTS**
 The `SMARTS <https://www.nrel.gov/grid/solar-resource/smarts.html>`_ spectrum is calculated for each time step
@@ -209,8 +214,8 @@ subcell.
 
 3.1 The output power Pmp is multiplied by the number of cells in series
 
-3.2 losses due to cell connection (5%) and cell to module connection (5%) are
-taken into account
+3.2 Losses due to cell connection (5%) and cell to module connection (5%) are
+taken into account.
 
 4. The temperature dependency is accounted for by: (see `Jost2020 <https://onlinelibrary.wiley.com/doi/full/10.1002/aenm.202000454>`_)
 
@@ -242,7 +247,7 @@ There is three different ways to normalize the PV timeseries.
 
 3) **Normalize by p_mp at real world conditions (NRWC)**
 
-* This procedure calculates the maximum powerpoint for realorld conditions at irr_ref = 1000 W/qm and temp_ref = 25 °.
+* This procedure calculates the maximum power point for real world conditions at irr_ref = 1000 W/qm and temp_ref = 25°C.
 
 * This way it treats the technology as if it was "ideal" under real world conditions.
 * This normalization is of great importance when it comes to estimating technologies that are still under development and do not reach their reference p_mp yet.

@@ -12,7 +12,7 @@ def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
     creates a time series for a cpv module.
 
     notice: right now only module parameters for the hybrid INSOLIGHT module is
-    provided. If you want to add you own module data please do this in
+    provided. If you want to add you own module data please add it to `cpv/inputs.py`.
 
     Parameters
     ----------

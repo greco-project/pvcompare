@@ -43,6 +43,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.mathjax",
     "sphinx.ext.imgmath",
+    "sphinx.ext.autosectionlabel",
     # 'nbsphinx'
 ]
 
@@ -351,6 +352,7 @@ epub_exclude_files = ["search.html"]
 
 # Fix unsupported image types using the PIL.
 # epub_fix_images = False
+#gnumfig = True
 
 # Scale large images.
 # epub_max_image_width = 0

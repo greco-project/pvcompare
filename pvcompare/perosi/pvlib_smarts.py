@@ -688,7 +688,7 @@ def _smartsAll(
 
     Parameter
     ---------
-        All variables are labeled according to the SMARTS 2.9.5 documentation.
+        All variables are labeled according to the `SMARTS 2.9.5 documentation <https://www.researchgate.net/publication/236314699_SMARTS_code_version_295_User%27s_Manual>`_.
         NOTICE THAT "IOTOT" is not an input variable of the function since is determined in the function
         by sizing the IOUT variable.
     Returns
