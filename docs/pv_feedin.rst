@@ -133,7 +133,7 @@ be found here `Askins_2019 <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_
 ------------------
 2. PeroSi
 ------------------
-The perovskite silicone cell is a high efficiency cell that is still in it's
+The perovskite-silicon cell is a high-efficiency cell that is still in its
 test phase. Because perovskite is a material that is easily accessible many
 researchers around the world are investigating the potential of perovskite and
 tandem e.g perovskite - silicone cells, which we will focus on here.
