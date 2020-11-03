@@ -86,7 +86,7 @@ class TestDemandProfiles:
             column="demand_01",
         )
 
-        assert a["kWh"].sum() == 32.66654223990299
+        assert a["kWh"].sum() == 32666542.239902988
 
     def test_heat_demand_exists(self):
 
@@ -121,7 +121,7 @@ class TestDemandProfiles:
             column="demand_02",
         )
 
-        assert a["kWh"].sum() == 10.969639113628691
+        assert a["kWh"].sum() == 10969639.113628691
 
     def test_shift_working_hours(self):
 

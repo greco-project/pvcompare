@@ -50,10 +50,10 @@ def main(
     if mvs_input_directory == None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
-    if all([latitude, longitude, country, year]) == False:
-        check_inputs.add_project_data(
-            mvs_input_directory, latitude, longitude, country, year
-        )
+    #    if all([latitude, longitude, country, year]) == False:
+    check_inputs.add_project_data(
+        mvs_input_directory, latitude, longitude, country, year
+    )
     check_inputs.add_electricity_price()
 
     # check if weather data already exists
@@ -130,7 +130,7 @@ if __name__ == "__main__":
     longitude = 13.4105300  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
     year = 2014
     population = 48000
-    country = "France"
+    country = "Germany"
 
     main(
         latitude=latitude,

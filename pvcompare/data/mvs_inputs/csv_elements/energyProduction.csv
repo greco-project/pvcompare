@@ -1,17 +1,17 @@
-index,unit,pv_plant_01,pv_plant_02,pv_plant_03
-label,str,PV si_180_31,PV cpv_180_31,PV psi_180_31
-unit,str,kWp,kWp,kWp
-optimizeCap,bool,True,True,True
-maximumCap,None or float,25454.87,55835.702,5414.766
-installedCap,kWp,0,0,0
-age_installed,year,0,0,0
-lifetime,year,25,25,25
-development_costs,currency,500,500,500
-specific_costs,currency/unit,500,500,500
-specific_costs_om,currency/unit/year,50,50,50
-dispatch_price,currency/kWh,0,0,0
-outflow_direction,str,PV bus,PV bus,PV bus
-file_name,str,si_180_31.csv,cpv_180_31.csv,psi_180_31.csv
-energyVector,str,Electricity,Electricity,Electricity
-renewableAsset,bool,True,True,True
-type_oemof,str,source,source,source
+index,unit,pv_plant_01
+label,str,PV si_180_25_2014_40.416775_-3.70379
+unit,str,kWp
+optimizeCap,bool,True
+maximumCap,None or float,33576.867
+installedCap,kWp,0
+age_installed,year,0
+lifetime,year,25
+development_costs,currency,0
+specific_costs,currency/unit,935
+specific_costs_om,currency/unit/year,50
+dispatch_price,currency/kWh,0
+outflow_direction,str,PV bus
+file_name,str,si_180_25_2014_40.416775_-3.70379.csv
+energyVector,str,Electricity
+renewableAsset,bool,True
+type_oemof,str,source
