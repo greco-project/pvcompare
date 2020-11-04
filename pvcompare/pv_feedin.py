@@ -240,7 +240,7 @@ def create_pv_components(
             surface_azimuth=j,
             surface_tilt=k,
             psi_type=psi_type,
-            normalization = "NINT"
+            normalization="NINT",
         )
         # save the file name of the time series and the nominal value to
         # mvs_inputs/elements/csv/energyProduction.csv
@@ -405,9 +405,11 @@ def create_si_time_series(
         return output["p_mp"] / 1000
     else:
         if normalization == "NINT":
-            logging.warning("The normalization option NINT should not be used "
-                            "to normalize timeseries. Please use a different "
-                            "option.")
+            logging.warning(
+                "The normalization option NINT should not be used "
+                "to normalize timeseries. Please use a different "
+                "option."
+            )
         logging.info("Normalized SI time series is calculated in kW/kWp.")
         peak = get_peak(
             technology="si",
@@ -471,9 +473,11 @@ def create_cpv_time_series(
     else:
 
         if normalization == "NINT":
-            logging.warning("The normalization option NINT should not be used "
-                            "to normalize timeseries. Please use a different "
-                            "option.")
+            logging.warning(
+                "The normalization option NINT should not be used "
+                "to normalize timeseries. Please use a different "
+                "option."
+            )
         logging.info("Normalized CPV time series is calculated in kW/kWp.")
         peak = get_peak(
             technology="cpv",
@@ -558,9 +562,11 @@ def create_psi_time_series(
         )
     else:
         if normalization == "NINT":
-            logging.warning("The normalization option NINT should not be used "
-                            "to normalize timeseries. Please use a different "
-                            "option.")
+            logging.warning(
+                "The normalization option NINT should not be used "
+                "to normalize timeseries. Please use a different "
+                "option."
+            )
         logging.info("Normalized CPV time series is calculated in kW/kWp.")
         if psi_type == "Korte":
             import pvcompare.perosi.data.cell_parameters_korte_pero as param1
