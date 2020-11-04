@@ -251,3 +251,9 @@ There is three different ways to normalize the PV timeseries.
 
 * This way it treats the technology as if it was "ideal" under real world conditions.
 * This normalization is of great importance when it comes to estimating technologies that are still under development and do not reach their reference p_mp yet.
+
+
+4) **Normalize by peak according to intended module efficiency (NINT)**
+
+* This procedure loads the *intended_efficiency* (Wp/m²) from module parameters and calculates the peak power according to the module size.
+* This normalization is only to use for calculating the peak power for the nominal capacity and not for normalizing timeseries. The *intended_efficiency* can be changed in *module_parameters*.
