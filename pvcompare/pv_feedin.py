@@ -579,7 +579,7 @@ def create_psi_time_series(
         ).clip(0)
 
 
-def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type):
+def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type, normalization = "NINT"):
 
     """
     calculates the maximum installed capacity for each pv module.
@@ -614,12 +614,12 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
         )
         peak = get_peak(
             technology,
-            normalization="NSTC",
+            normalization=normalization,
             module_parameters_1=module_parameters,
             module_parameters_2=None,
         )
         module_size = module_parameters["A_c"]
-        nominal_value = round(area / module_size * peak) / 1000
+        nominal_value = round((area / module_size) * peak) / 1000
     elif technology == "cpv":
         system, mod_params_cpv, mod_params_flatplate = set_up_system(
             technology=technology,
@@ -628,12 +628,12 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
         )
         peak = get_peak(
             technology,
-            normalization="NSTC",
+            normalization=normalization,
             module_parameters_1=mod_params_cpv,
             module_parameters_2=mod_params_flatplate,
         )
         module_size = mod_params_cpv["Area"]
-        nominal_value = round(area / module_size * peak) / 1000
+        nominal_value = round((area / module_size) * peak) / 1000
     elif technology == "psi":
         if psi_type == "Korte":
             import pvcompare.perosi.data.cell_parameters_korte_pero as param1
@@ -645,7 +645,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
         # calculate peak power with 5 % CTM losses nad 5 % cell connection losses
         peak = get_peak(
             technology,
-            normalization="NSTC",
+            normalization=normalization,
             module_parameters_1=param1,
             module_parameters_2=param2,
         )
@@ -675,6 +675,7 @@ def get_peak(technology, normalization, module_parameters_1, module_parameters_2
         "NP": Normalize by peak power
         "NSTC": Normalize by reference p_mp
         "NRWC": Normalize by realworld p_mp
+        "NINT": Normalize by intended efficiency
         None: no normalization
     module_parameters_1: dict
         module parameters of cell 1 or module
@@ -699,14 +700,23 @@ def get_peak(technology, normalization, module_parameters_1, module_parameters_2
             )
             return peak
         elif technology == "psi":
-
-            # calculate peak power with 5 % CTM losses
+            # calculate peak power with 10 % CTM losses
             peak = (module_parameters_1.p_mp + module_parameters_1.p_mp) - (
                 (module_parameters_2.p_mp + module_parameters_2.p_mp) / 100
             ) * 10
             return peak
     elif normalization == "NRWC":
         return calculate_NRWC_peak(technology=technology)
+    elif normalization == "NINT":
+        if technology == "si":
+            peak = module_parameters_1["I_mp_ref"] * module_parameters_1["V_mp_ref"]
+            return peak
+        elif technology == "cpv":
+            peak = module_parameters_1["Area"] * module_parameters_1["intended_efficiency"]
+            return peak
+        elif technology == "psi":
+            peak = (module_parameters_1.A / 10000) * module_parameters_1.intended_efficiency
+            return peak
 
 
 def calculate_NRWC_peak(technology):
