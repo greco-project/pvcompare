@@ -3,6 +3,21 @@
 ==================
 Code documentation
 ==================
+
+.. _main:
+
+Main
+====
+
+Main functions of *pvcompare* that can be used to start a full simulation.
+
+.. autosummary::
+    :toctree: temp/
+
+    main.main
+    main.apply_mvs
+
+
 .. _area_potential:
 
 Area potential
@@ -110,6 +125,7 @@ Functions that request the weather data of one year and one location from the ER
     era5.format_pvcompare
     era5.weather_df_from_era5
 
+.. _loops:
 
 Automated loops
 ===============
