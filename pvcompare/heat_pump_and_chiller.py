@@ -20,8 +20,8 @@ def calculate_cops_and_eers(
     weather,
     lat,
     lon,
+    mode,
     temperature_col="temp_air",
-    mode="heat_pump",
     input_directory=None,
     mvs_input_directory=None,
 ):
