@@ -4,7 +4,7 @@
 Introduction
 =============
 
-``pvcompare`` is a model that compares the benefits of different PV technologies in a specified energy system by running
+*pvcompare* is a model that compares the benefits of different PV technologies in a specified energy system by running
 an oemof simulation. This model concentrates on the integration of PV technologies into local energy systems but could
 easily be enhanced to analyse other conversion technologies.
 
@@ -31,9 +31,9 @@ The full documentation can be found at `readthedocs <http://pvcompare.readthedoc
 Installation
 ============
 
-To install ``pvcompare`` follow these steps:
+To install *pvcompare* follow these steps:
 
-- Clone ``pvcompare`` and navigate to the directory ``\pvcompare`` containing the ``setup.py`` and ``requirements.txt``:
+- Clone *pvcompare* and navigate to the directory ``\pvcompare`` containing the ``setup.py`` and ``requirements.txt``:
 
 ::
 
@@ -56,7 +56,7 @@ Examples and basic usage
 Contributing
 ==============
 
-We are warmly welcoming all who want to contribute to ``pvcompare``.
+We are warmly welcoming all who want to contribute to *pvcompare*.
 Please read our `Contributing Guidelines <https://github.com/greco-project/pvcompare/blob/dev/CONTRIBUTING.md>`_.
 
 
