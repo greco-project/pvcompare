@@ -235,19 +235,20 @@ then be scaled to the optimal installation size of the system.
 
 There is three different ways to normalize the PV timeseries.
 
-1) **Normalize by peak power (NP)**
-
-* This procedure takes into account the impacts of the weather on the profile, but not on the scaling of the timeseries
-
-
-2) **Normalize by p_mp at standard test conditions (power at maximum powerpoint) (NSTC)**
+1) **Normalize by p_mp at standard test conditions (power at maximum powerpoint) (NSTC)**
 
 * This procedure accounts for all losses under real world conditions and displays the difference between ideal operation and real world operation
 
 
-3) **Normalize by p_mp at real world conditions (NRWC)**
+2) **Normalize by p_mp at real world conditions (NRWC)**
 
 * This procedure calculates the maximum power point for real world conditions at irr_ref = 1000 W/qm and temp_ref = 25°C.
 
 * This way it treats the technology as if it was "ideal" under real world conditions.
 * This normalization is of great importance when it comes to estimating technologies that are still under development and do not reach their reference p_mp yet.
+
+
+3) **Normalize by peak according to intended module efficiency (NINT)**
+
+* This procedure loads the *intended_efficiency* (Wp/m²) from module parameters and calculates the peak power according to the module size.
+* This normalization is only to use for calculating the peak power for the nominal capacity and not for normalizing timeseries. The *intended_efficiency* can be changed in *module_parameters*.

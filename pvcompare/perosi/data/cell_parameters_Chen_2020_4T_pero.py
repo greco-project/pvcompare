@@ -17,3 +17,4 @@ alpha = -0.0017  # 1/K  temperature coefficient of Jsc
 losses = 20  # 5% CTM losses + 5 % cell connection losses
 p_mp = 0.00919 * Ns
 EQE_filename = "CHEN_2020_EQE_curve_pero_corrected.csv"
+intended_efficiency = 24
