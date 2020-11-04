@@ -13,11 +13,10 @@ Contents:
    :glob:
 
    getting_started
-   examples
    pv_feedin
-   code
+   examples
    parameters
-
+   code
 
 
 Indices and tables
