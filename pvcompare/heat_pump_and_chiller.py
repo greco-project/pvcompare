@@ -77,8 +77,8 @@ def calculate_cops_and_eers(
             f"Parameter `mode` should be 'heat_pump' or 'chiller' but is {mode}"
         )
     # prepare parameters for calc_cops
-    start_temperature = float(parameters.start_temperature)
-    room_temperature = [float(parameters.room_temperature)]
+    low_temperature = float(parameters.temp_low)
+    high_temperature = [float(parameters.temp_high)]
     quality_grade = float(parameters.quality_grade)
 
     # prepare ambient temperature for calc_cops (list)
@@ -103,7 +103,7 @@ def calculate_cops_and_eers(
         )
 
         efficiency = cmpr_hp_chiller.calc_cops(
-            temp_high=room_temperature,
+            temp_high=high_temperature,
             temp_low=ambient_temperature,
             quality_grade=quality_grade,
             mode=mode,
@@ -118,7 +118,7 @@ def calculate_cops_and_eers(
     elif mode == "chiller":
         efficiency = cmpr_hp_chiller.calc_cops(
             temp_high=ambient_temperature,
-            temp_low=room_temperature,
+            temp_low=low_temperature,
             quality_grade=quality_grade,
             mode=mode,
         )
