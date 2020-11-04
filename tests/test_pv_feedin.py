@@ -49,21 +49,6 @@ class TestPvtime_series:
         self.surface_tilt = 30
         self.year = 2015
 
-    def test_nominal_values_pv(self):
-
-        technology = "si"
-        area = 1000
-
-        nominal_value = nominal_values_pv(
-            technology=technology,
-            area=area,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            psi_type="Chen",
-        )
-
-        assert nominal_value == 170.337
-
     def test_create_si_times_eries(self):
 
         ts = create_si_time_series(
@@ -242,6 +227,142 @@ class TestPvtime_series:
                 mvs_input_directory=self.test_mvs_directory,
                 year=self.year,
             )
+
+    def test_nominal_values_pv_NSTC(self):
+
+        technology = "si"
+        area = 1000
+
+        nominal_value = nominal_values_pv(
+            technology=technology,
+            area=area,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            psi_type="Chen",
+            normalization="NSTC",
+        )
+
+        assert nominal_value == 170.337
+
+    def test_nominal_values_pv_NINT_cpv(self):
+        technology = "cpv"
+        area = 1000
+
+        nominal_value = nominal_values_pv(
+            technology=technology,
+            area=area,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            psi_type="Chen",
+            normalization="NINT",
+        )
+
+        assert nominal_value == 320.0
+
+    def test_nominal_values_pv_NINT_psi(self):
+        technology = "psi"
+        area = 1000
+
+        nominal_value = nominal_values_pv(
+            technology=technology,
+            area=area,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            psi_type="Chen",
+            normalization="NINT",
+        )
+
+        assert nominal_value == 240
+
+    def test_nominal_values_pv_NSTC_si(self):
+
+        technology = "si"
+        area = 1000
+
+        nominal_value = nominal_values_pv(
+            technology=technology,
+            area=area,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            psi_type="Chen",
+            normalization="NSTC",
+        )
+        assert nominal_value == 170.337
+
+    def test_nominal_values_pv_NSTC_cpv(self):
+        technology = "cpv"
+        area = 1000
+
+        nominal_value = nominal_values_pv(
+            technology=technology,
+            area=area,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            psi_type="Chen",
+            normalization="NSTC",
+        )
+
+        assert nominal_value == 262.123
+
+    def test_nominal_values_pv_NSTC_psi(self):
+        technology = "psi"
+        area = 1000
+
+        nominal_value = nominal_values_pv(
+            technology=technology,
+            area=area,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            psi_type="Chen",
+            normalization="NSTC",
+        )
+
+        assert nominal_value == 286.924
+
+    def test_nominal_values_pv_NRWC_si(self):
+
+        technology = "si"
+        area = 1000
+
+        nominal_value = nominal_values_pv(
+            technology=technology,
+            area=area,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            psi_type="Chen",
+            normalization="NRWC",
+        )
+        assert nominal_value == 140.542
+
+    def test_nominal_values_pv_NRWC_cpv(self):
+        technology = "cpv"
+        area = 1000
+
+        nominal_value = nominal_values_pv(
+            technology=technology,
+            area=area,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            psi_type="Chen",
+            normalization="NRWC",
+        )
+
+        assert nominal_value == 182.944
+
+    def test_nominal_values_pv_NRWC_psi(self):
+        technology = "psi"
+        area = 1000
+
+        nominal_value = nominal_values_pv(
+            technology=technology,
+            area=area,
+            surface_azimuth=self.surface_azimuth,
+            surface_tilt=self.surface_tilt,
+            psi_type="Chen",
+            normalization="NRWC",
+        )
+
+        assert nominal_value == 203.64
 
     def test_get_optimal_pv_angle(self):
 

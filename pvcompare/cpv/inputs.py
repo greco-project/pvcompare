@@ -24,6 +24,7 @@ mod_params_cpv = {
     "u_c": 29.0,  # default value from https://pvlib-python.readthedocs.io/en/latest/generated/pvlib.temperature.pvsyst_cell.html#pvlib.temperature.pvsyst_cell
     "u_v": 0.00,
     "alpha": 0.11,  # temperature coefficient for the whole module see INS datasheet not used
+    "intended_efficiency": 32,
 }
 
 UF_parameters_cpv = {
