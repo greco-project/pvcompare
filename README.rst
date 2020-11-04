@@ -1,8 +1,4 @@
-.. image:: https://travis-ci.com/greco-project/pvcompare.svg?branch=dev
-    :target: https://travis-ci.com/greco-project/pvcompare
-.. image:: https://coveralls.io/repos/github/greco-project/pvcompare/badge.svg?branch=dev
-    :target: https://coveralls.io/github/greco-project/pvcompare?branch=dev
-
+|badge_docs| |badge_travis| |badge_coverage|
 
 
 Introduction
@@ -62,3 +58,16 @@ Contributing
 
 We are warmly welcoming all who want to contribute to ``pvcompare``.
 Please read our `Contributing Guidelines <https://github.com/greco-project/pvcompare/blob/dev/CONTRIBUTING.md>`_.
+
+
+.. |badge_docs| image:: https://readthedocs.org/projects/pvcompare/badge/?version=latest
+    :target: https://pvcompare.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+.. |badge_travis| image:: https://travis-ci.com/greco-project/pvcompare.svg?branch=dev
+    :target: https://travis-ci.com/greco-project/pvcompare
+    :alt: Build status
+
+.. |badge_coverage| image:: https://coveralls.io/repos/github/greco-project/pvcompare/badge.svg?branch=dev
+    :target: https://coveralls.io/github/greco-project/pvcompare?branch=dev
+    :alt: Test coverage
