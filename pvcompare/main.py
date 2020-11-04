@@ -142,7 +142,7 @@ def main(
     )
 
 
-def apply_mvs(mvs_input_directory, mvs_output_directory):
+def apply_mvs(mvs_input_directory=None, mvs_output_directory=None):
     r"""
     Starts the energy system simulation with MVS and stores results.
 
