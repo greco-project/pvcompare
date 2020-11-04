@@ -244,7 +244,6 @@ class TestPvtime_series:
 
         assert nominal_value == 170.337
 
-
     def test_nominal_values_pv_NINT_cpv(self):
         technology = "cpv"
         area = 1000
@@ -320,7 +319,6 @@ class TestPvtime_series:
 
         assert nominal_value == 286.924
 
-
     def test_nominal_values_pv_NRWC_si(self):
 
         technology = "si"
@@ -365,7 +363,6 @@ class TestPvtime_series:
         )
 
         assert nominal_value == 203.64
-
 
     def test_get_optimal_pv_angle(self):
 
