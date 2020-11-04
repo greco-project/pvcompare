@@ -43,14 +43,14 @@ def main(
 
     Parameters
     ----------
-    population: float
+    population: int
         Population for which the demand and area potential for PV on buildings is
         calculated.
     country:
         Country of the location. Default: None.
-    latitude: float
+    latitude: float or None
         Latitude of the location. Default: None.
-    longitude: float
+    longitude: float or None
         Longitude of the location. Default: None.
     year: int
         Year of the simulation. Default: None.
@@ -65,7 +65,7 @@ def main(
     plot: bool
         If True, plots of the PV feed-in time series are created in
         :py:func:`~.pv_feedin.create_pv_components`. Default: False.
-    pv_setup:
+    pv_setup: dict or None
         Specifies the PV technologies and their installation details used in the
         simulation. The dictionary contains columns: surface_type, technology,
         surface_azimuth, surface_tilt.
@@ -152,7 +152,7 @@ def apply_mvs(mvs_input_directory=None, mvs_output_directory=None):
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
         `constants.DEFAULT_MVS_INPUT_DIRECTORY` is used as mvs_input_directory.
         Default: None.
-    mvs_output_directory
+    mvs_output_directory: str or None
         Directory in which simulation results are stored. If None,
         `constants.DEFAULT_MVS_OUTPUT_DIRECTORY` is used as mvs_input_directory.
         Default: None.
