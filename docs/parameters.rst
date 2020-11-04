@@ -1,6 +1,7 @@
 =========================================================
 Parameters of pvcompare: Definitions and Default Values
 =========================================================
+.. _parameters:
 
 Within the ``pvcompare/pvcompare/data/`` directory, two separate categories of inputs can be observed.
 

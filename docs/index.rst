@@ -13,6 +13,7 @@ Contents:
    :glob:
 
    getting_started
+   basic_usage
    pv_feedin
    examples
    parameters
