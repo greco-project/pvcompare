@@ -86,7 +86,6 @@ def create_pv_components(
     psi_type: str
         "Korte" or "Chen"
     normalization: str
-        "NP": Normalize by peak power
         "NSTC": Normalize by reference p_mp
         "NRWC": Normalize by realworld p_mp
         None: no normalization
@@ -373,7 +372,6 @@ def create_si_time_series(
     surface_tilt: float
         surface tilt of the modules
     normalization: str
-        "NP": Normalize by peak power
         "NSTC": Normalize by reference p_mp
         "NRWC": Normalize by realworld p_mp
         None: no normalization
@@ -445,7 +443,6 @@ def create_cpv_time_series(
     surface_tilt: float
         Surface tilt of the modules. (horizontal=90° and vertical=0°)
     normalization: str
-        "NP": Normalize by peak power
         "NSTC": Normalize by reference p_mp
         "NRWC": Normalize by realworld p_mp
         None: no normalization
@@ -529,7 +526,6 @@ def create_psi_time_series(
         Defines the type of module of which the time series is calculated.
         Options: "Korte", "Chen"
     normalization: str
-        "NP": Normalize by peak power
         "NSTC": Normalize by reference p_mp
         "NRWC": Normalize by realworld p_mp
         None: no normalization
@@ -619,7 +615,6 @@ def nominal_values_pv(
     surface_tilt: float
         surface tilt of the modules
     normalization: str
-        "NP": Normalize by peak power
         "NSTC": Normalize by reference p_mp
         "NRWC": Normalize by realworld p_mp
         "NINT": Normalize by intended efficiency. This option is only used to
@@ -696,7 +691,6 @@ def get_peak(technology, normalization, module_parameters_1, module_parameters_2
     technology: str
         "si", "cpv" or "psi"
     normalization: str
-        "NP": Normalize by peak power
         "NSTC": Normalize by reference p_mp
         "NRWC": Normalize by realworld p_mp
         "NINT": Normalize by intended efficiency. This option is only used to
