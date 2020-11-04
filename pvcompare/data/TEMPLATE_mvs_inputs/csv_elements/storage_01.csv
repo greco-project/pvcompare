@@ -1,0 +1,15 @@
+,unit,storage capacity,input power,output power,comments
+label,str,Storage capacity,discharging_power,discharging_power,
+unit,str,kWh,kW,kW,
+installedCap,kWh,0.0,0,0,
+age_installed,year,0,0,0,
+lifetime,year,20,20,20,"Moosmoar S.3, https://iewt2019.eeg.tuwien.ac.at/download/contribution/presentation/112/112_presentation_20190215_102253.pdf"
+development_costs,currency,0.0,0.0,0.0,
+specific_costs,currency/kWh,250 - 550 €/kWh (in 2030),0,0,"ZHB S.46 f, https://www.zhb-flensburg.de/fileadmin/content/spezial-einrichtungen/zhb/dokumente/dissertationen/fluri/fluri-2019-wirtschaftlichkeit-dez-stromspeicher.pdf"
+specific_costs_om,currency/kWh/year,0.15,0,0,
+dispatch_price,currency/kWh,NaN,0,0,
+c_rate,factor of total capacity (kWh),NaN,1,1,
+efficiency,factor,0.0,0.9,0.9,
+soc_initial,None or factor,None,NaN,NaN,
+soc_max,factor,0.8,NaN,NaN,
+soc_min,factor,0.1,NaN,NaN,
