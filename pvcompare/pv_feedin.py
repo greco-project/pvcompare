@@ -54,16 +54,16 @@ def create_pv_components(
     normalization="NRWC",
 ):
     """
-    creates feedin time series for all surface types in pv_setup.csv
+    Creates feed-in time series for all surface types in `pv_setup` or 'pv_setup.csv'.
 
-    Reads pv_setup.csv, for each surface_type listed in pv_setup,
+    Reads 'pv_setup.csv', for each `surface_type` listed in `pv_setup`,
     one PV time series is created with regard to the technology and its
-    orientation. All time series are normalized to the peak power of the
-    module and stored as csv files in ./data/mvs_inputs/time_series.
-    Further the area potential of the surface_type with regard to the building
-    parameters defined in building_parameters.csv is calculated and the
-    maximum installed capacity (nominal value) is calculated. Both parameters
-    are stored into ./data/mvs_inputs/elements/csv/energyProduction.csv
+    orientation. All time series are normalized with the method specified in
+    `normalization` and stored as csv files in `mvs_input_directory/time_series`.
+    Further the area potential of the `surface_type` with regard to the building
+    parameters defined in 'building_parameters.csv' in `input_directory` is calculated
+    and the maximum installed capacity (nominal value) is calculated. Both parameters
+    are stored into `mvs_input_directory/csv_elements/energyProduction.csv`.
 
     Parameters
     ----------
@@ -74,9 +74,11 @@ def create_pv_components(
     population: num
         population
     pv_setup: dict or None
-        with collumns: surface_type, technology, surface_azimuth, surface_tilt
-        a tilt of 0 resembles a vertical orientation.
-        if pv_setup is None, it is loaded from the input_directory
+        Specifies the PV technologies and their installation details used in the
+        simulation. The dictionary contains columns: surface_type, technology,
+        surface_azimuth, surface_tilt.
+        A tilt of 0 resembles a vertical orientation.
+        If `pv_setup` is None, it is loaded from the `input_directory/pv_setup.cvs`.
     plot: bool
         if true plots created pv times series
     input_directory: str
