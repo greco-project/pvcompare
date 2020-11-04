@@ -579,7 +579,9 @@ def create_psi_time_series(
         ).clip(0)
 
 
-def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type, normalization = "NINT"):
+def nominal_values_pv(
+    technology, area, surface_azimuth, surface_tilt, psi_type, normalization="NINT"
+):
 
     """
     calculates the maximum installed capacity for each pv module.
@@ -711,10 +713,18 @@ def get_peak(technology, normalization, module_parameters_1, module_parameters_2
             peak = module_parameters_1["I_mp_ref"] * module_parameters_1["V_mp_ref"]
             return peak
         elif technology == "cpv":
-            peak = module_parameters_1["Area"] * module_parameters_1["intended_efficiency"] * 10
+            peak = (
+                module_parameters_1["Area"]
+                * module_parameters_1["intended_efficiency"]
+                * 10
+            )
             return peak
         elif technology == "psi":
-            peak = (module_parameters_1.A / 10000) * module_parameters_1.intended_efficiency * 10
+            peak = (
+                (module_parameters_1.A / 10000)
+                * module_parameters_1.intended_efficiency
+                * 10
+            )
             return peak
 
 

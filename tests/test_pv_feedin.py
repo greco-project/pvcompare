@@ -49,7 +49,6 @@ class TestPvtime_series:
         self.surface_tilt = 30
         self.year = 2015
 
-
     def test_create_si_times_eries(self):
 
         ts = create_si_time_series(
@@ -240,7 +239,7 @@ class TestPvtime_series:
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
             psi_type="Chen",
-            normalization="NSTC"
+            normalization="NSTC",
         )
 
         assert nominal_value == 170.337
@@ -256,7 +255,7 @@ class TestPvtime_series:
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
             psi_type="Chen",
-            normalization="NINT"
+            normalization="NINT",
         )
         assert nominal_value == 170.337
 
@@ -270,7 +269,7 @@ class TestPvtime_series:
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
             psi_type="Chen",
-            normalization="NINT"
+            normalization="NINT",
         )
 
         assert nominal_value == 320.0
@@ -285,11 +284,10 @@ class TestPvtime_series:
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
             psi_type="Chen",
-            normalization="NINT"
+            normalization="NINT",
         )
 
         assert nominal_value == 240
-
 
     def test_get_optimal_pv_angle(self):
 
@@ -317,7 +315,6 @@ def test_calculate_NRWC_peak_psi():
     peak3 = calculate_NRWC_peak(technology="psi")
 
     assert round(peak3, 2) == 248.24
-
 
 
 # # one can test that exception are raised
