@@ -226,8 +226,8 @@ The following list will give a brief introduction into the description of the cs
 
     1. **mode**: str, options: 'heat_pump' or 'chiller'
     2. **quality_grade**: float, scale-down factor to determine the COP of a real machine, default: heat pump: 0.2, chiller 0.25 (tests were made with monitored data from the GRECO project, reference follows)
-    3. **room_temperature**: float, mean temperature of the room that is heated/cooled, will be adapted with issue #59
-    4. **start_temperature**: float, temperature at which the heating/cooling period starts, default: heating 17 °C (`Reference <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_)
+    3. **temp_high**: float, high temperature of the sink (external outlet temperature at the condenser)
+    4. **temp_low**: float, temperature of the source (external outlet temperature at the evaporator), default: heating 15 °C ('Reference <http://wiki.energie-m.de/Heizgrenztemperatur>`_)  or 17 °C (`Reference <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_)
     5. **factor_icing**: float or None, COP reduction caused by icing, only for `mode` 'heat_pump', default: None
     6. **temp_threshold_icing**: float or None, Temperature below which icing occurs, only for `mode` 'heat_pump', default: None
 
