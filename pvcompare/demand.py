@@ -385,15 +385,15 @@ def adjust_heat_demand(temperature, demand):
     excess_demand = 0
     heating_limit_temp = 15
     # Check for every day in the year the mean temperature
-    for i, temp in enumerate(np.arange(0, len(temperature)-24, 24)):
+    for i, temp in enumerate(np.arange(0, len(temperature) - 24, 24)):
         # Calculate mean temperature of a day
-        mean_temp = np.mean(temperature[temp:temp+24])
+        mean_temp = np.mean(temperature[temp : temp + 24])
         # Check if the daily mean temperature is higher than the heating limit temperature
         if mean_temp >= heating_limit_temp:
             # Gather the previous demand calculated by the demandlib in excess_demand
-            excess_demand = excess_demand + sum(demand["h0"][temp:temp+24])
+            excess_demand = excess_demand + sum(demand["h0"][temp : temp + 24])
             # Set heat demand to zero
-            demand["h0"][temp:temp + 24] = 0
+            demand["h0"][temp : temp + 24] = 0
 
     # Count the hours where heat demand is not zero
     count_demand_hours = np.count_nonzero(demand["h0"])
