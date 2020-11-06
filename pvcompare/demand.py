@@ -338,6 +338,7 @@ def calculate_heat_demand(
     ) * population
 
     # Multi family house (mfh: Mehrfamilienhaus)
+    include_warm_water = False  # Set true to include warm water
     demand["h0"] = bdew.HeatBuilding(
         demand.index,
         holidays=holidays,
@@ -347,12 +348,13 @@ def calculate_heat_demand(
         wind_class=0,
         annual_heat_demand=annual_heat_demand_per_population,
         name="MFH",
-        ww_incl=False,
+        ww_incl=include_warm_water,
     ).get_bdew_profile()
 
     # Adjust the heat demand so there is no demand if daily mean temperature
     # is above the heating limit temperature
-    demand = adjust_heat_demand(temp, demand)
+    if not include_warm_water:
+        demand = adjust_heat_demand(temp, demand)
 
     shifted_heat_demand = shift_working_hours(country=country, ts=demand)
     shifted_heat_demand.rename(columns={"h0": "kWh"}, inplace=True)
