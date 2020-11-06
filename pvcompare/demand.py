@@ -350,6 +350,10 @@ def calculate_heat_demand(
         ww_incl=False,
     ).get_bdew_profile()
 
+    # Adjust the heat demand so there is no demand if daily mean temperature
+    # is above the heating limit temperature
+    demand = adjust_heat_demand(temp, demand)
+
     shifted_heat_demand = shift_working_hours(country=country, ts=demand)
     shifted_heat_demand.rename(columns={"h0": "kWh"}, inplace=True)
 
@@ -373,6 +377,33 @@ def calculate_heat_demand(
         column=column, ts_filename=h_demand_csv, mvs_input_directory=mvs_input_directory
     )
     return shifted_heat_demand
+
+
+def adjust_heat_demand(temperature, demand):
+    excess_demand = 0
+    heating_limit_temp = 15
+    # Check for every day in the year the mean temperature
+    for i, temp in enumerate(np.arange(0, len(temperature)-24, 24)):
+        # Calculate mean temperature of a day
+        mean_temp = np.mean(temperature[temp:temp+24])
+        # Check if the daily mean temperature is higher than the heating limit temperature
+        if mean_temp >= heating_limit_temp:
+            # Gather the previous demand calculated by the demandlib in excess_demand
+            excess_demand = excess_demand + sum(demand["h0"][temp:temp+24])
+            # Set heat demand to zero
+            demand["h0"][temp:temp + 24] = 0
+
+    # Count the hours where heat demand is not zero
+    count_demand_hours = np.count_nonzero(demand["h0"])
+    # Calculate heat demand that is shifted from excess demand equally to rest of demand
+    hourly_excess_demand = excess_demand / count_demand_hours
+
+    # Add hourly excess demand to heat demand that is not zero
+    for i, heat_demand in enumerate(demand["h0"]):
+        if heat_demand != 0:
+            demand["h0"][i] = demand["h0"][i] + hourly_excess_demand
+
+    return demand
 
 
 def shift_working_hours(country, ts):
