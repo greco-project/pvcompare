@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 import os
 import logging
+import maya
 
 import oemof.thermal.compression_heatpumps_and_chillers as cmpr_hp_chiller
 
@@ -85,7 +86,7 @@ def calculate_cops_and_eers(
     ambient_temperature = weather[temperature_col].values.tolist()
 
     # create add on to filename (year, lat, lon)
-    year = weather.index[int(len(weather) / 2)].year
+    year = maya.parse(weather.index[int(len(weather) / 2)]).datetime().year
     add_on = f"_{year}_{lat}_{lon}"
 
     # calculate COPs or EERs with oemof thermal
