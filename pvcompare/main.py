@@ -33,16 +33,51 @@ def main(
     plot=False,
     pv_setup=None,
 ):
-
     """
-    loads weather data for the given year and location, calculates pv feedin
-    timeseries as well as the nominal values /installation capacities based on
-    the building parameters.
+    Runs the main functionalities of pvcompare.
 
-    :param latitude: num
-    :param longitude: num
-    :param year: str
-    :return:
+    Loads weather data for the given year and location, calculates pv feed-in time
+    series, as well as the nominal values /installation capacities based on the building
+    parameters. Additionally, COPs are calculated if a heat pump is added to the energy
+    system.
+
+    Parameters
+    ----------
+    population: int
+        Population for which the demand and area potential for PV on buildings is
+        calculated.
+    country:
+        Country of the location. Default: None.
+    latitude: float or None
+        Latitude of the location. Default: None.
+    longitude: float or None
+        Longitude of the location. Default: None.
+    year: int
+        Year of the simulation. Default: None.
+    input_directory: str or None
+        Directory of the pvcompare specific inputs. If None,
+        `constants.DEFAULT_INPUT_DIRECTORY` is used as mvs_input_directory.
+        Default: None.
+    mvs_input_directory: str or None
+        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+        `constants.DEFAULT_MVS_INPUT_DIRECTORY` is used as mvs_input_directory.
+        Default: None.
+    plot: bool
+        If True, plots of the PV feed-in time series are created in
+        :py:func:`~.pv_feedin.create_pv_components`. Default: False.
+    pv_setup: dict or None
+        Specifies the PV technologies and their installation details used in the
+        simulation. The dictionary contains columns: surface_type, technology,
+        surface_azimuth, surface_tilt.
+        A tilt of 0 resembles a vertical orientation.
+        If `pv_setup` is None, it is loaded from the `input_directory/pv_setup.cvs`.
+        Default: None.
+
+    Returns
+    -------
+    Saves calculated time series to `timeseries` folder in `mvs_input_directory` and
+    updates csv files in `csv_elements` folder.
+
     """
 
     if input_directory == None:
@@ -107,8 +142,26 @@ def main(
     )
 
 
-def apply_mvs(mvs_input_directory, mvs_output_directory):
+def apply_mvs(mvs_input_directory=None, mvs_output_directory=None):
+    r"""
+    Starts the energy system simulation with MVS and stores results.
 
+    Parameters
+    ----------
+    mvs_input_directory: str or None
+        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+        `constants.DEFAULT_MVS_INPUT_DIRECTORY` is used as mvs_input_directory.
+        Default: None.
+    mvs_output_directory: str or None
+        Directory in which simulation results are stored. If None,
+        `constants.DEFAULT_MVS_OUTPUT_DIRECTORY` is used as mvs_input_directory.
+        Default: None.
+
+    Returns
+    -------
+    Stores simulation results in `mvs_output_directory`.
+
+    """
     if mvs_input_directory == None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     if mvs_output_directory == None:
