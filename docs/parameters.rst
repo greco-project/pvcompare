@@ -1,21 +1,22 @@
 =========================================================
-Parameters of PVCompare: Definitions and Default Values
+Parameters of pvcompare: Definitions and Default Values
 =========================================================
+.. _parameters:
 
-Within the pvcompare/pvcompare/data/ directory, two separate cateogies of inputs can be observed.
+Within the ``pvcompare/pvcompare/data/`` directory, two separate categories of inputs can be observed.
 
-1. MVS parameters (found in the CSVs within the data/mvs_inputs/csv_elements/ directory)
-2. PVCompare-specific parameters (found in the CSVs within the data/inputs directory)
+1. *MVS* parameters (found in the CSVs within the ``data/mvs_inputs/csv_elements/`` directory)
+2. *pvcompare*-specific parameters (found in the CSVs within the ``data/inputs`` directory)
 
 ------------------
 1. MVS Parameters
 ------------------
 
-As PVCompare makes use of the `Multi-vector Simulation Tool "MVS" <https://github.com/rl-institut/mvs_eland>`_ tool, the definitions of all the
-relevant parameters of MVS can be found `here <https://mvs-eland.readthedocs.io/en/latest/MVS_parameters.html>`_. 
+As *pvcompare* makes use of the `Multi-vector Simulation (MVS) <https://github.com/rl-institut/mvs_eland>`_ tool, the definitions of all the
+relevant parameters of *MVS* can be found in the `documentation of MVS <https://mvs-eland.readthedocs.io/en/latest/MVS_parameters.html>`_.
 
-The values used by default in PVCompare for the above parameters in each CSV, are detailed below.
-Some parameters can be calculated automatically by pvcompare and do not need to be filled it by hand. These parameters are marked with * *auto_calc*.
+The values used by default in *pvcompare* for the above parameters in each CSV, are detailed below.
+Some parameters can be calculated automatically by *pvcompare* and do not need to be filled it by hand. These parameters are marked with * *auto_calc*.
 
 * project_data.csv
     1. **country**: str, Spain (the country in which the project is located), * *auto_calc*
@@ -156,7 +157,7 @@ Some parameters can be calculated automatically by pvcompare and do not need to 
         b. **input power** and **output power**: 0
     4. **c_rate**: factor of total capacity (kWh)
         a. **storage capacity**: NA (does not apply)
-        b. **input power** and **output power**: 1 (this just means that the whole capacity of the battary would be used during charging and discharging cycles)
+        b. **input power** and **output power**: 1 (this just means that the whole capacity of the battery would be used during charging and discharging cycles)
     5. **efficiency**: factor
         a. **storage capacity**: 0
         b. **input power** and **output power**: 0.9 (Charging and discharging efficiency. The value has been sourced from this `page <https://en.wikipedia.org/wiki/Lithium-ion_battery>`_.)
@@ -190,10 +191,10 @@ Some parameters can be calculated automatically by pvcompare and do not need to 
         b. **input power** and **output power**: kW
 
 ---------------------------------
-2. PVCompare-specific parameters
+2. pvcompare-specific parameters
 ---------------------------------
 
-In order to run PVCompare, a number of input parameters are needed; many of which are stored in csv files with default values in "pvcompare/inputs/".
+In order to run *pvcompare*, a number of input parameters are needed; many of which are stored in csv files with default values in ``pvcompare/pvcompare/inputs/``.
 The following list will give a brief introduction into the description of the csv files and the source of the given default parameters.
 
 * pv_setup.csv:
@@ -228,8 +229,8 @@ The following list will give a brief introduction into the description of the cs
     2. **quality_grade**: float, scale-down factor to determine the COP of a real machine, default: heat pump: 0.2, chiller 0.25 (tests were made with monitored data from the GRECO project, reference follows)
     3. **room_temperature**: float, mean temperature of the room that is heated/cooled, will be adapted with issue #59
     4. **start_temperature**: float, temperature at which the heating/cooling period starts, default: heating 17 °C (`Reference <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_)
-    5. **factor_icing**: float or None, COP reduction caused by icing, only for `mode` 'heat_pump', default: None
-    6. **temp_threshold_icing**: float or None, Temperature below which icing occurs, only for `mode` 'heat_pump', default: None
+    5. **factor_icing**: float or None, COP reduction caused by icing, only for ``mode`` 'heat_pump', default: None
+    6. **temp_threshold_icing**: float or None, Temperature below which icing occurs, only for ``mode`` 'heat_pump', default: None
 
 * list_of_workalendar:
     *list of countries for which a python.workalendar [3] exists with the column name "country".*
