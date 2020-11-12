@@ -350,6 +350,8 @@ def calculate_heat_demand(
 
     # Multi family house (mfh: Mehrfamilienhaus)
     include_warm_water = False  # Set true to include warm water
+
+    # Calculate heat demand only for space heating
     demand["h0"] = bdew.HeatBuilding(
         demand.index,
         holidays=holidays,
@@ -359,13 +361,47 @@ def calculate_heat_demand(
         wind_class=0,
         annual_heat_demand=annual_heat_demand_per_population,
         name="MFH",
-        ww_incl=include_warm_water,
+        ww_incl=False,
     ).get_bdew_profile()
 
-    # Adjust the heat demand so there is no demand if daily mean temperature
-    # is above the heating limit temperature
-    if not include_warm_water:
-        demand = adjust_heat_demand(temp, demand)
+    # Read heating limit temperature
+    heating_lim_temp = int(bp.at["heating limit temperature", "value"])
+
+    if include_warm_water:
+        # Calculate annual heat demand with warm water included
+        annual_heat_demand_per_population = (
+            annual_heat_demand_per_population + annual_heat_demand_ww_per_population
+        )
+
+        # Create a copy of demand dataframe for warm water calculations
+        demand_ww_calc = demand.copy()
+
+        # Get total heat demand with warm water
+        demand_ww_calc["h0_ww"] = bdew.HeatBuilding(
+            demand_ww_calc.index,
+            holidays=holidays,
+            temperature=temp,
+            shlp_type="MFH",
+            building_class=2,
+            wind_class=0,
+            annual_heat_demand=annual_heat_demand_per_population,
+            name="MFH",
+            ww_incl=True,
+        ).get_bdew_profile()
+
+        # Calculate hourly difference in demand between space heating and space heating with warm water
+        demand_ww_calc["h0_diff"] = demand_ww_calc["h0_ww"] - demand_ww_calc["h0"]
+
+        # for space heating *only* adjust the heat demand so there is no demand if daily mean temperature
+        # is above the heating limit temperature
+        demand["h0"] = adjust_heat_demand(temp, heating_lim_temp, demand["h0"])
+        # Add the heat demand for warm water to the adjusted space heating demand
+        demand["h0"] = demand["h0"] + demand_ww_calc["h0_diff"]
+
+    else:
+        # Adjust the heat demand so there is no demand if daily mean temperature
+        # is above the heating limit temperature
+        demand["h0"] = adjust_heat_demand(temp, heating_lim_temp, demand["h0"])
 
     shifted_heat_demand = shift_working_hours(country=country, ts=demand)
     shifted_heat_demand.rename(columns={"h0": "kWh"}, inplace=True)
