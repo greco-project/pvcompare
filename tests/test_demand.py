@@ -16,6 +16,7 @@ from pvcompare.demand import (
     shift_working_hours,
     get_workalendar_class,
     calculate_heat_demand,
+    adjust_heat_demand,
 )
 
 
@@ -55,6 +56,15 @@ class TestDemandProfiles:
         weather_df.index = ["2014-01-01 13:00:00+00:00", "2014-01-01 14:00:00+00:00"]
         weather_df.index = pd.to_datetime(weather_df.index)
         self.weather = weather_df
+
+        heat_load = pd.DataFrame()
+        heat_load['kWh'] = [5316573.558139059, 5653065.555489632]
+        self.heat_load = heat_load
+
+        bp = pd.read_csv(
+            os.path.join(self.test_input_directory, "building_parameters.csv"), index_col=0
+        )
+        self.heating_lim_temp = pd.to_numeric(bp.at["heating limit temperature", "value"], errors="coerce")
 
     def test_power_demand_exists(self):
 
@@ -122,6 +132,16 @@ class TestDemandProfiles:
         )
 
         assert a["kWh"].sum() == 10969639.113628691
+
+    def test_adjust_heat_demand(self):
+
+        result = adjust_heat_demand(
+            temperature=self.weather["temp_air"],
+            heating_limit_temp=self.heating_lim_temp,
+            demand=self.heat_load["kWh"]
+        )
+
+        assert result.sum() == 10969639.113628691
 
     def test_shift_working_hours(self):
 
