@@ -58,13 +58,16 @@ class TestDemandProfiles:
         self.weather = weather_df
 
         heat_load = pd.DataFrame()
-        heat_load['kWh'] = [5316573.558139059, 5653065.555489632]
+        heat_load["kWh"] = [5316573.558139059, 5653065.555489632]
         self.heat_load = heat_load
 
         bp = pd.read_csv(
-            os.path.join(self.test_input_directory, "building_parameters.csv"), index_col=0
+            os.path.join(self.test_input_directory, "building_parameters.csv"),
+            index_col=0,
         )
-        self.heating_lim_temp = pd.to_numeric(bp.at["heating limit temperature", "value"], errors="coerce")
+        self.heating_lim_temp = pd.to_numeric(
+            bp.at["heating limit temperature", "value"], errors="coerce"
+        )
 
     def test_power_demand_exists(self):
 
@@ -138,7 +141,7 @@ class TestDemandProfiles:
         result = adjust_heat_demand(
             temperature=self.weather["temp_air"],
             heating_limit_temp=self.heating_lim_temp,
-            demand=self.heat_load["kWh"]
+            demand=self.heat_load["kWh"],
         )
 
         assert result.sum() == 10969639.113628691
