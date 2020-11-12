@@ -361,7 +361,7 @@ def calculate_heat_demand(
         wind_class=0,
         annual_heat_demand=annual_heat_demand_per_population,
         name="MFH",
-        ww_incl=False,
+        ww_incl=False,  # This must be False. Warm water calc follows
     ).get_bdew_profile()
 
     # Read heating limit temperature
