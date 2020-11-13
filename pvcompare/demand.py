@@ -343,7 +343,6 @@ def calculate_heat_demand(
         total_WH.at[country, str(year)]  # + total_WH.at[country, str(year)]
         - electr_WH.at[country, str(year)]  # - electr_WH.at[country, str(year)]
     ) * 11630000000
-
     annual_heat_demand_ww_per_population = (
         heat_demand_ww / populations.at[country, str(year)]
     ) * population
@@ -431,6 +430,7 @@ def calculate_heat_demand(
 def adjust_heat_demand(temperature, heating_limit_temp, demand):
     """
     Adjust the hourly heat demand setting a limit to the temperature of heating
+    
     Heat demand above the heating limit temperature is set to zero
     Excess heat demand is then distributed equally over the remaining hourly heat demand
 
