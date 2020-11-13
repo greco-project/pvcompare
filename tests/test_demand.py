@@ -10,6 +10,7 @@ https://docs.python.org/3/library/unittest.html are also good support.
 
 import pandas as pd
 import os
+import numpy as np
 
 from pvcompare.demand import (
     calculate_power_demand,
@@ -57,10 +58,6 @@ class TestDemandProfiles:
         weather_df.index = pd.to_datetime(weather_df.index)
         self.weather = weather_df
 
-        heat_load = pd.DataFrame()
-        heat_load["kWh"] = [5316573.558139059, 5653065.555489632]
-        self.heat_load = heat_load
-
         bp = pd.read_csv(
             os.path.join(self.test_input_directory, "building_parameters.csv"),
             index_col=0,
@@ -69,6 +66,15 @@ class TestDemandProfiles:
             bp.at["heating limit temperature", "value"], errors="coerce"
         )
         self.include_ww = eval(bp.at["include warm water", "value"])
+
+        heating = pd.DataFrame()
+        periods = 48
+        heating["Time"] = pd.date_range("1/1/2020", periods=periods, freq="H")
+        heating["Load"] = np.random.choice(np.arange(10000, 90000, 10), periods)
+        temp_low = np.ones(int(periods / 2)) * (self.heating_lim_temp - 1)
+        temp_high = np.ones(int(periods / 2)) * self.heating_lim_temp
+        heating["temp_air"] = np.append(temp_low, temp_high)
+        self.heating = heating
 
     def test_power_demand_exists(self):
 
@@ -143,12 +149,13 @@ class TestDemandProfiles:
     def test_adjust_heat_demand(self):
 
         result = adjust_heat_demand(
-            temperature=self.weather["temp_air"],
+            temperature=self.heating["temp_air"],
             heating_limit_temp=self.heating_lim_temp,
-            demand=self.heat_load["kWh"],
+            demand=self.heating["Load"],
         )
 
-        assert result.sum() == 10969639.113628691
+        assert result.sum() == self.heating["Load"].sum()
+        assert result.iloc[24:].sum() == 0
 
     def test_shift_working_hours(self):
 
