@@ -348,7 +348,7 @@ def calculate_heat_demand(
     ) * population
 
     # Multi family house (mfh: Mehrfamilienhaus)
-    include_warm_water = False  # Set true to include warm water
+    include_warm_water = eval(bp.at["include warm water", "value"])
 
     # Calculate heat demand only for space heating
     demand["h0"] = bdew.HeatBuilding(
