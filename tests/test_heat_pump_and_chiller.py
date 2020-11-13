@@ -31,9 +31,14 @@ class TestCalculateCopsAndEers:
             mvs_input_directory=TEST_DATA_HEAT,
         )
         cops_exp = pd.Series(
-            [4.65885529157667388489, 3.83134991119005308136,
-             3.26825757575757558371, 3.08149999999999968381,
-             2.83822368421052617649, 13.48156249999999900524],
+            [
+                4.65885529157667388489,
+                3.83134991119005308136,
+                3.26825757575757558371,
+                3.08149999999999968381,
+                2.83822368421052617649,
+                13.48156249999999900524,
+            ],
             index=self.date_range,
             name="no_unit",
         )
@@ -61,9 +66,14 @@ class TestCalculateCopsAndEers:
             mvs_input_directory=TEST_DATA_HEAT,
         )
         cops_exp = pd.Series(
-            [4.658855291576674, 3.831349911190053,
-             3.268257575757576, 2.465199999999999,
-             2.270578947368421, 13.481562499999999],
+            [
+                4.658855291576674,
+                3.831349911190053,
+                3.268257575757576,
+                2.465199999999999,
+                2.270578947368421,
+                13.481562499999999,
+            ],
             index=self.date_range,
             name="no_unit",
         )
@@ -196,7 +206,9 @@ class TestAddSectorCoupling:
     def test_add_sector_coupling_multiple_heat_pumps(self):
         pass
 
-    def test_add_sector_coupling_warning_no_heat_demand_in_energy_consumption(self,):
+    def test_add_sector_coupling_warning_no_heat_demand_in_energy_consumption(
+        self,
+    ):
         pass
 
     def test_add_sector_coupling_no_warning(self):
