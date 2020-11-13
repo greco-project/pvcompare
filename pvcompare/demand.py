@@ -451,7 +451,7 @@ def adjust_heat_demand(temperature, heating_limit_temp, demand):
     """
     excess_demand = 0
     # Check for every day in the year the mean temperature
-    for i, temp in enumerate(np.arange(0, len(temperature) - 24, 24)):
+    for i, temp in enumerate(np.arange(0, len(temperature), 24)):
         # Calculate mean temperature of a day
         mean_temp = np.mean(temperature[temp : temp + 24])
         # Check if the daily mean temperature is higher than the heating limit temperature
