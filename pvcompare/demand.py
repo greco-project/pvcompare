@@ -332,16 +332,16 @@ def calculate_heat_demand(
     # convert Mtoe in kWh
     # Heat demand of residential for space heating
     heat_demand = (
-        total_SH.at[country, str(year)]  #       + total_WH.at[country, str(year)]
-        - electr_SH.at[country, str(year)]  #       - electr_WH.at[country, str(year)]
+        total_SH.at[country, str(year)]
+        - electr_SH.at[country, str(year)]
     ) * 11630000000
     annual_heat_demand_per_population = (
         heat_demand / populations.at[country, str(year)]
     ) * population
     # Heat demand of households for water heating
     heat_demand_ww = (
-        total_WH.at[country, str(year)]  # + total_WH.at[country, str(year)]
-        - electr_WH.at[country, str(year)]  # - electr_WH.at[country, str(year)]
+        total_WH.at[country, str(year)]
+        - electr_WH.at[country, str(year)]
     ) * 11630000000
     annual_heat_demand_ww_per_population = (
         heat_demand_ww / populations.at[country, str(year)]
