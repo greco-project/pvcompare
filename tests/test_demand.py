@@ -68,6 +68,7 @@ class TestDemandProfiles:
         self.heating_lim_temp = pd.to_numeric(
             bp.at["heating limit temperature", "value"], errors="coerce"
         )
+        self.include_ww = eval(bp.at["include warm water", "value"])
 
     def test_power_demand_exists(self):
 
@@ -134,7 +135,10 @@ class TestDemandProfiles:
             column="demand_02",
         )
 
-        assert a["kWh"].sum() == 10969639.113628691
+        if not self.include_ww:
+            assert a["kWh"].sum() == 10969639.113628691
+        else:
+            assert a["kWh"].sum() == 11984233.752677418
 
     def test_adjust_heat_demand(self):
 
