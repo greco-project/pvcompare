@@ -67,9 +67,10 @@ class TestPvtime_series:
             "1",
             str(self.surface_tilt),
             str(self.surface_azimuth),
+            "1",
         )
 
-        assert df["Direct_normal_irradiance"].sum() == 750.29952
+        assert df["Direct_normal_irradiance"].sum() == 740.81911
 
     def test_calculate_smarts_parameters(self):
 
@@ -86,7 +87,7 @@ class TestPvtime_series:
             WLMX=1200,
         )
 
-        assert output["Jsc_Chen_pero"].sum() == 0.009034273174998176
+        assert output["Jsc_Chen_pero"].sum() == 0.009075509581358502
 
     def test_create_perosi_timeseries(self):
 
@@ -102,7 +103,7 @@ class TestPvtime_series:
         )
 
         sum = output.sum()
-        assert sum == 54.203397239126936
+        assert sum == 54.4476555501316
 
     def test_create_cpv_time_series(self):
 
