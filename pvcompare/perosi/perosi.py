@@ -106,10 +106,8 @@ def calculate_smarts_parameters(
     for index, row in atmos_data.iterrows():
         if index.month in range(3, 8):
             season = "SUMMER"
-            zone = 2
         else:
             season = "WINTER"
-            zone = 1
 
         # load spectral data from SMARTS
 
