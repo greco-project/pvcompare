@@ -538,7 +538,9 @@ def create_psi_time_series(
         False).
 
     """
-    atmos_data = weather[["ghi", "dhi", "dni", "wind_speed", "temp_air"]]
+    atmos_data = weather[
+        ["ghi", "dhi", "dni", "wind_speed", "temp_air", "precipitable_water"]
+    ]
     number_rows = atmos_data["ghi"].count()
 
     if normalization is None:
