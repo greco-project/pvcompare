@@ -108,3 +108,15 @@ Functions that request the weather data of one year and one location from the ER
     era5.get_era5_data_from_datespan_and_position
     era5.format_pvcompare
     era5.weather_df_from_era5
+
+
+Plotting
+===============================
+
+Functions for plotting mvs results.
+
+.. autosummary::
+    :toctree: temp/
+
+    plots.plot_all_flows
+    plots.plot_kpi_loop
