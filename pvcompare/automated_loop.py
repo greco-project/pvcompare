@@ -24,12 +24,12 @@ def loop(
     loop_output_directory=None,
     mvs_output_directory=None,
 ):
-
     """
-    After calculating the pvcompare timeseries in main.py the mvs module is
-    executed in a loop, before each loop a specific variable value is changed. The
-    results, stored in two excel sheets are copied into a new directory with
-    the name "loop_outputs".
+    Starts multiple MVS simulations with a range of values for a specific parameter.
+
+    After calculating the pvcompare time series with :py:func:`~.main.main`, :py:func:`~.main.apply_mvs` is
+    executed in a loop. Before each loop a specific variable value is changed. The
+    results, stored in two excel sheets are copied into `loop_output_directory`.
 
     Parameters
     ----------
@@ -55,11 +55,11 @@ def loop(
         last value of the variable. notice that stop > start
     step: int
         step of increase
-    mvs_input_directory: str
+    mvs_input_directory: str or None
         if None then value will be taken from constants.py
-    loop_output_directory: str
+    loop_output_directory: str or None
         if None then value will be taken from constants.py,
-    mvs_output_directory: str
+    mvs_output_directory: str or None
         if None then value will be taken from constants.py
 
     Returns
@@ -83,8 +83,7 @@ def loop(
         except OSError:
             print("Creation of the directory %s failed" % loop_output_directory)
 
-        # create output folder in loop_output_directories for "sequences" and "timeseries"
-
+    # create output folder in loop_output_directories for "scalars" and "timeseries"
     os.mkdir(os.path.join(loop_output_directory, "scalars"))
     os.mkdir(os.path.join(loop_output_directory, "timeseries"))
 
@@ -139,6 +138,7 @@ def loop(
     src_dir = os.path.join(mvs_input_directory, "csv_elements", "energyProduction.csv")
     dst_dir = os.path.join(loop_output_directory, "energyProduction.csv")
     shutil.copy(src_dir, dst_dir)
+
 
 
 if __name__ == "__main__":
