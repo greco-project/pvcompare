@@ -18,6 +18,7 @@ def SMARTSSpectra(
     ZONE,
     TILT,
     WAZIM,
+    W,
 ):
     r"""
     Function that runs the smartsAll function to get a standard spectrum
@@ -59,7 +60,7 @@ def SMARTSSpectra(
     ISPR = "1"
 
     # Card 2a (if ISPR = 0): SPR
-    SPR = "1013.25"  # mbar
+    SPR = "1025.25"  # mbar
 
     # Card 2a (if ISPR = 1): SPR, ALTIT, HEIGHT
     # SPR: Surface pressure (mb).
@@ -80,7 +81,7 @@ def SMARTSSpectra(
     # The total ALTIT + HEIGHT is the altitude of the simulated object above sea level and
     # must be ? 100 km.
 
-    ALTIT = "0.805"  # km
+    ALTIT = "0.705"  # km
     HEIGHT = "0"
     # LATIT = '32.' #dec degs END WITH DOT
 
@@ -130,11 +131,11 @@ def SMARTSSpectra(
     # If IATMOS = 0 is selected, then IH2O should be 0 or 2; IO3 and IGAS should be 0.
     # If IATMOS = 1 is selected, then IH2O, IO3, and IGAS may take any value. All user inputs
     # have precedence over the defaults.
-    IH2O = "1"
+    IH2O = "0"
 
     # Card 4a: (if IH2O = 0): W is precipitable water above the site altitude
     # in units of cm, or equivalently, g/cm2; it must be ? 12.
-    W = ""
+    # W = ""
 
     ## Card 5: IO3 is an option to select the appropriate ozone abundance input.
     # IO3 = 0 to input IALT and AbO3 on Card 5a
@@ -177,7 +178,7 @@ def SMARTSSpectra(
     # represent typical urban conditions: LIGHT POLLUTION (ILOAD = 2), MODERATE
     # POLLUTION (ILOAD = 3), and SEVERE POLLUTION (ILOAD = 4).
 
-    ILOAD = "1"
+    ILOAD = "3"
 
     # Card 6b (if IGAS = 0 and ILOAD = 0): ApCH2O, ApCH4, ApCO, ApHNO2,
     # ApHNO3, ApNO, ApNO2, ApNO3, ApO3, ApSO2
@@ -247,7 +248,7 @@ def SMARTSSpectra(
     # turbid conditions (sandstorms).
     # 'USER' Card 8a is then necessary to input user-supplied aerosol information.
 
-    AEROS = "S&F_TROPO"
+    AEROS = "S&F_URBAN"
     # Card 8a:
     # if AEROS = USER: ALPHA1, ALPHA2, OMEGL, GG These 4 variables must represent broadband average values only!
     # ALPHA1: Average value of Ångströms wavelength exponent ? for wavelengths < 500 nm
@@ -280,7 +281,7 @@ def SMARTSSpectra(
     TAU550 = ""  # if ITURB == 5
 
     ## Card 10: Far Field Albedo for backscattering
-    IALBDX = "38"
+    IALBDX = "41"
 
     # IALBX Code, Description File name(.DAT extension), Reflection, Type*, Spectral range(?m), Category*
     # -1 Fixed broadband albedo  L 0.284.0 U
