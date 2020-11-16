@@ -1,11 +1,9 @@
 from pvcompare import check_inputs
-import main
-import constants
+import pvcompare.main as main
+import pvcompare.constants as constants
 import os
 import pandas as pd
-import glob
 import shutil
-import matplotlib.pyplot as plt
 
 
 def loop(
