@@ -5,7 +5,7 @@ Getting started
 Introduction
 =============
 
-``pvcompare`` is a model that compares the benefits of different PV technologies in a specified energy system by running
+*pvcompare* is a model that compares the benefits of different PV technologies in a specified energy system by running
 an oemof simulation. This model concentrates on the integration of PV technologies into local energy systems but could
 easily be enhanced to analyse other conversion technologies.
 
@@ -32,9 +32,9 @@ The full documentation can be found at `readthedocs <http://pvcompare.readthedoc
 Installation
 ============
 
-To install ``pvcompare`` follow these steps:
+To install *pvcompare* follow these steps:
 
-- Clone ``pvcompare`` and navigate to the directory ``\pvcompare`` containing the ``setup.py`` and ``requirements.txt``:
+- Clone *pvcompare* and navigate to the directory ``\pvcompare`` containing the ``setup.py`` and ``requirements.txt``:
 
 ::
 
@@ -50,7 +50,6 @@ To install ``pvcompare`` follow these steps:
 
 - For the optimization you need to install a solver. Your can download the open source `cbc-solver <https://projects.coin-or.org/Cbc>`_ from https://ampl.com/dl/open/cbc/ . Please follow the installation `steps <https://oemof-solph.readthedocs.io/en/latest/readme.html#installing-a-solver>`_ in the oemof installation instructions. You also find information about other solvers there.
 
-
 Examples and basic usage
 =========================
 
@@ -58,5 +57,5 @@ Examples and basic usage
 Contributing
 ==============
 
-We are warmly welcoming all who want to contribute to ``pvcompare``.
+We are warmly welcoming all who want to contribute to *pvcompare*.
 Please read our `Contributing Guidelines <https://github.com/greco-project/pvcompare/blob/dev/CONTRIBUTING.md>`_.

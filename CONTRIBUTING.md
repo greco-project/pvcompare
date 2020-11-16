@@ -45,7 +45,7 @@ This is an important step as it forces one to think about the issue (to describe
 After creating a pull request (step 4) tests will run automatically but you can also run them locally - this is especially helpful in case a tests fails and you need debugging for finding the error.
 To install all packages required for the integration tests locally run:
 ```bash
-pip install -r tests/test_requirements.txt
+pip install -e .[dev]
 ```
 
 Run tests locally by:

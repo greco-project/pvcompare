@@ -1,14 +1,10 @@
-.. image:: https://travis-ci.com/greco-project/pvcompare.svg?branch=dev
-    :target: https://travis-ci.com/greco-project/pvcompare
-.. image:: https://coveralls.io/repos/github/greco-project/pvcompare/badge.svg?branch=dev
-    :target: https://coveralls.io/github/greco-project/pvcompare?branch=dev
-
+|badge_docs| |badge_travis| |badge_coverage|
 
 
 Introduction
 =============
 
-``pvcompare`` is a model that compares the benefits of different PV technologies in a specified energy system by running
+*pvcompare* is a model that compares the benefits of different PV technologies in a specified energy system by running
 an oemof simulation. This model concentrates on the integration of PV technologies into local energy systems but could
 easily be enhanced to analyse other conversion technologies.
 
@@ -35,9 +31,9 @@ The full documentation can be found at `readthedocs <http://pvcompare.readthedoc
 Installation
 ============
 
-To install ``pvcompare`` follow these steps:
+To install *pvcompare* follow these steps:
 
-- Clone ``pvcompare`` and navigate to the directory ``\pvcompare`` containing the ``setup.py`` and ``requirements.txt``:
+- Clone *pvcompare* and navigate to the directory ``\pvcompare`` containing the ``setup.py`` and ``requirements.txt``:
 
 ::
 
@@ -60,5 +56,18 @@ Examples and basic usage
 Contributing
 ==============
 
-We are warmly welcoming all who want to contribute to ``pvcompare``.
+We are warmly welcoming all who want to contribute to *pvcompare*.
 Please read our `Contributing Guidelines <https://github.com/greco-project/pvcompare/blob/dev/CONTRIBUTING.md>`_.
+
+
+.. |badge_docs| image:: https://readthedocs.org/projects/pvcompare/badge/?version=latest
+    :target: https://pvcompare.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+.. |badge_travis| image:: https://travis-ci.com/greco-project/pvcompare.svg?branch=dev
+    :target: https://travis-ci.com/greco-project/pvcompare
+    :alt: Build status
+
+.. |badge_coverage| image:: https://coveralls.io/repos/github/greco-project/pvcompare/badge.svg?branch=dev
+    :target: https://coveralls.io/github/greco-project/pvcompare?branch=dev
+    :alt: Test coverage

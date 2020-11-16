@@ -3,6 +3,21 @@
 ==================
 Code documentation
 ==================
+
+.. _main:
+
+Main
+====
+
+Main functions of *pvcompare* that can be used to start a full simulation.
+
+.. autosummary::
+    :toctree: temp/
+
+    main.main
+    main.apply_mvs
+
+
 .. _area_potential:
 
 Area potential
@@ -16,6 +31,7 @@ Function for calculating the area potential of the rooftop and facades for a giv
     area_potential.calculate_area_potential
 
 .. _demand:
+
 Demand
 ======
 
@@ -49,8 +65,8 @@ Functions for calculating the feed-in time series of different PV technologies.
 
 .. _cpv:
 
-Modeling CPV timeseries
-=================================================
+CPV time series
+===============
 
 Function for calculating the feed-in time series for the CPV technology.
 
@@ -61,8 +77,8 @@ Function for calculating the feed-in time series for the CPV technology.
 
 .. _psi:
 
-Modeling PSI timeseries
-=================================================
+PSI time series
+===============
 
 Function for calculating the feed-in time series for the perovskite silicone technology.
 
@@ -97,7 +113,7 @@ Functions that match manual inputs and calculated results with mvs_inputs/csv_el
 .. _era5:
 
 Loading ERA5 weather data
-===============================
+=========================
 
 Functions that request the weather data of one year and one location from the ERA5 weather data set
 
@@ -108,3 +124,16 @@ Functions that request the weather data of one year and one location from the ER
     era5.get_era5_data_from_datespan_and_position
     era5.format_pvcompare
     era5.weather_df_from_era5
+
+.. _loops:
+
+Automated loops
+===============
+
+Functions that help to loop over simulations while alterating a specific parameter (sensitivity).
+
+.. autosummary::
+    :toctree: temp/
+
+    automated_loop.loop
+    automated_loop.plot_total_costs_from_scalars
