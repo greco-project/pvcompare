@@ -8,7 +8,9 @@ import os
 import pvcompare.constants as constants
 
 
-def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt, plot = False):
+def create_cpv_time_series(
+    lat, lon, weather, surface_azimuth, surface_tilt, plot=False
+):
 
     """
     creates a time series for a cpv module.
@@ -217,5 +219,3 @@ def calculate_efficiency_NSTC():
     print(eff_cpv)
     print(eff_flat)
     print("total:", eff_cpv + eff_flat)
-
-
