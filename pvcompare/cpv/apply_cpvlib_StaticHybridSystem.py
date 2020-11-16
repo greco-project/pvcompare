@@ -154,7 +154,7 @@ def create_cpv_time_series(
     return total
 
 
-def calculate_efficiency_NSTC():
+def calculate_efficiency_ref():
 
     """
     This function calculates the P_mp and efficiency for the cpv and the
