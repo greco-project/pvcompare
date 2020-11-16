@@ -1,10 +1,8 @@
-import constants
+import pvcompare.constants as constants
 import os
 import pandas as pd
 import glob
-import shutil
 import matplotlib.pyplot as plt
-import logging
 
 
 def plot_all_flows(
@@ -22,17 +20,20 @@ def plot_all_flows(
     period: str
         year, month, week or day
     output_directory: str or None
-        path to the directory in which the plot should be saved
-        default: None.
+        Path to the directory in which the plot should be saved.
+        Default: None.
         If None: `output_directory = constants.DEFAULT_MVS_OUTPUT_DIRECTORY`
     timeseries_directory: str or None
-        path to the timeseries directory
-        default: None.
+        Path to the timeseries directory.
+        Default: None.
         If None: `timeseries_directory = output_directory`
     timeseries_name: str or None
-        default: timeseries_all_busses.xlsx
+        Default: timeseries_all_busses.xlsx
 
     Returns
+    -------
+        None
+        Saves figure into output_directory
     -------
 
 
@@ -73,30 +74,34 @@ def plot_all_flows(
 def plot_kpi_loop(variable_name, kpi, loop_output_directory=None):
 
     """
-    plots the total costs from the scalars_**.xlsx files in loop_outputs over
-    the changed variable. The plot is saved into the loop_outputs folder.
+    Plots KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs`
+    for a loop over one variable.
+
+    The plot is saved into the `loop_output_directory`.
 
     Parameters
     ----------
     variable_name: str
-        name of the variable that is changed each loop
-    kpi: list
-        list of KPI's to be plotted
-        possible entries:
-            "costs total PV"
-            "installed capacity PV"
-            "Total renewable energy use"
-            "Renewable share"
-            "LCOE PV"
-            "self consumption"
-            "self sufficiency"
+        Name of the variable that is changed each loop
+    kpi: list of str
+        List of KPI's to be plotted.
+        Possible entries:
+            "costs total PV",
+            "installed capacity PV",
+            "Total renewable energy use",
+            "Renewable share",
+            "LCOE PV",
+            "self consumption",
+            "self sufficiency",
             "Degree of autonomy"
     loop_output_directory: str
-        if None then value will be taken from constants.py
+        Default: None.
+        If None: `loop_output_directory = constants.DEFAULT_LOOP_OUTPUT_DIRECTORY`
 
     Returns
+    -------
         None
-        saves figure into `output_directory`
+        saves figure into `loop_output_directory`
     -------
 
 
