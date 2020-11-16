@@ -140,7 +140,6 @@ def loop(
     shutil.copy(src_dir, dst_dir)
 
 
-
 if __name__ == "__main__":
     latitude = 52.5243700
     longitude = 13.4105300
