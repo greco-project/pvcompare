@@ -106,8 +106,10 @@ def calculate_smarts_parameters(
     for index, row in atmos_data.iterrows():
         if index.month in range(3, 8):
             season = "SUMMER"
+            zone = 2
         else:
             season = "WINTER"
+            zone = 1
 
         # load spectral data from SMARTS
 
@@ -127,9 +129,10 @@ def calculate_smarts_parameters(
             TAIR=str(atmos_data.at[index, "temp_air"]),
             TDAY=str(atmos_data.at[index, "davt"]),
             SEASON=season,
-            ZONE=1,
+            ZONE=0,
             TILT=str(surface_tilt),
             WAZIM=str(surface_azimuth),
+            W=str(atmos_data.at[index, "precipitable_water"]),
         )
 
         # load EQE data
