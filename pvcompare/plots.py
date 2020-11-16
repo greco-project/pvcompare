@@ -77,6 +77,10 @@ def plot_kpi_loop(variable_name, kpi, loop_output_directory=None):
     Plots KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs`
     for a loop over one variable.
 
+    The 'energyProduction.csv' needs to be saved into 'output_directory'. If the
+    loop output is created with :py:func:`~.automated_loop.loop`, the
+    'energyProduction.csv' file is copied into the `output_directory` automatically.
+
     The plot is saved into the `loop_output_directory`.
 
     Parameters
@@ -178,7 +182,7 @@ def plot_kpi_loop(variable_name, kpi, loop_output_directory=None):
 
     fig.savefig(
         os.path.join(
-            loop_output_directory, "plot_scalars" + str(variable_name) + "_2.png"
+            loop_output_directory, "plot_scalars_" + str(variable_name) + ".png"
         )
     )
 
