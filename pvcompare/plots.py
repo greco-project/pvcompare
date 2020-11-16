@@ -8,8 +8,10 @@ import logging
 
 
 def plot_all_flows(
-    period, output_directory = None, timeseries_directory = None,
-        timeseries_name="timeseries_all_busses.xlsx"
+    period,
+    output_directory=None,
+    timeseries_directory=None,
+    timeseries_name="timeseries_all_busses.xlsx",
 ):
 
     """
@@ -67,7 +69,8 @@ def plot_all_flows(
         bbox_inches="tight",
     )
 
-def plot_kpi_for_loop(variable_name, kpi, loop_output_directory=None):
+
+def plot_kpi_loop(variable_name, kpi, loop_output_directory=None):
 
     """
     plots the total costs from the scalars_**.xlsx files in loop_outputs over
@@ -92,6 +95,8 @@ def plot_kpi_for_loop(variable_name, kpi, loop_output_directory=None):
         if None then value will be taken from constants.py
 
     Returns
+        None
+        saves figure into `output_directory`
     -------
 
 
@@ -105,12 +110,13 @@ def plot_kpi_for_loop(variable_name, kpi, loop_output_directory=None):
     )
     energyProduction = energyProduction.drop(["unit"], axis=1)
     pv_labels = energyProduction.columns
-#    pv_labels = energyProduction.loc["label"]
+    #    pv_labels = energyProduction.loc["label"]
 
     output = pd.DataFrame()
     # parse through scalars folder and read in all excel sheets
     for filepath in list(
-        glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))):
+        glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
+    ):
 
         file_sheet1 = pd.read_excel(
             filepath, header=0, index_col=1, sheet_name="cost_matrix"
@@ -128,27 +134,40 @@ def plot_kpi_for_loop(variable_name, kpi, loop_output_directory=None):
         # get total costs pv and installed capacity
         for pv in pv_labels:
             output.loc[int(i), "costs total PV"] = file_sheet1.at[pv, "costs_total"]
-            output.loc[int(i), "installed capacity PV"] = file_sheet2.at[pv, "optimizedAddCap"]
+            output.loc[int(i), "installed capacity PV"] = file_sheet2.at[
+                pv, "optimizedAddCap"
+            ]
             output.loc[int(i), "Total renewable energy use"] = file_sheet3.at[
                 "Total renewable energy use", 0
             ]
             output.loc[int(i), "Renewable share"] = file_sheet3.at["Renewable_share", 0]
-            output.loc[int(i), "LCOE PV"] = file_sheet1.at[pv, "levelized_cost_of_energy_of_asset"]
-            output.loc[int(i), "self consumption"] = file_sheet3.at["Onsite energy fraction", 0]
-            output.loc[int(i), "self sufficiency"] = file_sheet3.at["Onsite energy matching", 0]
-            output.loc[int(i), "Degree of autonomy"] = file_sheet3.at["Degree of autonomy", 0]
+            output.loc[int(i), "LCOE PV"] = file_sheet1.at[
+                pv, "levelized_cost_of_energy_of_asset"
+            ]
+            output.loc[int(i), "self consumption"] = file_sheet3.at[
+                "Onsite energy fraction", 0
+            ]
+            output.loc[int(i), "self sufficiency"] = file_sheet3.at[
+                "Onsite energy matching", 0
+            ]
+            output.loc[int(i), "Degree of autonomy"] = file_sheet3.at[
+                "Degree of autonomy", 0
+            ]
 
     output.sort_index(inplace=True)
 
+    # plot
     fig = plt.figure()
     rows = len(kpi)
-    num = rows *100 + 11 # the setting for number of rows | number of columns | row number
+    num = (
+        rows * 100 + 11
+    )  # the setting for number of rows | number of columns | row number
     for i in kpi:
         ax = fig.add_subplot(num)
         num = num + 1
         output[i].plot(title=i, ax=ax, legend=False)
 
-    fig.text(0.5, 0.0, str(variable_name), ha='center')
+    fig.text(0.5, 0.0, str(variable_name), ha="center")
     plt.tight_layout()
     plt.show()
 
@@ -158,10 +177,22 @@ def plot_kpi_for_loop(variable_name, kpi, loop_output_directory=None):
         )
     )
 
+
 if __name__ == "__main__":
 
-    plot_all_flows(
-        period="week",
-    )
+    #    plot_all_flows(
+    #        period="week",
+    #    )
 
-    plot_kpi_for_loop(variable_name="Number of storeys", kpi = ["costs total PV", "Degree of autonomy", "self consumption", "self sufficiency"], loop_output_directory=os.path.join(os.path.dirname(__file__), "data", "CPV_STOREYS"))
+    plot_kpi_loop(
+        variable_name="Number of storeys",
+        kpi=[
+            "costs total PV",
+            "Degree of autonomy",
+            "self consumption",
+            "self sufficiency",
+        ],
+        loop_output_directory=os.path.join(
+            os.path.dirname(__file__), "data", "CPV_STOREYS"
+        ),
+    )
