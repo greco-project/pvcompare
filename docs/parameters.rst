@@ -226,10 +226,9 @@ The following list will give a brief introduction into the description of the cs
     *Parameters that describe characteristics of the heat pumps and chillers in the simulated energy system.*
 
     1. **mode**: str, options: 'heat_pump' or 'chiller'
-    2. **quality_grade**: float, scale-down factor to determine the COP of a real machine, default: heat pump: 0.2, chiller 0.25 (tests were made with monitored data from the GRECO project, reference follows)
-<<<<<<< HEAD
-    3. **temp_high**: float, high temperature of the sink (external outlet temperature at the condenser)
-    4. **temp_low**: float, temperature of the source (external outlet temperature at the evaporator), default: heating 15 °C ('Reference <http://wiki.energie-m.de/Heizgrenztemperatur>`_)  or 17 °C (`Reference <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_)
+    2. **quality_grade**: float, scale-down factor to determine the COP of a real machine, default: heat pump: 0.35, chiller 0.3 (Obtained from `monitored data <https://oemof-thermal.readthedocs.io/en/latest/validation_compression_heat_pumps_and_chillers.html>`_ of the GRECO project)
+    3. **temp_high**: float, temperature in °C of the sink (external outlet temperature at the condenser), default: heat pump: 35 (For the heat pump temp_high has been chosen from the highest value of the evaporators temperature in the `monitored data <https://oemof-thermal.readthedocs.io/en/latest/validation_compression_heat_pumps_and_chillers.html>`_. )
+    4. **temp_low**: float, temperature in °C of the source (external outlet temperature at the evaporator), default: chiller: 15 (The low temperature has been set for now to 15° C, a temperature lower the comfort temperature of 20–22 °C. The chiller has not been implemented in the model yet. However, should it been done so in the future, these temperatures must be researched and adjusted.)
     5. **factor_icing**: float or None, COP reduction caused by icing, only for `mode` 'heat_pump', default: None
     6. **temp_threshold_icing**: float or None, Temperature below which icing occurs, only for `mode` 'heat_pump', default: None
 
