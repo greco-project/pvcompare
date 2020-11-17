@@ -31,7 +31,14 @@ class TestCalculateCopsAndEers:
             mvs_input_directory=TEST_DATA_HEAT,
         )
         cops_exp = pd.Series(
-            [4.0, 3.0, 2.4144869215291727, 2.234636871508378, 2.01005025125628, 0.0],
+            [
+                4.65885529157667388489,
+                3.83134991119005308136,
+                3.26825757575757558371,
+                3.08149999999999968381,
+                2.83822368421052617649,
+                13.48156249999999900524,
+            ],
             index=self.date_range,
             name="no_unit",
         )
@@ -59,10 +66,20 @@ class TestCalculateCopsAndEers:
             mvs_input_directory=TEST_DATA_HEAT,
         )
         cops_exp = pd.Series(
-            [4.0, 3.0, 2.4144869215291727, 1.7877094972067027, 1.608040201005024, 0.0,],
+            [
+                4.658855291576674,
+                3.831349911190053,
+                3.268257575757576,
+                2.465199999999999,
+                2.270578947368421,
+                13.481562499999999,
+            ],
             index=self.date_range,
             name="no_unit",
         )
+
+        cops = cops.round(10)
+        cops_exp = cops_exp.round(10)
         assert_series_equal(cops, cops_exp)
 
     def test_calculate_cops_and_eers_chiller(self):
