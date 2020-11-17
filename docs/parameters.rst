@@ -214,23 +214,24 @@ The following list will give a brief introduction into the description of the cs
     4. **length south facade**: int, length of the south facade in m
     5. **length eastwest facade**:int, length of the east/west facade in m
     6. **hight storey**: int, hight of each storey in m
-    7. **filename_total_consumption**: str, name of the csv file that contains the total electricity and heat consumption for EU countries in different years from [2] *
-    8. **filename_total_SH**: str, name of the csv file that contains the total space heating for EU countries in different years [2] *
-    9. **filename_total_WH**: str, name of the csv file that contains the total water heating for EU countries in different years [2] *
-    10. **filename_elect_SH**: str, name of the csv file that contains the electrical space heatig for EU countries in different years [2] *
-    11. **filename_elect_WH**: str, name of the csv file that contains the electrical water heating for EU countries in different years [2] *
-    12. **filename_residential_electricity_demand**: str, name of the csv file that contains the total residential electricity demand for EU countries in different years [2] *
-    13. **filename_country_population**: str, name of the csv file that contains population for EU countries in different years [2] *
+    7. **heating limit temperature**: int, temperature limit for space heating in °C, default: `15 °C <http://wiki.energie-m.de/Heizgrenztemperatur>`_
+    8. **filename_total_consumption**: str, name of the csv file that contains the total electricity and heat consumption for EU countries in different years from [2] *
+    9. **filename_total_SH**: str, name of the csv file that contains the total space heating for EU countries in different years [2] *
+    10. **filename_total_WH**: str, name of the csv file that contains the total water heating for EU countries in different years [2] *
+    11. **filename_elect_SH**: str, name of the csv file that contains the electrical space heatig for EU countries in different years [2] *
+    12. **filename_elect_WH**: str, name of the csv file that contains the electrical water heating for EU countries in different years [2] *
+    13. **filename_residential_electricity_demand**: str, name of the csv file that contains the total residential electricity demand for EU countries in different years [2] *
+    14. **filename_country_population**: str, name of the csv file that contains population for EU countries in different years [2] *
 
 * heat_pumps_and_chillers:
     *Parameters that describe characteristics of the heat pumps and chillers in the simulated energy system.*
 
     1. **mode**: str, options: 'heat_pump' or 'chiller'
-    2. **quality_grade**: float, scale-down factor to determine the COP of a real machine, default: heat pump: 0.2, chiller 0.25 (tests were made with monitored data from the GRECO project, reference follows)
-    3. **room_temperature**: float, mean temperature of the room that is heated/cooled, will be adapted with issue #59
-    4. **start_temperature**: float, temperature at which the heating/cooling period starts, default: heating 17 °C (`Reference <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_)
-    5. **factor_icing**: float or None, COP reduction caused by icing, only for ``mode`` 'heat_pump', default: None
-    6. **temp_threshold_icing**: float or None, Temperature below which icing occurs, only for ``mode`` 'heat_pump', default: None
+    2. **quality_grade**: float, scale-down factor to determine the COP of a real machine, default: heat pump: 0.35, chiller 0.3 (Obtained from `monitored data <https://oemof-thermal.readthedocs.io/en/latest/validation_compression_heat_pumps_and_chillers.html>`_ of the GRECO project)
+    3. **temp_high**: float, temperature in °C of the sink (external outlet temperature at the condenser), default: heat pump: 35 (For the heat pump temp_high has been chosen from the highest value of the evaporators temperature in the `monitored data <https://oemof-thermal.readthedocs.io/en/latest/validation_compression_heat_pumps_and_chillers.html>`_. )
+    4. **temp_low**: float, temperature in °C of the source (external outlet temperature at the evaporator), default: chiller: 15 (The low temperature has been set for now to 15° C, a temperature lower the comfort temperature of 20–22 °C. The chiller has not been implemented in the model yet. However, should it been done so in the future, these temperatures must be researched and adjusted.)
+    5. **factor_icing**: float or None, COP reduction caused by icing, only for `mode` 'heat_pump', default: None
+    6. **temp_threshold_icing**: float or None, Temperature below which icing occurs, only for `mode` 'heat_pump', default: None
 
 * list_of_workalendar:
     *list of countries for which a python.workalendar [3] exists with the column name "country".*

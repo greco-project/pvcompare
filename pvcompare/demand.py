@@ -305,39 +305,50 @@ def calculate_heat_demand(
     filename_total_SH = os.path.join(
         input_directory, bp.at["filename_total_SH", "value"]
     )
-    #    filename_total_WH = os.path.join(
-    #        input_directory, bp.at["filename_total_WH", "value"]
-    #    )
+    filename_total_WH = os.path.join(
+        input_directory, bp.at["filename_total_WH", "value"]
+    )
     filename_electr_SH = os.path.join(
         input_directory, bp.at["filename_elect_SH", "value"]
     )
-    #    filename_electr_WH = os.path.join(
-    #        input_directory, bp.at["filename_elect_WH", "value"]
-    #    )
+    filename_electr_WH = os.path.join(
+        input_directory, bp.at["filename_elect_WH", "value"]
+    )
 
     total_SH = pd.read_csv(filename_total_SH, sep=":", index_col=0, header=1)
-    #    total_WH = pd.read_csv(filename_total_WH, sep=":", index_col=0, header=1)
+    total_WH = pd.read_csv(filename_total_WH, sep=":", index_col=0, header=1)
     electr_SH = pd.read_csv(filename_electr_SH, sep=":", index_col=0, header=1)
-    #   electr_WH = pd.read_csv(filename_electr_WH, sep=":", index_col=0, header=1)
+    electr_WH = pd.read_csv(filename_electr_WH, sep=":", index_col=0, header=1)
 
     total_SH[str(year)] = pd.to_numeric(total_SH[str(year)], errors="coerce")
-    #    total_WH[str(year)] = pd.to_numeric(total_WH[str(year)], errors="coerce")
+    total_WH[str(year)] = pd.to_numeric(total_WH[str(year)], errors="coerce")
     electr_SH[str(year)] = pd.to_numeric(electr_SH[str(year)], errors="coerce")
-    #   electr_WH[str(year)] = pd.to_numeric(electr_WH[str(year)], errors="coerce")
+    electr_WH[str(year)] = pd.to_numeric(electr_WH[str(year)], errors="coerce")
 
     filename_population = bp.at["filename_country_population", "value"]
     filename1 = os.path.join(input_directory, filename_population)
     populations = pd.read_csv(filename1, index_col=0, sep=",")
+
     # convert Mtoe in kWh
+    # Heat demand of residential for space heating
     heat_demand = (
-        total_SH.at[country, str(year)]  #       + total_WH.at[country, str(year)]
-        - electr_SH.at[country, str(year)]  #       - electr_WH.at[country, str(year)]
+        total_SH.at[country, str(year)] - electr_SH.at[country, str(year)]
     ) * 11630000000
     annual_heat_demand_per_population = (
         heat_demand / populations.at[country, str(year)]
     ) * population
+    # Heat demand of households for water heating
+    heat_demand_ww = (
+        total_WH.at[country, str(year)] - electr_WH.at[country, str(year)]
+    ) * 11630000000
+    annual_heat_demand_ww_per_population = (
+        heat_demand_ww / populations.at[country, str(year)]
+    ) * population
 
     # Multi family house (mfh: Mehrfamilienhaus)
+    include_warm_water = eval(bp.at["include warm water", "value"])
+
+    # Calculate heat demand only for space heating
     demand["h0"] = bdew.HeatBuilding(
         demand.index,
         holidays=holidays,
@@ -347,8 +358,47 @@ def calculate_heat_demand(
         wind_class=0,
         annual_heat_demand=annual_heat_demand_per_population,
         name="MFH",
-        ww_incl=False,
+        ww_incl=False,  # This must be False. Warm water calc follows
     ).get_bdew_profile()
+
+    # Read heating limit temperature
+    heating_lim_temp = int(bp.at["heating limit temperature", "value"])
+
+    if include_warm_water:
+        # Calculate annual heat demand with warm water included
+        annual_heat_demand_per_population = (
+            annual_heat_demand_per_population + annual_heat_demand_ww_per_population
+        )
+
+        # Create a copy of demand dataframe for warm water calculations
+        demand_ww_calc = demand.copy()
+
+        # Get total heat demand with warm water
+        demand_ww_calc["h0_ww"] = bdew.HeatBuilding(
+            demand_ww_calc.index,
+            holidays=holidays,
+            temperature=temp,
+            shlp_type="MFH",
+            building_class=2,
+            wind_class=0,
+            annual_heat_demand=annual_heat_demand_per_population,
+            name="MFH",
+            ww_incl=True,
+        ).get_bdew_profile()
+
+        # Calculate hourly difference in demand between space heating and space heating with warm water
+        demand_ww_calc["h0_diff"] = demand_ww_calc["h0_ww"] - demand_ww_calc["h0"]
+
+        # for space heating *only* adjust the heat demand so there is no demand if daily mean temperature
+        # is above the heating limit temperature
+        demand["h0"] = adjust_heat_demand(temp, heating_lim_temp, demand["h0"])
+        # Add the heat demand for warm water to the adjusted space heating demand
+        demand["h0"] = demand["h0"] + demand_ww_calc["h0_diff"]
+
+    else:
+        # Adjust the heat demand so there is no demand if daily mean temperature
+        # is above the heating limit temperature
+        demand["h0"] = adjust_heat_demand(temp, heating_lim_temp, demand["h0"])
 
     shifted_heat_demand = shift_working_hours(country=country, ts=demand)
     shifted_heat_demand.rename(columns={"h0": "kWh"}, inplace=True)
@@ -373,6 +423,53 @@ def calculate_heat_demand(
         column=column, ts_filename=h_demand_csv, mvs_input_directory=mvs_input_directory
     )
     return shifted_heat_demand
+
+
+def adjust_heat_demand(temperature, heating_limit_temp, demand):
+    """
+    Adjust the hourly heat demand setting a limit to the temperature of heating
+
+    Heat demand above the heating limit temperature is set to zero
+    Excess heat demand is then distributed equally over the remaining hourly heat demand
+
+    Parameters
+    -----------
+    temperature : :pandas:`pandas.Series<series>`
+        Ambient temperature data frame
+    heating_limit_temp : int
+        Temperature limit for heating
+    demand : :pandas:`pandas.Series<series>`
+        Heat demand from demandlib without limited heating during year
+
+    Returns
+    -------
+    demand: :pandas:`pandas.Series<series>`
+        Hourly heat demand time series with values set to zero above
+        the heating limit temperature.
+    """
+    excess_demand = 0
+    # Check for every day in the year the mean temperature
+    for i, temp in enumerate(np.arange(0, len(temperature), 24)):
+        # Calculate mean temperature of a day
+        mean_temp = np.mean(temperature[temp : temp + 24])
+        # Check if the daily mean temperature is higher than the heating limit temperature
+        if mean_temp >= heating_limit_temp:
+            # Gather the previous demand calculated by the demandlib in excess_demand
+            excess_demand = excess_demand + sum(demand[temp : temp + 24])
+            # Set heat demand to zero
+            demand[temp : temp + 24] = 0
+
+    # Count the hours where heat demand is not zero
+    count_demand_hours = np.count_nonzero(demand)
+    # Calculate heat demand that is shifted from excess demand equally to rest of demand
+    hourly_excess_demand = excess_demand / count_demand_hours
+
+    # Add hourly excess demand to heat demand that is not zero
+    for i, heat_demand in enumerate(demand):
+        if heat_demand != 0:
+            demand[i] = demand[i] + hourly_excess_demand
+
+    return demand
 
 
 def shift_working_hours(country, ts):
