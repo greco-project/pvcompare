@@ -214,13 +214,14 @@ The following list will give a brief introduction into the description of the cs
     4. **length south facade**: int, length of the south facade in m
     5. **length eastwest facade**:int, length of the east/west facade in m
     6. **hight storey**: int, hight of each storey in m
-    7. **filename_total_consumption**: str, name of the csv file that contains the total electricity and heat consumption for EU countries in different years from [2] *
-    8. **filename_total_SH**: str, name of the csv file that contains the total space heating for EU countries in different years [2] *
-    9. **filename_total_WH**: str, name of the csv file that contains the total water heating for EU countries in different years [2] *
-    10. **filename_elect_SH**: str, name of the csv file that contains the electrical space heatig for EU countries in different years [2] *
-    11. **filename_elect_WH**: str, name of the csv file that contains the electrical water heating for EU countries in different years [2] *
-    12. **filename_residential_electricity_demand**: str, name of the csv file that contains the total residential electricity demand for EU countries in different years [2] *
-    13. **filename_country_population**: str, name of the csv file that contains population for EU countries in different years [2] *
+    7. **heating limit temperature**: int, temperature limit for space heating in °C, default: `15 °C <http://wiki.energie-m.de/Heizgrenztemperatur>`_
+    8. **filename_total_consumption**: str, name of the csv file that contains the total electricity and heat consumption for EU countries in different years from [2] *
+    9. **filename_total_SH**: str, name of the csv file that contains the total space heating for EU countries in different years [2] *
+    10. **filename_total_WH**: str, name of the csv file that contains the total water heating for EU countries in different years [2] *
+    11. **filename_elect_SH**: str, name of the csv file that contains the electrical space heatig for EU countries in different years [2] *
+    12. **filename_elect_WH**: str, name of the csv file that contains the electrical water heating for EU countries in different years [2] *
+    13. **filename_residential_electricity_demand**: str, name of the csv file that contains the total residential electricity demand for EU countries in different years [2] *
+    14. **filename_country_population**: str, name of the csv file that contains population for EU countries in different years [2] *
 
 * heat_pumps_and_chillers:
     *Parameters that describe characteristics of the heat pumps and chillers in the simulated energy system.*
