@@ -92,5 +92,4 @@ pvcompare/tests/test_data/test_mvs_inputs/csv_elements/energyProviders.csv
 pvcompare/data/mvs_inputs/time_series
 
 # tests for plots.py
-pvcompare/tests/test_data/test_mvs_outputs/*
-pvcompare/tests/test_plots.py
+pvcompare/tests/test_data/test_mvs_outputs/*.png
