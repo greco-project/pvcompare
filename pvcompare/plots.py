@@ -243,7 +243,7 @@ def plot_kpi_loop(variable_name, kpi, loop_output_directory=None):
 
 if __name__ == "__main__":
 
-    #plot_all_flows(month=None, calendar_week=None, weekday=10)
+    # plot_all_flows(month=None, calendar_week=None, weekday=10)
 
     plot_kpi_loop(
         variable_name="Number_of_storeys",
