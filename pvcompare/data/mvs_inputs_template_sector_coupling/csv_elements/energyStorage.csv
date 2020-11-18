@@ -1,8 +1,8 @@
-,unit
-label,str
-optimizeCap,bool
-outflow_direction,str
-inflow_direction,str
-storage_filename,str
-energyVector,str
-type_oemof,str
+,unit,storage_02
+label,str,TES
+optimizeCap,bool,True
+outflow_direction,str,Heat
+inflow_direction,str,Heat
+storage_filename,str,storage_02.csv
+energyVector,str,Heat
+type_oemof,str,storage
