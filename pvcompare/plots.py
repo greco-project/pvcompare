@@ -139,7 +139,8 @@ def plot_kpi_loop(variable_name, kpi, loop_output_directory=None):
     Parameters
     ----------
     variable_name: str
-        Name of the variable that is changed each loop
+        Name of the variable that is changed each loop. Please do not enter
+        white spaces within the string.
     kpi: list of str
         List of KPI's to be plotted.
         Possible entries:
@@ -242,17 +243,17 @@ def plot_kpi_loop(variable_name, kpi, loop_output_directory=None):
 
 if __name__ == "__main__":
 
-    plot_all_flows(month=None, calendar_week=None, weekday=10)
+    #plot_all_flows(month=None, calendar_week=None, weekday=10)
 
-# plot_kpi_loop(
-#     variable_name="Number of storeys",
-#     kpi=[
-#         "costs total PV",
-#         "Degree of autonomy",
-#         "self consumption",
-#         "self sufficiency",
-#     ],
-#     loop_output_directory=os.path.join(
-#         os.path.dirname(__file__), "data", "CPV_STOREYS"
-#     ),
-# )
+    plot_kpi_loop(
+        variable_name="Number_of_storeys",
+        kpi=[
+            "costs total PV",
+            "Degree of autonomy",
+            "self consumption",
+            "self sufficiency",
+        ],
+        loop_output_directory=os.path.join(
+            os.path.dirname(__file__), "data", "CPV_STOREYS"
+        ),
+    )
