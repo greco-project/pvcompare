@@ -10,12 +10,14 @@ https://docs.python.org/3/library/unittest.html are also good support.
 
 import pandas as pd
 import os
+import numpy as np
 
 from pvcompare.demand import (
     calculate_power_demand,
     shift_working_hours,
     get_workalendar_class,
     calculate_heat_demand,
+    adjust_heat_demand,
 )
 
 
@@ -55,6 +57,24 @@ class TestDemandProfiles:
         weather_df.index = ["2014-01-01 13:00:00+00:00", "2014-01-01 14:00:00+00:00"]
         weather_df.index = pd.to_datetime(weather_df.index)
         self.weather = weather_df
+
+        bp = pd.read_csv(
+            os.path.join(self.test_input_directory, "building_parameters.csv"),
+            index_col=0,
+        )
+        self.heating_lim_temp = pd.to_numeric(
+            bp.at["heating limit temperature", "value"], errors="coerce"
+        )
+        self.include_ww = eval(bp.at["include warm water", "value"])
+
+        heating = pd.DataFrame()
+        periods = 48
+        heating["Time"] = pd.date_range("1/1/2020", periods=periods, freq="H")
+        heating["Load"] = np.random.choice(np.arange(10000, 90000, 10), periods)
+        temp_low = np.ones(int(periods / 2)) * (self.heating_lim_temp - 1)
+        temp_high = np.ones(int(periods / 2)) * self.heating_lim_temp
+        heating["temp_air"] = np.append(temp_low, temp_high)
+        self.heating = heating
 
     def test_power_demand_exists(self):
 
@@ -121,7 +141,21 @@ class TestDemandProfiles:
             column="demand_02",
         )
 
-        assert a["kWh"].sum() == 10969639.113628691
+        if not self.include_ww:
+            assert a["kWh"].sum() == 10969639.113628691
+        else:
+            assert a["kWh"].sum() == 11984233.752677418
+
+    def test_adjust_heat_demand(self):
+
+        result = adjust_heat_demand(
+            temperature=self.heating["temp_air"],
+            heating_limit_temp=self.heating_lim_temp,
+            demand=self.heating["Load"],
+        )
+
+        assert result.sum() == self.heating["Load"].sum()
+        assert result.iloc[24:].sum() == 0
 
     def test_shift_working_hours(self):
 
