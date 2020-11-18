@@ -29,7 +29,7 @@ def plot_all_flows(
         Only fill in a number here, if you want to plot over one a week or a weekday.
         if None: will plot over one month or the whole year. Default: None
     weekday: int
-        The day of the caldendar_week (from 1-7) that should be plotted.
+        The day of the caldendar_week (from 0-6 with 0 : Monday and 6: Sunday.
         If None: the next greater period is plotted. Default: None
     output_directory: str or None
         Path to the directory in which the plot should be saved.
@@ -50,6 +50,10 @@ def plot_all_flows(
 
 
     """
+    # check if weekday is a valid day
+    if weekday not in range(0,6,1):
+        logging.error("The weekday is not valid. Please choose a number "
+                      "between 0-6 with 0:Monaday and 6:Sunday.")
     # read timeseries
     if output_directory == None:
         output_directory = constants.DEFAULT_MVS_OUTPUT_DIRECTORY
@@ -62,6 +66,7 @@ def plot_all_flows(
     )
     # Converting the index as date
     df.index = pd.to_datetime(df.index)
+
 
     # define period for the plot
     if month is None:
@@ -236,7 +241,7 @@ def plot_kpi_loop(variable_name, kpi, loop_output_directory=None):
 
 if __name__ == "__main__":
 
-    plot_all_flows(month=None, calendar_week=44, weekday=1)
+    plot_all_flows(month=None, calendar_week=None, weekday=10)
 
 # plot_kpi_loop(
 #     variable_name="Number of storeys",
