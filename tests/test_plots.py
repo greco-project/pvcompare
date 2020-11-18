@@ -40,11 +40,12 @@ class TestPlotProfiles:
             output_directory=self.output_directory,
             timeseries_directory=self.timeseries_directory,
             timeseries_name=timeseries_name,
-            month=None, calendar_week=None, weekday=None
+            month=None,
+            calendar_week=None,
+            weekday=None,
         )
 
         assert os.path.exists(filename)
-
 
     def test_plot_all_flows_week(self):
         """ """
@@ -64,11 +65,12 @@ class TestPlotProfiles:
             output_directory=self.output_directory,
             timeseries_directory=self.timeseries_directory,
             timeseries_name=timeseries_name,
-            month=month, calendar_week=calendar_week, weekday=weekday
+            month=month,
+            calendar_week=calendar_week,
+            weekday=weekday,
         )
 
         assert os.path.exists(filename)
-
 
     def test_plot_all_flows_day(self):
         """ """
@@ -85,14 +87,15 @@ class TestPlotProfiles:
             os.remove(filename)
 
         plot_all_flows(
-        output_directory=self.output_directory,
-        timeseries_directory=self.timeseries_directory,
-        timeseries_name=timeseries_name,
-        month=month, calendar_week=calendar_week, weekday=weekday
+            output_directory=self.output_directory,
+            timeseries_directory=self.timeseries_directory,
+            timeseries_name=timeseries_name,
+            month=month,
+            calendar_week=calendar_week,
+            weekday=weekday,
         )
 
         assert os.path.exists(filename)
-
 
     def test_plot_kpi_loop(self):
         """ """

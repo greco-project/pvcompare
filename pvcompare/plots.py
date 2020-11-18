@@ -51,9 +51,11 @@ def plot_all_flows(
 
     """
     # check if weekday is a valid day
-    if weekday not in range(0,6,1):
-        logging.error("The weekday is not valid. Please choose a number "
-                      "between 0-6 with 0:Monaday and 6:Sunday.")
+    if weekday not in range(0, 6, 1):
+        logging.error(
+            "The weekday is not valid. Please choose a number "
+            "between 0-6 with 0:Monaday and 6:Sunday."
+        )
     # read timeseries
     if output_directory == None:
         output_directory = constants.DEFAULT_MVS_OUTPUT_DIRECTORY
@@ -66,7 +68,6 @@ def plot_all_flows(
     )
     # Converting the index as date
     df.index = pd.to_datetime(df.index)
-
 
     # define period for the plot
     if month is None:
