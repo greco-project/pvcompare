@@ -3,9 +3,9 @@ label,str,Storage capacity,discharging_power,discharging_power
 unit,str,kWh,kW,kW
 installedCap,kWh,0.0,0,0
 age_installed,year,0,0,0
-lifetime,year,10,10,10
+lifetime,year,20,10,10
 development_costs,currency,0.0,0.0,0.0
-specific_costs,currency/kWh,700,0,0
+specific_costs,currency/kWh,250,0,0
 specific_costs_om,currency/kWh/year,0.15,0,0
 dispatch_price,currency/kWh,NaN,0,0
 c_rate,factor of total capacity (kWh),NaN,1,1
