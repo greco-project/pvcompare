@@ -18,7 +18,7 @@ energyVector,str,Electricity,
 type_oemof,str,transformer,
 ,,,
 ,,,
-,unit,storage_charge_controller_out,
+,unit,storage_charge_controller_out,comments
 label,str,storage_out,
 unit,str,kW,
 optimizeCap,bool,True,
@@ -37,7 +37,7 @@ energyVector,str,Electricity,
 type_oemof,str,transformer,
 ,,,
 ,,,
-,unit,solar_inverter_01,
+,unit,solar_inverter_01,comments
 label,str,pv_inverter,
 unit,str,kW,
 optimizeCap,bool,True,
@@ -54,4 +54,156 @@ inflow_direction,str,PV bus,
 outflow_direction,str,Electricity,
 energyVector,str,Electricity,
 type_oemof,str,transformer,
-
+,,,
+,,,
+,unit,heat_pump_air_air_2015,comments
+label,str,heat pump air to air 2015,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
+optimizeCap,bool,True,and a size of 140m2
+maximumCap,None or float,None,
+installedCap,kW,0,
+age_installed,year,0,
+lifetime,year,12,
+development_costs,currency,0,
+specific_costs,currency/kW,450,
+specific_costs_om,currency/kW/year,170,
+dispatch_price,currency/kWh,0,
+efficiency,factor,"""{'file_name': 'None', 'header': 'no_unit', 'unit': ''}""",
+inflow_direction,str,Electricity,
+outflow_direction,str,Heat,
+energyVector,str,Heat,
+type_oemof,str,transformer,
+,,,
+,,,
+,unit,heat_pump_air_air_2020,comments
+label,str,heat pump air to air 2020,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
+optimizeCap,bool,True,and a size of 140m2
+maximumCap,None or float,None,
+installedCap,kW,0,
+age_installed,year,0,
+lifetime,year,12,
+development_costs,currency,0,
+specific_costs,currency/kW,425,
+specific_costs_om,currency/kW/year,162,
+dispatch_price,currency/kWh,0,
+efficiency,factor,"""{'file_name': 'None', 'header': 'no_unit', 'unit': ''}""",
+inflow_direction,str,Electricity,
+outflow_direction,str,Heat,
+energyVector,str,Heat,
+type_oemof,str,transformer,
+,,,
+,,,
+,unit,heat_pump_air_air_2030,comments
+label,str,heat pump air to air 2030,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
+optimizeCap,bool,True,and a size of 140m2
+maximumCap,None or float,None,
+installedCap,kW,0,
+age_installed,year,0,
+lifetime,year,12,
+development_costs,currency,0,
+specific_costs,currency/kW,316.67,
+specific_costs_om,currency/kW/year,146,
+dispatch_price,currency/kWh,0,
+efficiency,factor,"""{'file_name': 'None', 'header': 'no_unit', 'unit': ''}""",
+inflow_direction,str,Electricity,
+outflow_direction,str,Heat,
+energyVector,str,Heat,
+type_oemof,str,transformer,
+,,,
+,,,
+,unit,heat_pump_air_air_2050,comments
+label,str,heat pump air to air 2050,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
+optimizeCap,bool,True,and a size of 140m2
+maximumCap,None or float,None,
+installedCap,kW,0,
+age_installed,year,0,
+lifetime,year,12,
+development_costs,currency,0,
+specific_costs,currency/kW,300,
+specific_costs_om,currency/kW/year,132,
+dispatch_price,currency/kWh,0,
+efficiency,factor,"""{'file_name': 'None', 'header': 'no_unit', 'unit': ''}""",
+inflow_direction,str,Electricity,
+outflow_direction,str,Heat,
+energyVector,str,Heat,
+type_oemof,str,transformer,
+,,,
+,,,
+,unit,heat_pump_brine_water_2015,comments
+label,str,heat pump brine to water 2015,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
+optimizeCap,bool,True,and a size of 140m2
+maximumCap,None or float,None,
+installedCap,kW,0,
+age_installed,year,0,
+lifetime,year,20,
+development_costs,currency,0,
+specific_costs,currency/kW,1600,
+specific_costs_om,currency/kW/year,291,
+dispatch_price,currency/kWh,0,
+efficiency,factor,"""{'file_name': 'None', 'header': 'no_unit', 'unit': ''}""",
+inflow_direction,str,Electricity,
+outflow_direction,str,Heat,
+energyVector,str,Heat,
+type_oemof,str,transformer,
+,,,
+,,,
+,unit,heat_pump_brine_water_2020,comments
+label,str,heat pump brine to water 2020,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
+optimizeCap,bool,True,and a size of 140m2
+maximumCap,None or float,None,
+installedCap,kW,0,
+age_installed,year,0,
+lifetime,year,20,
+development_costs,currency,0,
+specific_costs,currency/kW,1500,
+specific_costs_om,currency/kW/year,278,
+dispatch_price,currency/kWh,0,
+efficiency,factor,"""{'file_name': 'None', 'header': 'no_unit', 'unit': ''}""",
+inflow_direction,str,Electricity,
+outflow_direction,str,Heat,
+energyVector,str,Heat,
+type_oemof,str,transformer,
+,,,
+,,,
+,unit,heat_pump_brine_water_2030,comments
+label,str,heat pump brine to water 2030,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
+optimizeCap,bool,True,and a size of 140m2
+maximumCap,None or float,None,
+installedCap,kW,0,
+age_installed,year,0,
+lifetime,year,20,
+development_costs,currency,0,
+specific_costs,currency/kW,1400,
+specific_costs_om,currency/kW/year,255,
+dispatch_price,currency/kWh,0,
+efficiency,factor,"""{'file_name': 'None', 'header': 'no_unit', 'unit': ''}""",
+inflow_direction,str,Electricity,
+outflow_direction,str,Heat,
+energyVector,str,Heat,
+type_oemof,str,transformer,
+,,,
+,,,
+,,,
+,unit,heat_pump_brine_water_2050,comments
+label,str,heat pump brine to water 2050,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
+optimizeCap,bool,True,and a size of 140m2
+maximumCap,None or float,None,
+installedCap,kW,0,
+age_installed,year,0,
+lifetime,year,20,
+development_costs,currency,0,
+specific_costs,currency/kW,1200,
+specific_costs_om,currency/kW/year,239,
+dispatch_price,currency/kWh,0,
+efficiency,factor,"""{'file_name': 'None', 'header': 'no_unit', 'unit': ''}""",
+inflow_direction,str,Electricity,
+outflow_direction,str,Heat,
+energyVector,str,Heat,
+type_oemof,str,transformer,
