@@ -10,7 +10,9 @@ def plot_all_flows(
     output_directory=None,
     timeseries_directory=None,
     timeseries_name="timeseries_all_busses.xlsx",
-    month=None, calendar_week=None, weekday=None,
+    month=None,
+    calendar_week=None,
+    weekday=None,
 ):
 
     """
@@ -67,37 +69,41 @@ def plot_all_flows(
             period = "year"
             pass
             if weekday is not None:
-                logging.error("If you want to create a plot over one weekday, please "
-                              "define a caldendar_week as well. Otherwise set"
-                              " weekday to 'None'.")
+                logging.error(
+                    "If you want to create a plot over one weekday, please "
+                    "define a caldendar_week as well. Otherwise set"
+                    " weekday to 'None'."
+                )
         else:
             if weekday is not None:
                 df = df[df.index.week == calendar_week]
-                df = df[df.index.weekday==weekday]
-                period = "day_" + str(calendar_week) +"_"+ str(weekday)
+                df = df[df.index.weekday == weekday]
+                period = "day_" + str(calendar_week) + "_" + str(weekday)
             else:
                 df = df[df.index.week == calendar_week]
                 period = "caldendar_week_" + str(calendar_week)
     else:
         if calendar_week is not None:
             if weekday is None:
-                logging.warning("You inserted a month and a week. In this case the "
-                                "plot will cover one caldendar_week. If you want to plot "
-                                "over one month please set the calendar_week to 'None'")
+                logging.warning(
+                    "You inserted a month and a week. In this case the "
+                    "plot will cover one caldendar_week. If you want to plot "
+                    "over one month please set the calendar_week to 'None'"
+                )
                 df = df[df.index.week == calendar_week]
                 period = "week_" + str(calendar_week)
             else:
                 logging.warning(
                     "You inserted a month, a caldendar_week and a weekday. In this case the "
                     "plot will cover one weekday only. If you want to plot "
-                    "over one month please set the caldendar_week and weekday to 'None'")
+                    "over one month please set the caldendar_week and weekday to 'None'"
+                )
                 df = df[df.index.week == calendar_week]
-                df = df[df.index.weekday==weekday]
-                period = "day_" + str(calendar_week) + "_"+ str(weekday)
+                df = df[df.index.weekday == weekday]
+                period = "day_" + str(calendar_week) + "_" + str(weekday)
         else:
             df = df[df.index.month == month]
             period = "month_" + str(month)
-
 
     # plot
     plt.title("All Flows", color="black")
@@ -230,19 +236,17 @@ def plot_kpi_loop(variable_name, kpi, loop_output_directory=None):
 
 if __name__ == "__main__":
 
-       plot_all_flows(
-           month = None, calendar_week = 44, weekday = 1
-       )
+    plot_all_flows(month=None, calendar_week=44, weekday=1)
 
-    # plot_kpi_loop(
-    #     variable_name="Number of storeys",
-    #     kpi=[
-    #         "costs total PV",
-    #         "Degree of autonomy",
-    #         "self consumption",
-    #         "self sufficiency",
-    #     ],
-    #     loop_output_directory=os.path.join(
-    #         os.path.dirname(__file__), "data", "CPV_STOREYS"
-    #     ),
-    # )
+# plot_kpi_loop(
+#     variable_name="Number of storeys",
+#     kpi=[
+#         "costs total PV",
+#         "Degree of autonomy",
+#         "self consumption",
+#         "self sufficiency",
+#     ],
+#     loop_output_directory=os.path.join(
+#         os.path.dirname(__file__), "data", "CPV_STOREYS"
+#     ),
+# )
