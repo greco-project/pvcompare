@@ -174,6 +174,8 @@ def apply_mvs(scenario_name, mvs_input_directory=None, mvs_output_directory = No
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     if output_directory == None:
         output_directory = constants.DEFAULT_OUTPUT_DIRECTORY
+        if not os.path.isdir(output_directory):
+            os.mkdir(output_directory)
     output_folder = os.path.join(output_directory, scenario_name)
     if mvs_output_directory == None:
         mvs_output_directory = os.path.join(
