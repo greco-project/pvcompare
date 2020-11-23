@@ -21,9 +21,9 @@ def loop(
     start,
     stop,
     step,
+    scenario_name,
     mvs_input_directory=None,
-    loop_output_directory=None,
-    mvs_output_directory=None,
+    output_directory = None,
 ):
     """
     Starts multiple MVS simulations with a range of values for a specific parameter.
@@ -56,11 +56,13 @@ def loop(
         last value of the variable. notice that stop > start
     step: int
         step of increase
+    scenario_name: str
+        Name of the Scenario. The name should follow the scheme:
+        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+    output_directory: str
+        Path to output directory.
+        Default: constants.DEFAULT_OUTPUT_DIRECTORY
     mvs_input_directory: str or None
-        if None then value will be taken from constants.py
-    loop_output_directory: str or None
-        if None then value will be taken from constants.py,
-    mvs_output_directory: str or None
         if None then value will be taken from constants.py
 
     Returns
@@ -70,19 +72,22 @@ def loop(
 
     if mvs_input_directory == None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
-    if mvs_output_directory == None:
-        mvs_output_directory = constants.DEFAULT_MVS_OUTPUT_DIRECTORY
-    if loop_output_directory == None:
-        loop_output_directory = constants.DEFAULT_LOOP_OUTPUT_DIRECTORY
+    if output_directory == None:
+        output_folder = os.path.join(constants.DEFAULT_OUTPUT_DIRECTORY, scenario_name)
+        loop_output_directory = os.path.join(output_folder, "loop_outputs_"+str(variable_name))
+    else:
+        loop_output_directory = os.path.join(output_directory, scenario_name, "loop_outputs_"+str(variable_name))
+
+    if not os.path.isdir(output_folder):
+        # create output folder
+        os.mkdir(output_folder)
 
     if os.path.isdir(loop_output_directory):
-        shutil.rmtree(loop_output_directory)
-        os.mkdir(loop_output_directory)
+        raise NameError(f"The loop output directory {loop_output_directory} "
+                        f"already exists. Please "
+                        f"delete the existing folder or rename {scenario_name}.")
     else:
-        try:
             os.mkdir(loop_output_directory)
-        except OSError:
-            print("Creation of the directory %s failed" % loop_output_directory)
 
     # create output folder in loop_output_directories for "scalars" and "timeseries"
     os.mkdir(os.path.join(loop_output_directory, "scalars"))
@@ -105,7 +110,11 @@ def loop(
         # save csv
         csv_file.to_csv(csv_filename)
 
-        main.apply_mvs(mvs_input_directory, mvs_output_directory)
+        mvs_output_directory = os.path.join(
+            constants.DEFAULT_OUTPUT_DIRECTORY, scenario_name,
+            "mvs_outputs_loop_" + str(variable_name)+"_"+str(i))
+
+        main.apply_mvs(scenario_name=scenario_name, mvs_output_directory = mvs_output_directory)
 
         # copy excel sheets to loop_output_directory
         number_digits = len(str(stop)) - len(str(i))
@@ -134,11 +143,6 @@ def loop(
         shutil.copy(src_dir, dst_dir)
 
         i = i + step
-
-    # copy energyProduction.csv into loop_output_directory
-    src_dir = os.path.join(mvs_input_directory, "csv_elements", "energyProduction.csv")
-    dst_dir = os.path.join(loop_output_directory, "energyProduction.csv")
-    shutil.copy(src_dir, dst_dir)
 
 
 def plot_all_flows(
@@ -259,7 +263,7 @@ def plot_all_flows(
     )
 
 
-def plot_kpi_loop(variable_name, kpi, loop_output_directory=None):
+def plot_kpi_loop(variable_name, kpi, scenario_name, output_directory=None, loop_output_directory = None):
 
     """
     Plots KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs`
@@ -287,9 +291,15 @@ def plot_kpi_loop(variable_name, kpi, loop_output_directory=None):
             "self consumption",
             "self sufficiency",
             "Degree of autonomy"
+    scenario_name: str
+        Name of the Scenario. The name should follow the scheme:
+        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+    output_directory: str
+        Path to output directory.
+        Default: constants.DEFAULT_OUTPUT_DIRECTORY
     loop_output_directory: str
-        Default: None.
-        If None: `loop_output_directory = constants.DEFAULT_LOOP_OUTPUT_DIRECTORY`
+        Path to loop output directory
+        Default: os.path.join(output_directory, 'scenario_name', loop_outputs + str(variable_name))
 
     Returns
     -------
@@ -300,15 +310,10 @@ def plot_kpi_loop(variable_name, kpi, loop_output_directory=None):
 
     """
 
+    if output_directory == None:
+        output_folder = os.path.join(constants.DEFAULT_OUTPUT_DIRECTORY, scenario_name)
     if loop_output_directory == None:
-        loop_output_directory = constants.DEFAULT_LOOP_OUTPUT_DIRECTORY
-    # get all different pv assets
-    energyProduction = pd.read_csv(
-        os.path.join(loop_output_directory, "energyProduction.csv"), index_col=0
-    )
-    energyProduction = energyProduction.drop(["unit"], axis=1)
-    pv_labels = energyProduction.columns
-    #    pv_labels = energyProduction.loc["label"]
+        loop_output_directory = os.path.join(output_folder, "loop_outputs_"+str(variable_name))
 
     output = pd.DataFrame()
     # parse through scalars folder and read in all excel sheets
@@ -326,9 +331,18 @@ def plot_kpi_loop(variable_name, kpi, loop_output_directory=None):
             filepath, header=0, index_col=0, sheet_name="scalars"
         )
 
-        # get lifetime from filepath
+        # get variable value from filepath
         i_split_one = filepath.split("_")[::-1][0]
         i = i_split_one.split(".")[0]
+
+        # get all different pv assets
+        csv_directory = os.path.join(output_folder, "mvs_outputs_loop_" + str(variable_name) + "_"+str(i), "inputs", "csv_elements")
+        energyProduction = pd.read_csv(
+            os.path.join(csv_directory, "energyProduction.csv"),
+            index_col=0
+        )
+        energyProduction = energyProduction.drop(["unit"], axis=1)
+        pv_labels = energyProduction.columns
         # get total costs pv and installed capacity
         for pv in pv_labels:
             output.loc[int(i), "costs total PV"] = file_sheet1.at[pv, "costs_total"]
@@ -382,6 +396,7 @@ if __name__ == "__main__":
     year = 2014  # a year between 2011-2013!!!
     population = 48000
     country = "Germany"
+    scenario_name = "Scenario_A1"
 
     # loop(
     #     latitude=latitude,
@@ -395,20 +410,19 @@ if __name__ == "__main__":
     #     start=500,
     #     stop=2000,
     #     step=100,
-    #     loop_output_directory= "./data/CPV_COSTS"
+    #     output_directory=None,
+    #     scenario_name=scenario_name
     # )
 
     # plot_all_flows(month=None, calendar_week=None, weekday=10)
 
     plot_kpi_loop(
-        variable_name="Number_of_storeys",
+        scenario_name=scenario_name,
+        variable_name="specific_costs",
         kpi=[
             "costs total PV",
             "Degree of autonomy",
             "self consumption",
             "self sufficiency",
         ],
-        loop_output_directory=os.path.join(
-            os.path.dirname(__file__), "data", "CPV_STOREYS"
-        ),
     )
