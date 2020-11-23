@@ -8,12 +8,8 @@ DEFAULT_INPUT_DIRECTORY = os.path.join(os.path.dirname(__file__), "data/inputs/"
 DEFAULT_MVS_INPUT_DIRECTORY = os.path.join(
     os.path.dirname(__file__), "data/mvs_inputs/"
 )
-# default output directory for mvs
-DEFAULT_MVS_OUTPUT_DIRECTORY = os.path.join(
-    os.path.dirname(__file__), "data/mvs_outputs"
-)
-DEFAULT_LOOP_OUTPUT_DIRECTORY = os.path.join(
-    os.path.dirname(__file__), "data/loop_outputs"
+DEFAULT_OUTPUT_DIRECTORY = os.path.join(
+    os.path.dirname(__file__), "data/outputs"
 )
 TEST_DATA_DIRECTORY = os.path.join(REPO_PATH, "tests/test_data/")
 TEST_DATA_HEAT = os.path.join(REPO_PATH, "tests/test_data/test_inputs_heat")
