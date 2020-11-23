@@ -13,6 +13,56 @@ except ImportError:
     plt = None
 
 
+def add_scenario_name_to_project_data(mvs_input_directory, scenario_name):
+
+    """
+    matches user input 'scenario_name' with 'scenario_name' in 'project_data.csv'
+
+    If user input 'scenario_name' is different in 'project_data.csv', a warning
+    is returned.
+
+    Parameters
+    ----------
+    mvs_input_directory: str
+        directory to 'mvs_inputs/'
+    scenario_name: str
+        Name of the Scenario. The name should follow the scheme:
+        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+
+    Returns
+    -------
+
+    """
+
+    if mvs_input_directory == None:
+        mvs_input_directory = os.path.join(constants.DEFAULT_MVS_INPUT_DIRECTORY)
+    project_data_filename = os.path.join(
+        mvs_input_directory, "csv_elements/" "project_data.csv"
+    )
+    if os.path.isfile(project_data_filename):
+        project_data = pd.read_csv(project_data_filename, index_col=0)
+
+        if scenario_name != project_data.at["scenario_name", "project_data"]:
+            logging.warning(
+                f"The parameter {scenario_name} in the main function"
+                f" differs from the value in"
+                f" project_data.csv. The value in file "
+                f"project_data.csv will be overwritten."
+            )
+            project_data.at["scenario_name", "project_data"] = scenario_name
+
+    else:
+        logging.warning(
+            f"The file project_data.csv does not"
+            f"exist. Please check the input folder {mvs_input_directory}"
+            "/csv_elements"
+        )
+
+    # save project data
+    project_data.to_csv(project_data_filename)
+    return
+
+
 def check_for_valid_country_year(country, year, input_directory):
     """
     checks if the input country is available in all input data
