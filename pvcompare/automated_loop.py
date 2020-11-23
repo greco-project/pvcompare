@@ -1,11 +1,9 @@
 from pvcompare import check_inputs
-import main
-import constants
+import pvcompare.main as main
+import pvcompare.constants as constants
 import os
 import pandas as pd
-import glob
 import shutil
-import matplotlib.pyplot as plt
 
 
 def loop(
@@ -140,76 +138,24 @@ def loop(
     shutil.copy(src_dir, dst_dir)
 
 
-def plot_total_costs_from_scalars(variable_name, loop_output_directory=None):
-    """
-    Plots the total costs from the scalars_**.xlsx files in `loop_output_directory` over
-    the changed variable. The plot is saved into `loop_output_directory`.
-
-    Parameters
-    ----------
-    variable_name: str
-        name of the variable that is changed each loop
-    loop_output_directory: str
-        if None then value will be taken from constants.py
-
-    Returns
-    -------
-
-
-    """
-
-    if loop_output_directory == None:
-        loop_output_directory = constants.DEFAULT_LOOP_OUTPUT_DIRECTORY
-    # get all different pv assets
-    energyProduction = pd.read_csv(
-        os.path.join(loop_output_directory, "energyProduction.csv"), index_col=0
-    )
-    energyProduction = energyProduction.drop(["unit"], axis=1)
-    pv_labels = energyProduction.loc["label"].values
-
-    total_costs = pd.DataFrame()
-    # parse through scalars folder and read in all excel sheets
-    for filepath in list(
-        glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
-    ):
-        file = pd.read_excel(filepath, header=0, index_col=1)
-        # get the
-        i_split_one = filepath.split("_")[::-1][0]
-        i = i_split_one.split(".")[0]
-        for pv in pv_labels:
-            total_costs.loc[int(i), pv] = file.at[pv, "costs_total"]
-
-    # Plotting
-    total_costs.plot(style=".-")
-    plt.legend(loc="best")
-    plt.title(variable_name)
-    plt.savefig(
-        os.path.join(
-            loop_output_directory, "plot_total_costs_" + str(variable_name) + ".png"
-        )
-    )
-    plt.show()
-
-
 if __name__ == "__main__":
-    latitude = 45.641603
-    longitude = 5.875387
-    year = 2013  # a year between 2011-2013!!!
+    latitude = 52.5243700
+    longitude = 13.4105300
+    year = 2014  # a year between 2011-2013!!!
     population = 48000
-    country = "Spain"
+    country = "Germany"
 
-    # loop(latitude=latitude,
-    #      longitude=longitude,
-    #      year=year,
-    #      population=population,
-    #      country=country,
-    #      variable_name="development_costs",
-    #      variable_column= "pv_plant_03",
-    #      csv_file_variable = "energyProduction.csv",
-    #      start=600,
-    #      stop=1000,
-    #      step=200)
-
-    plot_total_costs_from_scalars(variable_name="lifetime", loop_output_directory=None)
-
-    print(loop)
+    # loop(
+    #     latitude=latitude,
+    #     longitude=longitude,
+    #     year=year,
+    #     population=population,
+    #     country=country,
+    #     variable_name="specific_costs",
+    #     variable_column="pv_plant_01",
+    #     csv_file_variable="energyProduction.csv",
+    #     start=500,
+    #     stop=2000,
+    #     step=100,
+    #     loop_output_directory= "./data/CPV_COSTS"
+    # )
