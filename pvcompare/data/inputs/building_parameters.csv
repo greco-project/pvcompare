@@ -6,7 +6,7 @@ length south facade,56
 length eastwest facade,22
 hight storey,3
 heating limit temperature,15
-include warm water,True
+include warm water,False
 filename_total_consumption,total_consumption_residential.csv
 filename_total_SH,total_consumption_residential_SH.csv
 filename_total_WH,total_consumption_residential_WH.csv
