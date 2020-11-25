@@ -4,9 +4,13 @@ import pvlib
 import pandas as pd
 from cpvlib import cpvlib
 from pvcompare.cpv.inputs import mod_params_cpv, mod_params_flatplate
+import os
+import pvcompare.constants as constants
 
 
-def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
+def create_cpv_time_series(
+    lat, lon, weather, surface_azimuth, surface_tilt, plot=False
+):
 
     """
     creates a time series for a cpv module.
@@ -26,6 +30,8 @@ def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
         surface azimuth
     surface_tilt: int
         surface tilt
+    plot: bool
+        default: False
 
     Returns
     --------
@@ -107,9 +113,35 @@ def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
         weather["am"], weather["temp_air"]
     )
 
-    # Power
-    # dc_cpv.p_mp.plot(label="cpv")
-    # dc_flatplate.p_mp.plot(label="flatplate")
+    # plot power
+    if plot == True:
+        if weather.count()[0] > 5:
+            cpv_days = dc_cpv["2014-06-15":"2014-06-20"]
+            uf_cpv_days = uf_cpv["2014-06-15":"2014-06-20"]
+            flatplate_days = dc_flatplate["2014-06-15":"2014-06-20"]
+            data_days = weather["2014-06-15":"2014-06-20"]
+
+            fig, axs = plt.subplots(2)
+
+            (cpv_days.p_mp * uf_cpv_days).plot(ax=axs[0], label="CPV").legend(
+                bbox_to_anchor=(1.1, 1), loc=3, borderaxespad=0.0
+            )
+            flatplate_days.p_mp.plot(
+                ax=axs[0], secondary_y=True, label="Flat plate"
+            ).legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
+            data_days[["dni", "dhi"]].plot(ax=axs[1], linewidth=1).legend(
+                bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0
+            )
+            axs[1].set_xlabel("time")
+            axs[1].set_ylabel("Wh/m")
+            axs[0].set_ylabel("Wh")
+
+            plt.savefig(
+                os.path.join(
+                    constants.DEFAULT_MVS_OUTPUT_DIRECTORY, f"plot_cpv_timeseries.png"
+                ),
+                bbox_inches="tight",
+            )
 
     # Energy
     energy_cpv = dc_cpv["p_mp"] * uf_cpv
@@ -120,3 +152,70 @@ def create_cpv_time_series(lat, lon, weather, surface_azimuth, surface_tilt):
     total = energy_cpv + energy_flatplate
 
     return total
+
+
+def calculate_efficiency_ref():
+
+    """
+    This function calculates the P_mp and efficiency for the cpv and the
+    flatplate module at its reference conditions.
+
+    The reference conditions are:
+    Temp_air = 20 ° C
+    DII = 900 W/m² for cpv
+    POA = 950 W/m² for flatplate
+
+    :return:
+        None
+        prints efficiency and p_mp for the flatplate and the cpv module and total
+        efficiency
+
+    Notice: todo: is this needed? if not, remove this function
+    """
+
+    surface_tilt = 30
+    surface_azimuth = 180
+    # StaticHybridSystem
+    static_hybrid_sys = cpvlib.StaticHybridSystem(
+        surface_tilt=surface_tilt,
+        surface_azimuth=surface_azimuth,
+        module_cpv=None,
+        module_flatplate=None,
+        module_parameters_cpv=mod_params_cpv,
+        module_parameters_flatplate=mod_params_flatplate,
+        modules_per_string=1,
+        strings_per_inverter=1,
+        inverter=None,
+        inverter_parameters=None,
+        racking_model="insulated",
+        losses_parameters=None,
+        name=None,
+    )
+
+    A = 0.1  # m2
+    I_cpv = 900  # W/m2
+    I_flat = 950  # W/m2
+    temp_cell_35, temp_cell_flatplate = static_hybrid_sys.pvsyst_celltemp(
+        dii=I_cpv, poa_flatplate_static=I_flat, temp_air=20, wind_speed=1
+    )
+    (
+        diode_parameters_cpv,
+        diode_parameters_flatplate,
+    ) = static_hybrid_sys.calcparams_pvsyst(
+        dii=I_cpv,
+        poa_flatplate_static=I_flat,
+        temp_cell_cpv=temp_cell_35,
+        temp_cell_flatplate=temp_cell_flatplate,
+    )
+
+    p_cpv, p_flat = static_hybrid_sys.singlediode(
+        diode_parameters_cpv, diode_parameters_flatplate
+    )
+    eff_cpv = p_cpv["p_mp"] / (I_cpv * A)
+    eff_flat = p_flat["p_mp"] / (I_flat * A)
+
+    print(p_cpv["p_mp"])
+    print(p_flat["p_mp"])
+    print(eff_cpv)
+    print(eff_flat)
+    print("total:", eff_cpv + eff_flat)

@@ -106,7 +106,6 @@ Functions that match manual inputs and calculated results with mvs_inputs/csv_el
     check_inputs.add_project_data
     check_inputs.add_electricity_price
     check_inputs.check_mvs_energy_production_file
-    check_inputs.create_mvs_energy_production_file
     check_inputs.add_parameters_to_energy_production_file
     check_inputs.add_evaluated_period_to_simulation_settings
 
@@ -125,6 +124,7 @@ Functions that request the weather data of one year and one location from the ER
     era5.format_pvcompare
     era5.weather_df_from_era5
 
+
 .. _loops:
 
 Automated loops
@@ -136,4 +136,20 @@ Functions that help to loop over simulations while alterating a specific paramet
     :toctree: temp/
 
     automated_loop.loop
-    automated_loop.plot_total_costs_from_scalars
+
+
+.. _plots:
+
+Plotting
+========
+
+Functions for plotting mvs results.
+
+.. autosummary::
+    :toctree: temp/
+    plots.plot_all_flows
+    plots.plot_kpi_loop
+
+
+
+

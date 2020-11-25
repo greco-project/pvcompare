@@ -228,7 +228,7 @@ class TestPvtime_series:
                 year=self.year,
             )
 
-    def test_nominal_values_pv_NSTC(self):
+    def test_nominal_values_pv_NSTC_si(self):
 
         technology = "si"
         area = 1000
@@ -302,7 +302,7 @@ class TestPvtime_series:
             normalization="NSTC",
         )
 
-        assert nominal_value == 262.123
+        assert nominal_value == 343.381
 
     def test_nominal_values_pv_NSTC_psi(self):
         technology = "psi"
@@ -347,7 +347,7 @@ class TestPvtime_series:
             normalization="NRWC",
         )
 
-        assert nominal_value == 182.944
+        assert nominal_value == 239.657
 
     def test_nominal_values_pv_NRWC_psi(self):
         technology = "psi"
@@ -362,7 +362,7 @@ class TestPvtime_series:
             normalization="NRWC",
         )
 
-        assert nominal_value == 203.64
+        assert nominal_value == 203.513
 
     def test_get_optimal_pv_angle(self):
 
@@ -389,7 +389,7 @@ def test_calculate_NRWC_peak_psi():
 
     peak3 = calculate_NRWC_peak(technology="psi")
 
-    assert round(peak3, 2) == 248.24
+    assert round(peak3, 2) == 248.08
 
 
 # # one can test that exception are raised

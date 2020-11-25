@@ -18,7 +18,7 @@ mod_params_cpv = {
     "cells_in_parallel": 48,
     "eta_m": 0.32,
     "alpha_absorption": 0.9,
-    "Area": 0.131,
+    "Area": 0.1,
     "v_mp": 33.5,
     "i_mp": 0.893,
     "u_c": 29.0,  # default value from https://pvlib-python.readthedocs.io/en/latest/generated/pvlib.temperature.pvsyst_cell.html#pvlib.temperature.pvsyst_cell

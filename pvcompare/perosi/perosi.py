@@ -127,9 +127,10 @@ def calculate_smarts_parameters(
             TAIR=str(atmos_data.at[index, "temp_air"]),
             TDAY=str(atmos_data.at[index, "davt"]),
             SEASON=season,
-            ZONE=1,
+            ZONE=0,
             TILT=str(surface_tilt),
             WAZIM=str(surface_azimuth),
+            W=str(atmos_data.at[index, "precipitable_water"]),
         )
 
         # load EQE data
