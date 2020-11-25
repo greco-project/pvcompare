@@ -119,7 +119,7 @@ def calc_strat_tes_param(
 
     nominal_storage_capacity = (
         strat_tes.calculate_capacities(
-            volume, weather["temp_air"], input_data["temp_c"]
+            volume, input_data["temp_h"], input_data["temp_c"]
         )
         * 1000
     )
@@ -299,7 +299,7 @@ def add_strat_tes(
                     + f"constant {value_name[time_value_index]} {value}. For using temperature dependent values check the documentation."
                 )
             except ValueError:
-                # check if COPs file provided in efficiency exists
+                # check if result file exists
                 filename_csv_excl_path = value.split("'")[3]
                 filename_csv = os.path.join(
                     mvs_input_directory, "time_series", filename_csv_excl_path
