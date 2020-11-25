@@ -14,6 +14,7 @@ from pvcompare import demand
 from pvcompare import pv_feedin
 from pvcompare import constants
 from pvcompare import heat_pump_and_chiller
+from pvcompare import stratified_thermal_storage
 from pvcompare import check_inputs
 
 
@@ -141,6 +142,14 @@ def main(
         weather=weather,
     )
 
+    stratified_thermal_storage.add_strat_tes(
+        weather=weather,
+        lat=latitude,
+        lon=longitude,
+        storage_csv='storage_02.csv',
+        input_directory=input_directory,
+        mvs_input_directory=mvs_input_directory)
+
 
 def apply_mvs(mvs_input_directory=None, mvs_output_directory=None):
     r"""
@@ -191,5 +200,6 @@ if __name__ == "__main__":
         year=year,
         population=population,
         country=country,
+        mvs_input_directory="/home/local/RL-INSTITUT/marie-claire.gering/Repositories/pvcompare/pvcompare/data/mvs_inputs_template_sector_coupling/",
     )
-apply_mvs(mvs_input_directory=None, mvs_output_directory=None)
+apply_mvs(mvs_input_directory="/home/local/RL-INSTITUT/marie-claire.gering/Repositories/pvcompare/pvcompare/data/mvs_inputs_template_sector_coupling/", mvs_output_directory=None)
