@@ -5,6 +5,7 @@ total storey area,1232
 length south facade,56
 length eastwest facade,22
 hight storey,3
+room temperature,20
 heating limit temperature,15
 include warm water,False
 filename_total_consumption,total_consumption_residential.csv
