@@ -137,13 +137,11 @@ def calc_strat_tes_param(
     )
 
     unit = [
-        "kW"
-    ]  # TODO: Implement also for fixed_losses_relative and fixed_losses_absolute ["kW", "no_unit", "kWh"]
+    ]  # TODO: Implement also for fixed_losses_relative and fixed_losses_absolute ["no_unit", "kWh"]
     result_list = [nominal_storage_capacity]
 
     results = {
-        "nominal storage capacity": nominal_storage_capacity
-    }  # TODO: Implement also for fixed_losses_relative and fixed_losses_absolute {"nominal storage capacity": nominal_storage_capacity, "relative losses": fixed_losses_relative, "absolute losses": fixed_losses_absolute}
+    }  # TODO: Implement also for fixed_losses_relative and fixed_losses_absolute {"relative losses": fixed_losses_relative, "absolute losses": fixed_losses_absolute}
 
     for name, result in results.items():
         # Get number of iteration
@@ -280,12 +278,10 @@ def add_strat_tes(
     file_exists = True
     # Put all the time dependent values in a list
     time_dependent_value = [
-        "installedCap"
-    ]  # TODO: Implement also for fixed_losses_relative and fixed_losses_absolute ['installed_Cap', 'rel_losses', 'abs_losses']
+    ]  # TODO: Implement also for fixed_losses_relative and fixed_losses_absolute ['rel_losses', 'abs_losses']
     # Explaining name of that value
     value_name = [
-        "nominal storage capacity"
-    ]  # TODO: Implement also for fixed_losses_relative and fixed_losses_absolute ['nominal storage capacity', 'relative losses', 'absolute losses']
+    ]  # TODO: Implement also for fixed_losses_relative and fixed_losses_absolute ['relative losses', 'absolute losses']
 
     for time_value in time_dependent_value:
         time_value_index = time_dependent_value.index(time_value)
