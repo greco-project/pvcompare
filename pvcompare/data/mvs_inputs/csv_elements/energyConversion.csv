@@ -10,7 +10,7 @@ specific_costs,currency/kW,44,0.0,100
 specific_costs_om,currency/kW/year,0.0,0.0,4.0
 dispatch_price,currency/kWh,0.0,0.0,0.0
 efficiency,factor,1,1,0.95
-inflow_direction,str,Electricity,ESS Li-Ion,PV bus
-outflow_direction,str,ESS Li-Ion,Electricity,Electricity
+inflow_direction,str,Electricity,ESS Li-Ion bus,PV bus
+outflow_direction,str,ESS Li-Ion bus,Electricity,Electricity
 energyVector,str,Electricity,Electricity,Electricity
 type_oemof,str,transformer,transformer,transformer
