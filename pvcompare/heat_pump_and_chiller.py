@@ -204,12 +204,13 @@ def add_sector_coupling(
         index_col=0,
     )
 
-    # Check if heat pump exists in specified system
+    # Check if heat pump exists in specified system (energy vector is "Heat", inflow
+    # direction includes "Electricity" or "electricity")
     heat_pumps = []
     for col in energy_conversion.keys():
-        outflow = energy_conversion[col]["outflow_direction"]
+        energy_vector = energy_conversion[col]["energyVector"]
         inflow = energy_conversion[col]["inflow_direction"]
-        if outflow == "Heat" and inflow == "Electricity":
+        if "Heat" in energy_vector and ("Electricity" in inflow or "electricity" in inflow):
             heat_pumps.extend([col])
 
     file_exists = True
