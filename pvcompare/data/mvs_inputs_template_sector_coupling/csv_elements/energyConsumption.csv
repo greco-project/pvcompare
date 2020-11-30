@@ -1,5 +1,4 @@
-,unit,demand_01,demand_02
-label,str,households,Heat demand
+,unit,Electricity demand,Heat demand
 unit,str,kW,kWh
 inflow_direction,str,Electricity,Heat
 file_name,str,electricity_load.csv,heat_load.csv

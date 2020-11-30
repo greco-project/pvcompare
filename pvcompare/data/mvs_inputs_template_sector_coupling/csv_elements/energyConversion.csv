@@ -1,5 +1,4 @@
-,unit,solar_inverter_01,heat_pump
-label,str,Solar inverter (mono),Heat pump
+,unit,Solar inverter,Heat pump
 unit,str,kW,kW
 optimizeCap,bool,True,True
 maximumCap,None or float,None,None

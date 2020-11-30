@@ -1,5 +1,4 @@
-,unit,demand_01
-label,str,households
+,unit,Electricity demand
 unit,str,kW
 inflow_direction,str,Electricity
 file_name,str,electricity_load.csv

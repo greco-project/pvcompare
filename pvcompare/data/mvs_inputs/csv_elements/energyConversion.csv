@@ -1,5 +1,4 @@
-,unit,storage_charge_controller_in,storage_charge_controller_out,solar_inverter_01
-label,str,Charge Contoller ESS Li-Ion (charge),Charge Contoller ESS Li-Ion (discharge),Solar inverter (mono)
+,unit,Charge Contoller ESS Li-Ion (charge),Charge Contoller ESS Li-Ion (discharge),Solar inverter
 unit,str,kW,kW,kW
 optimizeCap,bool,True,True,True
 maximumCap,None or float,None,None,None
