@@ -210,7 +210,9 @@ def add_sector_coupling(
     for col in energy_conversion.keys():
         energy_vector = energy_conversion[col]["energyVector"]
         inflow = energy_conversion[col]["inflow_direction"]
-        if "Heat" in energy_vector and ("Electricity" in inflow or "electricity" in inflow):
+        if "Heat" in energy_vector and (
+            "Electricity" in inflow or "electricity" in inflow
+        ):
             heat_pumps.extend([col])
 
     file_exists = True
