@@ -138,7 +138,7 @@ def calculate_cops_and_eers(
     efficiency_series = df[column_name]
     efficiency_series.name = "no_unit"
 
-    # save time series to mvs input directory / timeseries
+    # save time series to `mvs_input_directory/time_series`
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     time_series_directory = os.path.join(mvs_input_directory, "time_series")
@@ -158,7 +158,7 @@ def add_sector_coupling(
     weather, lat, lon, input_directory=None, mvs_input_directory=None
 ):
     """
-    Add heat sector if heat pump in 'energyConversion.csv'.
+    Add heat sector if heat pump or chiller in 'energyConversion.csv'.
 
     COPs or EERS are calculated automatically as long as the parameters
     `inflow_direction` and `outflow_direction` give a hint that the respective asset is
@@ -266,10 +266,10 @@ def add_sector_coupling(
                     input_directory=input_directory,
                 )
                 logging.info(
-                    "COPs successfully calculated and saved in 'data/mvs_inputs/time_series'."
+                    "COPs successfully calculated and saved in `mvs_input_directory/time_series`."
                 )
 
-        # display warning if heat demand seems not to be in energyConsumption.csv
+        # display warning if heat demand seems to be missing in energyConsumption.csv
         energy_consumption = pd.read_csv(
             os.path.join(mvs_input_directory, "csv_elements", "energyConsumption.csv"),
             header=0,
@@ -280,8 +280,8 @@ def add_sector_coupling(
             and not "heat" in energy_consumption.loc["inflow_direction"].values
         ):
             logging.warning(
-                "Heat demand might be missing in 'energyConsumption.csv' as non of the "
-                + "assets' inflow direction is named 'Heat' nor 'heat'."
+                "Heat demand might be missing in `energyConsumption.csv` as none of "
+                + "the assets' inflow direction is named 'Heat' nor 'heat'."
             )
 
     # chiller
@@ -289,7 +289,7 @@ def add_sector_coupling(
         logging.warning(
             "Chillers were not tested, yet. Make sure to provide a cooling demand in "
             + "'energyConsumption.csv' and a constant EER or to place a file "
-            + "containing EERs into 'data/mvs_inputs/time_series' directory."
+            + "containing EERs into `data/mvs_inputs/time_series` directory."
         )
     return None
 
