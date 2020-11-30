@@ -352,12 +352,10 @@ def add_parameters_to_energy_production_file(
         "been added to energyProduction.csv."
     )
     energy_production.loc[["file_name"], ["pv_plant_0" + str(pp_number)]] = ts_filename
-    energy_production.loc[["label"], ["pv_plant_0" + str(pp_number)]] = (
-        "PV " + str(ts_filename)[:-4]
-    )
+    energy_production.rename(columns={"pv_plant_0" + str(pp_number): f"PV " + str(ts_filename).split("_")[0]})
     logging.info(
         "The file_name of the time series of PV "
-        + str(ts_filename)[:-4]
+        + str(ts_filename)[0]
         + " has been added to energyProduction.csv."
     )
     # save energyProduction.csv
