@@ -16,6 +16,7 @@ Welcome to the documentation of pvcompare!
    about
    getting_started
    basic_usage
+   model_assumptions
    pv_feedin
    demand
    heat_sector
