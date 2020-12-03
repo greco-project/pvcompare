@@ -8,7 +8,9 @@ Basic usage of pvcompare
 
 Run a simulation
 ================
-Information will follow: how to run a simulation, very simple, without adaption of paramters (or minor adaption like location).
+
+You can easily run a simulation with *pvcompare* by running the file TODO (adjust after decision in #164).
+More information to follow.
 
 .. _define_params:
 
