@@ -1,4 +1,4 @@
-.. _scope-limits:
+.. _scope-limit:
 
-Scope and limits
-~~~~~~~~~~~~~~~~
+Scope and limitations
+~~~~~~~~~~~~~~~~~~~~~
