@@ -148,6 +148,7 @@ Functions for plotting mvs results.
 
 .. autosummary::
     :toctree: temp/
+
     plots.plot_all_flows
     plots.plot_kpi_loop
 

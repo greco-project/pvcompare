@@ -13,6 +13,7 @@ Welcome to the documentation of pvcompare!
    :maxdepth: 2
    :glob:
 
+   about
    getting_started
    basic_usage
    pv_feedin
