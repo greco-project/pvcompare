@@ -1,8 +1,9 @@
 .. currentmodule:: pvcompare
 
-==================
+.. _code:
+
 Code documentation
-==================
+~~~~~~~~~~~~~~~~~~
 
 .. _main:
 

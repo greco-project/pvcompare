@@ -1,10 +1,11 @@
-========================
-Basic usage of pvcompare
-========================
 
----------------------------------------
+.. _basic_usage:
+
+Basic usage of pvcompare
+~~~~~~~~~~~~~~~~~~~~~~~~
+
 Definition of components and parameters
----------------------------------------
+=======================================
 
 *pvcompare* provides you with templates and default parameters for your simulations. However, you can also define your own energy system, choose different parameters and/or change the settings.
 
@@ -20,15 +21,21 @@ Especially interesting for adapting your simulations will be:
 - ``building_parameters.csv``: Definition of characteristics of the building type that should be considered in the simulation.
 - ``heat_pumps_and_chillers.csv``: Definition of characteristics of the heat pumps and chillers in the simulated energy system.
 
-A full description of the parameters can be found in the section :ref:`_parameters`.
+A full description of the parameters can be found in the section :ref:`parameters`.
 
---------------------------
+
 Download ERA5 weather data
---------------------------
+==========================
 Info follows, see #68.
 
-----------------------
+
+
+Run a simulation
+================
+
+
+
 Sensitivity with loops
-----------------------
+======================
 
 Here follows a description of how to use the :py:func:`~.automated_loop` functionality.
