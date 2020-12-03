@@ -4,8 +4,16 @@
 Basic usage of pvcompare
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Definition of components and parameters
-=======================================
+.. _run_simulation:
+
+Run a simulation
+================
+Information will follow: how to run a simulation, very simple, without adaption of paramters (or minor adaption like location).
+
+.. _define_params:
+
+Define your components and parameters
+=====================================
 
 *pvcompare* provides you with templates and default parameters for your simulations. However, you can also define your own energy system, choose different parameters and/or change the settings.
 
@@ -30,12 +38,7 @@ Info follows, see #68.
 
 
 
-Run a simulation
-================
-
-
-
-Sensitivity with loops
-======================
+Add a sensitivy to your simulations
+===================================
 
 Here follows a description of how to use the :py:func:`~.automated_loop` functionality.
