@@ -12,8 +12,8 @@ Information will follow: how to run a simulation, very simple, without adaption 
 
 .. _define_params:
 
-Define your components and parameters
-=====================================
+Define your own components and parameters
+=========================================
 
 *pvcompare* provides you with templates and default parameters for your simulations. However, you can also define your own energy system, choose different parameters and/or change the settings.
 
