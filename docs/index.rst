@@ -16,8 +16,12 @@ Welcome to the documentation of pvcompare!
    getting_started
    basic_usage
    pv_feedin
-   examples
+   demand
+   heat_sector
    parameters
+   simulation_outputs
+   scope_limits
+   scenarios_and_results
    code
 
 
