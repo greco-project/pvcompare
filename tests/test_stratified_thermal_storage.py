@@ -45,12 +45,16 @@ class TestCalcStratTesParam:
         )
         assert os.path.exists(
             os.path.join(
-                TEST_DATA_HEAT, "time_series", "fixed_losses_absolute_2018_53.2_13.2.csv"
+                TEST_DATA_HEAT,
+                "time_series",
+                "fixed_losses_absolute_2018_53.2_13.2.csv",
             )
         )
         assert os.path.exists(
             os.path.join(
-                TEST_DATA_HEAT, "time_series", "fixed_losses_relative_2018_53.2_13.2.csv"
+                TEST_DATA_HEAT,
+                "time_series",
+                "fixed_losses_relative_2018_53.2_13.2.csv",
             )
         )
 
@@ -67,7 +71,8 @@ class TestAddStratTes:
         self.lat = 53.2
         self.lon = 13.2
         self.filename_storage_02 = os.path.join(
-            TEST_DATA_HEAT, "csv_elements", "storage_02.csv")
+            TEST_DATA_HEAT, "csv_elements", "storage_02.csv"
+        )
 
     @pytest.fixture(scope="class", autouse=True)
     def select_conv_tech(self):
@@ -96,7 +101,9 @@ class TestAddStratTes:
         assert os.path.exists(filename) == True
         # filename in storage_02.csv does not change
         df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
-        assert ("fixed_losses_absolute_2018_53.2_13.2.csv" in df.loc["abs_losses"].item()) == True
+        assert (
+            "fixed_losses_absolute_2018_53.2_13.2.csv" in df.loc["abs_losses"].item()
+        ) == True
 
     def teardown_method(self):
         # delete file
@@ -124,7 +131,8 @@ class TestAddStratTes_file_non_existent:
         self.lat = 53.2
         self.lon = 13.2
         self.filename_storage_02 = os.path.join(
-            TEST_DATA_HEAT, "csv_elements", "storage_02.csv")
+            TEST_DATA_HEAT, "csv_elements", "storage_02.csv"
+        )
 
     @pytest.fixture(scope="class", autouse=True)
     def select_conv_tech(self):
@@ -153,7 +161,9 @@ class TestAddStratTes_file_non_existent:
         assert os.path.exists(filename) == False
         # filename in storage_02.csv does not change
         df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
-        assert ("fixed_losses_absolute_2017_53.2_13.2.csv" in df.loc["abs_losses"].item()) == True
+        assert (
+            "fixed_losses_absolute_2017_53.2_13.2.csv" in df.loc["abs_losses"].item()
+        ) == True
 
     def teardown_method(self):
         # delete file
@@ -181,7 +191,8 @@ class TestAddStratTes_file_constant_losses:
         self.lat = 53.2
         self.lon = 13.2
         self.filename_storage_02 = os.path.join(
-            TEST_DATA_HEAT, "csv_elements", "storage_02_const_losses.csv")
+            TEST_DATA_HEAT, "csv_elements", "storage_02_const_losses.csv"
+        )
 
     @pytest.fixture(scope="class", autouse=True)
     def select_conv_tech(self):
