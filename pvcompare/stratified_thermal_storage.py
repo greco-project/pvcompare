@@ -142,7 +142,7 @@ def calc_strat_tes_param(
         value_name_underscore = name.replace(" ", "_")
 
         # Set file name
-        filename = f"{value_name_underscore}_{add_on}.csv"
+        filename = f"{value_name_underscore}{add_on}.csv"
 
         # Set unit as new name of result in result list
         result.name = unit[result_index]
