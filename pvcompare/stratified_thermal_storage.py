@@ -19,6 +19,7 @@ import oemof.thermal.stratified_thermal_storage as strat_tes
 
 # internal imports
 from pvcompare import constants
+from pvcompare import check_inputs
 
 
 def calc_strat_tes_param(
@@ -328,7 +329,12 @@ def add_strat_tes(
                     )
                     # calculate results of stratified thermal storage for location if not existent
                     if not os.path.isfile(result_filename):
-                        calc_strat_tes_param(
+                        (
+                            nominal_storage_capacity,
+                            loss_rate,
+                            fixed_losses_relative,
+                            fixed_losses_absolute,
+                        ) = calc_strat_tes_param(
                             weather=weather,
                             lat=lat,
                             lon=lon,
@@ -337,6 +343,13 @@ def add_strat_tes(
                         )
                         logging.info(
                             f"Times series of {value_name} successfully calculated and saved in 'data/mvs_inputs/time_series'."
+                        )
+                        # Save calculated nominal storage capacity and loss rate to storage_xx.csv
+                        check_inputs.add_parameters_to_storage_xx_file(
+                            nominal_storage_capacity=nominal_storage_capacity,
+                            loss_rate=loss_rate,
+                            storage_csv=storage_csv,
+                            mvs_input_directory=mvs_input_directory,
                         )
 
                 # display warning if heat demand seems not to be in energyConsumption.csv
