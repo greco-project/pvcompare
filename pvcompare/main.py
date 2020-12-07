@@ -146,9 +146,10 @@ def main(
         weather=weather,
         lat=latitude,
         lon=longitude,
-        storage_csv='storage_02.csv',
+        storage_csv="storage_02.csv",
         input_directory=input_directory,
-        mvs_input_directory=mvs_input_directory)
+        mvs_input_directory=mvs_input_directory,
+    )
 
 
 def apply_mvs(mvs_input_directory=None, mvs_output_directory=None):
@@ -200,5 +201,9 @@ if __name__ == "__main__":
         year=year,
         population=population,
         country=country,
+        mvs_input_directory="/home/local/RL-INSTITUT/marie-claire.gering/Repositories/pvcompare/pvcompare/data/mvs_inputs_template_sector_coupling/",
     )
-apply_mvs(mvs_input_directory=None, mvs_output_directory=None)
+apply_mvs(
+    mvs_input_directory="/home/local/RL-INSTITUT/marie-claire.gering/Repositories/pvcompare/pvcompare/data/mvs_inputs_template_sector_coupling/",
+    mvs_output_directory=None,
+)
