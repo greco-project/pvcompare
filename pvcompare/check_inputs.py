@@ -439,3 +439,48 @@ def add_evaluated_period_to_simulation_settings(time_series, mvs_input_directory
     length = len(time_series.index) / 24
     simulation_settings.loc[["evaluated_period"], ["simulation_settings"]] = int(length)
     simulation_settings.to_csv(simulation_settings_filename)
+
+
+def add_parameters_to_storage_xx_file(
+    nominal_storage_capacity, loss_rate, storage_csv, mvs_input_directory=None
+):
+
+    """
+    Enters new parameters into storage_xx.csv
+
+    Parameters
+    ---------
+    nominal_storage_capacity : numeric
+        Maximum amount of stored thermal energy [MWh]
+
+    loss_rate : numeric (sequence or scalar)
+        The relative loss of the storage capacity between two consecutive
+        timesteps [-]
+
+    storage_csv: str
+        Name of the storage specific file
+
+    mvs_input_directory : str
+        directory to "mvs_inputs/"
+
+    Returns
+    -------
+    None
+    """
+
+    if mvs_input_directory == None:
+        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+
+    # Read storage_xx.csv from input value
+    storage_xx_path = os.path.join(mvs_input_directory, "csv_elements", storage_csv)
+    storage_xx = pd.read_csv(storage_xx_path, header=0, index_col=0,)
+
+    parameters = {"installedCap": nominal_storage_capacity, "efficiency": loss_rate}
+
+    for name, param in parameters.items():
+        # insert parameter values
+        storage_xx.loc[[name], ["storage capacity"]] = param
+        logging.info(f"The {name} of the storage has been added to {storage_csv}.")
+
+    # Save values in storage_xx.csv
+    storage_xx.to_csv(storage_xx_path)
