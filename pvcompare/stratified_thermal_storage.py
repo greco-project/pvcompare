@@ -131,8 +131,8 @@ def calc_strat_tes_param(
     ) = strat_tes.calculate_losses(
         u_value,
         input_data["diameter"],
-        input_data["temp_h"],  # TODO: Can the temperatures be regarded as constant?
-        input_data["temp_c"],  # TODO: Can the temperatures be regarded as constant?
+        input_data["temp_h"],  # TODO: In future heat pump temp here
+        input_data["temp_c"],  # TODO: In future relation to temp_h here
         ambient_temperature,
     )
 
@@ -190,6 +190,8 @@ def add_strat_tes(
         Latitude of ambient temperature location in `weather`.
     lon : float
         Longitude of ambient temperature location in `weather`.
+    storage_csv : str
+        Name of the storage specific file
     input_directory: str or None
         Path to input directory of pvcompare containing file
         `stratified_thermal_storage.csv` that specifies stratified thermal storage
@@ -380,18 +382,11 @@ def run_stratified_thermal_storage():
         mvs_input_directory="./data/mvs_inputs_template_sector_coupling/",
     )
 
-    parameter = [
-        nominal_storage_capacity,
-        loss_rate,
-        fixed_losses_relative,
-        fixed_losses_absolute,
-    ]
-
     parameter = {
         "Nominal storage capacity [kWh]": nominal_storage_capacity,
         "Loss rate [-]": loss_rate,
         "Fixed relative losses [-]": fixed_losses_relative,
-        "Fixed absolute losses [-]": fixed_losses_absolute,
+        "Fixed absolute losses [kWh]": fixed_losses_absolute,
     }
 
     dash = "-" * 50
