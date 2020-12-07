@@ -4,14 +4,14 @@ This module contains the precalculations of the stratified thermal storage
 It calculates:
 
     - The nominal storage capacity
-    - The loss rate and
-    - Fixed losses
+    - The loss rate
+    - Fixed losses relative and
+    - Fixed losses absolute
 
 using functions implemented in oemof.thermal (github.com/oemof/oemof-thermal)
 """
 
 import pandas as pd
-import numpy as np
 import os
 import logging
 import maya
@@ -55,15 +55,6 @@ def calc_strat_tes_param(
 
     Returns
     -------
-    u_value : numeric
-        Thermal transmittance (U-value) [W/(m2*K)]
-
-    volume : numeric
-        Volume of storage
-
-    surface : numeric
-        Total surface of storage [m2]
-
     nominal_storage_capacity : numeric
         Maximum amount of stored thermal energy [MWh]
 
