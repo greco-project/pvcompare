@@ -1,2 +1,2 @@
-,unit,Electricity,ESS Li-Ion bus,PV bus
+,unit,Electricity bus,ESS Li-Ion bus,PV bus
 energyVector,str,Electricity,Electricity,Electricity

@@ -10,7 +10,7 @@ specific_costs,currency/kW,230,450
 specific_costs_om,currency/kW/year,6,170
 dispatch_price,currency/kWh,0,0
 efficiency,factor,0.95,"{'file_name': 'None', 'header': 'no_unit', 'unit': ''}"
-inflow_direction,str,PV bus,Electricity
-outflow_direction,str,Electricity,Heat bus
+inflow_direction,str,PV bus,Electricity bus
+outflow_direction,str,Electricity bus,Heat bus
 energyVector,str,Electricity,Heat
 type_oemof,str,transformer,transformer

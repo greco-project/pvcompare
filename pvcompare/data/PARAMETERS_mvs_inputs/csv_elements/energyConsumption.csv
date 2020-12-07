@@ -1,6 +1,6 @@
 ,unit,demand_01,comments
 unit,str,kW,
-inflow_direction,str,Electricity,
+inflow_direction,str,Electricity bus,
 file_name,str,electricity_load_Germany_48000_2014.csv,
 energyVector,str,Electricity,
 type_oemof,str,sink,
