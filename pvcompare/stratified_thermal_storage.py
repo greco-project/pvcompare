@@ -136,12 +136,11 @@ def calc_strat_tes_param(
         ambient_temperature,
     )
 
-    unit = [
-    ]  # TODO: Implement also for fixed_losses_relative and fixed_losses_absolute ["no_unit", "kWh"]
-    result_list = [nominal_storage_capacity]
-
+    unit = ["no_unit", "kWh"]
     results = {
-    }  # TODO: Implement also for fixed_losses_relative and fixed_losses_absolute {"relative losses": fixed_losses_relative, "absolute losses": fixed_losses_absolute}
+        "fixed losses relative": fixed_losses_relative,
+        "fixed losses absolute": fixed_losses_absolute,
+    }
 
     for name, result in results.items():
         # Get number of iteration
@@ -277,11 +276,9 @@ def add_strat_tes(
     # *********************************************************************************************
     file_exists = True
     # Put all the time dependent values in a list
-    time_dependent_value = [
-    ]  # TODO: Implement also for fixed_losses_relative and fixed_losses_absolute ['rel_losses', 'abs_losses']
+    time_dependent_value = ["rel_losses", "abs_losses"]
     # Explaining name of that value
-    value_name = [
-    ]  # TODO: Implement also for fixed_losses_relative and fixed_losses_absolute ['relative losses', 'absolute losses']
+    value_name = ["fixed losses relative", "fixed losses absolute"]
 
     for time_value in time_dependent_value:
         time_value_index = time_dependent_value.index(time_value)
