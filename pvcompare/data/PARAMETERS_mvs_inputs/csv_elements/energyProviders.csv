@@ -1,5 +1,4 @@
 ,unit,DSO,comments
-label,str,DSO,
 unit,str,kW,
 optimizeCap,bool,True,
 energy_price,currency/kWh,0.2165,is filled in by pvcompare according to country

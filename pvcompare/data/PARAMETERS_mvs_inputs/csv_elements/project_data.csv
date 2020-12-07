@@ -1,5 +1,4 @@
 ,unit,project_data,comments
-label,str,project_data,
 country,str,Germany,filled in by pvcompare
 latitude,str,52.52437,filled in by pvcompare
 longitude,str,13.41053,filled in by pvcompare

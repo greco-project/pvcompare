@@ -1,16 +1,15 @@
-
-,unit,storage_charge_controller_in,comments 
-label,str,storage_in,
+,,,
+,unit,storage_charge_controller_in,comments
 unit,str,kW,
 optimizeCap,bool,True,
 maximumCap,None or float,None,
-installedCap,kW,0.0,
-age_installed,year,0.0,
+installedCap,kW,0,
+age_installed,year,0,
 lifetime,year,10,
-development_costs,currency,0.0,
+development_costs,currency,0,
 specific_costs,currency/kW,44,"A 12 Volts, 80 Amperes Solar Charge Controller costs about 50 USD, which is about 46 €/kW. See: https://alteredenergy.com/wholesale-cost-of-solar-charge-controllers/"
-specific_costs_om,currency/kW/year,0.0,
-dispatch_price,currency/kWh,0.0,
+specific_costs_om,currency/kW/year,0,
+dispatch_price,currency/kWh,0,
 efficiency,factor,1,
 inflow_direction,str,Electricity,
 outflow_direction,str,ESS Li-Ion bus,
@@ -19,17 +18,16 @@ type_oemof,str,transformer,
 ,,,
 ,,,
 ,unit,storage_charge_controller_out,comments
-label,str,storage_out,
 unit,str,kW,
 optimizeCap,bool,True,
 maximumCap,None or float,None,
-installedCap,kW,0.0,
-age_installed,year,0.0,
+installedCap,kW,0,
+age_installed,year,0,
 lifetime,year,10,
-development_costs,currency,0.0,
-specific_costs,currency/kW,0.0,
-specific_costs_om,currency/kW/year,0.0,
-dispatch_price,currency/kWh,0.0,
+development_costs,currency,0,
+specific_costs,currency/kW,0,
+specific_costs_om,currency/kW/year,0,
+dispatch_price,currency/kWh,0,
 efficiency,factor,1,
 inflow_direction,str,ESS Li-Ion bus,
 outflow_direction,str,Electricity,
@@ -37,18 +35,17 @@ energyVector,str,Electricity,
 type_oemof,str,transformer,
 ,,,
 ,,,
-,unit,solar_inverter_01,comments
-label,str,pv_inverter,
+,unit,pv_inverter,comments
 unit,str,kW,
 optimizeCap,bool,True,
 maximumCap,None or float,None,
-installedCap,kW,0.0,
+installedCap,kW,0,
 age_installed,year,0,
 lifetime,year,15,
-development_costs,currency,0.0,
-specific_costs,currency/kW,100,laut: https://www.ise.fraunhofer.de/content/dam/ise/de/documents/publications/studies/Photovoltaics-Report.pdf
-specific_costs_om,currency/kW/year,4.0,$3.00-7.50/kW-yr† see: https://prod-ng.sandia.gov/techlib-noauth/access-control.cgi/2016/160649r.pdf (page 11)
-dispatch_price,currency/kWh,0.0,
+development_costs,currency,0,
+specific_costs,currency/kW,100,according to: https://www.ise.fraunhofer.de/content/dam/ise/de/documents/publications/studies/Photovoltaics-Report.pdf
+specific_costs_om,currency/kW/year,4,$3.00-7.50/kW-yr† see: https://prod-ng.sandia.gov/techlib-noauth/access-control.cgi/2016/160649r.pdf (page 11)
+dispatch_price,currency/kWh,0,
 efficiency,factor,0.95,
 inflow_direction,str,PV bus,
 outflow_direction,str,Electricity,
@@ -57,10 +54,9 @@ type_oemof,str,transformer,
 ,,,
 ,,,
 ,unit,heat_pump_air_air_2015,comments
-label,str,heat pump air to air 2015,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
-unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
-optimizeCap,bool,True,and a size of 140m2
-maximumCap,None or float,None,
+unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
+maximumCap,None or float,None,and a size of 140m2
 installedCap,kW,0,
 age_installed,year,0,
 lifetime,year,12,
@@ -76,10 +72,9 @@ type_oemof,str,transformer,
 ,,,
 ,,,
 ,unit,heat_pump_air_air_2020,comments
-label,str,heat pump air to air 2020,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
-unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
-optimizeCap,bool,True,and a size of 140m2
-maximumCap,None or float,None,
+unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
+maximumCap,None or float,None,and a size of 140m2
 installedCap,kW,0,
 age_installed,year,0,
 lifetime,year,12,
@@ -95,10 +90,9 @@ type_oemof,str,transformer,
 ,,,
 ,,,
 ,unit,heat_pump_air_air_2030,comments
-label,str,heat pump air to air 2030,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
-unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
-optimizeCap,bool,True,and a size of 140m2
-maximumCap,None or float,None,
+unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
+maximumCap,None or float,None,and a size of 140m2
 installedCap,kW,0,
 age_installed,year,0,
 lifetime,year,12,
@@ -114,10 +108,9 @@ type_oemof,str,transformer,
 ,,,
 ,,,
 ,unit,heat_pump_air_air_2050,comments
-label,str,heat pump air to air 2050,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
-unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
-optimizeCap,bool,True,and a size of 140m2
-maximumCap,None or float,None,
+unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
+maximumCap,None or float,None,and a size of 140m2
 installedCap,kW,0,
 age_installed,year,0,
 lifetime,year,12,
@@ -133,10 +126,9 @@ type_oemof,str,transformer,
 ,,,
 ,,,
 ,unit,heat_pump_brine_water_2015,comments
-label,str,heat pump brine to water 2015,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
-unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
-optimizeCap,bool,True,and a size of 140m2
-maximumCap,None or float,None,
+unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
+maximumCap,None or float,None,and a size of 140m2
 installedCap,kW,0,
 age_installed,year,0,
 lifetime,year,20,
@@ -152,10 +144,9 @@ type_oemof,str,transformer,
 ,,,
 ,,,
 ,unit,heat_pump_brine_water_2020,comments
-label,str,heat pump brine to water 2020,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
-unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
-optimizeCap,bool,True,and a size of 140m2
-maximumCap,None or float,None,
+unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
+maximumCap,None or float,None,and a size of 140m2
 installedCap,kW,0,
 age_installed,year,0,
 lifetime,year,20,
@@ -171,10 +162,9 @@ type_oemof,str,transformer,
 ,,,
 ,,,
 ,unit,heat_pump_brine_water_2030,comments
-label,str,heat pump brine to water 2030,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
-unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
-optimizeCap,bool,True,and a size of 140m2
-maximumCap,None or float,None,
+unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
+maximumCap,None or float,None,and a size of 140m2
 installedCap,kW,0,
 age_installed,year,0,
 lifetime,year,20,
@@ -191,10 +181,9 @@ type_oemof,str,transformer,
 ,,,
 ,,,
 ,unit,heat_pump_brine_water_2050,comments
-label,str,heat pump brine to water 2050,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
-unit,str,kW,for one family house with annual heat consumption of 16.8 MWh
-optimizeCap,bool,True,and a size of 140m2
-maximumCap,None or float,None,
+unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
+optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
+maximumCap,None or float,None,and a size of 140m2
 installedCap,kW,0,
 age_installed,year,0,
 lifetime,year,20,
