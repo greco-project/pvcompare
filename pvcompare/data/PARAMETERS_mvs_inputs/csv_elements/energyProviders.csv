@@ -2,7 +2,7 @@
 unit,str,kW,
 optimizeCap,bool,True,
 energy_price,currency/kWh,0.2165,is filled in by pvcompare according to country
-feedin_tariff,currency/kWh,-0.1,needs to be negative
+feedin_tariff,currency/kWh,0.1,positive value means earning with feed-in while negative value means paying for feed-in
 peak_demand_pricing,currency/kW,0,
 peak_demand_pricing_period,"times per year (1,2,3,4,6,12)",1,
 renewable_share,factor,0.1,
