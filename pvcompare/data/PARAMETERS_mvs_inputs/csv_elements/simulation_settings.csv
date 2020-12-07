@@ -1,5 +1,4 @@
 ,unit,simulation_settings,comments
-label,str,simulation_settings,
 start_date,str,2014-01-01 00:00:00,filled in by pvcompare
 evaluated_period,days,365,filled in by pvcompare
 timestep,minutes,60,
