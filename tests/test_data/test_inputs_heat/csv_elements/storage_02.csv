@@ -1,0 +1,17 @@
+,storage capacity
+label,Storage capacity
+unit,kWh
+installedCap,
+age_installed,0
+lifetime,30
+development_costs,0.0
+specific_costs,410
+specific_costs_om,16.67
+dispatch_price,
+c_rate,
+soc_initial,None
+soc_max,0.925
+soc_min,0.075
+efficiency,0.00092273109671008
+rel_losses,"{'file_name': 'fixed_losses_relative_2018_53.2_13.2.csv', 'header': 'no_unit', 'unit': ''}"
+abs_losses,"{'file_name': 'fixed_losses_absolute_2018_53.2_13.2.csv', 'header': 'no_unit', 'unit': ''}"
