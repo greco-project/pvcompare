@@ -11,7 +11,7 @@ The functionalities include
 
 * calculation of an area potential for PV on roof-tops and facades based on building parameters,
 * calculation of heat and electricity demand profiles for a specific amount of people living in these buildings,
-* calculation of PV feed-in time series for a set of PV installations on roof-tops and facades incl. different technologies,
+* calculation of PV feed-in time series for a set of PV installations on roof-tops and facades incl. different technologies, such as:
 
     * all technologies in the database of `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_,
     * a specific concentrator-PV module, and
