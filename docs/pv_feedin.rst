@@ -1,6 +1,8 @@
-=========================================================
+
+.. _pv-feedin:
+
 PV feedin - Modeling of different PV Technologies
-=========================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 *pvcompare* provides the possibility to calculate feed-in time series for the
 following PV technologies under real world conditions:
 
@@ -13,9 +15,8 @@ unique models were developed for the CPV and PeroSi technologies. The next
 sections will provide a detailed description of the different modeling
 approaches.
 
-------------------
 1. SI
-------------------
+=====
 The silicone module parameters are loaded from `cec module <https://github.com/NREL/SAM/tree/develop/deploy/libraries>`_ database. The module
 selected by default is the "Aleo_Solar_S59y280" module with a 17% efficiency.
 But any other module can be selected.
@@ -29,10 +30,8 @@ conditions the following methods are selected from `modelchain object <https://p
 - temperature_model="sapm"
 - losses_model="pvwatts"
 
-
--------
 2. CPV
--------
+======
 
 The CPV technology that is used in the *pvcompare* simulations is a hybrid
 micro-Concentrator module with integrated planar tracking and diffuse light
@@ -73,7 +72,7 @@ Modeling the hybrid system
 --------------------------
 The model of the cpv technology is outsourced from *pvcompare* and can be found in the
 `cpvlib <https://github.com/isi-ies-group/cpvlib>`_ repository. *pvcompare*
-contains the wrapper function :py:func:`~.create_cpv_time_series`.
+contains the wrapper function :py:func:`~pvcompare.cpv.apply_cpvlib_StaticHybridSystem.create_cpv_time_series`.
 
 In order to model the dependencies of AOI, temperature and spectrum of the cpv
 module, the model follows an approach of `[Gerstmeier, 2011] <https://www.researchgate.net/publication/234976094_Validation_of_the_PVSyst_Performance_Model_for_the_Concentrix_CPV_Technology>`_
@@ -116,8 +115,8 @@ are then multiplied with the output power of the single diode functions. They
 function as temperature and air mass corrections due to spectral and temperature
 losses.
 
-Flatplate submodule
--------------------
+Flat plate submodule
+--------------------
 
 For AOI < 60° only the diffuse irradiance reaches the flat plate module:
 GII (global inclined irradiance) - DII (direct inclined irradiance).
@@ -127,17 +126,16 @@ input irradiance. No module connection is assumed, so CPV and flat plate output
 power are added up as in a four terminal cell.
 
 
-Measurement Data:
------------------
+Measurement Data
+----------------
 The Utilization factors were derived from outdoor measurement data of a three
 week measurement in Madrid in May 2019. The Data can be found in
 `Zenodo <https://zenodo.org/record/3346823#.X46UDZpCT0o>`_ ,
 whereas the performance testing of the test module is described in `Askins, et al. (2019) <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_.
 
 
-------------------
 2. PeroSi
-------------------
+=========
 The perovskite-silicon cell is a high-efficiency cell that is still in its
 test phase. Because perovskite is a material that is easily accessible many
 researchers around the world are investigating the potential of single junction
@@ -224,10 +222,8 @@ taken into account.
 5. In order to get the module output the cell outputs are added up.
 
 
-
-----------------
 3. Normalization
-----------------
+================
 
 For the energy system optimization normalized time series are needed, which can
 then be scaled to the optimal installation size of the system.

@@ -2,30 +2,8 @@
 Getting started
 ==================
 
-Introduction
-=============
-
-*pvcompare* is a model that compares the benefits of different PV technologies in a specified energy system by running
-an oemof simulation. This model concentrates on the integration of PV technologies into local energy systems but could
-easily be enhanced to analyse other conversion technologies.
-
-The functionalities include
-
-* calculation of an area potential for PV on roof-tops and facades based on building parameters,
-* calculation of heat and electricity demand profiles for a specific amount of people living in these buildings,
-* calculation of PV feed-in time series for a set of PV installations on roof-tops and facades incl. different technologies,
-
-    * all technologies in the database of `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_,
-    * a specific concentrator-PV module, and
-    * a module of silicon-perovskite cells,
-
-* calulation of temperature dependent COPs or respectively EERs for heat pumps and chillers,
-* preparation of data and input files for the energy system simulation with `MVS <https://github.com/rl-institut/multi-vector-simulator>`_,
-* a sensitivity analysis for input parameters and
-* visualisations for the comparison of different technologies.
-
 Documentation
-==============
+=============
 
 The full documentation can be found at `readthedocs <http://pvcompare.readthedocs.org>`_.
 
@@ -51,11 +29,12 @@ To install *pvcompare* follow these steps:
 - For the optimization you need to install a solver. Your can download the open source `cbc-solver <https://projects.coin-or.org/Cbc>`_ from https://ampl.com/dl/open/cbc/ . Please follow the installation `steps <https://oemof-solph.readthedocs.io/en/latest/readme.html#installing-a-solver>`_ in the oemof installation instructions. You also find information about other solvers there.
 
 Examples and basic usage
-=========================
-
+========================
+The basic usage of *pvcompare* is explained in section :ref:`basic_usage`.
+You can look into the section :ref:`scenarios-results` for examples of simulations with *pvcompare*.
 
 Contributing
-==============
+============
 
 We are warmly welcoming all who want to contribute to *pvcompare*.
 Please read our `Contributing Guidelines <https://github.com/greco-project/pvcompare/blob/dev/CONTRIBUTING.md>`_.
