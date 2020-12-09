@@ -24,8 +24,6 @@ from pvcompare import check_inputs
 
 def calc_strat_tes_param(
     weather,
-    lat,
-    lon,
     temperature_col="temp_air",
     input_directory=None,
     mvs_input_directory=None,
@@ -40,10 +38,6 @@ def calc_strat_tes_param(
     temperature_col : str
         Name of column in `weather` containing ambient temperature.
         Default: "temp_air".
-    lat : float
-        Latitude of ambient temperature location in `weather`.
-    lon : float
-        Longitude of ambient temperature location in `weather`.
     input_directory: str or None
         Path to input directory of pvcompare containing file
         `heat_pumps_and_chillers.csv` that specifies heat pump and/or chiller
@@ -80,8 +74,6 @@ def calc_strat_tes_param(
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
-    time_series_directory = os.path.join(mvs_input_directory, "time_series")
-
     input_data_filename = os.path.join(
         input_directory, "stratified_thermal_storage.csv"
     )
@@ -89,10 +81,6 @@ def calc_strat_tes_param(
 
     # Prepare ambient temperature for precalculations
     ambient_temperature = weather[temperature_col]
-
-    # Create add on to filename (year, lat, lon)
-    year = maya.parse(weather.index[int(len(weather) / 2)]).datetime().year
-    add_on = f"_{year}_{lat}_{lon}"
 
     # *********************************************************************************************
     # Precalculations
@@ -198,10 +186,14 @@ def add_strat_tes(
 
     """
     # *********************************************************************************************
-    # Set path if path is None
+    # Set paths
     # *********************************************************************************************
+    # Set path if path is None
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+
+    # Set path for results in time series
+    time_series_directory = os.path.join(mvs_input_directory, "time_series")
 
     # *********************************************************************************************
     # Read files
@@ -225,6 +217,10 @@ def add_strat_tes(
         header=0,
         index_col=0,
     )
+
+    # Create add on to filename (year, lat, lon)
+    year = maya.parse(weather.index[int(len(weather) / 2)]).datetime().year
+    add_on = f"_{year}_{lat}_{lon}"
 
     # *********************************************************************************************
     # Check if stratified thermal storage exists in specified system and is implemented in
@@ -288,8 +284,12 @@ def add_strat_tes(
     file_exists = True
     # Put all the time dependent values in a list
     time_dependent_value = ["rel_losses", "abs_losses"]
+    # Units of the time dependent values
+    unit = ["no_unit", "kWh"]
     # Explaining name of that value
     value_name = ["fixed losses relative", "fixed losses absolute"]
+    # Values from precalculation
+    parameter = [fixed_losses_relative, fixed_losses_absolute]
 
     for time_value in time_dependent_value:
         time_value_index = time_dependent_value.index(time_value)
@@ -376,8 +376,6 @@ def run_stratified_thermal_storage():
         fixed_losses_absolute,
     ) = calc_strat_tes_param(
         weather=weather,
-        lat=53.2,
-        lon=13.2,
         temperature_col="temp_air",
         mvs_input_directory="./data/mvs_inputs_template_sector_coupling/",
     )
