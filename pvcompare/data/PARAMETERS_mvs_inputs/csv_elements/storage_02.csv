@@ -1,5 +1,4 @@
 ,unit,storage capacity,input power,output power,comment
-label,str,Storage capacity,discharging_power,discharging_power,stratified thermal storage 2015/2020/2030/2040/2050
 unit,str,kWh,kW,kW,[1] https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_energy_storage.pdf [2] https://data.jrc.ec.europa.eu/dataset/jrc-etri-techno-economics-larger-heating-cooling-technologies-2017
 installedCap,kWh,0.0,0,0,
 age_installed,year,0,0,0,
