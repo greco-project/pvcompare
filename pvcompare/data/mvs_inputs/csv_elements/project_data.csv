@@ -1,5 +1,4 @@
 ,unit,project_data
-label,str,project_data
 country,str,Germany
 latitude,str,48.1351
 longitude,str,11.582

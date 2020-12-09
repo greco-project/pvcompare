@@ -1,5 +1,4 @@
 ,unit,solar_inverter_01,heat_pump_file_exists,heat_pump_constant_eff,heat_pump_file_non_existent
-label,str,Solar inverter (mono),Heat pump,Heat pump 2,Heat pump 3
 unit,str,kW,kW,kW,kW
 optimizeCap,bool,True,True,True,True
 maximumCap,None or float,None,None,None,None
@@ -13,5 +12,5 @@ dispatch_price,currency/kWh,0,0,0,0
 efficiency,factor,0.95,"{'file_name': 'file_exists.csv', 'header': 'no_unit', 'unit': ''}",0.9,"{'file_name': 'file_does_not_exist.csv', 'header': 'no_unit', 'unit': ''}"
 inflow_direction,str,PV bus,Electricity,Electricity,Electricity
 outflow_direction,str,Electricity,Heat,Heat,Heat
-energyVector,str,Electricity,Electricity,Electricity,Electricity
+energyVector,str,Electricity,Heat,Heat,Heat
 type_oemof,str,transformer,transformer,transformer,transformer

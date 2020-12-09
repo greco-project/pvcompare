@@ -5,7 +5,6 @@ capex_var,currency/unit,500
 file_name,str,si_180_31.csv
 installedCap,kWp,0.0
 maximumCap,kWp,25454.87
-label,str,PV si_180_31
 lifetime,year,25
 opex_fix,currency/unit/year,50
 opex_var,currency/kWh,0

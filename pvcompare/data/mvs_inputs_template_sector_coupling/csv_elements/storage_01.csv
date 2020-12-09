@@ -1,5 +1,4 @@
 ,unit
-label,str
 unit,str
 installedCap,kWh
 age_installed,year

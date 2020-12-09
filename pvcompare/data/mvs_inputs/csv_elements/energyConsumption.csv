@@ -1,8 +1,7 @@
-,unit,demand_01
-label,str,households
+,unit,Electricity demand
 unit,str,kW
-inflow_direction,str,Electricity
 file_name,str,electricity_load.csv
+inflow_direction,str,Electricity bus
 energyVector,str,Electricity
 type_oemof,str,sink
 type_asset,str,demand

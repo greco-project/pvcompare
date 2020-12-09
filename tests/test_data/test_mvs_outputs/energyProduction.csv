@@ -1,5 +1,4 @@
 index,unit,pv_plant_01
-label,str,PV si_180_25_2014_40.416775_-3.70379
 unit,str,kWp
 optimizeCap,bool,True
 maximumCap,None or float,33576.867
