@@ -23,10 +23,7 @@ from pvcompare import check_inputs
 
 
 def calc_strat_tes_param(
-    weather,
-    temperature_col="temp_air",
-    input_directory=None,
-    mvs_input_directory=None,
+    weather, temperature_col="temp_air", input_directory=None, mvs_input_directory=None,
 ):
     """
 
