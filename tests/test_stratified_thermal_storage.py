@@ -1,5 +1,6 @@
 import pytest
 import pandas as pd
+import numpy as np
 import os
 from pvcompare import stratified_thermal_storage as sts
 from pvcompare.constants import TEST_DATA_HEAT
@@ -16,6 +17,11 @@ class TestCalcStratTesParam:
         )
         self.lat = 53.2
         self.lon = 13.2
+        self.losses = pd.DataFrame(
+            [0.00158, 0.00159, 0.0016, 0.00161, 0.00159, 0.0016],
+            columns=["no_unit"],
+            index=self.date_range,
+        )
 
     def test_calc_strat_tes_param(self):
         (
@@ -25,16 +31,20 @@ class TestCalcStratTesParam:
             fixed_losses_absolute,
         ) = sts.calc_strat_tes_param(
             weather=self.weather,
-            lat=self.lat,
-            lon=self.lon,
             temperature_col="temp_air",
+            input_directory=TEST_DATA_HEAT,
             mvs_input_directory=TEST_DATA_HEAT,
         )
+        results_rel_losses = [0.00126941, 0.00140123, 0.0015291, 0.00158182, 0.00166092, 0.00087]
+        results_abs_losses = [2.61418842e-05, 2.81328884e-05, 3.00641624e-05, 3.08605640e-05, 3.20551665e-05, 2.01091417e-05]
 
         assert loss_rate == 0.00092273109671008
-        # todo: Check also other calculated values
+        for item, value in enumerate(fixed_losses_relative):
+            assert np.round(value, 7) == np.round(results_rel_losses[item], 7)
+        for item, value in enumerate(fixed_losses_absolute):
+            assert np.round(value, 7) == np.round(results_abs_losses[item], 7)
 
-    def test_calculate_cops_and_eers_saved_file(self):
+    def test_calculate_losses_saved_file(self):
         sts.add_strat_tes(
             weather=self.weather,
             lat=self.lat,
@@ -57,6 +67,20 @@ class TestCalcStratTesParam:
                 "fixed_losses_relative_2018_53.2_13.2.csv",
             )
         )
+
+    def test_save_time_dependent_values(self):
+        file_name = "fixed_losses_relative_test.csv"
+        file_path = os.path.join(TEST_DATA_HEAT, "time_series", file_name)
+        sts.save_time_dependent_values(self.losses, "fixed_losses_relative", "no_unit", file_name, os.path.join(TEST_DATA_HEAT, "time_series"))
+
+        assert os.path.exists(file_path) == True
+
+    def teardown_method(self):
+        # delete file
+        filename = os.path.join(TEST_DATA_HEAT, "time_series", "fixed_losses_relative_test.csv")
+
+        if os.path.exists(filename):
+            os.remove(filename)
 
 
 class TestAddStratTes:
@@ -218,8 +242,10 @@ class TestAddStratTes_file_constant_losses:
         filename = os.path.join(
             TEST_DATA_HEAT, "time_series", "fixed_losses_absolute_2018_53.2_13.2.csv"
         )
+
         assert os.path.exists(filename) == False
         # check efficiency
         df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
+        assert float(df.loc["efficiency"].item()) == 0.99907726890329
         assert float(df.loc["rel_losses"].item()) == 0.0016
         assert float(df.loc["abs_losses"].item()) == 0.0003
