@@ -35,8 +35,22 @@ class TestCalcStratTesParam:
             input_directory=TEST_DATA_HEAT,
             mvs_input_directory=TEST_DATA_HEAT,
         )
-        results_rel_losses = [0.00126941, 0.00140123, 0.0015291, 0.00158182, 0.00166092, 0.00087]
-        results_abs_losses = [2.61418842e-05, 2.81328884e-05, 3.00641624e-05, 3.08605640e-05, 3.20551665e-05, 2.01091417e-05]
+        results_rel_losses = [
+            0.00126941,
+            0.00140123,
+            0.0015291,
+            0.00158182,
+            0.00166092,
+            0.00087,
+        ]
+        results_abs_losses = [
+            2.61418842e-05,
+            2.81328884e-05,
+            3.00641624e-05,
+            3.08605640e-05,
+            3.20551665e-05,
+            2.01091417e-05,
+        ]
 
         assert loss_rate == 0.00092273109671008
         for item, value in enumerate(fixed_losses_relative):
@@ -71,13 +85,21 @@ class TestCalcStratTesParam:
     def test_save_time_dependent_values(self):
         file_name = "fixed_losses_relative_test.csv"
         file_path = os.path.join(TEST_DATA_HEAT, "time_series", file_name)
-        sts.save_time_dependent_values(self.losses, "fixed_losses_relative", "no_unit", file_name, os.path.join(TEST_DATA_HEAT, "time_series"))
+        sts.save_time_dependent_values(
+            self.losses,
+            "fixed_losses_relative",
+            "no_unit",
+            file_name,
+            os.path.join(TEST_DATA_HEAT, "time_series"),
+        )
 
         assert os.path.exists(file_path) == True
 
     def teardown_method(self):
         # delete file
-        filename = os.path.join(TEST_DATA_HEAT, "time_series", "fixed_losses_relative_test.csv")
+        filename = os.path.join(
+            TEST_DATA_HEAT, "time_series", "fixed_losses_relative_test.csv"
+        )
 
         if os.path.exists(filename):
             os.remove(filename)
