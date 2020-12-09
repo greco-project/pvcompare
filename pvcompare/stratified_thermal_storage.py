@@ -266,6 +266,36 @@ def add_strat_tes(
         stratified_thermal_storages.extend([inflow_tes])
 
     # *********************************************************************************************
+    # Do precalculations for the stratified thermal storage
+    # *********************************************************************************************
+    (
+        nominal_storage_capacity,
+        loss_rate,
+        fixed_losses_relative,
+        fixed_losses_absolute,
+    ) = calc_strat_tes_param(
+        weather=weather,
+        mvs_input_directory=mvs_input_directory,
+        input_directory=input_directory,
+    )
+    logging.info(
+        f"Stratified thermal storage successfully precalculated."
+    )
+    # Save calculated nominal storage capacity and loss rate to storage_xx.csv
+    check_inputs.add_parameters_to_storage_xx_file(
+        nominal_storage_capacity=nominal_storage_capacity,
+        loss_rate=loss_rate,
+        storage_csv=storage_csv,
+        mvs_input_directory=mvs_input_directory,
+    )
+    # 3. Replace old storage_xx.csv with new one that contains calculated values
+    storage_xx = pd.read_csv(
+        os.path.join(mvs_input_directory, "csv_elements", storage_csv),
+        header=0,
+        index_col=0,
+    )
+
+    # *********************************************************************************************
     # Check if time dependent data exists. Else calculate time series
     # *********************************************************************************************
     file_exists = True
@@ -318,30 +348,9 @@ def add_strat_tes(
                             mvs_input_directory, "csv_elements", f"{storage_csv}"
                         )
                     )
-                    # calculate results of stratified thermal storage for location if not existent
+                    # Write results of time dependent values if non existent
                     if not os.path.isfile(result_filename):
-                        (
-                            nominal_storage_capacity,
-                            loss_rate,
-                            fixed_losses_relative,
-                            fixed_losses_absolute,
-                        ) = calc_strat_tes_param(
-                            weather=weather,
-                            lat=lat,
-                            lon=lon,
-                            mvs_input_directory=mvs_input_directory,
-                            input_directory=input_directory,
-                        )
-                        logging.info(
-                            f"Times series of {value_name} successfully calculated and saved in 'data/mvs_inputs/time_series'."
-                        )
-                        # Save calculated nominal storage capacity and loss rate to storage_xx.csv
-                        check_inputs.add_parameters_to_storage_xx_file(
-                            nominal_storage_capacity=nominal_storage_capacity,
-                            loss_rate=loss_rate,
-                            storage_csv=storage_csv,
-                            mvs_input_directory=mvs_input_directory,
-                        )
+                        save_time_dependent_values(parameter[time_value_index], value_name_underscore, unit[time_value_index], result_filename, time_series_directory)
 
                 # display warning if heat demand seems not to be in energyConsumption.csv
                 energy_consumption = pd.read_csv(
