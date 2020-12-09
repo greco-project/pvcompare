@@ -141,7 +141,8 @@ def main(
     )
 
 
-def apply_mvs(scenario_name, mvs_input_directory=None, mvs_output_directory = None, output_directory = None):
+def apply_mvs(scenario_name, mvs_input_directory=None,
+              mvs_output_directory = None, output_directory = None):
     r"""
     Starts the energy system simulation with MVS and stores results.
 
@@ -211,7 +212,7 @@ if __name__ == "__main__":
     year = 2014
     population = 48000
     country = "Germany"
-    scenario_name = "Scenario_A1"
+    scenario_name = "Scenario_B1"
 
     # main(
     #     scenario_name=scenario_name,

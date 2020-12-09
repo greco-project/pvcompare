@@ -11,19 +11,22 @@ https://docs.python.org/3/library/unittest.html are also good support.
 import os
 import pytest
 import logging
-from pvcompare.plots import plot_all_flows, plot_kpi_loop
+from pvcompare.outputs import plot_all_flows, plot_kpi_loop
+from pvcompare import constants
 
 
 class TestPlotProfiles:
     @classmethod
     def setup_class(self):
         """Setup variables for all tests in this class"""
-        self.output_directory = os.path.join(
-            os.path.dirname(__file__), "test_data/test_mvs_outputs/"
-        )
-        self.timeseries_directory = os.path.join(
-            os.path.dirname(__file__), "test_data/test_mvs_outputs/timeseries/"
-        )
+        self.scenario_name = "Test_Scenario"
+        self.output_directory = constants.TEST_DATA_OUTPUT
+        self. mvs_output_directory = os.path.join(self.output_directory,
+                                                  self.scenario_name,
+                                                  "mvs_outputs")
+        self.timeseries_directory = os.path.join(self. mvs_output_directory,
+                                                 "/timeseries/")
+
 
     def test_plot_all_flows_year(self):
         """ """

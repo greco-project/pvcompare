@@ -2,7 +2,7 @@
 label,str,households
 unit,str,kW
 inflow_direction,str,Electricity
-file_name,str,electricity_load.csv
+file_name,str,electricity_load_Germany_48000_2014.csv
 energyVector,str,Electricity
 type_oemof,str,sink
 type_asset,str,demand

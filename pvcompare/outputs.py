@@ -87,7 +87,7 @@ def loop(
                         f"already exists. Please "
                         f"delete the existing folder or rename {scenario_name}.")
     else:
-            os.mkdir(loop_output_directory)
+        os.mkdir(loop_output_directory)
 
     # create output folder in loop_output_directories for "scalars" and "timeseries"
     os.mkdir(os.path.join(loop_output_directory, "scalars"))
@@ -334,15 +334,16 @@ def plot_kpi_loop(variable_name, kpi, scenario_name, output_directory=None, loop
         # get variable value from filepath
         i_split_one = filepath.split("_")[::-1][0]
         i = i_split_one.split(".")[0]
-
+        i_num=int(i)
         # get all different pv assets
-        csv_directory = os.path.join(output_folder, "mvs_outputs_loop_" + str(variable_name) + "_"+str(i), "inputs", "csv_elements")
+        csv_directory = os.path.join(output_folder, "mvs_outputs_loop_" + str(variable_name) + "_"+str(i_num), "inputs", "csv_elements")
         energyProduction = pd.read_csv(
             os.path.join(csv_directory, "energyProduction.csv"),
             index_col=0
         )
         energyProduction = energyProduction.drop(["unit"], axis=1)
-        pv_labels = energyProduction.columns
+        #pv_labels = energyProduction.columns todo: take this line when labels are deprecated
+        pv_labels = energyProduction.loc["label"]
         # get total costs pv and installed capacity
         for pv in pv_labels:
             output.loc[int(i), "costs total PV"] = file_sheet1.at[pv, "costs_total"]
