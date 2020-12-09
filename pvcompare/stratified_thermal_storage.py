@@ -132,6 +132,10 @@ def save_time_dependent_values(
 
     # Save results to csv
     for name, value in losses_dict.items():
+        # Set unit as new name of result in result list
+        value.name = unit
+
+        # Save value to csv
         value.to_csv(
             os.path.join(time_series_directory, filename), index=False, header=True
         )
