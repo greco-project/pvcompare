@@ -124,7 +124,9 @@ def calc_strat_tes_param(
     )
 
 
-def save_time_dependent_values(losses, value_name, unit, filename, time_series_directory):
+def save_time_dependent_values(
+    losses, value_name, unit, filename, time_series_directory
+):
     # Make dictionary before saving data with unit as label
     losses_dict = {unit: losses}
 
@@ -132,7 +134,7 @@ def save_time_dependent_values(losses, value_name, unit, filename, time_series_d
     for name, value in losses_dict.items():
         value.to_csv(
             os.path.join(time_series_directory, filename), index=False, header=True
-    )
+        )
     logging.info(
         f"The time dependent {value_name} of a stratified thermal storage is saved under {time_series_directory}."
     )
@@ -261,9 +263,7 @@ def add_strat_tes(
         mvs_input_directory=mvs_input_directory,
         input_directory=input_directory,
     )
-    logging.info(
-        f"Stratified thermal storage successfully precalculated."
-    )
+    logging.info(f"Stratified thermal storage successfully precalculated.")
     # Save calculated nominal storage capacity and loss rate to storage_xx.csv
     check_inputs.add_parameters_to_storage_xx_file(
         nominal_storage_capacity=nominal_storage_capacity,
@@ -337,7 +337,13 @@ def add_strat_tes(
                     )
                     # Write results of time dependent values if non existent
                     if not os.path.isfile(result_filename):
-                        save_time_dependent_values(parameter[time_value_index], value_name_underscore, unit[time_value_index], result_filename, time_series_directory)
+                        save_time_dependent_values(
+                            parameter[time_value_index],
+                            value_name_underscore,
+                            unit[time_value_index],
+                            result_filename,
+                            time_series_directory,
+                        )
 
                 # display warning if heat demand seems not to be in energyConsumption.csv
                 energy_consumption = pd.read_csv(
