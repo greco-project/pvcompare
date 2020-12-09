@@ -128,38 +128,25 @@ def calc_strat_tes_param(
         ambient_temperature,
     )
 
-    unit = ["no_unit", "kWh"]
-    results = {
-        "fixed losses relative": fixed_losses_relative,
-        "fixed losses absolute": fixed_losses_absolute,
-    }
-
-    for name, result in results.items():
-        # Get number of iteration
-        result_index = list(results.keys()).index(name)
-
-        # Prepare value name for csv saving
-        value_name_underscore = name.replace(" ", "_")
-
-        # Set file name
-        filename = f"{value_name_underscore}{add_on}.csv"
-
-        # Set unit as new name of result in result list
-        result.name = unit[result_index]
-
-        # Save results to csv
-        result.to_csv(
-            os.path.join(time_series_directory, filename), index=False, header=True
-        )
-        logging.info(
-            f"The time dependent {name} of a stratified thermal storage is calculated and saved under {time_series_directory}."
-        )
-
     return (
         nominal_storage_capacity,
         loss_rate,
         fixed_losses_relative,
         fixed_losses_absolute,
+    )
+
+
+def save_time_dependent_values(losses, value_name, unit, filename, time_series_directory):
+    # Make dictionary before saving data with unit as label
+    losses_dict = {unit: losses}
+
+    # Save results to csv
+    for name, value in losses_dict.items():
+        value.to_csv(
+            os.path.join(time_series_directory, filename), index=False, header=True
+    )
+    logging.info(
+        f"The time dependent {value_name} of a stratified thermal storage is saved under {time_series_directory}."
     )
 
 
