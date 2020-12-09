@@ -250,16 +250,16 @@ def add_strat_tes(
     for col in energy_storage.keys():
         outflow = energy_storage[col]["outflow_direction"]
         inflow = energy_storage[col]["inflow_direction"]
-        if outflow == "Heat" and inflow == "Heat":
+        if outflow == "Heat bus" and inflow == "Heat bus":
             stratified_thermal_storages.extend([col])
 
     # Option 2: Storage bus with in- and outflow direction as transformer
     for col in energy_conversion.keys():
         outflow = energy_conversion[col]["outflow_direction"]
         inflow = energy_conversion[col]["inflow_direction"]
-        if inflow == "Heat":
+        if inflow == "Heat bus":
             outflow_tes = outflow
-        elif outflow == "Heat" and inflow != "Electricity":
+        elif outflow == "Heat bus" and inflow != "Electricity bus":
             inflow_tes = inflow
 
     if inflow_tes is not None and inflow_tes == outflow_tes:
