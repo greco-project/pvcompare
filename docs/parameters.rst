@@ -1,16 +1,16 @@
-=========================================================
-Parameters of pvcompare: Definitions and Default Values
-=========================================================
 .. _parameters:
+
+Parameters of pvcompare: Definitions and Default Values
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Within the ``pvcompare/pvcompare/data/`` directory, two separate categories of inputs can be observed.
 
 1. *MVS* parameters (found in the CSVs within the ``data/mvs_inputs/csv_elements/`` directory)
 2. *pvcompare*-specific parameters (found in the CSVs within the ``data/inputs`` directory)
 
-------------------
+
 1. MVS Parameters
-------------------
+=================
 
 As *pvcompare* makes use of the `Multi-vector Simulation (MVS) <https://github.com/rl-institut/mvs_eland>`_ tool, the definitions of all the
 relevant parameters of *MVS* can be found in the `documentation of MVS <https://mvs-eland.readthedocs.io/en/latest/MVS_parameters.html>`_.
@@ -190,9 +190,9 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
 
         b. **input power** and **output power**: kW
 
----------------------------------
+
 2. pvcompare-specific parameters
----------------------------------
+================================
 
 In order to run *pvcompare*, a number of input parameters are needed; many of which are stored in csv files with default values in ``pvcompare/pvcompare/inputs/``.
 The following list will give a brief introduction into the description of the csv files and the source of the given default parameters.

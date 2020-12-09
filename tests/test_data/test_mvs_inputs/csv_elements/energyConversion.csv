@@ -6,7 +6,6 @@ efficiency,factor,1,1,0.95,0.95,0.95
 inflow_direction,str,Electricity,ESS Li-Ion,PV bus1,PV bus2,PV bus3
 installedCap,kW,0,0,0,0,0
 maximumCap,kWp,None,None,None,None,None
-label,str,Charge Contoller ESS Li-Ion (charge),Charge Contoller ESS Li-Ion (discharge),Solar inverter 1,Solar inverter 2,Solar inverter 3
 lifetime,year,10,10,15,15,15
 opex_fix,currency/kW/year,0,0,0,0,0
 opex_var,currency/kWh,0,0,0,0,0

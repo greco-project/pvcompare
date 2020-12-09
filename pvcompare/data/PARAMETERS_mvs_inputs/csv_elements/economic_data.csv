@@ -1,5 +1,4 @@
 ,unit,economic_data,comments
-label,str,economic_data,
 currency,str,EUR,
 project_duration,year,25,project duration = Lifetime PV makes sence
 discount_factor,factor,0.07,

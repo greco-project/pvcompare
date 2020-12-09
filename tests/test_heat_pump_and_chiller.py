@@ -215,6 +215,8 @@ class TestAddSectorCoupling:
     def test_add_sector_coupling_chiller_warning_no_file_created(self):
         pass
 
+    # todo test add_sector_coupling() with other names for Electricity bus
+
     def teardown_method(self):
         # delete file
         filename = os.path.join(
