@@ -142,22 +142,29 @@ class TestAddStratTes:
         )
         # no file created
         filename = os.path.join(
-            TEST_DATA_HEAT, "time_series", "fixed_thermal_losses_absolute_2018_53.2_13.2.csv"
+            TEST_DATA_HEAT,
+            "time_series",
+            "fixed_thermal_losses_absolute_2018_53.2_13.2.csv",
         )
         assert os.path.exists(filename) == True
         # filename in storage_02.csv does not change
         df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
         assert (
-            "fixed_thermal_losses_absolute_2018_53.2_13.2.csv" in df.loc["abs_thermal_losses"].item()
+            "fixed_thermal_losses_absolute_2018_53.2_13.2.csv"
+            in df.loc["abs_thermal_losses"].item()
         ) == True
 
     def teardown_method(self):
         # delete file
         filename_1 = os.path.join(
-            TEST_DATA_HEAT, "time_series", "fixed_thermal_losses_absolute_2018_53.2_13.2.csv"
+            TEST_DATA_HEAT,
+            "time_series",
+            "fixed_thermal_losses_absolute_2018_53.2_13.2.csv",
         )
         filename_2 = os.path.join(
-            TEST_DATA_HEAT, "time_series", "fixed_thermal_losses_relative_2018_53.2_13.2.csv"
+            TEST_DATA_HEAT,
+            "time_series",
+            "fixed_thermal_losses_relative_2018_53.2_13.2.csv",
         )
         if os.path.exists(filename_1):
             os.remove(filename_1)
@@ -202,22 +209,29 @@ class TestAddStratTes_file_non_existent:
         )
         # no file created
         filename = os.path.join(
-            TEST_DATA_HEAT, "time_series", "fixed_thermal_losses_absolute_2018_53.2_13.2.csv"
+            TEST_DATA_HEAT,
+            "time_series",
+            "fixed_thermal_losses_absolute_2018_53.2_13.2.csv",
         )
         assert os.path.exists(filename) == False
         # filename in storage_02.csv does not change
         df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
         assert (
-            "fixed_thermal_losses_absolute_2017_53.2_13.2.csv" in df.loc["abs_thermal_losses"].item()
+            "fixed_thermal_losses_absolute_2017_53.2_13.2.csv"
+            in df.loc["abs_thermal_losses"].item()
         ) == True
 
     def teardown_method(self):
         # delete file
         filename_1 = os.path.join(
-            TEST_DATA_HEAT, "time_series", "fixed_thermal_losses_absolute_2017_53.2_13.2.csv"
+            TEST_DATA_HEAT,
+            "time_series",
+            "fixed_thermal_losses_absolute_2017_53.2_13.2.csv",
         )
         filename_2 = os.path.join(
-            TEST_DATA_HEAT, "time_series", "fixed_thermal_losses_relative_2017_53.2_13.2.csv"
+            TEST_DATA_HEAT,
+            "time_series",
+            "fixed_thermal_losses_relative_2017_53.2_13.2.csv",
         )
         if os.path.exists(filename_1):
             os.remove(filename_1)
@@ -262,7 +276,9 @@ class TestAddStratTes_file_constant_losses:
         )
         # no file created
         filename = os.path.join(
-            TEST_DATA_HEAT, "time_series", "fixed_thermal_losses_absolute_2018_53.2_13.2.csv"
+            TEST_DATA_HEAT,
+            "time_series",
+            "fixed_thermal_losses_absolute_2018_53.2_13.2.csv",
         )
 
         assert os.path.exists(filename) == False
