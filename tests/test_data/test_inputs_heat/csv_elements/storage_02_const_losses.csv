@@ -12,5 +12,5 @@ soc_initial,None or factor,None,NaN,NaN
 soc_max,factor,0.925,NaN,NaN
 soc_min,factor,0.075,NaN,NaN
 efficiency,factor,NaN,1,1
-rel_losses,factor,0.0016,NaN,
-abs_losses,kWh,0.0003,NaN,NaN
+rel_thermal_losses,factor,0.0016,NaN,
+abs_thermal_losses,kWh,0.0003,NaN,NaN

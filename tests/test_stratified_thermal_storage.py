@@ -71,23 +71,23 @@ class TestCalcStratTesParam:
             os.path.join(
                 TEST_DATA_HEAT,
                 "time_series",
-                "fixed_losses_absolute_2018_53.2_13.2.csv",
+                "fixed_thermal_losses_absolute_2018_53.2_13.2.csv",
             )
         )
         assert os.path.exists(
             os.path.join(
                 TEST_DATA_HEAT,
                 "time_series",
-                "fixed_losses_relative_2018_53.2_13.2.csv",
+                "fixed_thermal_losses_relative_2018_53.2_13.2.csv",
             )
         )
 
     def test_save_time_dependent_values(self):
-        file_name = "fixed_losses_relative_test.csv"
+        file_name = "fixed_thermal_losses_relative_test.csv"
         file_path = os.path.join(TEST_DATA_HEAT, "time_series", file_name)
         sts.save_time_dependent_values(
             self.losses,
-            "fixed_losses_relative",
+            "fixed_thermal_losses_relative",
             "no_unit",
             file_name,
             os.path.join(TEST_DATA_HEAT, "time_series"),
@@ -98,7 +98,7 @@ class TestCalcStratTesParam:
     def teardown_method(self):
         # delete file
         filename = os.path.join(
-            TEST_DATA_HEAT, "time_series", "fixed_losses_relative_test.csv"
+            TEST_DATA_HEAT, "time_series", "fixed_thermal_losses_relative_test.csv"
         )
 
         if os.path.exists(filename):
@@ -142,22 +142,22 @@ class TestAddStratTes:
         )
         # no file created
         filename = os.path.join(
-            TEST_DATA_HEAT, "time_series", "fixed_losses_absolute_2018_53.2_13.2.csv"
+            TEST_DATA_HEAT, "time_series", "fixed_thermal_losses_absolute_2018_53.2_13.2.csv"
         )
         assert os.path.exists(filename) == True
         # filename in storage_02.csv does not change
         df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
         assert (
-            "fixed_losses_absolute_2018_53.2_13.2.csv" in df.loc["abs_losses"].item()
+            "fixed_thermal_losses_absolute_2018_53.2_13.2.csv" in df.loc["abs_thermal_losses"].item()
         ) == True
 
     def teardown_method(self):
         # delete file
         filename_1 = os.path.join(
-            TEST_DATA_HEAT, "time_series", "fixed_losses_absolute_2018_53.2_13.2.csv"
+            TEST_DATA_HEAT, "time_series", "fixed_thermal_losses_absolute_2018_53.2_13.2.csv"
         )
         filename_2 = os.path.join(
-            TEST_DATA_HEAT, "time_series", "fixed_losses_relative_2018_53.2_13.2.csv"
+            TEST_DATA_HEAT, "time_series", "fixed_thermal_losses_relative_2018_53.2_13.2.csv"
         )
         if os.path.exists(filename_1):
             os.remove(filename_1)
@@ -202,22 +202,22 @@ class TestAddStratTes_file_non_existent:
         )
         # no file created
         filename = os.path.join(
-            TEST_DATA_HEAT, "time_series", "fixed_losses_absolute_2018_53.2_13.2.csv"
+            TEST_DATA_HEAT, "time_series", "fixed_thermal_losses_absolute_2018_53.2_13.2.csv"
         )
         assert os.path.exists(filename) == False
         # filename in storage_02.csv does not change
         df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
         assert (
-            "fixed_losses_absolute_2017_53.2_13.2.csv" in df.loc["abs_losses"].item()
+            "fixed_thermal_losses_absolute_2017_53.2_13.2.csv" in df.loc["abs_thermal_losses"].item()
         ) == True
 
     def teardown_method(self):
         # delete file
         filename_1 = os.path.join(
-            TEST_DATA_HEAT, "time_series", "fixed_losses_absolute_2017_53.2_13.2.csv"
+            TEST_DATA_HEAT, "time_series", "fixed_thermal_losses_absolute_2017_53.2_13.2.csv"
         )
         filename_2 = os.path.join(
-            TEST_DATA_HEAT, "time_series", "fixed_losses_relative_2017_53.2_13.2.csv"
+            TEST_DATA_HEAT, "time_series", "fixed_thermal_losses_relative_2017_53.2_13.2.csv"
         )
         if os.path.exists(filename_1):
             os.remove(filename_1)
@@ -262,12 +262,12 @@ class TestAddStratTes_file_constant_losses:
         )
         # no file created
         filename = os.path.join(
-            TEST_DATA_HEAT, "time_series", "fixed_losses_absolute_2018_53.2_13.2.csv"
+            TEST_DATA_HEAT, "time_series", "fixed_thermal_losses_absolute_2018_53.2_13.2.csv"
         )
 
         assert os.path.exists(filename) == False
         # check efficiency
         df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
         assert float(df.loc["efficiency"].item()) == 0.99907726890329
-        assert float(df.loc["rel_losses"].item()) == 0.0016
-        assert float(df.loc["abs_losses"].item()) == 0.0003
+        assert float(df.loc["rel_thermal_losses"].item()) == 0.0016
+        assert float(df.loc["abs_thermal_losses"].item()) == 0.0003
