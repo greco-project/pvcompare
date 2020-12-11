@@ -240,6 +240,7 @@ def plot_all_flows(
         os.path.join(timeseries_directory, timeseries_name),
         sheet_name="Electricity bus",
         index_col=0,
+        engine = "openpyxl",
     )
     # Converting the index as date
     df.index = pd.to_datetime(df.index)
@@ -363,12 +364,13 @@ def plot_kpi_loop(
 
         file_sheet1 = pd.read_excel(
             filepath, header=0, index_col=1, sheet_name="cost_matrix"
+        , engine = "openpyxl",
         )
         file_sheet2 = pd.read_excel(
-            filepath, header=0, index_col=1, sheet_name="scalar_matrix"
+            filepath, header=0, index_col=1, sheet_name="scalar_matrix", engine = "openpyxl",
         )
         file_sheet3 = pd.read_excel(
-            filepath, header=0, index_col=0, sheet_name="scalars"
+            filepath, header=0, index_col=0, sheet_name="scalars", engine = "openpyxl",
         )
 
         # get variable value from filepath
