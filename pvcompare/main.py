@@ -3,7 +3,6 @@ import pandas as pd
 import logging
 import sys
 import os
-import shutil
 
 import multi_vector_simulator.cli as mvs
 
