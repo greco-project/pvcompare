@@ -14,7 +14,7 @@ except ImportError:
     plt = None
 
 
-def calculate_area_potential(population, input_directory, surface_type):
+def calculate_area_potential(storeys, input_directory, surface_type):
 
     """
     Calculates the area potential.
@@ -53,13 +53,14 @@ def calculate_area_potential(population, input_directory, surface_type):
     bp = pd.read_csv(data_path, index_col=0)
     bp = bp.T
     population_per_storey = int(bp.iloc[0]["population per storey"])
-    number_of_storeys = int(bp.iloc[0]["number of storeys"])
+    number_of_houses = int(bp.iloc[0]["number of houses"])
     floor_area = int(bp.iloc[0]["total storey area"])
     length_south_facade = int(bp.iloc[0]["length south facade"])
     length_east_west_facade = int(bp.iloc[0]["length eastwest facade"])
     hight_per_storey = int(bp.iloc[0]["hight storey"])
+    population = storeys * population_per_storey * number_of_houses
 
-    number_houses = population / (population_per_storey * number_of_storeys)
+    number_houses = population / (population_per_storey * storeys)
     if surface_type == "flat_roof":
         area = floor_area * number_houses * 0.4
     elif surface_type == "gable_roof":
@@ -71,8 +72,8 @@ def calculate_area_potential(population, input_directory, surface_type):
 
     else:
         # solar panels are only starting from the fourth storey (see Hachem2014)
-        if number_of_storeys > 3:
-            used_storeys = number_of_storeys - 3
+        if storeys > 3:
+            used_storeys = storeys - 3
             south_facade = (
                 length_south_facade * hight_per_storey * used_storeys * number_houses
             )
@@ -105,6 +106,6 @@ def calculate_area_potential(population, input_directory, surface_type):
 if __name__ == "__main__":
 
     area = calculate_area_potential(
-        population=6000, input_directory="./data/inputs/", surface_type="flat_roof"
+        storeys=5, input_directory="./data/inputs/", surface_type="flat_roof"
     )
     print(area)
