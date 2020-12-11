@@ -12,5 +12,5 @@ soc_initial,None or factor,None,NaN,NaN
 soc_max,factor,0.925,NaN,NaN
 soc_min,factor,0.075,NaN,NaN
 efficiency,factor,NaN,1,1
-rel_thermal_losses,factor,"{'file_name': 'None', 'header': 'no_unit', 'unit': ''}",,
-abs_thermal_losses,kWh,"{'file_name': 'None', 'header': 'no_unit', 'unit': ''}",,
+fixed_thermal_losses_relative,factor,"{'file_name': 'None', 'header': 'no_unit', 'unit': ''}",,
+fixed_thermal_losses_absolute,kWh,"{'file_name': 'None', 'header': 'no_unit', 'unit': ''}",,

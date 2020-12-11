@@ -151,7 +151,7 @@ class TestAddStratTes:
         df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
         assert (
             "fixed_thermal_losses_absolute_2018_53.2_13.2.csv"
-            in df.loc["abs_thermal_losses"].item()
+            in df.loc["fixed_thermal_losses_absolute"].item()
         ) == True
 
     def teardown_method(self):
@@ -218,7 +218,7 @@ class TestAddStratTes_file_non_existent:
         df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
         assert (
             "fixed_thermal_losses_absolute_2017_53.2_13.2.csv"
-            in df.loc["abs_thermal_losses"].item()
+            in df.loc["fixed_thermal_losses_absolute"].item()
         ) == True
 
     def teardown_method(self):
@@ -285,5 +285,5 @@ class TestAddStratTes_file_constant_losses:
         # check efficiency
         df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
         assert float(df.loc["efficiency"].item()) == 0.99907726890329
-        assert float(df.loc["rel_thermal_losses"].item()) == 0.0016
-        assert float(df.loc["abs_thermal_losses"].item()) == 0.0003
+        assert float(df.loc["fixed_thermal_losses_relative"].item()) == 0.0016
+        assert float(df.loc["fixed_thermal_losses_absolute"].item()) == 0.0003

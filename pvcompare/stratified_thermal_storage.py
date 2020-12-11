@@ -284,7 +284,10 @@ def add_strat_tes(
     # *********************************************************************************************
     file_exists = True
     # Put all the time dependent values in a list
-    time_dependent_value = ["rel_thermal_losses", "abs_thermal_losses"]
+    time_dependent_value = [
+        "fixed_thermal_losses_relative",
+        "fixed_thermal_losses_absolute",
+    ]
     # Units of the time dependent values
     unit = ["no_unit", "kWh"]
     # Explaining name of that value

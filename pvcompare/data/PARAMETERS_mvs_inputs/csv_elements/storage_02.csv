@@ -12,5 +12,5 @@ efficiency,factor,1,1,1,N/A see [1] p.66
 soc_initial,None or factor,None,NaN,NaN,
 soc_max,factor,0.925,NaN,NaN,15% unused volume see [2] p.168 - This applies for large scale TES but could be validated for a small scale storage too
 soc_min,factor,0.075,NaN,NaN,15% unused volume see [2] p.168 - This applies for large scale TES but could be validated for a small scale storage too
-rel_thermal_losses,factor,"{'file_name': 'None', 'header': 'no_unit', 'unit': ''}",,
-abs_thermal_losses,kWh,"{'file_name': 'None', 'header': 'no_unit', 'unit': ''}",,
+fixed_thermal_losses_relative,factor,"{'file_name': 'None', 'header': 'no_unit', 'unit': ''}",,
+fixed_thermal_losses_absolute,kWh,"{'file_name': 'None', 'header': 'no_unit', 'unit': ''}",,
