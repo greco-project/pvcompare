@@ -9,8 +9,7 @@ import matplotlib.pyplot as plt
 import logging
 
 
-def create_loop_output_structure(output_directory, scenario_name,
-                                 variable_name):
+def create_loop_output_structure(output_directory, scenario_name, variable_name):
 
     # defines scenario folder and loop_output_directory
     scenario_folder = os.path.join(output_directory, scenario_name)
@@ -40,6 +39,7 @@ def create_loop_output_structure(output_directory, scenario_name,
 
     return loop_output_directory
 
+
 def loop_pvcompare(
     scenario_name,
     latitude,
@@ -48,12 +48,12 @@ def loop_pvcompare(
     storeys,
     country,
     loop_type,
-    loop_dict = None,
+    loop_dict=None,
     pv_setup=None,
     mvs_input_directory=None,
     output_directory=None,
-    input_directory= None,
-    mvs_output_directory = None
+    input_directory=None,
+    mvs_output_directory=None,
 ):
     """
     Starts multiple *pvcompare* simulations with a range of values for a
@@ -100,59 +100,61 @@ def loop_pvcompare(
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     if output_directory == None:
         output_directory = constants.DEFAULT_OUTPUT_DIRECTORY
+    if input_directory == None:
+        input_directory = constants.DEFAULT_INPUT_DIRECTORY
 
-    loop_output_directory = create_loop_output_structure(output_directory = output_directory,
-                                                         scenario_name = scenario_name,
-                                                         variable_name = loop_type)
+    loop_output_directory = create_loop_output_structure(
+        output_directory=output_directory,
+        scenario_name=scenario_name,
+        variable_name=loop_type,
+    )
 
     if loop_type is "location":
-        if loop_dict is None:
-            raise ValueError("If you want to loop over a location, please"
-                             " insert a location_dict. Otherwise change the"
-                             "loop_type.")
-        else:
-            step =1
-            for key in loop_dict:
-                country = loop_dict[key][0]
-                latitude = loop_dict[key][1]
-                longitude = loop_dict[key][2]
+        step = 1
+        for key in loop_dict:
+            country = loop_dict[key][0]
+            latitude = loop_dict[key][1]
+            longitude = loop_dict[key][2]
 
-                single_loop_pvcompare(storeys=storeys,
-                                     country=country,
-                                     latitude=latitude,
-                                     longitude=longitude,
-                                     year=year,
-                                     input_directory=input_directory,
-                                     mvs_input_directory=mvs_input_directory,
-                                     output_directory = output_directory,
-                                     plot=False,
-                                     pv_setup=pv_setup,
-                                     loop_output_directory = loop_output_directory,
-                                     step = step,
-                                     loop_type=loop_type,
-                                     )
-                step+=1
+            single_loop_pvcompare(
+                storeys=storeys,
+                country=country,
+                latitude=latitude,
+                longitude=longitude,
+                year=year,
+                input_directory=input_directory,
+                mvs_input_directory=mvs_input_directory,
+                output_directory=output_directory,
+                plot=False,
+                pv_setup=pv_setup,
+                loop_output_directory=loop_output_directory,
+                step=step,
+                loop_type=loop_type,
+            )
+            step += 1
 
     elif loop_type is "year":
 
-        step=1
+        step = 1
         year = loop_dict["start"]
         while year <= loop_dict["stop"]:
 
-            single_loop_pvcompare(storeys=storeys,
-                                 country=country,
-                                 latitude=latitude,
-                                 longitude=longitude,
-                                 year=year,
-                                 input_directory=input_directory,
-                                 mvs_input_directory=mvs_input_directory,
-                                 plot=False,
-                                 pv_setup=pv_setup,
-                                 loop_output_directory=loop_output_directory,
-                                 step=step,
-                                 loop_type = loop_type,
-                                 )
-            step +=1
+            single_loop_pvcompare(
+                storeys=storeys,
+                country=country,
+                latitude=latitude,
+                longitude=longitude,
+                year=year,
+                input_directory=input_directory,
+                mvs_input_directory=mvs_input_directory,
+                output_directory=output_directory,
+                plot=False,
+                pv_setup=pv_setup,
+                loop_output_directory=loop_output_directory,
+                step=step,
+                loop_type=loop_type,
+            )
+            step += 1
             year = year + loop_dict["step"]
 
     elif loop_type is "storeys":
@@ -161,101 +163,138 @@ def loop_pvcompare(
         number_of_storeys = loop_dict["start"]
         while number_of_storeys <= loop_dict["stop"]:
 
-            single_loop_pvcompare(storeys=storeys,
-                                 country=country,
-                                 latitude=latitude,
-                                 longitude=longitude,
-                                 year=year,
-                                 input_directory=input_directory,
-                                 mvs_input_directory=mvs_input_directory,
-                                 plot=False,
-                                 pv_setup=pv_setup,
-                                 loop_output_directory=loop_output_directory,
-                                 step=step,
-                                 loop_type = loop_type,
-                                 )
+            single_loop_pvcompare(
+                storeys=storeys,
+                country=country,
+                latitude=latitude,
+                longitude=longitude,
+                year=year,
+                input_directory=input_directory,
+                mvs_input_directory=mvs_input_directory,
+                output_directory=output_directory,
+                plot=False,
+                pv_setup=pv_setup,
+                loop_output_directory=loop_output_directory,
+                step=step,
+                loop_type=loop_type,
+            )
 
             number_of_storeys = number_of_storeys + loop_dict["step"]
-            step = +1
+            step += 1
 
     elif loop_type is "technology":
 
-        step=1
+        step = 1
         for key in loop_dict:
             technology = loop_dict[key]
 
-            data_path = os.path.join(input_directory,
-                                     "pv_setup.csv")
+            data_path = os.path.join(input_directory, "pv_setup.csv")
             # load input parameters from pv_setup.csv
-            pv_setup = pd.read_csv(data_path, index_col=0)
-            pv_setup["technology"] = technology
-            pv_setup.to_csv(data_path)
+            pv_setup = pd.read_csv(data_path)
+            pv_setup.at[0, "technology"] = technology
+            pv_setup.to_csv(data_path, index = False)  # todo: check if saving this is nessecary
 
-            single_loop_pvcompare(storeys=storeys,
-                                 country=country,
-                                 latitude=latitude,
-                                 longitude=longitude,
-                                 year=year,
-                                 input_directory=input_directory,
-                                 mvs_input_directory=mvs_input_directory,
-                                 plot=False,
-                                 pv_setup=pv_setup,
-                                 loop_output_directory=loop_output_directory,
-                                 step=step,
-                                 loop_type = loop_type
-                                 )
-            step+=1
+            single_loop_pvcompare(
+                storeys=storeys,
+                country=country,
+                latitude=latitude,
+                longitude=longitude,
+                year=year,
+                input_directory=input_directory,
+                mvs_input_directory=mvs_input_directory,
+                output_directory=output_directory,
+                plot=False,
+                pv_setup=None,
+                loop_output_directory=loop_output_directory,
+                step=step,
+                loop_type=loop_type,
+            )
+            step += 1
 
-def single_loop_pvcompare(storeys,
-                         country,
-                         latitude,
-                         longitude,
-                         year,
-                         input_directory,
-                         mvs_input_directory,
-                         output_directory,
-                         plot,
-                         pv_setup,
-                         loop_output_directory,
-                         loop_type,
-                         step
-                         ):
+    elif loop_type is "hp_temp":
+        step = 1
+        temp_high = loop_dict["start"]
 
-    main.apply_pvcompare(storeys=storeys,
-                         country=country,
-                         latitude=latitude,
-                         longitude=longitude,
-                         year=year,
-                         input_directory=input_directory,
-                         mvs_input_directory=mvs_input_directory,
-                         plot=plot,
-                         pv_setup=pv_setup,
-                         )
+        data_path = os.path.join(input_directory, "heat_pumps_and_chillers.csv")
+        while temp_high <= loop_dict["stop"]:
+            # load input parameters from pv_setup.csv
+            hp_file = pd.read_csv(data_path, index_col=0)
+            hp_file.at["heat_pump", "temp_high"] = temp_high
+            hp_file.to_csv(data_path)
+
+            single_loop_pvcompare(
+                storeys=storeys,
+                country=country,
+                latitude=latitude,
+                longitude=longitude,
+                year=year,
+                input_directory=input_directory,
+                mvs_input_directory=mvs_input_directory,
+                output_directory=output_directory,
+                plot=False,
+                pv_setup=pv_setup,
+                loop_output_directory=loop_output_directory,
+                step=step,
+                loop_type=loop_type,
+            )
+            temp_high = temp_high + loop_dict["step"]
+            step += 1
+
+
+def single_loop_pvcompare(
+    storeys,
+    country,
+    latitude,
+    longitude,
+    year,
+    input_directory,
+    mvs_input_directory,
+    output_directory,
+    plot,
+    pv_setup,
+    loop_output_directory,
+    loop_type,
+    step,
+):
+
+    main.apply_pvcompare(
+        storeys=storeys,
+        country=country,
+        latitude=latitude,
+        longitude=longitude,
+        year=year,
+        input_directory=input_directory,
+        mvs_input_directory=mvs_input_directory,
+        plot=plot,
+        pv_setup=pv_setup,
+    )
 
     # define mvs_output_directory for every looping step
     mvs_output_directory = os.path.join(
         output_directory,
         scenario_name,
-        "mvs_outputs_loop_" + str(loop_type) + "_step" + str(step))
+        "mvs_outputs_loop_" + str(loop_type) + "_step" + str(step),
+    )
 
-    main.apply_mvs(scenario_name,
-                   mvs_input_directory=mvs_input_directory,
-                   mvs_output_directory=mvs_output_directory,
-                   output_directory=output_directory)
+    main.apply_mvs(
+        scenario_name,
+        mvs_input_directory=mvs_input_directory,
+        mvs_output_directory=mvs_output_directory,
+        output_directory=output_directory,
+    )
 
     excel_file1 = "scalars.xlsx"
     new_excel_file1 = "scalars_" + str(step) + ".xlsx"
     src_dir = os.path.join(mvs_output_directory, excel_file1)
-    dst_dir = os.path.join(loop_output_directory, "scalars",
-                           new_excel_file1)
+    dst_dir = os.path.join(loop_output_directory, "scalars", new_excel_file1)
     shutil.copy(src_dir, dst_dir)
 
     excel_file2 = "timeseries_all_busses.xlsx"
     new_excel_file2 = "timeseries_all_busses_" + str(step) + ".xlsx"
     src_dir = os.path.join(mvs_output_directory, excel_file2)
-    dst_dir = os.path.join(loop_output_directory, "timeseries",
-                           new_excel_file2)
+    dst_dir = os.path.join(loop_output_directory, "timeseries", new_excel_file2)
     shutil.copy(src_dir, dst_dir)
+
 
 def loop_mvs(
     latitude,
@@ -327,9 +366,9 @@ def loop_mvs(
         country=country,
     )
 
-    loop_output_directory = create_loop_output_structure(output_directory,
-                                                         scenario_name,
-                                                         variable_name)
+    loop_output_directory = create_loop_output_structure(
+        output_directory, scenario_name, variable_name
+    )
     # define filename of variable that should be looped over
     csv_filename = os.path.join(mvs_input_directory, "csv_elements", csv_file_variable)
     csv_file = pd.read_csv(csv_filename, index_col=0)
@@ -604,9 +643,7 @@ def plot_kpi_loop(
             os.path.join(csv_directory, "energyProduction.csv"), index_col=0
         )
         energyProduction = energyProduction.drop(["unit"], axis=1)
-        pv_labels = (
-            energyProduction.columns
-        )
+        pv_labels = energyProduction.columns
         # get total costs pv and installed capacity
         for pv in pv_labels:
             output.loc[int(i), "costs total PV"] = file_sheet1.at[pv, "costs_total"]
@@ -661,12 +698,14 @@ if __name__ == "__main__":
     year = 2014  # a year between 2011-2013!!!
     storeys = 48000
     country = "Germany"
-    scenario_name = "Scenario_X1"
+    scenario_name = "Scenario_Y1"
     output_directory = constants.TEST_DATA_OUTPUT
     mvs_input_directory = os.path.join(
         constants.TEST_DATA_DIRECTORY, "test_inputs_loop_mvs"
     )
-    loop_dict = {"step1": (country, latitude, longitude), "step2": (country, latitude, longitude)}
+    # loop_dict_location = {"step1": (country, latitude, longitude), "step2": (country, latitude, longitude)}
+    loop_dict_storeys = {"start": 3, "stop": 5, "step": 1}
+    loop_dict_technologies = {"step1": "cpv", "step2": "si", "step3": "psi"}
 
     loop_pvcompare(
         scenario_name,
@@ -675,10 +714,11 @@ if __name__ == "__main__":
         year,
         storeys,
         country,
-        loop_type = "location",
-        loop_dict= loop_dict,
-        mvs_input_directory= None,
-        output_directory= None,
+        loop_type="technology",
+        loop_dict=loop_dict_technologies,
+        mvs_input_directory=None,
+        output_directory=None,
+        input_directory=None,
     )
     # loop_mvs(
     #     latitude=latitude,
