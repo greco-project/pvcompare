@@ -23,11 +23,12 @@ class TestPlotProfiles:
         """Setup variables for all tests in this class"""
         self.scenario_name = "Test_scenario_main"
         self.output_directory = constants.TEST_DATA_OUTPUT
-        self.mvs_output_directory = os.path.join(self.output_directory,
-                                                  self.scenario_name,
-                                                  "mvs_outputs")
-        self.mvs_input_directory = os.path.join(constants.TEST_DATA_DIRECTORY,
-                                                "test_mvs_inputs_main")
+        self.mvs_output_directory = os.path.join(
+            self.output_directory, self.scenario_name, "mvs_outputs"
+        )
+        self.mvs_input_directory = os.path.join(
+            constants.TEST_DATA_DIRECTORY, "test_mvs_inputs_main"
+        )
 
         weather_df = pd.DataFrame()
         weather_df["temp_air"] = [25, 30]
@@ -52,10 +53,11 @@ class TestPlotProfiles:
 
     def test_apply_mvs_output_directory(self):
         """ """
-        apply_mvs(scenario_name=self.scenario_name,
-                  mvs_input_directory=self.mvs_input_directory,
-                  mvs_output_directory=None,
-                  output_directory=self.output_directory)
+        apply_mvs(
+            scenario_name=self.scenario_name,
+            mvs_input_directory=self.mvs_input_directory,
+            mvs_output_directory=None,
+            output_directory=self.output_directory,
+        )
 
-        assert os.path.exists(self. mvs_output_directory)
-
+        assert os.path.exists(self.mvs_output_directory)

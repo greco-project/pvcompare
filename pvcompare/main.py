@@ -6,6 +6,7 @@ import os
 import shutil
 
 import multi_vector_simulator.cli as mvs
+
 # internal imports
 from pvcompare import era5
 from pvcompare import demand
@@ -141,8 +142,12 @@ def apply_pvcompare(
     )
 
 
-def apply_mvs(scenario_name, mvs_input_directory=None,
-              mvs_output_directory = None, output_directory = None):
+def apply_mvs(
+    scenario_name,
+    mvs_input_directory=None,
+    mvs_output_directory=None,
+    output_directory=None,
+):
     r"""
     Starts the energy system simulation with MVS and stores results.
 
@@ -180,18 +185,19 @@ def apply_mvs(scenario_name, mvs_input_directory=None,
 
     scenario_folder = os.path.join(output_directory, scenario_name)
     if mvs_output_directory == None:
-        mvs_output_directory = os.path.join(
-            scenario_folder, "mvs_outputs")
+        mvs_output_directory = os.path.join(scenario_folder, "mvs_outputs")
     # check if output folder exists, if not: create it
     if not os.path.isdir(scenario_folder):
         # create output folder
         os.mkdir(scenario_folder)
     # check if mvs_output_directory already exists. If yes, raise error
     if os.path.isdir(mvs_output_directory):
-        raise NameError(f"The mvs output directory {mvs_output_directory} "
-                        f"already exists. Please delete the folder or "
-                        f"rename 'scenario_name' to create a different scenario "
-                        f"folder.")
+        raise NameError(
+            f"The mvs output directory {mvs_output_directory} "
+            f"already exists. Please delete the folder or "
+            f"rename 'scenario_name' to create a different scenario "
+            f"folder."
+        )
 
     # adapt parameter 'scenario_name' in 'project_data.csv'.
     check_inputs.add_scenario_name_to_project_data(mvs_input_directory, scenario_name)
@@ -223,4 +229,6 @@ if __name__ == "__main__":
         country=country,
     )
 
-    apply_mvs(scenario_name = scenario_name, output_directory=None, mvs_input_directory=None)
+    apply_mvs(
+        scenario_name=scenario_name, output_directory=None, mvs_input_directory=None
+    )

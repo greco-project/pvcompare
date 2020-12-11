@@ -23,7 +23,7 @@ def loop_mvs(
     step,
     scenario_name,
     mvs_input_directory=None,
-    output_directory = None,
+    output_directory=None,
 ):
     """
     Starts multiple MVS simulations with a range of values for a specific parameter.
@@ -59,46 +59,50 @@ def loop_mvs(
     scenario_name: str
         Name of the Scenario. The name should follow the scheme:
         "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
-    output_directory: str
-        Path to output directory.
-        Default: constants.DEFAULT_OUTPUT_DIRECTORY
     mvs_input_directory: str or None
-        if None then value will be taken from constants.py
+        Default: `mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY`
+    output_directory: str or None
+        Path to output directory.
+        Default: `output_directory = constants.DEFAULT_OUTPUT_DIRECTORY`
 
     Returns
     -------
 
     """
 
+    # checks of output_directory and mvs_input_directory is None
     if mvs_input_directory == None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     if output_directory == None:
         output_directory = constants.DEFAULT_OUTPUT_DIRECTORY
 
-    scenario_folder = os.path.join(output_directory,
-                                   scenario_name)
-    loop_output_directory = os.path.join(scenario_folder,
-                                         "loop_outputs_" + str(
-                                             variable_name))
-
+    # defines scenario folder in output_directory
+    scenario_folder = os.path.join(output_directory, scenario_name)
+    # creates scenario folder if it doesn't exist yet
     if not os.path.isdir(scenario_folder):
-        # create output folder
+        # create scenario folder
         os.mkdir(scenario_folder)
 
+    #  defines loop output directory in scenario_folder
+    loop_output_directory = os.path.join(
+        scenario_folder, "loop_outputs_" + str(variable_name)
+    )
+
+    # checks if loop_output_directory already exists, otherwise create it
     if os.path.isdir(loop_output_directory):
-        raise NameError(f"The loop output directory {loop_output_directory} "
-                        f"already exists. Please "
-                        f"delete the existing folder or rename {scenario_name}.")
+        raise NameError(
+            f"The loop output directory {loop_output_directory} "
+            f"already exists. Please "
+            f"delete the existing folder or rename {scenario_name}."
+        )
     else:
         os.mkdir(loop_output_directory)
 
-    # create output folder in loop_output_directories for "scalars" and "timeseries"
+    # create two folder in loop_output_directories for "scalars" and "timeseries"
     os.mkdir(os.path.join(loop_output_directory, "scalars"))
     os.mkdir(os.path.join(loop_output_directory, "timeseries"))
 
-    csv_filename = os.path.join(mvs_input_directory, "csv_elements", csv_file_variable)
-    csv_file = pd.read_csv(csv_filename, index_col=0)
-
+    # apply pvcompare
     main.apply_pvcompare(
         latitude=latitude,
         longitude=longitude,
@@ -107,21 +111,31 @@ def loop_mvs(
         country=country,
     )
 
+    # define filename of variable that should be looped over
+    csv_filename = os.path.join(mvs_input_directory, "csv_elements", csv_file_variable)
+    csv_file = pd.read_csv(csv_filename, index_col=0)
+
+    # loop over the variable
     i = start
     while i <= stop:
+        # change variable value and save this value to csv
         csv_file.loc[[variable_name], [variable_column]] = i
-        # save csv
         csv_file.to_csv(csv_filename)
 
+        # define mvs_output_directory for every looping step
         mvs_output_directory = os.path.join(
-            output_directory, scenario_name,
-            "mvs_outputs_loop_" + str(variable_name)+"_"+str(i))
+            output_directory,
+            scenario_name,
+            "mvs_outputs_loop_" + str(variable_name) + "_" + str(i),
+        )
 
-        main.apply_mvs(scenario_name=scenario_name,
-                       mvs_output_directory = mvs_output_directory,
-                       mvs_input_directory=mvs_input_directory,
-                       output_directory=output_directory,
-                       )
+        # apply mvs for every looping step
+        main.apply_mvs(
+            scenario_name=scenario_name,
+            mvs_output_directory=mvs_output_directory,
+            mvs_input_directory=mvs_input_directory,
+            output_directory=output_directory,
+        )
 
         # copy excel sheets to loop_output_directory
         number_digits = len(str(stop)) - len(str(i))
@@ -149,6 +163,7 @@ def loop_mvs(
         dst_dir = os.path.join(loop_output_directory, "timeseries", new_excel_file2)
         shutil.copy(src_dir, dst_dir)
 
+        # add another step
         i = i + step
 
 
@@ -167,6 +182,19 @@ def plot_all_flows(
 
     Parameters
     ----------
+    scenario_name: str
+        Name of the Scenario. The name should follow the scheme:
+        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+    output_directory: str or None
+        Path to the directory in which the plot should be saved.
+        Default: None.
+        If None: `output_directory = constants.DEFAULT_MVS_OUTPUT_DIRECTORY`
+    timeseries_directory: str or None
+        Path to the timeseries directory.
+        If None: `timeseries_directory = output_directory`.
+        Default: None.
+    timeseries_name: str or None
+        Default: timeseries_all_busses.xlsx
     month: int
         Number of month that should be plotted.
         Only fill in a number here, if you want to plot over one month.
@@ -178,16 +206,6 @@ def plot_all_flows(
     weekday: int
         The day of the caldendar_week (from 0-6 with 0 : Monday and 6: Sunday.
         If None: the next greater period is plotted. Default: None
-    output_directory: str or None
-        Path to the directory in which the plot should be saved.
-        Default: None.
-        If None: `output_directory = constants.DEFAULT_MVS_OUTPUT_DIRECTORY`
-    timeseries_directory: str or None
-        Path to the timeseries directory.
-        If None: `timeseries_directory = output_directory`.
-        Default: None.
-    timeseries_name: str or None
-        Default: timeseries_all_busses.xlsx
 
     Returns
     -------
@@ -205,7 +223,7 @@ def plot_all_flows(
         )
 
     # read timeseries
-    #check if scenario is specified or the timeseries directory is given
+    # check if scenario is specified or the timeseries directory is given
     if timeseries_directory is None:
         if output_directory == None:
             output_directory = constants.DEFAULT_OUTPUT_DIRECTORY
@@ -213,12 +231,14 @@ def plot_all_flows(
         if timeseries_directory == None:
             timeseries_directory = os.path.join(scenario_folder, "mvs_outputs")
         if not os.path.isdir(timeseries_directory):
-            logging.warning("The timeseries directory does not exist. Please check "
-                            "the scenario name or specify the timeseries directory.")
+            logging.warning(
+                "The timeseries directory does not exist. Please check "
+                "the scenario name or specify the timeseries directory."
+            )
     df = pd.read_excel(
         os.path.join(timeseries_directory, timeseries_name),
         sheet_name="Electricity bus",
-        index_col=0
+        index_col=0,
     )
     # Converting the index as date
     df.index = pd.to_datetime(df.index)
@@ -278,7 +298,9 @@ def plot_all_flows(
     )
 
 
-def plot_kpi_loop(variable_name, kpi, scenario_name, output_directory=None, loop_output_directory = None):
+def plot_kpi_loop(
+    variable_name, kpi, scenario_name, output_directory=None, loop_output_directory=None
+):
 
     """
     Plots KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs`
@@ -326,11 +348,15 @@ def plot_kpi_loop(variable_name, kpi, scenario_name, output_directory=None, loop
     """
 
     if output_directory == None:
-        scenario_folder = os.path.join(constants.DEFAULT_OUTPUT_DIRECTORY, scenario_name)
+        scenario_folder = os.path.join(
+            constants.DEFAULT_OUTPUT_DIRECTORY, scenario_name
+        )
     else:
         scenario_folder = os.path.join(output_directory, scenario_name)
     if loop_output_directory == None:
-        loop_output_directory = os.path.join(scenario_folder, "loop_outputs_"+str(variable_name))
+        loop_output_directory = os.path.join(
+            scenario_folder, "loop_outputs_" + str(variable_name)
+        )
 
     output = pd.DataFrame()
     # parse through scalars folder and read in all excel sheets
@@ -351,15 +377,21 @@ def plot_kpi_loop(variable_name, kpi, scenario_name, output_directory=None, loop
         # get variable value from filepath
         i_split_one = filepath.split("_")[::-1][0]
         i = i_split_one.split(".")[0]
-        i_num=int(i)
+        i_num = int(i)
         # get all different pv assets
-        csv_directory = os.path.join(scenario_folder, "mvs_outputs_loop_" + str(variable_name) + "_"+str(i_num), "inputs", "csv_elements")
+        csv_directory = os.path.join(
+            scenario_folder,
+            "mvs_outputs_loop_" + str(variable_name) + "_" + str(i_num),
+            "inputs",
+            "csv_elements",
+        )
         energyProduction = pd.read_csv(
-            os.path.join(csv_directory, "energyProduction.csv"),
-            index_col=0
+            os.path.join(csv_directory, "energyProduction.csv"), index_col=0
         )
         energyProduction = energyProduction.drop(["unit"], axis=1)
-        pv_labels = energyProduction.columns #todo: take this line when labels are deprecated
+        pv_labels = (
+            energyProduction.columns
+        )  # todo: take this line when labels are deprecated
         # get total costs pv and installed capacity
         for pv in pv_labels:
             output.loc[int(i), "costs total PV"] = file_sheet1.at[pv, "costs_total"]
@@ -369,7 +401,9 @@ def plot_kpi_loop(variable_name, kpi, scenario_name, output_directory=None, loop
             output.loc[int(i), "Total renewable energy use"] = file_sheet3.at[
                 "Total renewable energy use", 0
             ]
-            output.loc[int(i), "Renewable factor"] = file_sheet3.at["Renewable factor", 0]
+            output.loc[int(i), "Renewable factor"] = file_sheet3.at[
+                "Renewable factor", 0
+            ]
             output.loc[int(i), "LCOE PV"] = file_sheet1.at[
                 pv, "levelized_cost_of_energy_of_asset"
             ]
@@ -414,7 +448,9 @@ if __name__ == "__main__":
     country = "Germany"
     scenario_name = "Test_loop_mvs"
     output_directory = constants.TEST_DATA_OUTPUT
-    mvs_input_directory = os.path.join(constants.TEST_DATA_DIRECTORY, "test_inputs_loop_mvs")
+    mvs_input_directory = os.path.join(
+        constants.TEST_DATA_DIRECTORY, "test_inputs_loop_mvs"
+    )
 
     loop_mvs(
         latitude=latitude,
@@ -433,7 +469,7 @@ if __name__ == "__main__":
         scenario_name=scenario_name,
     )
 
-    #plot_all_flows(scenario_name = "Scenario_A1", month=None, calendar_week=None, weekday=10, timeseries_directory=)
+    # plot_all_flows(scenario_name = "Scenario_A1", month=None, calendar_week=None, weekday=10, timeseries_directory=)
 
     # plot_kpi_loop(
     #     scenario_name=scenario_name,

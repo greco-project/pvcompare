@@ -22,12 +22,12 @@ class TestPlotProfiles:
         """Setup variables for all tests in this class"""
         self.scenario_name = "Test_Scenario"
         self.output_directory = constants.TEST_DATA_OUTPUT
-        self. mvs_output_directory = os.path.join(self.output_directory,
-                                                  self.scenario_name,
-                                                  "mvs_outputs")
-        self.timeseries_directory = os.path.join(self. mvs_output_directory,
-                                                 "/timeseries/")
-
+        self.mvs_output_directory = os.path.join(
+            self.output_directory, self.scenario_name, "mvs_outputs"
+        )
+        self.timeseries_directory = os.path.join(
+            self.mvs_output_directory, "/timeseries/"
+        )
 
     def test_plot_all_flows_year(self):
         """ """
@@ -35,9 +35,9 @@ class TestPlotProfiles:
         period = "year"
         scenario_name = "Test_Scenario"
 
-        timeseries_directory = os.path.join(self.output_directory,
-                                            scenario_name,
-                                            "mvs_outputs_loop_specific_costs_500")
+        timeseries_directory = os.path.join(
+            self.output_directory, scenario_name, "mvs_outputs_loop_specific_costs_500"
+        )
         filename = os.path.join(
             timeseries_directory, f"plot_{timeseries_name[:-5]}_{period}.png"
         )
@@ -64,9 +64,9 @@ class TestPlotProfiles:
         period = "caldendar_week_" + str(calendar_week)
         scenario_name = "Test_Scenario"
 
-        timeseries_directory = os.path.join(self.output_directory,
-                                            scenario_name,
-                                            "mvs_outputs_loop_specific_costs_500")
+        timeseries_directory = os.path.join(
+            self.output_directory, scenario_name, "mvs_outputs_loop_specific_costs_500"
+        )
         filename = os.path.join(
             timeseries_directory, f"plot_{timeseries_name[:-5]}_{period}.png"
         )
@@ -93,7 +93,9 @@ class TestPlotProfiles:
         period = "day_" + str(calendar_week) + "_" + str(weekday)
         scenario_name = "Test_Scenario"
 
-        timeseries_directory = os.path.join(self.output_directory, scenario_name, "mvs_outputs_loop_specific_costs_500")
+        timeseries_directory = os.path.join(
+            self.output_directory, scenario_name, "mvs_outputs_loop_specific_costs_500"
+        )
         filename = os.path.join(
             timeseries_directory, f"plot_{timeseries_name[:-5]}_{period}.png"
         )
@@ -115,14 +117,12 @@ class TestPlotProfiles:
         """ """
         variable_name = "specific_costs"
         scenario_name = "Test_Scenario"
-        loop_output_directory = os.path.join(self.output_directory,
-                                                scenario_name,
-                                             "loop_outputs_" + str(
-                                                 variable_name))
+        loop_output_directory = os.path.join(
+            self.output_directory, scenario_name, "loop_outputs_" + str(variable_name)
+        )
 
         filename = os.path.join(
-            loop_output_directory,
-            "plot_scalars_" + str(variable_name) + ".png"
+            loop_output_directory, "plot_scalars_" + str(variable_name) + ".png"
         )
         if os.path.exists(filename):
             os.remove(filename)
@@ -136,43 +136,43 @@ class TestPlotProfiles:
 
         assert os.path.exists(filename)
 
-    def test_loop_mvs(self):
-        """ """
-
-        latitude = 52.5243700
-        longitude = 13.4105300
-        year = 2014  # a year between 2011-2013!!!
-        population = 48000
-        country = "Germany"
-        scenario_name = "Test_loop_mvs"
-        output_directory = constants.TEST_DATA_OUTPUT
-        mvs_input_directory = os.path.join(constants.TEST_DATA_DIRECTORY,
-                                           "test_inputs_loop_mvs")
-        variable_name = "specific_costs"
-
-        scenario_folder = os.path.join(self.output_directory, scenario_name)
-        loop_output_directory = os.path.join(scenario_folder,
-                                             "test_loop_mvs_outputs_" + str(
-                                                 variable_name))
-        if os.path.isdir(scenario_folder):
-            shutil.rmtree(scenario_folder)
-
-
-        loop_mvs(
-            latitude=latitude,
-            longitude=longitude,
-            year=year,
-            population=population,
-            country=country,
-            variable_name="specific_costs",
-            variable_column="pv_plant_01",
-            csv_file_variable="energyProduction.csv",
-            start=500,
-            stop=600,
-            step=100,
-            output_directory=output_directory,
-            mvs_input_directory=mvs_input_directory,
-            scenario_name=scenario_name,
-        )
-
-        assert os.path.exists(loop_output_directory)
+    # def test_loop_mvs(self):
+    #     """ """
+    #
+    #     latitude = 52.5243700
+    #     longitude = 13.4105300
+    #     year = 2014  # a year between 2011-2013!!!
+    #     population = 48000
+    #     country = "Germany"
+    #     scenario_name = "Test_loop_mvs"
+    #     output_directory = constants.TEST_DATA_OUTPUT
+    #     mvs_input_directory = os.path.join(constants.TEST_DATA_DIRECTORY,
+    #                                        "test_inputs_loop_mvs")
+    #     variable_name = "specific_costs"
+    #
+    #     scenario_folder = os.path.join(self.output_directory, scenario_name)
+    #     loop_output_directory = os.path.join(scenario_folder,
+    #                                          "test_loop_mvs_outputs_" + str(
+    #                                              variable_name))
+    #     if os.path.isdir(scenario_folder):
+    #         shutil.rmtree(scenario_folder)
+    #
+    #
+    #     loop_mvs(
+    #         latitude=latitude,
+    #         longitude=longitude,
+    #         year=year,
+    #         population=population,
+    #         country=country,
+    #         variable_name="specific_costs",
+    #         variable_column="pv_plant_01",
+    #         csv_file_variable="energyProduction.csv",
+    #         start=500,
+    #         stop=600,
+    #         step=100,
+    #         output_directory=output_directory,
+    #         mvs_input_directory=mvs_input_directory,
+    #         scenario_name=scenario_name,
+    #     )
+    #
+    #     assert os.path.exists(loop_output_directory)
