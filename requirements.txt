@@ -11,3 +11,4 @@ multi_vector_simulator==0.5.3
 git+https://github.com/greco-project/greco_technologies.git@dev
 git+https://github.com/isi-ies-group/cpvlib.git@pvlib=0.8_fix
 openpyxl>=3.0.5
+xlrd>=1.0.0
