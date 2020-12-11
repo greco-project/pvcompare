@@ -238,11 +238,7 @@ def plot_all_flows(
             )
     wb_data = pd.ExcelFile(os.path.join(timeseries_directory, timeseries_name))
     # Convert to a dataframe the entire workbook
-    df = pd.read_excel(
-        wb_data,
-        sheet_name="Electricity bus",
-        index_col=0
-    )
+    df = pd.read_excel(wb_data, sheet_name="Electricity bus", index_col=0)
 
     # Converting the index as date
     df.index = pd.to_datetime(df.index)
@@ -365,18 +361,10 @@ def plot_kpi_loop(
     ):
         file = pd.ExcelFile(filepath)
         file_sheet1 = pd.read_excel(
-            file,
-            header=0,
-            index_col=1,
-            sheet_name="cost_matrix",
-            engine="openpyxl",
+            file, header=0, index_col=1, sheet_name="cost_matrix", engine="openpyxl",
         )
         file_sheet2 = pd.read_excel(
-            file,
-            header=0,
-            index_col=1,
-            sheet_name="scalar_matrix",
-            engine="openpyxl",
+            file, header=0, index_col=1, sheet_name="scalar_matrix", engine="openpyxl",
         )
         file_sheet3 = pd.read_excel(
             file, header=0, index_col=0, sheet_name="scalars", engine="openpyxl",
@@ -477,7 +465,9 @@ if __name__ == "__main__":
     #     scenario_name=scenario_name,
     # )
 
-    plot_all_flows(scenario_name = "Scenario_Z1", month=None, calendar_week=None, weekday=5)
+    plot_all_flows(
+        scenario_name="Scenario_Z1", month=None, calendar_week=None, weekday=5
+    )
 
     # plot_kpi_loop(
     #     scenario_name=scenario_name,
