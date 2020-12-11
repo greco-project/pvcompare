@@ -387,7 +387,7 @@ def plot_kpi_loop(
         energyProduction = energyProduction.drop(["unit"], axis=1)
         pv_labels = (
             energyProduction.columns
-        )  # todo: take this line when labels are deprecated
+        )
         # get total costs pv and installed capacity
         for pv in pv_labels:
             output.loc[int(i), "costs total PV"] = file_sheet1.at[pv, "costs_total"]
