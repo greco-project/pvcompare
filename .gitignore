@@ -90,6 +90,13 @@ pvcompare/tests/test_data/test_mvs_inputs/csv_elements/energyProviders.csv
 
 # time series for mvs input
 pvcompare/data/mvs_inputs/time_series
+pvcompare/data/mvs_inputs_template_sector_coupling/time_series
+
+# loop outputs
+pvcompare/data/loop_outputs/*
+
+# test data
+tests/test_data/test_mvs_inputs/time_series/*
 
 # tests for plots.py
 pvcompare/tests/test_data/test_mvs_outputs/*.png

@@ -1,8 +1,9 @@
 .. currentmodule:: pvcompare
 
-==================
+.. _code:
+
 Code documentation
-==================
+~~~~~~~~~~~~~~~~~~
 
 .. _main:
 
@@ -125,20 +126,31 @@ Functions that request the weather data of one year and one location from the ER
     era5.weather_df_from_era5
 
 
-.. _outputs:
+.. _loops:
 
-Outputs
+Automated loops
 ===============
 
-Functions for Pvcompare outputs. Includes loop over simulations while
-alterating a specific parameter (sensitivity) and plotting functions
+Functions that help to loop over simulations while alterating a specific parameter (sensitivity).
 
 .. autosummary::
     :toctree: temp/
 
-    outputs.loop
-    outputs.plot_all_flows
-    outputs.plot_kpi_loop
+    automated_loop.loop
+
+
+.. _plots:
+
+Plotting
+========
+
+Functions for plotting mvs results.
+
+.. autosummary::
+    :toctree: temp/
+
+    plots.plot_all_flows
+    plots.plot_kpi_loop
 
 
 

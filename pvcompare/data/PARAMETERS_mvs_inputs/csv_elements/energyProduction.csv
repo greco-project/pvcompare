@@ -1,5 +1,4 @@
 index,unit,pv_plant_01,comments SI
-label,str,,
 unit,str,kWp,
 optimizeCap,bool,True,
 maximumCap,None or float,,is calculated by pvcompare
@@ -8,7 +7,7 @@ age_installed,year,0,
 lifetime,year,25,
 development_costs,currency,0,
 specific_costs,currency/unit,935,see rl-institut/04_Projekte/220_GRECO/03-Projektinhalte/AP4_High_Penetration_of_Photovoltaics/Data/Parameters_for_simulations/2020-09-28-cost_calculation_PV.ods
-specific_costs_om,currency/unit/year,50,See /home/inia/rl-institut/04_Projekte/220_GRECO/03-Projektinhalte/AP4_High_Penetration_of_Photovoltaics/Data/Parameters_for_simulations/2020-09-28-cost_calculation_PV.ods
+specific_costs_om,currency/unit/year,50,See rl-institut/04_Projekte/220_GRECO/03-Projektinhalte/AP4_High_Penetration_of_Photovoltaics/Data/Parameters_for_simulations/2020-09-28-cost_calculation_PV.ods
 dispatch_price,currency/kWh,0,
 outflow_direction,str,PV bus,
 file_name,str,,filled in by pvcompare
@@ -19,7 +18,6 @@ type_oemof,str,source,
 ,,,
 ,,,CPV
 index,unit,pv_plant_01,
-label,str,PV cpv_180_38_2014_52.52437_13.41053,
 unit,str,kWp,
 optimizeCap,bool,True,
 maximumCap,None or float,,is calculated by pvcompare
@@ -27,8 +25,8 @@ installedCap,kWp,0,
 age_installed,year,0,
 lifetime,year,25,
 development_costs,currency,0,
-specific_costs,currency/unit,1232,See /home/inia/rl-institut/04_Projekte/220_GRECO/03-Projektinhalte/AP4_High_Penetration_of_Photovoltaics/Data/Parameters_for_simulations/2020-09-28-cost_calculation_PV.ods
-specific_costs_om,currency/unit/year,26,See /home/inia/rl-institut/04_Projekte/220_GRECO/03-Projektinhalte/AP4_High_Penetration_of_Photovoltaics/Data/Parameters_for_simulations/2020-09-28-cost_calculation_PV.ods
+specific_costs,currency/unit,1232,See rl-institut/04_Projekte/220_GRECO/03-Projektinhalte/AP4_High_Penetration_of_Photovoltaics/Data/Parameters_for_simulations/2020-09-28-cost_calculation_PV.ods
+specific_costs_om,currency/unit/year,26,See rl-institut/04_Projekte/220_GRECO/03-Projektinhalte/AP4_High_Penetration_of_Photovoltaics/Data/Parameters_for_simulations/2020-09-28-cost_calculation_PV.ods
 dispatch_price,currency/kWh,0,
 outflow_direction,str,PV bus,
 file_name,str,,filled in by pvcompare
@@ -39,7 +37,6 @@ type_oemof,str,source,
 ,,,
 ,,,PSI
 index,unit,pv_plant_01,
-label,str,PV cpv_180_38_2014_52.52437_13.41053,
 unit,str,kWp,
 optimizeCap,bool,True,
 maximumCap,None or float,,is calculated by pvcompare
@@ -47,8 +44,8 @@ installedCap,kWp,0,
 age_installed,year,0,
 lifetime,year,25,
 development_costs,currency,0,
-specific_costs,currency/unit,,See /home/inia/rl-institut/04_Projekte/220_GRECO/03-Projektinhalte/AP4_High_Penetration_of_Photovoltaics/Data/Parameters_for_simulations/2020-09-28-cost_calculation_PV.ods
-specific_costs_om,currency/unit/year,,See /home/inia/rl-institut/04_Projekte/220_GRECO/03-Projektinhalte/AP4_High_Penetration_of_Photovoltaics/Data/Parameters_for_simulations/2020-09-28-cost_calculation_PV.ods
+specific_costs,currency/unit,,See rl-institut/04_Projekte/220_GRECO/03-Projektinhalte/AP4_High_Penetration_of_Photovoltaics/Data/Parameters_for_simulations/2020-09-28-cost_calculation_PV.ods
+specific_costs_om,currency/unit/year,,See rl-institut/04_Projekte/220_GRECO/03-Projektinhalte/AP4_High_Penetration_of_Photovoltaics/Data/Parameters_for_simulations/2020-09-28-cost_calculation_PV.ods
 dispatch_price,currency/kWh,0,
 outflow_direction,str,PV bus,
 file_name,str,,filled in by pvcompare
