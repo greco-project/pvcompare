@@ -46,7 +46,7 @@ except ImportError:
 
 
 def calculate_load_profiles(
-    country, population, year, weather, input_directory=None, mvs_input_directory=None
+    country, storeys, year, weather, input_directory=None, mvs_input_directory=None
 ):
     """
     Calculates electricity and heat load profiles and saves them to csv.
@@ -87,7 +87,7 @@ def calculate_load_profiles(
             if energyConsumption.at["energyVector", column] == "Heat":
                 calculate_heat_demand(
                     country=country,
-                    population=population,
+                    storeys=storeys,
                     year=year,
                     weather=weather,
                     input_directory=input_directory,
@@ -97,7 +97,7 @@ def calculate_load_profiles(
             elif energyConsumption.at["energyVector", column] == "Electricity":
                 calculate_power_demand(
                     country=country,
-                    population=population,
+                    storeys=storeys,
                     year=year,
                     input_directory=input_directory,
                     mvs_input_directory=mvs_input_directory,
