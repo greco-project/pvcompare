@@ -8,6 +8,68 @@ import glob
 import matplotlib.pyplot as plt
 import logging
 
+    #loop type = [location, year, storeys, technology, hp_temp]
+def loop_mvs(
+    scenario_name,
+    latitude,
+    longitude,
+    year,
+    population,
+    country,
+    loop_type,
+    loop_dict = None,
+    start = None,
+    stop = None,
+    step = None,
+    mvs_input_directory=None,
+    output_directory=None,
+):
+    """
+    Starts multiple *pvcompare* simulations with a range of values for a
+    specific loop type.
+
+    The loop type corresponds to a variable or a set of
+    variables that is/are changed in each loop.The
+    results, stored in two excel sheets, are copied into `loop_output_directory`.
+
+    Parameters
+    ----------
+    latitude: float
+        latitude of the location
+    longitude: foat
+        longitude of the location
+    year: int
+        year
+    population:int
+        number of habitants
+    country: str
+        country of location
+    variable_name: str
+        name of the variable that is atapted in each loop
+    variable_column: str
+        name of the  variable column in the csv file
+    csv_file_variable: str
+        name of the csv file the variable is saved in
+    start: int
+        first value of the variable
+    stop: int
+        last value of the variable. notice that stop > start
+    step: int
+        step of increase
+    scenario_name: str
+        Name of the Scenario. The name should follow the scheme:
+        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+    mvs_input_directory: str or None
+        Default: `mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY`
+    output_directory: str or None
+        Path to output directory.
+        Default: `output_directory = constants.DEFAULT_OUTPUT_DIRECTORY`
+
+    Returns
+    -------
+
+    """
+
 
 def loop_mvs(
     latitude,
