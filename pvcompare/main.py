@@ -20,7 +20,7 @@ log_format = "%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s"
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 
 
-def main(
+def apply_pvcompare(
     population,
     country=None,
     latitude=None,
@@ -177,14 +177,15 @@ def apply_mvs(scenario_name, mvs_input_directory=None,
         output_directory = constants.DEFAULT_OUTPUT_DIRECTORY
         if not os.path.isdir(output_directory):
             os.mkdir(output_directory)
-    output_folder = os.path.join(output_directory, scenario_name)
+
+    scenario_folder = os.path.join(output_directory, scenario_name)
     if mvs_output_directory == None:
         mvs_output_directory = os.path.join(
-            output_folder, "mvs_outputs")
+            scenario_folder, "mvs_outputs")
     # check if output folder exists, if not: create it
-    if not os.path.isdir(output_folder):
+    if not os.path.isdir(scenario_folder):
         # create output folder
-        os.mkdir(output_folder)
+        os.mkdir(scenario_folder)
     # check if mvs_output_directory already exists. If yes, raise error
     if os.path.isdir(mvs_output_directory):
         raise NameError(f"The mvs output directory {mvs_output_directory} "
@@ -200,7 +201,7 @@ def apply_mvs(scenario_name, mvs_input_directory=None,
         path_output_folder=mvs_output_directory,
         input_type="csv",
         overwrite=True,
-        save_png=True,
+        save_png=False,
     )
 
 
@@ -212,15 +213,14 @@ if __name__ == "__main__":
     year = 2014
     population = 48000
     country = "Germany"
-    scenario_name = "Scenario_B1"
+    scenario_name = "Scenario_B2"
 
-    # main(
-    #     scenario_name=scenario_name,
-    #     latitude=latitude,
-    #     longitude=longitude,
-    #     year=year,
-    #     population=population,
-    #     country=country,
-    # )
+    apply_pvcompare(
+        latitude=latitude,
+        longitude=longitude,
+        year=year,
+        population=population,
+        country=country,
+    )
 
     apply_mvs(scenario_name = scenario_name, output_directory=None, mvs_input_directory=None)

@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import logging
 
 
-def loop(
+def loop_mvs(
     latitude,
     longitude,
     year,
@@ -73,14 +73,17 @@ def loop(
     if mvs_input_directory == None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     if output_directory == None:
-        output_folder = os.path.join(constants.DEFAULT_OUTPUT_DIRECTORY, scenario_name)
-        loop_output_directory = os.path.join(output_folder, "loop_outputs_"+str(variable_name))
-    else:
-        loop_output_directory = os.path.join(output_directory, scenario_name, "loop_outputs_"+str(variable_name))
+        output_directory = constants.DEFAULT_OUTPUT_DIRECTORY
 
-    if not os.path.isdir(output_folder):
+    scenario_folder = os.path.join(output_directory,
+                                   scenario_name)
+    loop_output_directory = os.path.join(scenario_folder,
+                                         "loop_outputs_" + str(
+                                             variable_name))
+
+    if not os.path.isdir(scenario_folder):
         # create output folder
-        os.mkdir(output_folder)
+        os.mkdir(scenario_folder)
 
     if os.path.isdir(loop_output_directory):
         raise NameError(f"The loop output directory {loop_output_directory} "
@@ -96,7 +99,7 @@ def loop(
     csv_filename = os.path.join(mvs_input_directory, "csv_elements", csv_file_variable)
     csv_file = pd.read_csv(csv_filename, index_col=0)
 
-    main.main(
+    main.apply_pvcompare(
         latitude=latitude,
         longitude=longitude,
         year=year,
@@ -111,10 +114,14 @@ def loop(
         csv_file.to_csv(csv_filename)
 
         mvs_output_directory = os.path.join(
-            constants.DEFAULT_OUTPUT_DIRECTORY, scenario_name,
+            output_directory, scenario_name,
             "mvs_outputs_loop_" + str(variable_name)+"_"+str(i))
 
-        main.apply_mvs(scenario_name=scenario_name, mvs_output_directory = mvs_output_directory)
+        main.apply_mvs(scenario_name=scenario_name,
+                       mvs_output_directory = mvs_output_directory,
+                       mvs_input_directory=mvs_input_directory,
+                       output_directory=output_directory,
+                       )
 
         # copy excel sheets to loop_output_directory
         number_digits = len(str(stop)) - len(str(i))
@@ -146,6 +153,7 @@ def loop(
 
 
 def plot_all_flows(
+    scenario_name=None,
     output_directory=None,
     timeseries_directory=None,
     timeseries_name="timeseries_all_busses.xlsx",
@@ -195,15 +203,22 @@ def plot_all_flows(
             "The weekday is not valid. Please choose a number "
             "between 0-6 with 0:Monaday and 6:Sunday."
         )
+
     # read timeseries
-    if output_directory == None:
-        output_directory = constants.DEFAULT_MVS_OUTPUT_DIRECTORY
-    if timeseries_directory == None:
-        timeseries_directory = output_directory
+    #check if scenario is specified or the timeseries directory is given
+    if timeseries_directory is None:
+        if output_directory == None:
+            output_directory = constants.DEFAULT_OUTPUT_DIRECTORY
+        scenario_folder = os.path.join(output_directory, scenario_name)
+        if timeseries_directory == None:
+            timeseries_directory = os.path.join(scenario_folder, "mvs_outputs")
+        if not os.path.isdir(timeseries_directory):
+            logging.warning("The timeseries directory does not exist. Please check "
+                            "the scenario name or specify the timeseries directory.")
     df = pd.read_excel(
         os.path.join(timeseries_directory, timeseries_name),
-        sheet_name="Electricity_bus",
-        index_col=0,
+        sheet_name="Electricity bus",
+        index_col=0
     )
     # Converting the index as date
     df.index = pd.to_datetime(df.index)
@@ -258,7 +273,7 @@ def plot_all_flows(
 
     # save plot into output directory
     plt.savefig(
-        os.path.join(output_directory, f"plot_{timeseries_name[:-5]}_{period}.png"),
+        os.path.join(timeseries_directory, f"plot_{timeseries_name[:-5]}_{period}.png"),
         bbox_inches="tight",
     )
 
@@ -311,9 +326,11 @@ def plot_kpi_loop(variable_name, kpi, scenario_name, output_directory=None, loop
     """
 
     if output_directory == None:
-        output_folder = os.path.join(constants.DEFAULT_OUTPUT_DIRECTORY, scenario_name)
+        scenario_folder = os.path.join(constants.DEFAULT_OUTPUT_DIRECTORY, scenario_name)
+    else:
+        scenario_folder = os.path.join(output_directory, scenario_name)
     if loop_output_directory == None:
-        loop_output_directory = os.path.join(output_folder, "loop_outputs_"+str(variable_name))
+        loop_output_directory = os.path.join(scenario_folder, "loop_outputs_"+str(variable_name))
 
     output = pd.DataFrame()
     # parse through scalars folder and read in all excel sheets
@@ -336,14 +353,13 @@ def plot_kpi_loop(variable_name, kpi, scenario_name, output_directory=None, loop
         i = i_split_one.split(".")[0]
         i_num=int(i)
         # get all different pv assets
-        csv_directory = os.path.join(output_folder, "mvs_outputs_loop_" + str(variable_name) + "_"+str(i_num), "inputs", "csv_elements")
+        csv_directory = os.path.join(scenario_folder, "mvs_outputs_loop_" + str(variable_name) + "_"+str(i_num), "inputs", "csv_elements")
         energyProduction = pd.read_csv(
             os.path.join(csv_directory, "energyProduction.csv"),
             index_col=0
         )
         energyProduction = energyProduction.drop(["unit"], axis=1)
-        #pv_labels = energyProduction.columns todo: take this line when labels are deprecated
-        pv_labels = energyProduction.loc["label"]
+        pv_labels = energyProduction.columns #todo: take this line when labels are deprecated
         # get total costs pv and installed capacity
         for pv in pv_labels:
             output.loc[int(i), "costs total PV"] = file_sheet1.at[pv, "costs_total"]
@@ -353,7 +369,7 @@ def plot_kpi_loop(variable_name, kpi, scenario_name, output_directory=None, loop
             output.loc[int(i), "Total renewable energy use"] = file_sheet3.at[
                 "Total renewable energy use", 0
             ]
-            output.loc[int(i), "Renewable share"] = file_sheet3.at["Renewable_share", 0]
+            output.loc[int(i), "Renewable factor"] = file_sheet3.at["Renewable factor", 0]
             output.loc[int(i), "LCOE PV"] = file_sheet1.at[
                 pv, "levelized_cost_of_energy_of_asset"
             ]
@@ -382,7 +398,6 @@ def plot_kpi_loop(variable_name, kpi, scenario_name, output_directory=None, loop
 
     fig.text(0.5, 0.0, str(variable_name), ha="center")
     plt.tight_layout()
-    plt.show()
 
     fig.savefig(
         os.path.join(
@@ -397,33 +412,36 @@ if __name__ == "__main__":
     year = 2014  # a year between 2011-2013!!!
     population = 48000
     country = "Germany"
-    scenario_name = "Scenario_A1"
+    scenario_name = "Test_loop_mvs"
+    output_directory = constants.TEST_DATA_OUTPUT
+    mvs_input_directory = os.path.join(constants.TEST_DATA_DIRECTORY, "test_inputs_loop_mvs")
 
-    # loop(
-    #     latitude=latitude,
-    #     longitude=longitude,
-    #     year=year,
-    #     population=population,
-    #     country=country,
-    #     variable_name="specific_costs",
-    #     variable_column="pv_plant_01",
-    #     csv_file_variable="energyProduction.csv",
-    #     start=500,
-    #     stop=2000,
-    #     step=100,
-    #     output_directory=None,
-    #     scenario_name=scenario_name
-    # )
-
-    # plot_all_flows(month=None, calendar_week=None, weekday=10)
-
-    plot_kpi_loop(
-        scenario_name=scenario_name,
+    loop_mvs(
+        latitude=latitude,
+        longitude=longitude,
+        year=year,
+        population=population,
+        country=country,
         variable_name="specific_costs",
-        kpi=[
-            "costs total PV",
-            "Degree of autonomy",
-            "self consumption",
-            "self sufficiency",
-        ],
+        variable_column="pv_plant_01",
+        csv_file_variable="energyProduction.csv",
+        start=500,
+        stop=600,
+        step=100,
+        output_directory=output_directory,
+        mvs_input_directory=mvs_input_directory,
+        scenario_name=scenario_name,
     )
+
+    #plot_all_flows(scenario_name = "Scenario_A1", month=None, calendar_week=None, weekday=10, timeseries_directory=)
+
+    # plot_kpi_loop(
+    #     scenario_name=scenario_name,
+    #     variable_name="specific_costs",
+    #     kpi=[
+    #         "costs total PV",
+    #         "Degree of autonomy",
+    #         "self consumption",
+    #         "self sufficiency",
+    #     ],
+    # )
