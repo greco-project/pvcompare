@@ -236,12 +236,14 @@ def plot_all_flows(
                 "The timeseries directory does not exist. Please check "
                 "the scenario name or specify the timeseries directory."
             )
+    wb_data = pd.ExcelFile(os.path.join(timeseries_directory, timeseries_name))
+    # Convert to a dataframe the entire workbook
     df = pd.read_excel(
-        os.path.join(timeseries_directory, timeseries_name),
+        wb_data,
         sheet_name="Electricity bus",
-        index_col=0,
-        engine="openpyxl",
+        index_col=0
     )
+
     # Converting the index as date
     df.index = pd.to_datetime(df.index)
 
@@ -361,23 +363,23 @@ def plot_kpi_loop(
     for filepath in list(
         glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
     ):
-
+        file = pd.ExcelFile(filepath)
         file_sheet1 = pd.read_excel(
-            filepath,
+            file,
             header=0,
             index_col=1,
             sheet_name="cost_matrix",
             engine="openpyxl",
         )
         file_sheet2 = pd.read_excel(
-            filepath,
+            file,
             header=0,
             index_col=1,
             sheet_name="scalar_matrix",
             engine="openpyxl",
         )
         file_sheet3 = pd.read_excel(
-            filepath, header=0, index_col=0, sheet_name="scalars", engine="openpyxl",
+            file, header=0, index_col=0, sheet_name="scalars", engine="openpyxl",
         )
 
         # get variable value from filepath
@@ -458,24 +460,24 @@ if __name__ == "__main__":
         constants.TEST_DATA_DIRECTORY, "test_inputs_loop_mvs"
     )
 
-    loop_mvs(
-        latitude=latitude,
-        longitude=longitude,
-        year=year,
-        population=population,
-        country=country,
-        variable_name="specific_costs",
-        variable_column="pv_plant_01",
-        csv_file_variable="energyProduction.csv",
-        start=500,
-        stop=600,
-        step=100,
-        output_directory=output_directory,
-        mvs_input_directory=mvs_input_directory,
-        scenario_name=scenario_name,
-    )
+    # loop_mvs(
+    #     latitude=latitude,
+    #     longitude=longitude,
+    #     year=year,
+    #     population=population,
+    #     country=country,
+    #     variable_name="specific_costs",
+    #     variable_column="pv_plant_01",
+    #     csv_file_variable="energyProduction.csv",
+    #     start=500,
+    #     stop=600,
+    #     step=100,
+    #     output_directory=output_directory,
+    #     mvs_input_directory=mvs_input_directory,
+    #     scenario_name=scenario_name,
+    # )
 
-    # plot_all_flows(scenario_name = "Scenario_A1", month=None, calendar_week=None, weekday=10, timeseries_directory=)
+    plot_all_flows(scenario_name = "Scenario_Z1", month=None, calendar_week=None, weekday=5)
 
     # plot_kpi_loop(
     #     scenario_name=scenario_name,
