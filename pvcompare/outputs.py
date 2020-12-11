@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import logging
 
     #loop type = [location, year, storeys, technology, hp_temp]
-def loop_mvs(
+def loop_pvcompare(
     scenario_name,
     latitude,
     longitude,
@@ -23,6 +23,8 @@ def loop_mvs(
     step = None,
     mvs_input_directory=None,
     output_directory=None,
+    input_directory= None,
+    mvs_output_directory = None
 ):
     """
     Starts multiple *pvcompare* simulations with a range of values for a
@@ -34,6 +36,9 @@ def loop_mvs(
 
     Parameters
     ----------
+    scenario_name: str
+        Name of the Scenario. The name should follow the scheme:
+        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
     latitude: float
         latitude of the location
     longitude: foat
@@ -44,21 +49,21 @@ def loop_mvs(
         number of habitants
     country: str
         country of location
-    variable_name: str
-        name of the variable that is atapted in each loop
-    variable_column: str
-        name of the  variable column in the csv file
-    csv_file_variable: str
-        name of the csv file the variable is saved in
-    start: int
-        first value of the variable
-    stop: int
+    loop_type: str
+        possible values: 'location', 'year', 'storeys', 'technology', 'hp_temp'.
+        Defines the variable or variables that are changed with each loop.
+    location_dict: dict or None
+        only insert dict if loop_type = location. Otherwise None.
+        Form of the dict should be: {"step1": ["country", "lat", "lon"], "step2": ["country", "lat", "lon"], etc}
+    start: int or None
+        first value of the variable.
+        If loop_type = location: start = None.
+    stop: int or None
         last value of the variable. notice that stop > start
-    step: int
+        If loop_type = location: stop = None
+    step: int or None
         step of increase
-    scenario_name: str
-        Name of the Scenario. The name should follow the scheme:
-        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+        If loop_type = location: step = None
     mvs_input_directory: str or None
         Default: `mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY`
     output_directory: str or None
@@ -69,6 +74,80 @@ def loop_mvs(
     -------
 
     """
+
+    if loop_type is "location":
+        if loop_dict is None:
+            raise ValueError("If you want to loop over a location, please"
+                             " insert a location_dict. Otherwise change the"
+                             "loop_type.")
+        else:
+            for key in loop_dict:
+                country = loop_dict[key][0]
+                latitude = loop_dict[key][1]
+                longitude = loop_dict[key][2]
+
+            main.apply_pvcompare(population = population,
+                                 country=country,
+                                 latitude=latitude,
+                                 longitude=longitude,
+                                 year=year,
+                                 input_directory=input_directory,
+                                 mvs_input_directory=mvs_input_directory,
+                                 plot=False,
+                                 pv_setup=None,
+                                )
+            main.apply_mvs(scenario_name,
+                            mvs_input_directory=mvs_input_directory,
+                            mvs_output_directory=mvs_output_directory,
+                            output_directory=output_directory)
+
+    elif loop_type is "year":
+
+        year = start
+        for year < stop:
+
+            main.apply_pvcompare(population=population,
+                                 country=country,
+                                 latitude=latitude,
+                                 longitude=longitude,
+                                 year=year,
+                                 input_directory=input_directory,
+                                 mvs_input_directory=mvs_input_directory,
+                                 plot=False,
+                                 pv_setup=None,
+                                 )
+            main.apply_mvs(scenario_name,
+                           mvs_input_directory=mvs_input_directory,
+                           mvs_output_directory=mvs_output_directory,
+                           output_directory=output_directory)
+
+            year = year + step
+
+    elif loop_type is "storeys":
+
+        number_of_storeys = start
+
+        for number_of_storeys < stop:
+            # open csv file
+            data_path = os.path.join(input_directory,
+                                     "building_parameters.csv")
+            bp = pd.read_csv(data_path, index_col=0)
+            bp.iloc[0]["number of storeys"] = number_of_storeys
+
+            bp.to_csv(data_path)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def loop_mvs(
@@ -510,23 +589,39 @@ if __name__ == "__main__":
     mvs_input_directory = os.path.join(
         constants.TEST_DATA_DIRECTORY, "test_inputs_loop_mvs"
     )
+    loop_dict = {"step1": (country, latitude, longitude)}
 
-    loop_mvs(
-        latitude=latitude,
-        longitude=longitude,
-        year=year,
-        population=population,
-        country=country,
-        variable_name="specific_costs",
-        variable_column="pv_plant_01",
-        csv_file_variable="energyProduction.csv",
-        start=500,
-        stop=600,
-        step=100,
-        output_directory=output_directory,
-        mvs_input_directory=mvs_input_directory,
-        scenario_name=scenario_name,
+    loop_pvcompare(
+        scenario_name,
+        latitude,
+        longitude,
+        year,
+        population,
+        country,
+        loop_type = "location",
+        loop_dict= loop_dict,
+        start=None,
+        stop=None,
+        step=None,
+        mvs_input_directory=None,
+        output_directory=None,
     )
+    # loop_mvs(
+    #     latitude=latitude,
+    #     longitude=longitude,
+    #     year=year,
+    #     population=population,
+    #     country=country,
+    #     variable_name="specific_costs",
+    #     variable_column="pv_plant_01",
+    #     csv_file_variable="energyProduction.csv",
+    #     start=500,
+    #     stop=600,
+    #     step=100,
+    #     output_directory=output_directory,
+    #     mvs_input_directory=mvs_input_directory,
+    #     scenario_name=scenario_name,
+    # )
 
     # plot_all_flows(scenario_name = "Scenario_A1", month=None, calendar_week=None, weekday=10, timeseries_directory=)
 

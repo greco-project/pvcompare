@@ -21,7 +21,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 
 
 def apply_pvcompare(
-    population,
+    storeys,
     country=None,
     latitude=None,
     longitude=None,
@@ -41,9 +41,8 @@ def apply_pvcompare(
 
     Parameters
     ----------
-    population: int
-        Population for which the demand and area potential for PV on buildings is
-        calculated.
+    storeys: int
+        number of storeys for which the demand is calculated.
     country:
         Country of the location. Default: None.
     latitude: float or None
@@ -112,7 +111,7 @@ def apply_pvcompare(
         lat=latitude,
         lon=longitude,
         weather=weather,
-        population=population,
+        storeys=storeys,
         pv_setup=pv_setup,
         plot=plot,
         input_directory=input_directory,
@@ -133,7 +132,7 @@ def apply_pvcompare(
 
     demand.calculate_load_profiles(
         country=country,
-        population=population,
+        storeys=storeys,
         year=year,
         input_directory=input_directory,
         mvs_input_directory=mvs_input_directory,
@@ -216,7 +215,7 @@ if __name__ == "__main__":
 
     longitude = 13.4105300  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
     year = 2014
-    population = 48000
+    storeys = 5
     country = "Germany"
     scenario_name = "Scenario_B2"
 
@@ -224,7 +223,7 @@ if __name__ == "__main__":
         latitude=latitude,
         longitude=longitude,
         year=year,
-        population=population,
+        storeys=storeys,
         country=country,
     )
 
