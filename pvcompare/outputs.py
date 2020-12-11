@@ -28,9 +28,10 @@ def loop_mvs(
     """
     Starts multiple MVS simulations with a range of values for a specific parameter.
 
-    After calculating the pvcompare time series with :py:func:`~.main.main`, :py:func:`~.main.apply_mvs` is
-    executed in a loop. Before each loop a specific variable value is changed. The
-    results, stored in two excel sheets are copied into `loop_output_directory`.
+    This function applies :py:func:`~.main.apply_pvcompare`, one time. After that
+     :py:func:`~.main.apply_mvs` is executed in a loop.
+     Before each loop a specific variable value is changed. The
+    results, stored in two excel sheets, are copied into `loop_output_directory`.
 
     Parameters
     ----------
@@ -305,10 +306,6 @@ def plot_kpi_loop(
     """
     Plots KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs`
     for a loop over one variable.
-
-    The 'energyProduction.csv' needs to be saved into 'output_directory'. If the
-    loop output is created with :py:func:`~.automated_loop.loop`, the
-    'energyProduction.csv' file is copied into the `output_directory` automatically.
 
     The plot is saved into the `loop_output_directory`.
 

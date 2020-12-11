@@ -9,7 +9,7 @@ of *pvcompare* is composed.
 .. _output_structure:
 
 .. figure:: ./images/output_structure.png
-    :width: 100%
+    :width: 50%
     :alt: output structure pvcompare.
     :align: center
 
@@ -34,7 +34,7 @@ was executed.
 .. _example_output_structure:
 
 .. figure:: ./images/output_structure_example.png
-    :width: 100%
+    :width: 50%
     :alt: output structure example pvcompare.
     :align: center
 
