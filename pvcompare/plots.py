@@ -63,19 +63,17 @@ def plot_all_flows(
         timeseries_directory = output_directory
 
     try:
-        wb_data = pd.ExcelFile(os.path.join(timeseries_directory, timeseries_name), engine="openpyxl")
-        # Convert to a dataframe the entire workbook
-        df = pd.read_excel(
-            wb_data, sheet_name="Electricity bus", index_col=0
-        )
-    except:
         wb_data = pd.ExcelFile(
-            os.path.join(timeseries_directory, timeseries_name))
+            os.path.join(timeseries_directory, timeseries_name), engine="openpyxl"
+        )
+        # Convert to a dataframe the entire workbook
+        df = pd.read_excel(wb_data, sheet_name="Electricity bus", index_col=0)
+    except:
+        wb_data = pd.ExcelFile(os.path.join(timeseries_directory, timeseries_name))
         # Convert to a dataframe the entire workbook
         df = pd.read_excel(
             wb_data, sheet_name="Electricity bus", index_col=0, engine="openpyxl"
         )
-
 
     # Converting the index as date
     df.index = pd.to_datetime(df.index)
