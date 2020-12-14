@@ -128,7 +128,7 @@ def loop_pvcompare(
                 plot=False,
                 pv_setup=pv_setup,
                 loop_output_directory=loop_output_directory,
-                step=str(latitude)+"_"+str(longitude),
+                step=str(latitude) + "_" + str(longitude),
                 loop_type=loop_type,
             )
             step += 1
@@ -192,7 +192,9 @@ def loop_pvcompare(
             # load input parameters from pv_setup.csv
             pv_setup = pd.read_csv(data_path)
             pv_setup.at[0, "technology"] = technology
-            pv_setup.to_csv(data_path, index = False)  # todo: check if saving this is nessecary
+            pv_setup.to_csv(
+                data_path, index=False
+            )  # todo: check if saving this is nessecary
 
             single_loop_pvcompare(
                 storeys=storeys,
@@ -273,7 +275,7 @@ def single_loop_pvcompare(
     mvs_output_directory = os.path.join(
         output_directory,
         scenario_name,
-        "mvs_outputs_loop_" + str(loop_type) +"_"+ str(step),
+        "mvs_outputs_loop_" + str(loop_type) + "_" + str(step),
     )
 
     main.apply_mvs(
@@ -284,13 +286,13 @@ def single_loop_pvcompare(
     )
 
     excel_file1 = "scalars.xlsx"
-    new_excel_file1 = "scalars_" + str(step)+ ".xlsx"
+    new_excel_file1 = "scalars_" + str(step) + ".xlsx"
     src_dir = os.path.join(mvs_output_directory, excel_file1)
     dst_dir = os.path.join(loop_output_directory, "scalars", new_excel_file1)
     shutil.copy(src_dir, dst_dir)
 
     excel_file2 = "timeseries_all_busses.xlsx"
-    new_excel_file2 = "timeseries_all_busses_" + str(step)+ ".xlsx"
+    new_excel_file2 = "timeseries_all_busses_" + str(step) + ".xlsx"
     src_dir = os.path.join(mvs_output_directory, excel_file2)
     dst_dir = os.path.join(loop_output_directory, "timeseries", new_excel_file2)
     shutil.copy(src_dir, dst_dir)
@@ -653,9 +655,7 @@ def plot_kpi_loop(
             output.loc[i, "Total renewable energy use"] = file_sheet3.at[
                 "Total renewable energy use", 0
             ]
-            output.loc[i, "Renewable factor"] = file_sheet3.at[
-                "Renewable factor", 0
-            ]
+            output.loc[i, "Renewable factor"] = file_sheet3.at["Renewable factor", 0]
             output.loc[i, "LCOE PV"] = file_sheet1.at[
                 pv, "levelized_cost_of_energy_of_asset"
             ]
@@ -738,8 +738,17 @@ if __name__ == "__main__":
     #     scenario_name=scenario_name,
     # )
 
-    plot_all_flows(scenario_name = scenario_name, month=None, calendar_week=None, weekday=5,
-                   timeseries_directory=os.path.join(constants.DEFAULT_OUTPUT_DIRECTORY, scenario_name, "mvs_outputs_loop_hp_temp_15"))
+    plot_all_flows(
+        scenario_name=scenario_name,
+        month=None,
+        calendar_week=None,
+        weekday=5,
+        timeseries_directory=os.path.join(
+            constants.DEFAULT_OUTPUT_DIRECTORY,
+            scenario_name,
+            "mvs_outputs_loop_hp_temp_15",
+        ),
+    )
 
     # plot_kpi_loop(
     #     scenario_name=scenario_name,
