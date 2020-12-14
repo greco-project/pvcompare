@@ -61,11 +61,22 @@ def plot_all_flows(
         output_directory = constants.DEFAULT_MVS_OUTPUT_DIRECTORY
     if timeseries_directory == None:
         timeseries_directory = output_directory
-    df = pd.read_excel(
-        os.path.join(timeseries_directory, timeseries_name),
-        sheet_name="Electricity_bus",
-        index_col=0,
-    )
+
+    try:
+        wb_data = pd.ExcelFile(os.path.join(timeseries_directory, timeseries_name), engine="openpyxl")
+        # Convert to a dataframe the entire workbook
+        df = pd.read_excel(
+            wb_data, sheet_name="Electricity bus", index_col=0
+        )
+    except:
+        wb_data = pd.ExcelFile(
+            os.path.join(timeseries_directory, timeseries_name))
+        # Convert to a dataframe the entire workbook
+        df = pd.read_excel(
+            wb_data, sheet_name="Electricity bus", index_col=0, engine="openpyxl"
+        )
+
+
     # Converting the index as date
     df.index = pd.to_datetime(df.index)
 
@@ -243,17 +254,17 @@ def plot_kpi_loop(variable_name, kpi, loop_output_directory=None):
 
 if __name__ == "__main__":
 
-    # plot_all_flows(month=None, calendar_week=None, weekday=10)
+    plot_all_flows(month=None, calendar_week=25, weekday=5)
 
-    plot_kpi_loop(
-        variable_name="Number_of_storeys",
-        kpi=[
-            "costs total PV",
-            "Degree of autonomy",
-            "self consumption",
-            "self sufficiency",
-        ],
-        loop_output_directory=os.path.join(
-            os.path.dirname(__file__), "data", "CPV_STOREYS"
-        ),
-    )
+    # plot_kpi_loop(
+    #     variable_name="Number_of_storeys",
+    #     kpi=[
+    #         "costs total PV",
+    #         "Degree of autonomy",
+    #         "self consumption",
+    #         "self sufficiency",
+    #     ],
+    #     loop_output_directory=os.path.join(
+    #         os.path.dirname(__file__), "data", "CPV_STOREYS"
+    #     ),
+    # )

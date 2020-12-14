@@ -8,5 +8,6 @@ scipy
 maya~=0.6.1
 workalendar<7.0.0
 multi_vector_simulator==0.5.3
+openpyxl>=3.0.5
 git+https://github.com/greco-project/greco_technologies.git@dev
 git+https://github.com/isi-ies-group/cpvlib.git@pvlib=0.8_fix
