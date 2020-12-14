@@ -28,6 +28,7 @@ class TestPlotProfiles:
         self.timeseries_directory = os.path.join(
             self.mvs_output_directory, "/timeseries/"
         )
+        self.storeys = 5
 
     def test_plot_all_flows_year(self):
         """ """
@@ -162,7 +163,7 @@ class TestPlotProfiles:
     #         latitude=latitude,
     #         longitude=longitude,
     #         year=year,
-    #         population=population,
+    #         storeys=self.storeys,
     #         country=country,
     #         variable_name="specific_costs",
     #         variable_column="pv_plant_01",

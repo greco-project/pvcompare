@@ -128,7 +128,7 @@ def loop_pvcompare(
                 plot=False,
                 pv_setup=pv_setup,
                 loop_output_directory=loop_output_directory,
-                step=step,
+                step=str(latitude)+"_"+str(longitude),
                 loop_type=loop_type,
             )
             step += 1
@@ -151,7 +151,7 @@ def loop_pvcompare(
                 plot=False,
                 pv_setup=pv_setup,
                 loop_output_directory=loop_output_directory,
-                step=step,
+                step=year,
                 loop_type=loop_type,
             )
             step += 1
@@ -175,7 +175,7 @@ def loop_pvcompare(
                 plot=False,
                 pv_setup=pv_setup,
                 loop_output_directory=loop_output_directory,
-                step=step,
+                step=number_of_storeys,
                 loop_type=loop_type,
             )
 
@@ -206,7 +206,7 @@ def loop_pvcompare(
                 plot=False,
                 pv_setup=None,
                 loop_output_directory=loop_output_directory,
-                step=step,
+                step=technology,
                 loop_type=loop_type,
             )
             step += 1
@@ -234,7 +234,7 @@ def loop_pvcompare(
                 plot=False,
                 pv_setup=pv_setup,
                 loop_output_directory=loop_output_directory,
-                step=step,
+                step=temp_high,
                 loop_type=loop_type,
             )
             temp_high = temp_high + loop_dict["step"]
@@ -273,7 +273,7 @@ def single_loop_pvcompare(
     mvs_output_directory = os.path.join(
         output_directory,
         scenario_name,
-        "mvs_outputs_loop_" + str(loop_type) + "_step" + str(step),
+        "mvs_outputs_loop_" + str(loop_type) +"_"+ str(step),
     )
 
     main.apply_mvs(
@@ -284,13 +284,13 @@ def single_loop_pvcompare(
     )
 
     excel_file1 = "scalars.xlsx"
-    new_excel_file1 = "scalars_" + str(step) + ".xlsx"
+    new_excel_file1 = "scalars_" + str(step)+ ".xlsx"
     src_dir = os.path.join(mvs_output_directory, excel_file1)
     dst_dir = os.path.join(loop_output_directory, "scalars", new_excel_file1)
     shutil.copy(src_dir, dst_dir)
 
     excel_file2 = "timeseries_all_busses.xlsx"
-    new_excel_file2 = "timeseries_all_busses_" + str(step) + ".xlsx"
+    new_excel_file2 = "timeseries_all_busses_" + str(step)+ ".xlsx"
     src_dir = os.path.join(mvs_output_directory, excel_file2)
     dst_dir = os.path.join(loop_output_directory, "timeseries", new_excel_file2)
     shutil.copy(src_dir, dst_dir)
@@ -631,7 +631,7 @@ def plot_kpi_loop(
         # get variable value from filepath
         i_split_one = filepath.split("_")[::-1][0]
         i = i_split_one.split(".")[0]
-        i_num = int(i)
+        i_num = i
         # get all different pv assets
         csv_directory = os.path.join(
             scenario_folder,
@@ -646,26 +646,26 @@ def plot_kpi_loop(
         pv_labels = energyProduction.columns
         # get total costs pv and installed capacity
         for pv in pv_labels:
-            output.loc[int(i), "costs total PV"] = file_sheet1.at[pv, "costs_total"]
-            output.loc[int(i), "installed capacity PV"] = file_sheet2.at[
+            output.loc[i, "costs total PV"] = file_sheet1.at[pv, "costs_total"]
+            output.loc[i, "installed capacity PV"] = file_sheet2.at[
                 pv, "optimizedAddCap"
             ]
-            output.loc[int(i), "Total renewable energy use"] = file_sheet3.at[
+            output.loc[i, "Total renewable energy use"] = file_sheet3.at[
                 "Total renewable energy use", 0
             ]
-            output.loc[int(i), "Renewable factor"] = file_sheet3.at[
+            output.loc[i, "Renewable factor"] = file_sheet3.at[
                 "Renewable factor", 0
             ]
-            output.loc[int(i), "LCOE PV"] = file_sheet1.at[
+            output.loc[i, "LCOE PV"] = file_sheet1.at[
                 pv, "levelized_cost_of_energy_of_asset"
             ]
-            output.loc[int(i), "self consumption"] = file_sheet3.at[
+            output.loc[i, "self consumption"] = file_sheet3.at[
                 "Onsite energy fraction", 0
             ]
-            output.loc[int(i), "self sufficiency"] = file_sheet3.at[
+            output.loc[i, "self sufficiency"] = file_sheet3.at[
                 "Onsite energy matching", 0
             ]
-            output.loc[int(i), "Degree of autonomy"] = file_sheet3.at[
+            output.loc[i, "Degree of autonomy"] = file_sheet3.at[
                 "Degree of autonomy", 0
             ]
 
@@ -706,20 +706,21 @@ if __name__ == "__main__":
     # loop_dict_location = {"step1": (country, latitude, longitude), "step2": (country, latitude, longitude)}
     loop_dict_storeys = {"start": 3, "stop": 5, "step": 1}
     loop_dict_technologies = {"step1": "cpv", "step2": "si", "step3": "psi"}
+    loop_dict_hp_temp = {"start": 15, "stop": 25, "step": 5}
 
-    loop_pvcompare(
-        scenario_name,
-        latitude,
-        longitude,
-        year,
-        storeys,
-        country,
-        loop_type="technology",
-        loop_dict=loop_dict_technologies,
-        mvs_input_directory=None,
-        output_directory=None,
-        input_directory=None,
-    )
+    # loop_pvcompare(
+    #     scenario_name,
+    #     latitude,
+    #     longitude,
+    #     year,
+    #     storeys,
+    #     country,
+    #     loop_type="hp_temp",
+    #     loop_dict=loop_dict_hp_temp,
+    #     mvs_input_directory=None,
+    #     output_directory=None,
+    #     input_directory=None,
+    # )
     # loop_mvs(
     #     latitude=latitude,
     #     longitude=longitude,
@@ -737,11 +738,12 @@ if __name__ == "__main__":
     #     scenario_name=scenario_name,
     # )
 
-    # plot_all_flows(scenario_name = "Scenario_A1", month=None, calendar_week=None, weekday=10, timeseries_directory=)
+    plot_all_flows(scenario_name = scenario_name, month=None, calendar_week=None, weekday=5,
+                   timeseries_directory=os.path.join(constants.DEFAULT_OUTPUT_DIRECTORY, scenario_name, "mvs_outputs_loop_hp_temp_15"))
 
     # plot_kpi_loop(
     #     scenario_name=scenario_name,
-    #     variable_name="specific_costs",
+    #     variable_name="hp_temp",
     #     kpi=[
     #         "costs total PV",
     #         "Degree of autonomy",
