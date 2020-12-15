@@ -98,3 +98,7 @@ tests/test_data/test_mvs_inputs/time_series/*
 
 # tests for plots.py
 pvcompare/tests/test_data/test_outputs/**/*.png
+
+# tests for plots.py
+pvcompare/tests/test_data/test_outputs/Test_Scenario/mvs_outputs_loop_specific_costs_500/inputs/*
+pvcompare/tests/test_data/test_outputs/Test_Scenario/mvs_outputs_loop_specific_costs_600/inputs/*
