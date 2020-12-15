@@ -129,7 +129,7 @@ class TestDemandProfiles:
             os.path.join(self.test_mvs_directory, "time_series", filename)
         )
 
-    def test_calculate_heat_demand(self):
+    def test_calculate_heat_demand_without_ww(self):
 
         self.bp["value"].loc["include warm water"] = False
         self.bp.to_csv(
@@ -147,6 +147,13 @@ class TestDemandProfiles:
         )
 
         assert a["kWh"].sum() == 10969639.113628691
+
+        self.bp["value"].loc["include warm water"] = self.include_ww
+        self.bp.to_csv(
+            os.path.join(self.test_input_directory, "building_parameters.csv")
+        )
+
+    def test_calculate_heat_demand_with_ww(self):
 
         self.bp["value"].loc["include warm water"] = True
         self.bp.to_csv(
