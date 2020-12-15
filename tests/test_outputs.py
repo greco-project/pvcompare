@@ -135,5 +135,3 @@ class TestPlotProfiles:
         )
 
         assert os.path.exists(filename)
-
-
