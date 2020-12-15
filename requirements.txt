@@ -2,14 +2,12 @@ pvlib
 demandlib
 feedinlib==v0.1.0rc2
 numpy>=1.12.0,< 1.17
-pandas>=0.24.0,< 0.25
+pandas>=0.18.1,< 0.25
 oemof.thermal>=0.0.3
 scipy
 maya~=0.6.1
 workalendar<7.0.0
 multi_vector_simulator==0.5.3
-openpyxl>=3.0.5
 git+https://github.com/greco-project/greco_technologies.git@dev
 git+https://github.com/isi-ies-group/cpvlib.git@pvlib=0.8_fix
-openpyxl>=3.0.5
 xlrd==1.2.0
