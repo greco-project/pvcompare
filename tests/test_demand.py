@@ -58,14 +58,14 @@ class TestDemandProfiles:
         weather_df.index = pd.to_datetime(weather_df.index)
         self.weather = weather_df
 
-        bp = pd.read_csv(
+        self.bp = pd.read_csv(
             os.path.join(self.test_input_directory, "building_parameters.csv"),
             index_col=0,
         )
         self.heating_lim_temp = pd.to_numeric(
-            bp.at["heating limit temperature", "value"], errors="coerce"
+            self.bp.at["heating limit temperature", "value"], errors="coerce"
         )
-        self.include_ww = eval(bp.at["include warm water", "value"])
+        self.include_ww = eval(self.bp.at["include warm water", "value"])
 
         heating = pd.DataFrame()
         periods = 48
@@ -129,7 +129,12 @@ class TestDemandProfiles:
             os.path.join(self.test_mvs_directory, "time_series", filename)
         )
 
-    def test_calculate_heat_demand(self):
+    def test_calculate_heat_demand_without_ww(self):
+
+        self.bp["value"].loc["include warm water"] = False
+        self.bp.to_csv(
+            os.path.join(self.test_input_directory, "building_parameters.csv")
+        )
 
         a = calculate_heat_demand(
             country=self.country,
@@ -141,10 +146,36 @@ class TestDemandProfiles:
             column="demand_02",
         )
 
-        if not self.include_ww:
-            assert a["kWh"].sum() == 10969639.113628691
-        else:
-            assert a["kWh"].sum() == 11984233.752677418
+        assert a["kWh"].sum() == 10969639.113628691
+
+        self.bp["value"].loc["include warm water"] = self.include_ww
+        self.bp.to_csv(
+            os.path.join(self.test_input_directory, "building_parameters.csv")
+        )
+
+    def test_calculate_heat_demand_with_ww(self):
+
+        self.bp["value"].loc["include warm water"] = True
+        self.bp.to_csv(
+            os.path.join(self.test_input_directory, "building_parameters.csv")
+        )
+
+        a = calculate_heat_demand(
+            country=self.country,
+            population=self.population,
+            year=self.year,
+            input_directory=self.test_input_directory,
+            weather=self.weather,
+            mvs_input_directory=self.test_mvs_directory,
+            column="demand_02",
+        )
+
+        assert a["kWh"].sum() == 11984233.752677418
+
+        self.bp["value"].loc["include warm water"] = self.include_ww
+        self.bp.to_csv(
+            os.path.join(self.test_input_directory, "building_parameters.csv")
+        )
 
     def test_adjust_heat_demand(self):
 
