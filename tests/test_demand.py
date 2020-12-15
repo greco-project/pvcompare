@@ -138,7 +138,7 @@ class TestDemandProfiles:
 
         a = calculate_heat_demand(
             country=self.country,
-            population=self.population,
+            storeys=self.storeys,
             year=self.year,
             input_directory=self.test_input_directory,
             weather=self.weather,
@@ -146,7 +146,7 @@ class TestDemandProfiles:
             column="demand_02",
         )
 
-        assert a["kWh"].sum() == 10969639.113628691
+        assert a["kWh"].sum() == 109696391.13628691
 
         self.bp["value"].loc["include warm water"] = self.include_ww
         self.bp.to_csv(
@@ -170,7 +170,7 @@ class TestDemandProfiles:
             column="demand_02",
         )
 
-        assert a["kWh"].sum() == 11984233.752677418
+        assert a["kWh"].sum() == 119842337.52677417
 
         self.bp["value"].loc["include warm water"] = self.include_ww
         self.bp.to_csv(
