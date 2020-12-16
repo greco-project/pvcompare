@@ -13,4 +13,4 @@ soc_max,0.925
 soc_min,0.075
 efficiency,0.99907726890329
 fixed_thermal_losses_relative,"{'file_name': 'None', 'header': 'no_unit', 'unit': ''}"
-fixed_thermal_losses_absolute,"{'file_name': 'None', 'header': 'no_unit', 'unit': ''}"
+fixed_thermal_losses_absolute,"{'file_name': 'None', 'header': 'kWh', 'unit': ''}"
