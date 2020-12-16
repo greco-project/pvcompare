@@ -1,0 +1,8 @@
+,unit,project_data
+country,str,Germany
+latitude,str,52.52437
+longitude,str,13.41053
+project_id,str,1
+project_name,str,net zero energy community
+scenario_id,str,1
+scenario_name,str,Scenario_B1
