@@ -151,6 +151,22 @@ def create_cpv_time_series(
 
     total = energy_cpv + energy_flatplate
 
+    # todo delete hack:
+    # power in kW
+    energy_flatplate /= 1000
+    energy_cpv /= 1000
+    total /= 1000
+
+    energy_flatplate.fillna(0, inplace=True)
+    energy_cpv.fillna(0, inplace=True)
+    total.fillna(0, inplace=True)
+
+    df = pd.DataFrame()
+    df["CPV kW"] = energy_cpv
+    df["PV kW"] = energy_flatplate
+    df["hybrid kW"] = total
+
+    df.to_csv("/home/sabine/Schreibtisch/Offline/rl-institut/220_GRECO/temp/CPV/cpv_berlin_180_38_2014_52.52437_13.41053.csv")
     return total
 
 
