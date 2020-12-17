@@ -119,7 +119,7 @@ def main(
         input_directory=input_directory,
         mvs_input_directory=mvs_input_directory,
         year=year,
-        normalization="NRWC",
+        normalization=None,
     )
 
     # add sector coupling in case heat pump or chiller exists in energyConversion.csv
@@ -176,7 +176,12 @@ def apply_mvs(mvs_input_directory=None, mvs_output_directory=None):
     )
 
 
+
 if __name__ == "__main__":
+    # directory = "mvs_inputs_template_sector_coupling"
+    directory = "mvs_inputs"
+    mvs_input_directory = os.path.join(os.path.dirname(__file__), f"data/{directory}/")
+    mvs_output_directory = None
 
     latitude = 52.5243700  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
 
@@ -191,5 +196,9 @@ if __name__ == "__main__":
         year=year,
         population=population,
         country=country,
+        mvs_input_directory=mvs_input_directory,
     )
-apply_mvs(mvs_input_directory=None, mvs_output_directory=None)
+    apply_mvs(
+        mvs_input_directory=mvs_input_directory,
+        mvs_output_directory=mvs_output_directory,
+    )
