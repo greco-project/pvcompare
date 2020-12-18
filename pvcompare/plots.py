@@ -237,7 +237,6 @@ def plot_kpi_loop(variable_name, kpi, loop_output_directory=None):
 
     fig.text(0.5, 0.0, str(variable_name), ha="center")
     plt.tight_layout()
-    plt.show()
 
     fig.savefig(
         os.path.join(
