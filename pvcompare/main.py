@@ -198,7 +198,7 @@ if __name__ == "__main__":
         country=country,
         mvs_input_directory=mvs_input_directory,
     )
-    apply_mvs(
-        mvs_input_directory=mvs_input_directory,
-        mvs_output_directory=mvs_output_directory,
-    )
+    # apply_mvs(
+    #     mvs_input_directory=mvs_input_directory,
+    #     mvs_output_directory=mvs_output_directory,
+    # )
