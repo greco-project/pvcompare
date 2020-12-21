@@ -26,7 +26,8 @@ def apply_pvcompare(
     latitude=None,
     longitude=None,
     year=None,
-    input_directory=None,
+    static_input_directory=None,
+    user_input_directory=None,
     mvs_input_directory=None,
     plot=False,
     pv_setup=None,
@@ -52,9 +53,13 @@ def apply_pvcompare(
         Longitude of the location. Default: None.
     year: int
         Year of the simulation. Default: None.
-    input_directory: str or None
-        Directory of the pvcompare specific inputs. If None,
-        `constants.DEFAULT_INPUT_DIRECTORY` is used as mvs_input_directory.
+    static_input_directory: str or None
+        Directory of the pvcompare static inputs. If None,
+        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_input_directory.
+        Default: None.
+    user_input_directory: str or None
+        Directory of the user inputs. If None,
+        `constants.DEFAULT_USER_INPUT_DIRECTORY` is used as user_input_directory.
         Default: None.
     mvs_input_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
@@ -78,8 +83,10 @@ def apply_pvcompare(
 
     """
 
-    if input_directory == None:
-        input_directory = constants.DEFAULT_INPUT_DIRECTORY
+    if static_input_directory == None:
+        static_input_directory = constants.DEFAULT_STATIC_INPUT_DIRECTORY
+    if user_input_directory == None:
+        user_input_directory = constants.DEFAULT_USER_INPUT_DIRECTORY
     if mvs_input_directory == None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
@@ -92,13 +99,11 @@ def apply_pvcompare(
 
     # check if weather data already exists
     weather_file = os.path.join(
-        input_directory, f"weatherdata_{latitude}_{longitude}_{year}.csv"
+        static_input_directory, f"weatherdata_{latitude}_{longitude}_{year}.csv"
     )
     if os.path.isfile(weather_file):
         weather = pd.read_csv(
-            os.path.join(
-                input_directory, f"weatherdata_{latitude}_{longitude}_{year}.csv"
-            ),
+            weather_file,
             index_col=0,
         )
     else:
@@ -115,7 +120,7 @@ def apply_pvcompare(
         population=population,
         pv_setup=pv_setup,
         plot=plot,
-        input_directory=input_directory,
+        user_input_directory=user_input_directory,
         mvs_input_directory=mvs_input_directory,
         year=year,
         normalization="NRWC",
@@ -125,7 +130,8 @@ def apply_pvcompare(
     # note: chiller was not tested, yet.
     heat_pump_and_chiller.add_sector_coupling(
         mvs_input_directory=mvs_input_directory,
-        input_directory=input_directory,
+        static_input_directory=static_input_directory,
+        user_input_directory=user_input_directory,
         weather=weather,
         lat=latitude,
         lon=longitude,
@@ -135,7 +141,8 @@ def apply_pvcompare(
         country=country,
         population=population,
         year=year,
-        input_directory=input_directory,
+        static_input_directory=static_input_directory,
+        user_input_directory=user_input_directory,
         mvs_input_directory=mvs_input_directory,
         weather=weather,
     )

@@ -48,7 +48,7 @@ def create_pv_components(
     year,
     pv_setup=None,
     plot=True,
-    input_directory=None,
+    user_input_directory=None,
     mvs_input_directory=None,
     psi_type="Chen",
     normalization="NRWC",
@@ -81,8 +81,10 @@ def create_pv_components(
         If `pv_setup` is None, it is loaded from the `input_directory/pv_setup.cvs`.
     plot: bool
         if true plots created pv times series
-    input_directory: str
-        if None: ./data/inputs/
+    user_input_directory: str or None
+        Directory of the user inputs. If None,
+        `constants.DEFAULT_USER_INPUT_DIRECTORY` is used as user_input_directory.
+        Default: None.
     mvs_input_directory: str
         if None: ./data/mvs_inputs/
     psi_type: str
@@ -102,10 +104,10 @@ def create_pv_components(
         # read example pv_setup file
         logging.info("loading pv setup conditions from input directory.")
 
-        if input_directory is None:
-            input_directory = constants.DEFAULT_INPUT_DIRECTORY
+        if user_input_directory == None:
+            user_input_directory = constants.DEFAULT_USER_INPUT_DIRECTORY
 
-        data_path = os.path.join(input_directory, "pv_setup.csv")
+        data_path = os.path.join(user_input_directory, "pv_setup.csv")
         pv_setup = pd.read_csv(data_path)
         logging.info("setup conditions successfully loaded.")
 
@@ -231,7 +233,7 @@ def create_pv_components(
             )
         else:
             area = area_potential.calculate_area_potential(
-                population, input_directory, surface_type=row["surface_type"]
+                population, user_input_directory, surface_type=row["surface_type"]
             )
 
         # calculate nominal value of the powerplant

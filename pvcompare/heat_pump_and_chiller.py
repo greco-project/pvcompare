@@ -23,7 +23,7 @@ def calculate_cops_and_eers(
     lon,
     mode,
     temperature_col="temp_air",
-    input_directory=None,
+    user_input_directory=None,
     mvs_input_directory=None,
 ):
     r"""
@@ -51,10 +51,10 @@ def calculate_cops_and_eers(
     mode : str
         Defines whether COPs of heat pump ("heat_pump") or EERs of chiller
         ("chiller") are calculated. Default: "heat_pump".
-    input_directory: str or None
-        Path to input directory of pvcompare containing file
-        `heat_pumps_and_chillers.csv` that specifies heat pump and/or chiller
-        data. Default: DEFAULT_INPUT_DIRECTORY (see :func:`~pvcompare.constants`.
+    user_input_directory: str or None
+        Directory of the user inputs. If None,
+        `constants.DEFAULT_USER_INPUT_DIRECTORY` is used as user_input_directory.
+        Default: None.
     mvs_input_directory: str or None
         Path to input directory containing files that describe the energy
         system and that are an input to MVS. Default:
@@ -67,9 +67,11 @@ def calculate_cops_and_eers(
 
     """
     # read parameters from file
-    if input_directory is None:
-        input_directory = constants.DEFAULT_INPUT_DIRECTORY
-    filename = os.path.join(input_directory, "heat_pumps_and_chillers.csv")
+    if user_input_directory == None:
+        user_input_directory = constants.DEFAULT_USER_INPUT_DIRECTORY
+    if mvs_input_directory == None:
+        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+    filename = os.path.join(user_input_directory, "heat_pumps_and_chillers.csv")
 
     try:
         parameters = pd.read_csv(filename, header=0, index_col=0).loc[mode]
@@ -139,8 +141,6 @@ def calculate_cops_and_eers(
     efficiency_series.name = "no_unit"
 
     # save time series to `mvs_input_directory/time_series`
-    if mvs_input_directory is None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     time_series_directory = os.path.join(mvs_input_directory, "time_series")
 
     logging.info(
@@ -155,7 +155,7 @@ def calculate_cops_and_eers(
 
 
 def add_sector_coupling(
-    weather, lat, lon, input_directory=None, mvs_input_directory=None
+    weather, lat, lon, user_input_directory=None, mvs_input_directory=None
 ):
     """
     Add heat sector if heat pump or chiller in 'energyConversion.csv'.
@@ -173,10 +173,10 @@ def add_sector_coupling(
         Latitude of ambient temperature location in `weather`.
     lon : float
         Longitude of ambient temperature location in `weather`.
-    input_directory: str or None
-        Path to input directory of pvcompare containing file
+    user_input_directory: str or None
+        Path to user input directory of pvcompare containing file
         `heat_pumps_and_chillers.csv` that specifies heat pump and/or chiller
-        data. Default: DEFAULT_INPUT_DIRECTORY (see :func:`~pvcompare.constants`.
+        data. Default: DEFAULT_USER_INPUT_DIRECTORY (see :func:`~pvcompare.constants`.
     mvs_input_directory: str or None
         Path to input directory containing files that describe the energy
         system and that are an input to MVS. Default:
@@ -196,6 +196,8 @@ def add_sector_coupling(
 
     """
     # read energyConversion.csv file
+    if user_input_directory == None:
+        user_input_directory = constants.DEFAULT_USER_INPUT_DIRECTORY
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     energy_conversion = pd.read_csv(
@@ -265,7 +267,7 @@ def add_sector_coupling(
                     lat=lat,
                     lon=lon,
                     mvs_input_directory=mvs_input_directory,
-                    input_directory=input_directory,
+                    user_input_directory=user_input_directory,
                 )
                 logging.info(
                     "COPs successfully calculated and saved in `mvs_input_directory/time_series`."
