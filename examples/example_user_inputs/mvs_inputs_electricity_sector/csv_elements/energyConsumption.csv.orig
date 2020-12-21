@@ -1,0 +1,13 @@
+,unit,Electricity demand
+unit,str,kW
+<<<<<<< HEAD
+inflow_direction,str,Electricity
+file_name,str,electricity_load_Germany_48000_2014.csv
+=======
+file_name,str,electricity_load.csv
+inflow_direction,str,Electricity bus
+>>>>>>> update/to_newest_mvs_release
+energyVector,str,Electricity
+type_oemof,str,sink
+type_asset,str,demand
+dsm,str,False
