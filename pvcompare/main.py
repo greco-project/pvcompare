@@ -3,10 +3,8 @@ import pandas as pd
 import logging
 import sys
 import os
-import pvlib
-import multi_vector_simulator.cli as mvs
 
-# import feedinlib.era5 as era
+import multi_vector_simulator.cli as mvs
 
 # internal imports
 from pvcompare import era5
@@ -23,7 +21,7 @@ log_format = "%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(message)s"
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG, format=log_format)
 
 
-def main(
+def apply_pvcompare(
     population,
     country=None,
     latitude=None,
@@ -86,10 +84,11 @@ def main(
     if mvs_input_directory == None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
-    #    if all([latitude, longitude, country, year]) == False:
+    # if all([latitude, longitude, country, year]) == False:
     check_inputs.add_project_data(
         mvs_input_directory, latitude, longitude, country, year
     )
+    # add electroicity price specified by country
     check_inputs.add_electricity_price()
 
     # check if weather data already exists
@@ -152,19 +151,33 @@ def main(
     )
 
 
-def apply_mvs(mvs_input_directory=None, mvs_output_directory=None):
+def apply_mvs(
+    scenario_name,
+    mvs_input_directory=None,
+    mvs_output_directory=None,
+    output_directory=None,
+):
     r"""
     Starts the energy system simulation with MVS and stores results.
 
     Parameters
     ----------
+    scenario_name: str
+        Name of the Scenario. The name should follow the scheme:
+        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
     mvs_input_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
         `constants.DEFAULT_MVS_INPUT_DIRECTORY` is used as mvs_input_directory.
         Default: None.
+    output_directory: str
+        Path to output directory.
+        Default: constants.DEFAULT_OUTPUT_DIRECTORY
     mvs_output_directory: str or None
         Directory in which simulation results are stored. If None,
         `constants.DEFAULT_MVS_OUTPUT_DIRECTORY` is used as mvs_input_directory.
+        Default: None.
+    loop_variable: str
+        Name of the variable that is varied within :py:func:`~.outputs.loop`.
         Default: None.
 
     Returns
@@ -174,8 +187,29 @@ def apply_mvs(mvs_input_directory=None, mvs_output_directory=None):
     """
     if mvs_input_directory == None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+    if output_directory == None:
+        output_directory = constants.DEFAULT_OUTPUT_DIRECTORY
+        if not os.path.isdir(output_directory):
+            os.mkdir(output_directory)
+
+    scenario_folder = os.path.join(output_directory, scenario_name)
     if mvs_output_directory == None:
-        mvs_output_directory = constants.DEFAULT_MVS_OUTPUT_DIRECTORY
+        mvs_output_directory = os.path.join(scenario_folder, "mvs_outputs")
+    # check if output folder exists, if not: create it
+    if not os.path.isdir(scenario_folder):
+        # create output folder
+        os.mkdir(scenario_folder)
+    # check if mvs_output_directory already exists. If yes, raise error
+    if os.path.isdir(mvs_output_directory):
+        raise NameError(
+            f"The mvs output directory {mvs_output_directory} "
+            f"already exists. Please delete the folder or "
+            f"rename 'scenario_name' to create a different scenario "
+            f"folder."
+        )
+
+    # adapt parameter 'scenario_name' in 'project_data.csv'.
+    check_inputs.add_scenario_name_to_project_data(mvs_input_directory, scenario_name)
 
     mvs.main(
         path_input_folder=mvs_input_directory,
@@ -194,14 +228,17 @@ if __name__ == "__main__":
     year = 2014
     population = 48000
     country = "Germany"
+    scenario_name = "Scenario_B2"
 
-    main(
+    apply_pvcompare(
         latitude=latitude,
         longitude=longitude,
         year=year,
         population=population,
         country=country,
     )
-apply_mvs(
-    mvs_input_directory=None, mvs_output_directory=None,
-)
+
+    apply_mvs(
+        scenario_name=scenario_name, output_directory=None, mvs_input_directory=None
+    )
+
