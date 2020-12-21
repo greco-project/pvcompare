@@ -42,7 +42,7 @@ class TestDemandProfiles:
             check_for_valid_country_year(
                 country="Uganda",
                 year=self.year,
-                input_directory=self.test_input_directory,
+                static_input_directory=self.test_input_directory,
             )
 
     def test_check_for_valid_year(self):
@@ -50,7 +50,7 @@ class TestDemandProfiles:
             check_for_valid_country_year(
                 country=self.country,
                 year=2001,
-                input_directory=self.test_input_directory,
+                static_input_directory=self.test_input_directory,
             )
 
     def test_add_project_data(self):
@@ -167,7 +167,8 @@ class TestDemandProfiles:
         simulation_settings.to_csv(energy_providers_filename)
 
         electricity_price = add_electricity_price(
-            mvs_input_directory=self.test_mvs_directory
+            mvs_input_directory=self.test_mvs_directory,
+            static_input_directory=self.test_input_directory,
         )
 
         assert electricity_price == 0.2165

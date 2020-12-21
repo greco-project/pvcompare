@@ -46,8 +46,13 @@ except ImportError:
 
 
 def calculate_load_profiles(
-    country, population, year, weather, static_input_directory=None,
-    user_input_directory=None, mvs_input_directory=None
+    country,
+    population,
+    year,
+    weather,
+    static_input_directory=None,
+    user_input_directory=None,
+    mvs_input_directory=None,
 ):
     """
     Calculates electricity and heat load profiles and saves them to csv.
@@ -123,8 +128,13 @@ def calculate_load_profiles(
 
 
 def calculate_power_demand(
-    country, population, year, column, static_input_directory=None,
-    user_input_directory=None, mvs_input_directory=None
+    country,
+    population,
+    year,
+    column,
+    static_input_directory=None,
+    user_input_directory=None,
+    mvs_input_directory=None,
 ):
     """
     Calculates electricity demand profile for `population` and `country`.
@@ -630,5 +640,3 @@ def get_workalendar_class(country):
                 return _class()
 
     return None
-
-

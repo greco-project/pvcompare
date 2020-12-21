@@ -107,6 +107,8 @@ def calculate_area_potential(population, user_input_directory, surface_type):
 if __name__ == "__main__":
 
     area = calculate_area_potential(
-        population=6000, user_input_directory="./data/user_inputs/", surface_type="flat_roof"
+        population=6000,
+        user_input_directory="./data/user_inputs/",
+        surface_type="flat_roof",
     )
     print(area)

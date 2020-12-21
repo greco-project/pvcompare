@@ -19,6 +19,7 @@ class TestCalculateCopsAndEers:
         )
         self.lat = 53.2
         self.lon = 13.2
+        self.input_directory = TEST_DATA_HEAT
 
     def test_calculate_cops_and_eers_heat_pump_without_icing(self):
         cops = hc.calculate_cops_and_eers(
@@ -27,7 +28,7 @@ class TestCalculateCopsAndEers:
             lon=self.lon,
             temperature_col="temp_air",
             mode="heat_pump",
-            input_directory=TEST_DATA_HEAT,
+            user_input_directory=self.input_directory,
             mvs_input_directory=TEST_DATA_HEAT,
         )
         cops_exp = pd.Series(
@@ -62,7 +63,7 @@ class TestCalculateCopsAndEers:
             lon=self.lon,
             temperature_col="temp_air",
             mode="heat_pump",
-            input_directory=TEST_DATA_HEAT,
+            user_input_directory=self.input_directory,
             mvs_input_directory=TEST_DATA_HEAT,
         )
         cops_exp = pd.Series(
@@ -93,7 +94,7 @@ class TestCalculateCopsAndEers:
                 lon=self.lon,
                 temperature_col="temp_air",
                 mode="misspelled_mode",
-                input_directory=TEST_DATA_HEAT,
+                user_input_directory=self.input_directory,
                 mvs_input_directory=TEST_DATA_HEAT,
             )
 
@@ -104,7 +105,7 @@ class TestCalculateCopsAndEers:
             lon=self.lon,
             temperature_col="temp_air",
             mode="heat_pump",
-            input_directory=TEST_DATA_HEAT,
+            user_input_directory=self.input_directory,
             mvs_input_directory=TEST_DATA_HEAT,
         )
         assert os.path.exists(
@@ -132,8 +133,9 @@ class TestAddSectorCoupling:
         )
         self.lat = 53.2
         self.lon = 13.2
+        self.input_directory = TEST_DATA_HEAT
         self.filename_conversion = os.path.join(
-            TEST_DATA_HEAT, "csv_elements", "energyConversion.csv"
+            self.input_directory, "csv_elements", "energyConversion.csv"
         )
 
     @pytest.fixture(scope="class", autouse=True)
@@ -152,7 +154,7 @@ class TestAddSectorCoupling:
             weather=self.weather,
             lat=self.lat,
             lon=self.lon,
-            input_directory=TEST_DATA_HEAT,
+            user_input_directory=self.input_directory,
             mvs_input_directory=TEST_DATA_HEAT,
         )
         # no file created
@@ -170,12 +172,12 @@ class TestAddSectorCoupling:
             weather=self.weather,
             lat=self.lat,
             lon=self.lon,
-            input_directory=TEST_DATA_HEAT,
-            mvs_input_directory=TEST_DATA_HEAT,
+            user_input_directory=self.input_directory,
+            mvs_input_directory=self.input_directory,
         )
         # file created
         filename = os.path.join(
-            TEST_DATA_HEAT, "time_series", "cops_heat_pump_2018_53.2_13.2.csv"
+            self.input_directory, "time_series", "cops_heat_pump_2018_53.2_13.2.csv"
         )
         assert os.path.exists(filename) == True
         # filename in energyConversion.csv changed
@@ -191,8 +193,8 @@ class TestAddSectorCoupling:
             weather=self.weather,
             lat=self.lat,
             lon=self.lon,
-            input_directory=TEST_DATA_HEAT,
-            mvs_input_directory=TEST_DATA_HEAT,
+            user_input_directory=self.input_directory,
+            mvs_input_directory=self.input_directory,
         )
         # no file created
         filename = os.path.join(
@@ -220,7 +222,7 @@ class TestAddSectorCoupling:
     def teardown_method(self):
         # delete file
         filename = os.path.join(
-            TEST_DATA_HEAT, "time_series", "cops_heat_pump_2018_53.2_13.2.csv"
+            self.input_directory, "time_series", "cops_heat_pump_2018_53.2_13.2.csv"
         )
         if os.path.exists(filename):
             os.remove(filename)

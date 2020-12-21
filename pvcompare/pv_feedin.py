@@ -778,16 +778,18 @@ def calculate_NRWC_peak(technology):
     year = 2014
     surface_tilt = get_optimal_pv_angle(lat=lat)
 
-    input_directory = constants.DEFAULT_INPUT_DIRECTORY
+    static_input_directory = (
+        constants.DEFAULT_STATIC_INPUT_DIRECTORY
+    )  # todo: übergebe diesen Parameter!!
     weather_file = os.path.join(
-        input_directory, "weatherdata_52.52437_13.41053_2014.csv"
+        static_input_directory, "weatherdata_52.52437_13.41053_2014.csv"
     )
     if os.path.isfile(weather_file):
         weather = pd.read_csv(weather_file, index_col=0)
     else:
         logging.error(
             f"the weather file {weather_file} does not exist. Please"
-            f"make sure the weather file is in {input_directory}."
+            f"make sure the weather file is in {static_input_directory}."
         )
     weather.index = pd.to_datetime(weather.index, utc=True)
     # calculate poa_global for tilted surface

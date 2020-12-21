@@ -63,7 +63,7 @@ def add_scenario_name_to_project_data(mvs_input_directory, scenario_name):
     return
 
 
-def check_for_valid_country_year(country, year, input_directory):
+def check_for_valid_country_year(country, year, static_input_directory):
     """
     checks if the input country is available in all input data
 
@@ -75,8 +75,8 @@ def check_for_valid_country_year(country, year, input_directory):
         country of interest
     year: int
         year of interest
-    input_directory: str
-        input directory for data input
+    static_input_directory: str
+        input directory for static data input
 
     Returns
     -------
@@ -84,13 +84,18 @@ def check_for_valid_country_year(country, year, input_directory):
     """
 
     pop = pd.read_csv(
-        os.path.join(input_directory, "EUROSTAT_population.csv"), header=0, sep=","
+        os.path.join(static_input_directory, "EUROSTAT_population.csv"),
+        header=0,
+        sep=",",
     )
     workalendar = pd.read_csv(
-        os.path.join(input_directory, "list_of_workalender_countries.csv"), header=0
+        os.path.join(static_input_directory, "list_of_workalender_countries.csv"),
+        header=0,
     )
     consumption = pd.read_csv(
-        os.path.join(input_directory, "total_electricity_consumption_residential.csv"),
+        os.path.join(
+            static_input_directory, "total_electricity_consumption_residential.csv"
+        ),
         header=1,
         sep=":",
     )
@@ -230,7 +235,7 @@ def add_project_data(mvs_input_directory, latitude, longitude, country, year):
     return latitude, longitude, country, year
 
 
-def add_electricity_price(mvs_input_directory=None):
+def add_electricity_price(static_input_directory=None, mvs_input_directory=None):
     """
     Adds the electricity price from 'electricity_prices.csv' to 'energyProviders.csv'.
 
@@ -245,6 +250,8 @@ def add_electricity_price(mvs_input_directory=None):
     -----------
     mvs_input_directory : str
         directory to "mvs_inputs/"
+    static_input_directory: str
+
 
     Returns
     --------
@@ -262,9 +269,7 @@ def add_electricity_price(mvs_input_directory=None):
         logging.error("The file energyProviders.csv is missing ")
 
     # load electricity prices
-    prices_file_path = os.path.join(
-        constants.DEFAULT_INPUT_DIRECTORY, "electricity_prices.csv"
-    )
+    prices_file_path = os.path.join(static_input_directory, "electricity_prices.csv")
     electricity_prices_eu = pd.read_csv(prices_file_path, index_col=0)
 
     # load project data to select country

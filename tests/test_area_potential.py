@@ -23,7 +23,7 @@ class TestCalculateAreaPotential:
 
         a = calculate_area_potential(
             population=6000,
-            input_directory=self.test_input_directory,
+            user_input_directory=self.test_input_directory,
             surface_type="flat_roof",
         )
         assert a == 24640.0
