@@ -11,34 +11,42 @@ https://docs.python.org/3/library/unittest.html are also good support.
 import os
 import pytest
 import logging
-from pvcompare.plots import plot_all_flows, plot_kpi_loop
+from pvcompare.outputs import plot_all_flows, plot_kpi_loop, loop_mvs
+from pvcompare import constants
+import shutil
 
 
 class TestPlotProfiles:
     @classmethod
     def setup_class(self):
         """Setup variables for all tests in this class"""
-        self.output_directory = os.path.join(
-            os.path.dirname(__file__), "test_data/test_mvs_outputs/"
+        self.scenario_name = "Test_Scenario"
+        self.output_directory = constants.TEST_DATA_OUTPUT
+        self.mvs_output_directory = os.path.join(
+            self.output_directory, self.scenario_name, "mvs_outputs"
         )
         self.timeseries_directory = os.path.join(
-            os.path.dirname(__file__), "test_data/test_mvs_outputs/timeseries/"
+            self.mvs_output_directory, "/timeseries/"
         )
 
     def test_plot_all_flows_year(self):
         """ """
-        timeseries_name = "timeseries_all_busses_02.xlsx"
+        timeseries_name = "timeseries_all_busses.xlsx"
         period = "year"
+        scenario_name = "Test_Scenario"
 
+        timeseries_directory = os.path.join(
+            self.output_directory, scenario_name, "mvs_outputs_loop_specific_costs_500"
+        )
         filename = os.path.join(
-            self.output_directory, f"plot_{timeseries_name[:-5]}_{period}.png"
+            timeseries_directory, f"plot_{timeseries_name[:-5]}_{period}.png"
         )
         if os.path.exists(filename):
             os.remove(filename)
 
         plot_all_flows(
             output_directory=self.output_directory,
-            timeseries_directory=self.timeseries_directory,
+            timeseries_directory=timeseries_directory,
             timeseries_name=timeseries_name,
             month=None,
             calendar_week=None,
@@ -49,46 +57,54 @@ class TestPlotProfiles:
 
     def test_plot_all_flows_week(self):
         """ """
-        timeseries_name = "timeseries_all_busses_02.xlsx"
+        timeseries_name = "timeseries_all_busses.xlsx"
         month = None
         calendar_week = 25
         weekday = None
         period = "caldendar_week_" + str(calendar_week)
+        scenario_name = "Test_Scenario"
 
+        timeseries_directory = os.path.join(
+            self.output_directory, scenario_name, "mvs_outputs_loop_specific_costs_500"
+        )
         filename = os.path.join(
-            self.output_directory, f"plot_{timeseries_name[:-5]}_{period}.png"
+            timeseries_directory, f"plot_{timeseries_name[:-5]}_{period}.png"
         )
         if os.path.exists(filename):
             os.remove(filename)
 
         plot_all_flows(
             output_directory=self.output_directory,
-            timeseries_directory=self.timeseries_directory,
+            timeseries_directory=timeseries_directory,
             timeseries_name=timeseries_name,
-            month=month,
+            month=None,
             calendar_week=calendar_week,
-            weekday=weekday,
+            weekday=None,
         )
 
         assert os.path.exists(filename)
 
     def test_plot_all_flows_day(self):
         """ """
-        timeseries_name = "timeseries_all_busses_02.xlsx"
+        timeseries_name = "timeseries_all_busses.xlsx"
         month = None
         calendar_week = 25
         weekday = 6
         period = "day_" + str(calendar_week) + "_" + str(weekday)
+        scenario_name = "Test_Scenario"
 
+        timeseries_directory = os.path.join(
+            self.output_directory, scenario_name, "mvs_outputs_loop_specific_costs_500"
+        )
         filename = os.path.join(
-            self.output_directory, f"plot_{timeseries_name[:-5]}_{period}.png"
+            timeseries_directory, f"plot_{timeseries_name[:-5]}_{period}.png"
         )
         if os.path.exists(filename):
             os.remove(filename)
 
         plot_all_flows(
             output_directory=self.output_directory,
-            timeseries_directory=self.timeseries_directory,
+            timeseries_directory=timeseries_directory,
             timeseries_name=timeseries_name,
             month=month,
             calendar_week=calendar_week,
@@ -99,18 +115,23 @@ class TestPlotProfiles:
 
     def test_plot_kpi_loop(self):
         """ """
-        variable_name = "number of storeys"
+        variable_name = "specific_costs"
+        scenario_name = "Test_Scenario"
+        loop_output_directory = os.path.join(
+            self.output_directory, scenario_name, "loop_outputs_" + str(variable_name)
+        )
 
         filename = os.path.join(
-            self.output_directory, "plot_scalars_" + str(variable_name) + ".png"
+            loop_output_directory, "plot_scalars_" + str(variable_name) + ".png"
         )
         if os.path.exists(filename):
             os.remove(filename)
 
         plot_kpi_loop(
+            scenario_name=scenario_name,
             variable_name=variable_name,
             kpi=["costs total PV", "Degree of autonomy"],
-            loop_output_directory=self.output_directory,
+            output_directory=self.output_directory,
         )
 
         assert os.path.exists(filename)
