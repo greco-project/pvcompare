@@ -1,8 +1,0 @@
-,unit,Electricity demand
-unit,str,kW
-file_name,str,electricity_load_Germany_48000_2014.csv
-inflow_direction,str,Electricity bus
-energyVector,str,Electricity
-type_oemof,str,sink
-type_asset,str,demand
-dsm,str,False
