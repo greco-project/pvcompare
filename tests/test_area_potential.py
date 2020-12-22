@@ -15,15 +15,15 @@ from pvcompare.area_potential import calculate_area_potential
 class TestCalculateAreaPotential:
     @classmethod
     def setup_class(self):
-        self.test_input_directory = os.path.join(
-            os.path.dirname(__file__), "test_data/test_pvcompare_inputs"
+        self.user_input_directory = os.path.join(
+            os.path.dirname(__file__), "data/user_inputs/pvcompare_inputs/"
         )
 
     def test_storeys_of_calculate_area_potential(self):
 
         a = calculate_area_potential(
             population=6000,
-            user_input_directory=self.test_input_directory,
+            user_input_directory=self.user_input_directory,
             surface_type="flat_roof",
         )
         assert a == 24640.0
