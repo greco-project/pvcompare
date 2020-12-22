@@ -252,7 +252,7 @@ def calculate_power_demand(
 
     # save the file name of the time series and the nominal value to
     # mvs_inputs/elements/csv/energyProduction.csv
-    check_inputs.add_parameters_to_energy_consumption_file(
+    check_inputs.add_file_name_to_energy_consumption_file(
         column=column,
         ts_filename=el_demand_csv,
         mvs_input_directory=mvs_input_directory,
@@ -460,7 +460,7 @@ def calculate_heat_demand(
     shifted_heat_demand.to_csv(filename, index=False)
     # save the file name of the time series and the nominal value to
     # mvs_inputs/elements/csv/energyProduction.csv
-    check_inputs.add_parameters_to_energy_consumption_file(
+    check_inputs.add_file_name_to_energy_consumption_file(
         column=column, ts_filename=h_demand_csv, mvs_input_directory=mvs_input_directory
     )
     return shifted_heat_demand
