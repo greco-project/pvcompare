@@ -29,9 +29,11 @@ def apply_pvcompare(
     static_input_directory=None,
     user_input_directory=None,
     mvs_input_directory=None,
+    collections_mvs_input_directory=None,
     plot=False,
     pv_setup=None,
-    overwrite_grid_costs=True
+    overwrite_grid_costs=True,
+    overwrite_pv_parameters=True,
 ):
     """
     Runs the main functionalities of pvcompare.
@@ -76,6 +78,9 @@ def apply_pvcompare(
         A tilt of 0 resembles a vertical orientation.
         If `pv_setup` is None, it is loaded from the `input_directory/pv_setup.cvs`.
         Default: None.
+    overwrite_grid_costs: bool
+
+    overwrite_pv_parameters: bool
 
     Returns
     -------
@@ -91,9 +96,9 @@ def apply_pvcompare(
     if mvs_input_directory == None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
-    # if all([latitude, longitude, country, year]) == False:
-    latitude, longitude, country, year = check_inputs.add_project_data(
-        mvs_input_directory, latitude, longitude, country, year
+    # add location and year to project data
+    latitude, longitude, country, year = check_inputs.add_location_and_year_to_project_data(
+        mvs_input_directory, static_input_directory, latitude, longitude, country, year
     )
     # add electroicity price specified by country
     if overwrite_grid_costs == True:
@@ -113,6 +118,12 @@ def apply_pvcompare(
     # add datetimeindex
     weather.index = pd.to_datetime(weather.index)
 
+    # check energyProduction.csv file for the correct pv technology
+    check_inputs.overwrite_mvs_energy_production_file(
+                                         mvs_input_directory,
+                                         user_input_directory,
+                                         collections_mvs_input_directory,
+                                         overwrite_pv_parameters)
     pv_feedin.create_pv_components(
         lat=latitude,
         lon=longitude,
@@ -218,10 +229,10 @@ def apply_mvs(
 
 if __name__ == "__main__":
 
-    latitude = 52.5243700  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
+    latitude = None  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
 
-    longitude = 13.4105300  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
-    year = None
+    longitude = None  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
+    year = 2014
     population = 48000
     country = None
     scenario_name = "Scenario_A1"
