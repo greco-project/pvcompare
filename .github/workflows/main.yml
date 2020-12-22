@@ -22,16 +22,16 @@ jobs:
     strategy:
       matrix:
         python-version: [3.6, 3.7]
-
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
+      
       - name: Set env for dev branch
         if: endsWith(github.ref, '/develop')
         run: |
           echo "::set-env name=EXECUTE_TESTS_ON::dev"
+          
       - name: Set env for master branch
         if: endsWith(github.ref, '/master')
         run: |
@@ -48,6 +48,7 @@ jobs:
               sudo apt-get install gcc
               sudo apt-get install libgfortran4
               sudo apt-get install gfortran
+
       # Runs a set of commands using the runners shell
       - name: Install dependencies
         run: |
@@ -59,6 +60,7 @@ jobs:
       - name: Lint with black
         run: |
           black --check . --exclude docs/
+
       - name: Test with pytest
         run: |
           coverage run --rcfile=.coveragerc --source pvcompare -m py.test
