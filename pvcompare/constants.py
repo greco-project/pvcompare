@@ -13,6 +13,9 @@ DEFAULT_USER_INPUT_DIRECTORY = os.path.join(
 DEFAULT_MVS_INPUT_DIRECTORY = os.path.join(
     os.path.dirname(__file__), "data/user_inputs/mvs_inputs/"
 )
+DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY = os.path.join(
+    os.path.dirname(__file__), "data/user_inputs_collection/mvs_inputs/"
+)
 DEFAULT_OUTPUT_DIRECTORY = os.path.join(os.path.dirname(__file__), "data/outputs")
 
 # test directories
