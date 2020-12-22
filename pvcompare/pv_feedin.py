@@ -72,7 +72,7 @@ def create_pv_components(
     lon: float
         longitude
     storeys: num
-        numver of storeys
+        number of storeys
     pv_setup: dict or None
         Specifies the PV technologies and their installation details used in the
         simulation. The dictionary contains columns: surface_type, technology,
