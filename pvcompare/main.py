@@ -31,6 +31,7 @@ def apply_pvcompare(
     mvs_input_directory=None,
     plot=False,
     pv_setup=None,
+    overwrite_grid_costs=True
 ):
     """
     Runs the main functionalities of pvcompare.
@@ -91,11 +92,13 @@ def apply_pvcompare(
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
     # if all([latitude, longitude, country, year]) == False:
-    check_inputs.add_project_data(
+    latitude, longitude, country, year = check_inputs.add_project_data(
         mvs_input_directory, latitude, longitude, country, year
     )
     # add electroicity price specified by country
-    check_inputs.add_electricity_price()
+    if overwrite_grid_costs == True:
+        check_inputs.add_electricity_price(static_input_directory=static_input_directory,
+                                           mvs_input_directory=mvs_input_directory)
 
     # check if weather data already exists
     weather_file = os.path.join(
@@ -127,7 +130,6 @@ def apply_pvcompare(
     # note: chiller was not tested, yet.
     heat_pump_and_chiller.add_sector_coupling(
         mvs_input_directory=mvs_input_directory,
-        static_input_directory=static_input_directory,
         user_input_directory=user_input_directory,
         weather=weather,
         lat=latitude,
@@ -219,10 +221,10 @@ if __name__ == "__main__":
     latitude = 52.5243700  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
 
     longitude = 13.4105300  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
-    year = 2014
+    year = None
     population = 48000
-    country = "Germany"
-    scenario_name = "Scenario_B2"
+    country = None
+    scenario_name = "Scenario_A1"
 
     apply_pvcompare(
         latitude=latitude,
@@ -232,6 +234,6 @@ if __name__ == "__main__":
         country=country,
     )
 
-    apply_mvs(
-        scenario_name=scenario_name, output_directory=None, mvs_input_directory=None
-    )
+    # apply_mvs(
+    #     scenario_name=scenario_name, output_directory=None, mvs_input_directory=None
+    # )

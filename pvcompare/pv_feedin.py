@@ -248,7 +248,7 @@ def create_pv_components(
         # save the file name of the time series and the nominal value to
         # mvs_inputs/elements/csv/energyProduction.csv
         check_inputs.add_parameters_to_energy_production_file(
-            pp_number=i + 1,
+            technology=row["technology"],
             ts_filename=ts_csv,
             nominal_value=nominal_value,
             mvs_input_directory=mvs_input_directory,
