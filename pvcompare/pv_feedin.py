@@ -127,10 +127,6 @@ def create_pv_components(
             "The file pv_setup does not contain all required columns"
             "surface_azimuth, surface_tilt and technology."
         )
-
-    # check if mvs_input/energyProduction.csv contains all power plants
-    check_inputs.check_mvs_energy_production_file(pv_setup, mvs_input_directory)
-
     #  define time series directory
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
