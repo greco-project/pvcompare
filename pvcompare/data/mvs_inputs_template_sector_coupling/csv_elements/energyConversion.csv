@@ -7,7 +7,7 @@ age_installed,year,0,0
 lifetime,year,15,12
 development_costs,currency,0,0
 specific_costs,currency/kW,230,450
-specific_costs_om,currency/kW/year,6,170
+specific_costs_om,currency/kW/year,6,42.5
 dispatch_price,currency/kWh,0,0
 efficiency,factor,0.95,"{'file_name': 'None', 'header': 'no_unit', 'unit': ''}"
 inflow_direction,str,PV bus,Electricity bus
