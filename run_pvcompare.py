@@ -14,7 +14,6 @@ input_directory = None
 mvs_input_directory = None
 pv_setup = None
 output_directory = None
-mvs_input_directory = None
 
 # RUN PVCOMPARE PRE-CALCULATIONS:
 # - calculate PV timeseries
