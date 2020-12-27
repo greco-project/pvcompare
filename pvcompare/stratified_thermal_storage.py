@@ -349,23 +349,6 @@ def add_strat_tes(
                             time_series_directory,
                         )
 
-                # display warning if heat demand seems not to be in energyConsumption.csv
-                energy_consumption = pd.read_csv(
-                    os.path.join(
-                        mvs_input_directory, "csv_elements", "energyConsumption.csv"
-                    ),
-                    header=0,
-                    index_col=0,
-                )
-                if (
-                    not "Heat" in energy_consumption.loc["inflow_direction"].values
-                    and not "heat" in energy_consumption.loc["inflow_direction"].values
-                ):
-                    logging.warning(
-                        "Heat demand might be missing in 'energyConsumption.csv' as non of the "
-                        + "assets' inflow direction is named 'Heat' nor 'heat'."
-                    )
-
 
 def run_stratified_thermal_storage():
     """
