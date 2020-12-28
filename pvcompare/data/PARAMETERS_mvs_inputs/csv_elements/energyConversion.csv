@@ -57,7 +57,7 @@ type_oemof,str,transformer,
 unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
 optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
 maximumCap,None or float,None,and a size of 140m2
-installedCap,kW,0,
+installedCap,kW,0,Page 87
 age_installed,year,0,
 lifetime,year,12,
 development_costs,currency,0,
@@ -75,7 +75,7 @@ type_oemof,str,transformer,
 unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
 optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
 maximumCap,None or float,None,and a size of 140m2
-installedCap,kW,0,
+installedCap,kW,0,Page 87
 age_installed,year,0,
 lifetime,year,12,
 development_costs,currency,0,
@@ -93,7 +93,7 @@ type_oemof,str,transformer,
 unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
 optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
 maximumCap,None or float,None,and a size of 140m2
-installedCap,kW,0,
+installedCap,kW,0,Page 87
 age_installed,year,0,
 lifetime,year,12,
 development_costs,currency,0,
@@ -111,7 +111,7 @@ type_oemof,str,transformer,
 unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
 optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
 maximumCap,None or float,None,and a size of 140m2
-installedCap,kW,0,
+installedCap,kW,0,Page 87
 age_installed,year,0,
 lifetime,year,12,
 development_costs,currency,0,
@@ -129,7 +129,7 @@ type_oemof,str,transformer,
 unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
 optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
 maximumCap,None or float,None,and a size of 140m2
-installedCap,kW,0,
+installedCap,kW,0,Page 89
 age_installed,year,0,
 lifetime,year,18,
 development_costs,currency,0,
@@ -147,7 +147,7 @@ type_oemof,str,transformer,
 unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
 optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
 maximumCap,None or float,None,and a size of 140m2
-installedCap,kW,0,
+installedCap,kW,0,Page 89
 age_installed,year,0,
 lifetime,year,18,
 development_costs,currency,0,
@@ -165,7 +165,7 @@ type_oemof,str,transformer,
 unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
 optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
 maximumCap,None or float,None,and a size of 140m2
-installedCap,kW,0,
+installedCap,kW,0,Page 89
 age_installed,year,0,
 lifetime,year,18,
 development_costs,currency,0,
@@ -183,7 +183,7 @@ type_oemof,str,transformer,
 unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
 optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
 maximumCap,None or float,None,and a size of 140m2
-installedCap,kW,0,
+installedCap,kW,0,Page 89
 age_installed,year,0,
 lifetime,year,18,
 development_costs,currency,0,
@@ -201,7 +201,7 @@ type_oemof,str,transformer,
 unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
 optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
 maximumCap,None or float,None,and a size of 140m2
-installedCap,kW,0,
+installedCap,kW,0,Page 93
 age_installed,year,0,
 lifetime,year,20,
 development_costs,currency,0,
@@ -219,7 +219,7 @@ type_oemof,str,transformer,
 unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
 optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
 maximumCap,None or float,None,and a size of 140m2
-installedCap,kW,0,
+installedCap,kW,0,Page 93
 age_installed,year,0,
 lifetime,year,20,
 development_costs,currency,0,
@@ -237,7 +237,7 @@ type_oemof,str,transformer,
 unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
 optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
 maximumCap,None or float,None,and a size of 140m2
-installedCap,kW,0,
+installedCap,kW,0,Page 93
 age_installed,year,0,
 lifetime,year,20,
 development_costs,currency,0,
@@ -256,7 +256,7 @@ type_oemof,str,transformer,
 unit,str,kW,All data from https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf
 optimizeCap,bool,True,for one family house with annual heat consumption of 16.8 MWh
 maximumCap,None or float,None,and a size of 140m2
-installedCap,kW,0,
+installedCap,kW,0,Page 93
 age_installed,year,0,
 lifetime,year,20,
 development_costs,currency,0,
