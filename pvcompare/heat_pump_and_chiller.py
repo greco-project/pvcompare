@@ -132,7 +132,7 @@ def calculate_cops_and_eers(
 
     # set negative COPs/EERs to nan
     indices = df.loc[df[column_name] < 0].index
-    df[column_name][indices] = 0
+    df[column_name][indices] = np.inf
 
     # extract COPs/EERs as pd.Series from data frame
     efficiency_series = df[column_name]
