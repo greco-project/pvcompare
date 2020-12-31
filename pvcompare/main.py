@@ -97,13 +97,20 @@ def apply_pvcompare(
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
     # add location and year to project data
-    latitude, longitude, country, year = check_inputs.add_location_and_year_to_project_data(
+    (
+        latitude,
+        longitude,
+        country,
+        year,
+    ) = check_inputs.add_location_and_year_to_project_data(
         mvs_input_directory, static_input_directory, latitude, longitude, country, year
     )
     # add electroicity price specified by country
     if overwrite_grid_costs == True:
-        check_inputs.add_electricity_price(static_input_directory=static_input_directory,
-                                           mvs_input_directory=mvs_input_directory)
+        check_inputs.add_electricity_price(
+            static_input_directory=static_input_directory,
+            mvs_input_directory=mvs_input_directory,
+        )
 
     # check if weather data already exists
     weather_file = os.path.join(
@@ -120,10 +127,11 @@ def apply_pvcompare(
 
     # check energyProduction.csv file for the correct pv technology
     check_inputs.overwrite_mvs_energy_production_file(
-                                         mvs_input_directory,
-                                         user_input_directory,
-                                         collections_mvs_input_directory,
-                                         overwrite_pv_parameters)
+        mvs_input_directory,
+        user_input_directory,
+        collections_mvs_input_directory,
+        overwrite_pv_parameters,
+    )
     pv_feedin.create_pv_components(
         lat=latitude,
         lon=longitude,

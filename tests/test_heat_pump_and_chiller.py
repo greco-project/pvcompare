@@ -8,6 +8,7 @@ from pvcompare import heat_pump_and_chiller as hc
 from pvcompare.constants import TEST_DATA_HEAT
 import pvcompare.constants as constants
 
+
 class TestCalculateCopsAndEers:
     @classmethod
     def setup_class(self):
@@ -48,7 +49,9 @@ class TestCalculateCopsAndEers:
 
     @pytest.fixture(scope="function")
     def add_icing_to_csv(self):
-        filename = os.path.join(self.user_input_directory, "heat_pumps_and_chillers.csv")
+        filename = os.path.join(
+            self.user_input_directory, "heat_pumps_and_chillers.csv"
+        )
         original_data = pd.read_csv(filename, header=0, index_col=0)
         data = original_data.copy()
         data["factor_icing"]["heat_pump"] = 0.8
@@ -111,7 +114,9 @@ class TestCalculateCopsAndEers:
         )
         assert os.path.exists(
             os.path.join(
-                self.mvs_input_directory , "time_series", "cops_heat_pump_2018_53.2_13.2.csv"
+                self.mvs_input_directory,
+                "time_series",
+                "cops_heat_pump_2018_53.2_13.2.csv",
             )
         )
 

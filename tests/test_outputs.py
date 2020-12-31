@@ -13,7 +13,6 @@ from pvcompare.outputs import plot_all_flows, plot_kpi_loop, loop_mvs
 from pvcompare import constants
 
 
-
 class TestPlotProfiles:
     @classmethod
     def setup_class(self):
