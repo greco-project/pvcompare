@@ -46,7 +46,7 @@ except ImportError:
 
 
 def calculate_load_profiles(
-    country, storeys, year, weather, input_directory=None, mvs_input_directory=None
+    country, lat, lon, storeys, year, weather, input_directory=None, mvs_input_directory=None
 ):
     """
     Calculates electricity and heat load profiles and saves them to csv.
@@ -87,6 +87,8 @@ def calculate_load_profiles(
             if energyConsumption.at["energyVector", column] == "Heat":
                 calculate_heat_demand(
                     country=country,
+                    lat=lat,
+                    lon=lon,
                     storeys=storeys,
                     year=year,
                     weather=weather,
@@ -219,7 +221,7 @@ def calculate_power_demand(
     )
 
     # define the name of the output file of the time series
-    el_demand_csv = f"electricity_load_{country}_{storeys}_{year}.csv"
+    el_demand_csv = f"electricity_load_{year}_{country}_{storeys}.csv"
 
     filename = os.path.join(timeseries_directory, el_demand_csv)
     shifted_elec_demand.to_csv(filename, index=False)
@@ -237,6 +239,8 @@ def calculate_power_demand(
 
 def calculate_heat_demand(
     country,
+    lat,
+    lon,
     storeys,
     year,
     weather,
@@ -420,7 +424,7 @@ def calculate_heat_demand(
         "being saved under %s." % timeseries_directory
     )
     # define the name of the output file of the time series
-    h_demand_csv = f"heat_load_{country}_{storeys}_{year}.csv"
+    h_demand_csv = f"heat_load_{year}_{lat}_{lon}_{storeys}.csv"
 
     filename = os.path.join(timeseries_directory, h_demand_csv)
 

@@ -28,6 +28,8 @@ class TestDemandProfiles:
         self.country = "France"
         self.storeys = 5
         self.year = 2015
+        self.lat = 40
+        self.lon = 5
         self.test_input_directory = os.path.join(
             os.path.dirname(__file__), "test_data/test_pvcompare_inputs"
         )
@@ -78,7 +80,7 @@ class TestDemandProfiles:
 
     def test_power_demand_exists(self):
 
-        filename = f"electricity_load_{self.country}_{self.storeys}_{self.year}.csv"
+        filename = f"electricity_load_{self.year}_{self.country}_{self.storeys}.csv"
         if os.path.exists(
             os.path.join(self.test_mvs_directory, "time_series", filename)
         ):
@@ -110,7 +112,7 @@ class TestDemandProfiles:
 
     def test_heat_demand_exists(self):
 
-        filename = f"heat_load_{self.country}_{self.storeys}_{self.year}.csv"
+        filename = f"heat_load_{self.year}_{self.lat}_{self.lon}_{self.storeys}.csv"
         if os.path.exists(
             os.path.join(self.test_mvs_directory, "time_series", filename)
         ):
@@ -118,6 +120,8 @@ class TestDemandProfiles:
 
         calculate_heat_demand(
             country=self.country,
+            lat = self.lat,
+            lon = self.lon,
             storeys=self.storeys,
             year=self.year,
             input_directory=self.test_input_directory,
@@ -138,6 +142,8 @@ class TestDemandProfiles:
 
         a = calculate_heat_demand(
             country=self.country,
+            lat=self.lat,
+            lon=self.lon,
             storeys=self.storeys,
             year=self.year,
             input_directory=self.test_input_directory,
@@ -162,6 +168,8 @@ class TestDemandProfiles:
 
         a = calculate_heat_demand(
             country=self.country,
+            lat=self.lat,
+            lon=self.lon,
             storeys=self.storeys,
             year=self.year,
             input_directory=self.test_input_directory,

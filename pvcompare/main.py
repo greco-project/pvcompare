@@ -132,6 +132,8 @@ def apply_pvcompare(
 
     demand.calculate_load_profiles(
         country=country,
+        lat=latitude,
+        lon=longitude,
         storeys=storeys,
         year=year,
         input_directory=input_directory,
