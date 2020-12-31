@@ -185,9 +185,7 @@ def loop_pvcompare(
             # load input parameters from pv_setup.csv
             pv_setup = pd.read_csv(data_path)
             pv_setup.at[0, "technology"] = technology
-            pv_setup.to_csv(
-                data_path, index=False
-            )
+            pv_setup.to_csv(data_path, index=False)
 
             single_loop_pvcompare(
                 storeys=storeys,

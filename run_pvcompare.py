@@ -21,7 +21,7 @@ output_directory = None
 # - calculate electricity and heat demand
 
 main.apply_pvcompare(
-    storeys = storeys,
+    storeys=storeys,
     country=country,
     latitude=latitude,
     longitude=longitude,

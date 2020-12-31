@@ -46,7 +46,14 @@ except ImportError:
 
 
 def calculate_load_profiles(
-    country, lat, lon, storeys, year, weather, input_directory=None, mvs_input_directory=None
+    country,
+    lat,
+    lon,
+    storeys,
+    year,
+    weather,
+    input_directory=None,
+    mvs_input_directory=None,
 ):
     """
     Calculates electricity and heat load profiles and saves them to csv.

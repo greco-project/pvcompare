@@ -120,8 +120,8 @@ class TestDemandProfiles:
 
         calculate_heat_demand(
             country=self.country,
-            lat = self.lat,
-            lon = self.lon,
+            lat=self.lat,
+            lon=self.lon,
             storeys=self.storeys,
             year=self.year,
             input_directory=self.test_input_directory,
