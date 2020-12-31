@@ -68,8 +68,6 @@ def calculate_area_potential(storeys, input_directory, surface_type):
         # 70% of the floor area
         area = (floor_area * number_houses / 100) * 70 * 0.4
 
-    # number of storeys for each building
-
     else:
         # solar panels are only starting from the fourth storey (see Hachem2014)
         if storeys > 3:

@@ -110,7 +110,6 @@ def loop_pvcompare(
     )
 
     if loop_type is "location":
-        step = 1
         for key in loop_dict:
             country = loop_dict[key][0]
             latitude = loop_dict[key][1]
@@ -131,11 +130,9 @@ def loop_pvcompare(
                 step=str(latitude) + "_" + str(longitude),
                 loop_type=loop_type,
             )
-            step += 1
 
     elif loop_type is "year":
 
-        step = 1
         year = loop_dict["start"]
         while year <= loop_dict["stop"]:
 
@@ -154,12 +151,10 @@ def loop_pvcompare(
                 step=year,
                 loop_type=loop_type,
             )
-            step += 1
             year = year + loop_dict["step"]
 
     elif loop_type is "storeys":
 
-        step = 1
         number_of_storeys = loop_dict["start"]
         while number_of_storeys <= loop_dict["stop"]:
 
@@ -180,11 +175,9 @@ def loop_pvcompare(
             )
 
             number_of_storeys = number_of_storeys + loop_dict["step"]
-            step += 1
 
     elif loop_type is "technology":
 
-        step = 1
         for key in loop_dict:
             technology = loop_dict[key]
 
@@ -194,7 +187,7 @@ def loop_pvcompare(
             pv_setup.at[0, "technology"] = technology
             pv_setup.to_csv(
                 data_path, index=False
-            )  # todo: check if saving this is nessecary
+            )
 
             single_loop_pvcompare(
                 storeys=storeys,
@@ -211,10 +204,8 @@ def loop_pvcompare(
                 step=technology,
                 loop_type=loop_type,
             )
-            step += 1
 
     elif loop_type is "hp_temp":
-        step = 1
         temp_high = loop_dict["start"]
 
         data_path = os.path.join(input_directory, "heat_pumps_and_chillers.csv")
@@ -240,7 +231,6 @@ def loop_pvcompare(
                 loop_type=loop_type,
             )
             temp_high = temp_high + loop_dict["step"]
-            step += 1
 
 
 def single_loop_pvcompare(
