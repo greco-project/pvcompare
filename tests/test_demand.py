@@ -28,11 +28,14 @@ class TestDemandProfiles:
         self.country = "France"
         self.population = 4800
         self.year = 2015
-        self.test_input_directory = os.path.join(
-            os.path.dirname(__file__), "test_data/test_pvcompare_inputs"
+        self.user_input_directory = os.path.join(
+            os.path.dirname(__file__), "data/user_inputs/pvcompare_inputs"
+        )
+        self.static_input_directory = os.path.join(
+            os.path.dirname(__file__), "data/static_inputs"
         )
         self.test_mvs_directory = os.path.join(
-            os.path.dirname(__file__), "test_data/test_mvs_inputs"
+            os.path.dirname(__file__), "data/user_inputs/mvs_inputs"
         )
 
         ts = pd.DataFrame()
@@ -59,7 +62,7 @@ class TestDemandProfiles:
         self.weather = weather_df
 
         self.bp = pd.read_csv(
-            os.path.join(self.test_input_directory, "building_parameters.csv"),
+            os.path.join(self.user_input_directory, "building_parameters.csv"),
             index_col=0,
         )
         self.heating_lim_temp = pd.to_numeric(
@@ -87,10 +90,10 @@ class TestDemandProfiles:
             country=self.country,
             population=self.population,
             year=self.year,
-            user_input_directory=self.test_input_directory,
-            static_input_directory=self.test_input_directory,
+            user_input_directory=self.user_input_directory,
+            static_input_directory=self.static_input_directory,
             mvs_input_directory=self.test_mvs_directory,
-            column="demand_01",
+            column="Electricity demand",
         )
         assert os.path.exists(
             os.path.join(self.test_mvs_directory, "time_series", filename)
@@ -102,10 +105,10 @@ class TestDemandProfiles:
             country=self.country,
             population=self.population,
             year=self.year,
-            user_input_directory=self.test_input_directory,
-            static_input_directory=self.test_input_directory,
+            user_input_directory=self.user_input_directory,
+            static_input_directory=self.static_input_directory,
             mvs_input_directory=self.test_mvs_directory,
-            column="demand_01",
+            column="Electricity demand",
         )
 
         assert a["kWh"].sum() == 32666542.239902988
@@ -122,11 +125,11 @@ class TestDemandProfiles:
             country=self.country,
             population=self.population,
             year=self.year,
-            user_input_directory=self.test_input_directory,
-            static_input_directory=self.test_input_directory,
+            user_input_directory=self.user_input_directory,
+            static_input_directory=self.static_input_directory,
             weather=self.weather,
             mvs_input_directory=self.test_mvs_directory,
-            column="demand_02",
+            column="Heat demand",
         )
         assert os.path.exists(
             os.path.join(self.test_mvs_directory, "time_series", filename)
@@ -136,50 +139,50 @@ class TestDemandProfiles:
 
         self.bp["value"].loc["include warm water"] = False
         self.bp.to_csv(
-            os.path.join(self.test_input_directory, "building_parameters.csv")
+            os.path.join(self.user_input_directory, "building_parameters.csv")
         )
 
         a = calculate_heat_demand(
             country=self.country,
             population=self.population,
             year=self.year,
-            user_input_directory=self.test_input_directory,
-            static_input_directory=self.test_input_directory,
+            user_input_directory=self.user_input_directory,
+            static_input_directory=self.static_input_directory,
             weather=self.weather,
             mvs_input_directory=self.test_mvs_directory,
-            column="demand_02",
+            column="Heat demand",
         )
 
         assert a["kWh"].sum() == 10969639.113628691
 
         self.bp["value"].loc["include warm water"] = self.include_ww
         self.bp.to_csv(
-            os.path.join(self.test_input_directory, "building_parameters.csv")
+            os.path.join(self.user_input_directory, "building_parameters.csv")
         )
 
     def test_calculate_heat_demand_with_ww(self):
 
         self.bp["value"].loc["include warm water"] = True
         self.bp.to_csv(
-            os.path.join(self.test_input_directory, "building_parameters.csv")
+            os.path.join(self.user_input_directory, "building_parameters.csv")
         )
 
         a = calculate_heat_demand(
             country=self.country,
             population=self.population,
             year=self.year,
-            user_input_directory=self.test_input_directory,
-            static_input_directory=self.test_input_directory,
+            user_input_directory=self.user_input_directory,
+            static_input_directory=self.static_input_directory,
             weather=self.weather,
             mvs_input_directory=self.test_mvs_directory,
-            column="demand_02",
+            column="Heat demand",
         )
 
         assert a["kWh"].sum() == 11984233.752677418
 
         self.bp["value"].loc["include warm water"] = self.include_ww
         self.bp.to_csv(
-            os.path.join(self.test_input_directory, "building_parameters.csv")
+            os.path.join(self.user_input_directory, "building_parameters.csv")
         )
 
     def test_adjust_heat_demand(self):

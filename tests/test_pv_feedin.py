@@ -38,7 +38,10 @@ class TestPvtime_series:
         weather_df.index = ["2014-07-01 13:00:00+00:00", "2014-07-01 14:00:00+00:00"]
         weather_df.index = pd.to_datetime(weather_df.index, utc=True)
         self.test_mvs_directory = os.path.join(
-            os.path.dirname(__file__), "test_data/test_mvs_inputs"
+            os.path.dirname(__file__), "data/user_inputs/mvs_inputs"
+        )
+        self.user_input_directory = os.path.join(
+            os.path.dirname(__file__), "data/user_inputs/pvcompare_inputs"
         )
         self.weather = weather_df
 
@@ -169,31 +172,13 @@ class TestPvtime_series:
         output = ts.sum()
         assert round(output, 1) == 0.9
 
-    def test_create_create_pv_components_column_missing_in_pvsetup(self):
-        pv_setup_filename = os.path.join(
-            constants.DUMMY_TEST_DATA, "test_pv_setup_missing_column.csv"
-        )
-        pv_setup = pd.read_csv(pv_setup_filename)
-
-        with pytest.raises(ValueError):
-            create_pv_components(
-                self.lat,
-                self.lon,
-                self.weather,
-                self.population,
-                pv_setup=pv_setup,
-                plot=False,
-                user_input_directory=constants.DUMMY_TEST_DATA,
-                mvs_input_directory=self.test_mvs_directory,
-                normalization="NRWC",
-                year=self.year,
-            )
 
     def test_create_create_pv_components_wrong_technology_in_pvsetup(self):
-        pv_setup_filename = os.path.join(
-            constants.DUMMY_TEST_DATA, "test_pv_setup_wrong_technology.csv"
+        pv_setup_filename = os.path.join(self.user_input_directory, "pv_setup.csv"
         )
         pv_setup = pd.read_csv(pv_setup_filename)
+
+        pv_setup.at[1, "technology"] = None
 
         with pytest.raises(ValueError):
             create_pv_components(
@@ -203,17 +188,21 @@ class TestPvtime_series:
                 self.population,
                 pv_setup=pv_setup,
                 plot=False,
-                user_input_directory=constants.DUMMY_TEST_DATA,
+                user_input_directory=self.user_input_directory,
                 mvs_input_directory=self.test_mvs_directory,
                 normalization="NRWC",
                 year=self.year,
             )
+        pv_setup.at[1, "technology"] = "si"
+        pv_setup.to_csv(pv_setup_filename, index=False)
 
     def test_create_create_pv_components_wrong_surface_type_in_pvsetup(self):
-        pv_setup_filename = os.path.join(
-            constants.DUMMY_TEST_DATA, "test_pv_setup_wrong_surface_type.csv"
+        pv_setup_filename = os.path.join(self.user_input_directory, "pv_setup.csv"
         )
         pv_setup = pd.read_csv(pv_setup_filename)
+
+        pv_setup.at[1, "surface_type"] = None
+
 
         with pytest.raises(ValueError):
             create_pv_components(
@@ -223,10 +212,13 @@ class TestPvtime_series:
                 self.population,
                 pv_setup=pv_setup,
                 plot=False,
-                user_input_directory=constants.DUMMY_TEST_DATA,
+                user_input_directory=self.user_input_directory,
                 mvs_input_directory=self.test_mvs_directory,
                 year=self.year,
             )
+
+            pv_setup.at[1, "surface_type"] = "flat_roof"
+            pv_setup.to_csv(pv_setup_filename, index=False)
 
     def test_nominal_values_pv_NSTC_si(self):
 

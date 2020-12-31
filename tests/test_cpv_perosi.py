@@ -37,7 +37,7 @@ class TestPvtime_series:
             start="2014-08-01 09:00", freq="H", periods=2, tz="Europe/Berlin"
         )
         self.test_mvs_directory = os.path.join(
-            os.path.dirname(__file__), "test_data/test_mvs_inputs"
+            os.path.dirname(__file__), "data/user_inputs/mvs_inputs"
         )
         self.weather = weather_df
 

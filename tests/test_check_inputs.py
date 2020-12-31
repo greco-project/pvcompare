@@ -195,6 +195,16 @@ class TestDemandProfiles:
         file.drop(file.columns.difference(['index','unit']), 1, inplace=True)
         file.to_csv(filename)
 
+        #load pv_setup.py
+        pv_setup_filename = os.path.join(self.user_input_directory, "pv_setup.csv"
+        )
+        pv_setup = pd.read_csv(pv_setup_filename)
+
+        pv_setup.at[1, "technology"] = "si"
+        pv_setup.at[2, "technology"] = "cpv"
+        pv_setup.at[3, "technology"] = "psi"
+        pv_setup.to_csv(pv_setup_filename)
+
         # overwrite energyProduction.csv
         overwrite_mvs_energy_production_file(mvs_input_directory=self.mvs_input_directory,
                                              user_input_directory=self.user_input_directory,

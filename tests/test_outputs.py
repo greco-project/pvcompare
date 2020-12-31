@@ -21,7 +21,8 @@ class TestPlotProfiles:
     def setup_class(self):
         """Setup variables for all tests in this class"""
         self.scenario_name = "Test_Scenario"
-        self.output_directory = constants.TEST_DATA_OUTPUT
+        self.output_directory = os.path.join(
+            os.path.dirname(__file__), "data/outputs")
         self.mvs_output_directory = os.path.join(
             self.output_directory, self.scenario_name, "mvs_outputs"
         )
