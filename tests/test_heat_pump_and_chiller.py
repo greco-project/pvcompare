@@ -122,7 +122,9 @@ class TestCalculateCopsAndEers:
     def teardown_method(self):
         # delete file
         filename = os.path.join(
-            self.mvs_input_directory, "time_series", "cops_heat_pump_2018_53.2_13.2_35.0.csv"
+            self.mvs_input_directory,
+            "time_series",
+            "cops_heat_pump_2018_53.2_13.2_35.0.csv",
         )
         if os.path.exists(filename):
             os.remove(filename)
@@ -165,7 +167,9 @@ class TestAddSectorCoupling:
         )
         # no file created
         filename = os.path.join(
-            self.mvs_input_directory, "time_series", "cops_heat_pump_2018_53.2_13.2_35.0.csv"
+            self.mvs_input_directory,
+            "time_series",
+            "cops_heat_pump_2018_53.2_13.2_35.0.csv",
         )
         assert os.path.exists(filename) == False
         # filename in energyConversion.csv does not change
@@ -183,7 +187,9 @@ class TestAddSectorCoupling:
         )
         # file created
         filename = os.path.join(
-            self.mvs_input_directory, "time_series", "cops_heat_pump_2018_53.2_13.2_35.0.csv"
+            self.mvs_input_directory,
+            "time_series",
+            "cops_heat_pump_2018_53.2_13.2_35.0.csv",
         )
         assert os.path.exists(filename) == True
         # filename in energyConversion.csv changed
@@ -204,7 +210,9 @@ class TestAddSectorCoupling:
         )
         # no file created
         filename = os.path.join(
-            self.mvs_input_directory, "time_series", "cops_heat_pump_2018_53.2_13.2_35.0.csv"
+            self.mvs_input_directory,
+            "time_series",
+            "cops_heat_pump_2018_53.2_13.2_35.0.csv",
         )
         assert os.path.exists(filename) == False
         # check efficiency
@@ -228,7 +236,9 @@ class TestAddSectorCoupling:
     def teardown_method(self):
         # delete file
         filename = os.path.join(
-            self.mvs_input_directory, "time_series", "cops_heat_pump_2018_53.2_13.2_35.0.csv"
+            self.mvs_input_directory,
+            "time_series",
+            "cops_heat_pump_2018_53.2_13.2_35.0.csv",
         )
         if os.path.exists(filename):
             os.remove(filename)

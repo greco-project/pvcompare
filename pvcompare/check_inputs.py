@@ -265,7 +265,7 @@ def overwrite_mvs_energy_production_file(
     mvs_input_directory,
     user_input_directory,
     overwrite_pv_parameters,
-    collections_mvs_input_directory = None,
+    collections_mvs_input_directory=None,
 ):
     """
     Inserts default values for PV technologies defined in pv_setup.csv
@@ -298,7 +298,9 @@ def overwrite_mvs_energy_production_file(
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
     if collections_mvs_input_directory is None:
-        collections_mvs_input_directory=constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY
+        collections_mvs_input_directory = (
+            constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY
+        )
     filename = os.path.join(mvs_input_directory, "csv_elements/" "energyProduction.csv")
     user_input_ep = pd.read_csv(filename, index_col=0)
 
