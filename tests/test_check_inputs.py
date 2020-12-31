@@ -189,10 +189,10 @@ class TestDemandProfiles:
         pv_setup_filename = os.path.join(self.user_input_directory, "pv_setup.csv")
         pv_setup = pd.read_csv(pv_setup_filename)
 
-        pv_setup.at[1, "technology"] = "si"
-        pv_setup.at[2, "technology"] = "cpv"
-        pv_setup.at[3, "technology"] = "psi"
-        pv_setup.to_csv(pv_setup_filename)
+        pv_setup.at[0, "technology"] = "si"
+        pv_setup.at[1, "technology"] = "cpv"
+        pv_setup.at[2, "technology"] = "psi"
+        pv_setup.to_csv(pv_setup_filename, index=None)
 
         # overwrite energyProduction.csv
         overwrite_mvs_energy_production_file(

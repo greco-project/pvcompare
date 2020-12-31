@@ -187,8 +187,6 @@ class TestPvtime_series:
                 normalization="NRWC",
                 year=self.year,
             )
-        pv_setup.at[1, "technology"] = "si"
-        pv_setup.to_csv(pv_setup_filename, index=False)
 
     def test_create_create_pv_components_wrong_surface_type_in_pvsetup(self):
         pv_setup_filename = os.path.join(self.user_input_directory, "pv_setup.csv")
@@ -209,8 +207,6 @@ class TestPvtime_series:
                 year=self.year,
             )
 
-            pv_setup.at[1, "surface_type"] = "flat_roof"
-            pv_setup.to_csv(pv_setup_filename, index=False)
 
     def test_nominal_values_pv_NSTC_si(self):
 
