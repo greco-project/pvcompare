@@ -109,14 +109,14 @@ class TestCalculateCopsAndEers:
         )
         assert os.path.exists(
             os.path.join(
-                TEST_DATA_HEAT, "time_series", "cops_heat_pump_2018_53.2_13.2.csv"
+                TEST_DATA_HEAT, "time_series", "cops_heat_pump_2018_53.2_13.2_35.0.csv"
             )
         )
 
     def teardown_method(self):
         # delete file
         filename = os.path.join(
-            TEST_DATA_HEAT, "time_series", "cops_heat_pump_2018_53.2_13.2.csv"
+            TEST_DATA_HEAT, "time_series", "cops_heat_pump_2018_53.2_13.2_35.0.csv"
         )
         if os.path.exists(filename):
             os.remove(filename)
@@ -175,13 +175,13 @@ class TestAddSectorCoupling:
         )
         # file created
         filename = os.path.join(
-            TEST_DATA_HEAT, "time_series", "cops_heat_pump_2018_53.2_13.2.csv"
+            TEST_DATA_HEAT, "time_series", "cops_heat_pump_2018_53.2_13.2_35.0.csv"
         )
         assert os.path.exists(filename) == True
         # filename in energyConversion.csv changed
         df = pd.read_csv(self.filename_conversion, header=0, index_col=0)
         assert (
-            "cops_heat_pump_2018_53.2_13.2.csv"
+            "cops_heat_pump_2018_53.2_13.2_35.0.csv"
             in df.loc["efficiency"].heat_pump_file_non_existent
         ) == True
 
@@ -196,7 +196,7 @@ class TestAddSectorCoupling:
         )
         # no file created
         filename = os.path.join(
-            TEST_DATA_HEAT, "time_series", "cops_heat_pump_2018_53.2_13.2.csv"
+            TEST_DATA_HEAT, "time_series", "cops_heat_pump_2018_53.2_13.2_35.0.csv"
         )
         assert os.path.exists(filename) == False
         # check efficiency
@@ -220,7 +220,7 @@ class TestAddSectorCoupling:
     def teardown_method(self):
         # delete file
         filename = os.path.join(
-            TEST_DATA_HEAT, "time_series", "cops_heat_pump_2018_53.2_13.2.csv"
+            TEST_DATA_HEAT, "time_series", "cops_heat_pump_2018_53.2_13.2_35.0.csv"
         )
         if os.path.exists(filename):
             os.remove(filename)

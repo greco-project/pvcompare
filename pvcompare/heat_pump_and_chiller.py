@@ -79,6 +79,7 @@ def calculate_cops_and_eers(
         )
     # prepare parameters for calc_cops
     low_temperature = float(parameters.temp_low)
+    high_temp = float(parameters.temp_high)
     high_temperature = [float(parameters.temp_high)]
     quality_grade = float(parameters.quality_grade)
 
@@ -87,7 +88,7 @@ def calculate_cops_and_eers(
 
     # create add on to filename (year, lat, lon)
     year = maya.parse(weather.index[int(len(weather) / 2)]).datetime().year
-    add_on = f"_{year}_{lat}_{lon}_{high_temperature}"
+    add_on = f"_{year}_{lat}_{lon}_{high_temp}"
 
     # calculate COPs or EERs with oemof thermal
     if mode == "heat_pump":
