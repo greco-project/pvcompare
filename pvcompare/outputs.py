@@ -696,7 +696,7 @@ if __name__ == "__main__":
     latitude = 52.5243700
     longitude = 13.4105300
     year = 2014  # a year between 2011-2013!!!
-    storeys = 48000
+    storeys = 5
     country = "Germany"
     scenario_name = "Scenario_Y1"
     output_directory = constants.TEST_DATA_OUTPUT
