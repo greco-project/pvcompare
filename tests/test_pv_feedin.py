@@ -207,7 +207,6 @@ class TestPvtime_series:
                 year=self.year,
             )
 
-
     def test_nominal_values_pv_NSTC_si(self):
 
         technology = "si"
