@@ -1,0 +1,5 @@
+Unnamed: 0,Unnamed: 0.1,Unnamed: 0.1.1,Unnamed: 0.1.1.1,Unnamed: 0.1.1.1.1,Unnamed: 0.1.1.1.1.1,Unnamed: 0.1.1.1.1.1.1,Unnamed: 0.1.1.1.1.1.1.1,Unnamed: 0.1.1.1.1.1.1.1.1,Unnamed: 0.1.1.1.1.1.1.1.1.1,Unnamed: 0.1.1.1.1.1.1.1.1.1.1,Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1,Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1,Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1,surface_type,surface_azimuth,surface_tilt,technology
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,flat_roof,180.0,optimal,si
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,flat_roof,180.0,optimal,si
+2,2,2,2,2,2,2,2,2,2,2,2,2,2,flat_roof,180.0,optimal,cpv
+3,3,3,3,3,3,3,3,3,3,3,3,3,3,,,,psi
