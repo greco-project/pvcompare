@@ -21,8 +21,6 @@ from pvcompare.check_inputs import (
     add_parameters_to_energy_production_file,
     add_file_name_to_energy_consumption_file,
     add_evaluated_period_to_simulation_settings,
-    add_parameter_to_mvs_file,
-    load_parameter_from_mvs_file,
 )
 
 
@@ -42,9 +40,6 @@ class TestDemandProfiles:
         self.static_input_directory = os.path.join(
             os.path.dirname(__file__), "data/static_inputs/"
         )
-        self.check_inputs_directory = os.path.join(
-            os.path.dirname(__file__), "test_data/inputs_for_check_inputs/"
-        )
         self.user_input_collection= os.path.join(
             os.path.dirname(__file__), "data/user_inputs_collection"
         )
@@ -54,8 +49,16 @@ class TestDemandProfiles:
     def test_add_scenario_name_to_project_data(self):
         """ """
         scenario_name = "Test_scenario_check_inputs"
+        # set scenario Name to None
+        project_data = pd.read_csv(
+            os.path.join(self.mvs_input_directory, "csv_elements/project_data.csv"),
+            index_col=0,
+        )
+        project_data.at["scenario_name", "project_data"] = None
+
         add_scenario_name_to_project_data(mvs_input_directory=self.mvs_input_directory,
                                           scenario_name=scenario_name)
+        # check project_data
         project_data = pd.read_csv(
             os.path.join(self.mvs_input_directory, "csv_elements/project_data.csv"),
             index_col=0,
@@ -65,6 +68,7 @@ class TestDemandProfiles:
         assert mvs_scenario_name == scenario_name
 
     def test_add_location_and_year_to_project_data(self):
+
             list = add_location_and_year_to_project_data(
                 mvs_input_directory=self.mvs_input_directory,
                 static_input_directory=self.static_input_directory,
@@ -76,19 +80,29 @@ class TestDemandProfiles:
             assert list == (self.lat, self.lon, self.country, self.year)
 
     def test_add_location_and_year_to_project_data_set_location(self):
+            """ """
+            # load project_data
+            filename = os.path.join(self.mvs_input_directory,
+                                    "csv_elements/project_data.csv")
+            file = pd.read_csv(filename,
+                               index_col=0,
+                               header=0,
+                               )
+            file.at["country", "project_data"] = "Spain"
+            file.at["latitude", "project_data"] = 40.0
+            file.at["longitude", "project_data"] = 5.2
+
+            file.to_csv(filename)
+
             list = add_location_and_year_to_project_data(
-                mvs_input_directory=self.check_inputs_directory,
+                mvs_input_directory=self.mvs_input_directory,
                 static_input_directory=self.static_input_directory,
                 latitude=None,
                 longitude=None,
                 country=None,
                 year=None,
             )
-            lat = 40.0
-            lon=5.2
-            country="Spain"
-            year = 2014
-            assert list == (lat, lon, country, year)
+            assert list == (40.0, 5.2, "Spain", 2014)
 
     def test_check_for_valid_country(self):
         with pytest.raises(ValueError):
@@ -130,23 +144,28 @@ class TestDemandProfiles:
 
     def test_add_electricity_price(self):
         """ """
+        filename = os.path.join(
+            self.mvs_input_directory, "csv_elements/", "energyProviders.csv"
+        )
+        file = pd.read_csv(filename, index_col=0)
+
+        file.at["energy_price", "DSO"]= 0.2403
+        file.to_csv(filename)
+
         add_electricity_price(
-            mvs_input_directory=self.check_inputs_directory,
+            mvs_input_directory=self.mvs_input_directory,
             static_input_directory=self.static_input_directory,
         )
         # load csv
-        filename1 = os.path.join(
-            self.mvs_input_directory, "csv_elements/", "energyProviders.csv"
-        )
-        energyProviders = pd.read_csv(filename1, index_col=0)
-        electricity_price = energyProviders.at["energy_price", "DSO"]
+        file = pd.read_csv(filename, index_col=0)
+        electricity_price = file.at["energy_price", "DSO"]
 
         assert float(electricity_price) == 0.2403
 
     def test_overwrite_mvs_energy_production_file_overwrite_is_false(self):
 
         file = pd.read_csv(
-            os.path.join(self.check_inputs_directory,
+            os.path.join(self.mvs_input_directory,
                          "csv_elements/energyProduction.csv"),
             index_col=0,
             header=0,
@@ -154,21 +173,117 @@ class TestDemandProfiles:
         file.at["latitude", "project_data"] = None
         file.to_csv(
             os.path.join(self.mvs_input_directory,
-                         "csv_elements/project_data.csv")
+                         "csv_elements/energyProduction.csv")
         )
 
         with pytest.raises(ValueError):
-            overwrite_mvs_energy_production_file(mvs_input_directory=self.check_inputs_directory,
-                                                 user_input_directory=self.check_inputs_directory,
+            overwrite_mvs_energy_production_file(mvs_input_directory=self.mvs_input_directory,
+                                                 user_input_directory=self.user_input_directory,
                                                  collections_mvs_input_directory=self.user_input_collection,
                                                  overwrite_pv_parameters=False)
 
     def test_overwrite_mvs_energy_production_file(self):
         """ """
-        overwrite_mvs_energy_production_file(mvs_input_directory=self.check_inputs_directory,
-                                             user_input_directory=self.check_inputs_directory,
+        # load energyProduction.csv
+        filename = os.path.join(self.mvs_input_directory,
+                         "csv_elements/energyProduction.csv")
+        file = pd.read_csv(filename,
+            index_col=0,
+            header=0,
+        )
+        #delete all columns
+        file.drop(file.columns.difference(['index','unit']), 1, inplace=True)
+        file.to_csv(filename)
+
+        # overwrite energyProduction.csv
+        overwrite_mvs_energy_production_file(mvs_input_directory=self.mvs_input_directory,
+                                             user_input_directory=self.user_input_directory,
                                              collections_mvs_input_directory=self.user_input_collection,
                                              overwrite_pv_parameters=True)
+        # load energyProduction.csv
+        file = pd.read_csv(filename,
+            index_col=0,
+            header=0,
+        )
+
+        assert set(["PV si","PV cpv","PV psi"]).issubset(file.columns)
 
 
+    def test_add_parameters_to_energy_production_file(self):
+        """ """
+
+        filename = os.path.join(self.mvs_input_directory,
+                         "csv_elements/energyProduction.csv")
+        file = pd.read_csv(filename,
+            index_col=0,
+            header=0,
+        )
+        test_filename = "test_csv.csv"
+        technology = "si"
+        file.at["maximumCap", "PV " + technology] = None
+        file.at["file_name", "PV " + technology] = None
+        file.to_csv(filename)
+
+        add_parameters_to_energy_production_file(
+            technology, ts_filename=test_filename, nominal_value=1000, mvs_input_directory=self.mvs_input_directory)
+        file2 = pd.read_csv(filename,
+            index_col=0,
+            header=0,
+        )
+        maxcap = int(file2.at["maximumCap", "PV " + technology])
+
+        assert maxcap == 1000
+        assert file2.at["file_name", "PV " + technology] == test_filename
+
+    def test_add_file_name_to_energy_consumption_file(self):
+        """ """
+        filename= os.path.join(self.mvs_input_directory,
+                         "csv_elements/energyConsumption.csv")
+        file = pd.read_csv(filename,
+            index_col=0,
+            header=0,
+        )
+        file.at["file_name", "Electricity demand"] = None
+        file.to_csv(filename)
+
+        add_file_name_to_energy_consumption_file(
+            column = "Electricity demand", ts_filename = "test_demand.csv",
+            mvs_input_directory=self.mvs_input_directory
+        )
+
+        file2 = pd.read_csv(filename,
+            index_col=0,
+            header=0,
+        )
+
+        assert file2.at["file_name", "Electricity demand"] == "test_demand.csv"
+
+
+    def test_add_evaluated_period_to_simulation_settings(self):
+        """ """
+
+        filename = os.path.join(self.mvs_input_directory, "csv_elements",
+                         "simulation_settings.csv")
+        file = pd.read_csv(filename,
+                           index_col=0,
+                           header=0,
+                           )
+        file.at["evaluated_period", "simulation_settings"] = None
+        file.to_csv(filename)
+
+        ts_file = os.path.join(self.mvs_input_directory, "time_series", "si_180_38_2014_52.52437_13.41053.csv")
+
+        ts = pd.read_csv(ts_file,
+                           index_col=0,
+                           header=0,
+                           )
+        add_evaluated_period_to_simulation_settings(time_series=ts,
+                                                    mvs_input_directory=self.mvs_input_directory)
+
+        file = pd.read_csv(filename,
+                           index_col=0,
+                           header=0,
+                           )
+
+        assert int(file.at["evaluated_period", "simulation_settings"]) == len(ts.index)/24
 

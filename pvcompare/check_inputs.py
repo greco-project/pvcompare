@@ -315,7 +315,7 @@ def overwrite_mvs_energy_production_file(mvs_input_directory,
             collections_mvs_input_directory = \
                 constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY
         collection_filename = os.path.join(
-            collections_mvs_input_directory, "csv_elements/",
+            collections_mvs_input_directory, "mvs_inputs", "csv_elements",
             "energyProduction.csv"
         )
         collection_ep = pd.read_csv(collection_filename,
