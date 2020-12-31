@@ -44,7 +44,7 @@ def create_pv_components(
     lat,
     lon,
     weather,
-    population,
+    storeys,
     year,
     pv_setup=None,
     plot=True,
@@ -71,8 +71,8 @@ def create_pv_components(
         latitude
     lon: float
         longitude
-    population: num
-        population
+    storeys: num
+        number of storeys
     pv_setup: dict or None
         Specifies the PV technologies and their installation details used in the
         simulation. The dictionary contains columns: surface_type, technology,
@@ -127,6 +127,10 @@ def create_pv_components(
             "The file pv_setup does not contain all required columns"
             "surface_azimuth, surface_tilt and technology."
         )
+
+    # check if mvs_input/energyProduction.csv contains all power plants
+    check_inputs.check_mvs_energy_production_file(pv_setup, mvs_input_directory)
+
     #  define time series directory
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
@@ -229,7 +233,7 @@ def create_pv_components(
             )
         else:
             area = area_potential.calculate_area_potential(
-                population, user_input_directory, surface_type=row["surface_type"]
+                storeys, user_input_directory, surface_type=row["surface_type"]
             )
 
         # calculate nominal value of the powerplant

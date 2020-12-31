@@ -47,7 +47,9 @@ except ImportError:
 
 def calculate_load_profiles(
     country,
-    population,
+    lat,
+    lon,
+    storeys,
     year,
     weather,
     static_input_directory=None,
@@ -101,7 +103,9 @@ def calculate_load_profiles(
             if energyConsumption.at["energyVector", column] == "Heat":
                 calculate_heat_demand(
                     country=country,
-                    population=population,
+                    lat=lat,
+                    lon=lon,
+                    storeys=storeys,
                     year=year,
                     weather=weather,
                     static_input_directory=static_input_directory,
@@ -112,7 +116,7 @@ def calculate_load_profiles(
             elif energyConsumption.at["energyVector", column] == "Electricity":
                 calculate_power_demand(
                     country=country,
-                    population=population,
+                    storeys=storeys,
                     year=year,
                     static_input_directory=static_input_directory,
                     user_input_directory=user_input_directory,
@@ -129,7 +133,7 @@ def calculate_load_profiles(
 
 def calculate_power_demand(
     country,
-    population,
+    storeys,
     year,
     column,
     static_input_directory=None,
@@ -147,7 +151,8 @@ def calculate_power_demand(
        [2]
     2) the population of the country is requested from EUROSTAT_population
     3) the total residential demand is divided by the countries population and
-       multiplied by the districts population
+       multiplied by the districts population that is calulated by the number of
+       storeys and the number of people per storey
     4) The load profile is shifted due to country specific behaviour
 
     [2] https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use
@@ -156,8 +161,8 @@ def calculate_power_demand(
     ----------
     country: str
         The country's name has to be in English and with capital first letter.
-    population: int
-        The district population.
+    storeys: int
+        The number of storeys of the houses.
     year: int
         Year for which power demand time series is calculated. # todo needs to be between 2011 - 2015 like above?
     column: str
@@ -203,6 +208,10 @@ def calculate_power_demand(
     ]
     filename_population = bp.at["filename_country_population", "value"]
 
+    population_per_storey = int(bp.at["population per storey", "value"])
+    number_of_houses = int(bp.at["number of houses", "value"])
+    population = storeys * population_per_storey * number_of_houses
+
     filename_elec = os.path.join(
         static_input_directory, filename_residential_electricity_demand
     )
@@ -245,7 +254,7 @@ def calculate_power_demand(
     )
 
     # define the name of the output file of the time series
-    el_demand_csv = f"electricity_load_{country}_{population}_{year}.csv"
+    el_demand_csv = f"electricity_load_{year}_{country}_{storeys}.csv"
 
     filename = os.path.join(timeseries_directory, el_demand_csv)
     shifted_elec_demand.to_csv(filename, index=False)
@@ -263,7 +272,9 @@ def calculate_power_demand(
 
 def calculate_heat_demand(
     country,
-    population,
+    lat,
+    lon,
+    storeys,
     year,
     weather,
     column,
@@ -272,15 +283,16 @@ def calculate_heat_demand(
     mvs_input_directory=None,
 ):
     """
-    Calculates heat demand profile for `population` and `country`.
+    Calculates heat demand profile for `storeys` and `country`.
 
-    The heat demand is calculated for a given population in a certain country
+    The heat demand is calculated for a given number of houses with a given number of storeys in a certain country
     and year. The annual heat demand is calculated by the following procedure:
 
     1) the residential heat demand for a country is requested from [2]
     2) the population of the country is requested from EUROSTAT_population
     3) the total residential demand is devided by the countries population and
-       multiplied by the districts population
+       multiplied by the districts population that is calculated by the storeys
+       of the house and the number of people in one storey
     4) The load profile is shifted due to countrys specific behaviour
 
     [2] https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use
@@ -289,8 +301,8 @@ def calculate_heat_demand(
     ----------
     country: str
         The country's name has to be in English and with capital first letter.
-    population: int
-        The district population.
+    storeys: int
+        Number of storeys of the houses.
     year: int
         Year for which heat demand time series is calculated. # todo needs to be between 2011 - 2015 like above?
     column: str
@@ -355,6 +367,9 @@ def calculate_heat_demand(
     filename_electr_WH = os.path.join(
         static_input_directory, bp.at["filename_elect_WH", "value"]
     )
+    population_per_storey = int(bp.at["population per storey", "value"])
+    number_of_houses = int(bp.at["number of houses", "value"])
+    population = storeys * population_per_storey * number_of_houses
 
     total_SH = pd.read_csv(filename_total_SH, sep=":", index_col=0, header=1)
     total_WH = pd.read_csv(filename_total_WH, sep=":", index_col=0, header=1)
@@ -453,7 +468,7 @@ def calculate_heat_demand(
         "being saved under %s." % timeseries_directory
     )
     # define the name of the output file of the time series
-    h_demand_csv = f"heat_load_{country}_{population}_{year}.csv"
+    h_demand_csv = f"heat_load_{year}_{lat}_{lon}_{storeys}.csv"
 
     filename = os.path.join(timeseries_directory, h_demand_csv)
 

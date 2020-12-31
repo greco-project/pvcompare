@@ -21,8 +21,8 @@ class TestCalculateAreaPotential:
     def test_storeys_of_calculate_area_potential(self):
 
         a = calculate_area_potential(
-            population=6000,
+            storeys=5,
             user_input_directory=self.user_input_directory,
             surface_type="flat_roof",
         )
-        assert a == 24640.0
+        assert a == 197120.0
