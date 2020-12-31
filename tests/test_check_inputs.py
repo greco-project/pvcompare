@@ -11,6 +11,7 @@ https://docs.python.org/3/library/unittest.html are also good support.
 import pandas as pd
 import os
 import pytest
+import pvcompare.constants as constants
 
 from pvcompare.check_inputs import (
     add_scenario_name_to_project_data,
@@ -31,18 +32,10 @@ class TestDemandProfiles:
         self.year = 2014
         self.lat = 40.0
         self.lon = 5.2
-        self.mvs_input_directory = os.path.join(
-            os.path.dirname(__file__), "data/user_inputs/mvs_inputs"
-        )
-        self.user_input_directory = os.path.join(
-            os.path.dirname(__file__), "data/user_inputs/pvcompare_inputs"
-        )
-        self.static_input_directory = os.path.join(
-            os.path.dirname(__file__), "data/static_inputs/"
-        )
-        self.user_input_collection= os.path.join(
-            os.path.dirname(__file__), "data/user_inputs_collection"
-        )
+        self.mvs_input_directory = constants.TEST_USER_INPUTS_MVS
+        self.user_input_directory = constants.TEST_USER_INPUTS_PVCOMPARE
+        self.static_input_directory = constants.TEST_STATIC_INPUTS
+        self.user_input_collection= constants.TEST_COLLECTION_MVS_INPUTS_DIRECTORY
         data_path = os.path.join(self.user_input_directory, "pv_setup.csv")
         self.pv_setup = pd.read_csv(data_path)
 

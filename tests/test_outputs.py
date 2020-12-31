@@ -9,11 +9,9 @@ https://docs.python.org/3/library/unittest.html are also good support.
 """
 
 import os
-import pytest
-import logging
 from pvcompare.outputs import plot_all_flows, plot_kpi_loop, loop_mvs
 from pvcompare import constants
-import shutil
+
 
 
 class TestPlotProfiles:
@@ -21,8 +19,7 @@ class TestPlotProfiles:
     def setup_class(self):
         """Setup variables for all tests in this class"""
         self.scenario_name = "Test_Scenario"
-        self.output_directory = os.path.join(
-            os.path.dirname(__file__), "data/outputs")
+        self.output_directory = constants.TEST_OUTPUT_DIRECTORY
         self.mvs_output_directory = os.path.join(
             self.output_directory, self.scenario_name, "mvs_outputs"
         )

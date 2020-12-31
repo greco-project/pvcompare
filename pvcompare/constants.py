@@ -19,4 +19,14 @@ DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY = os.path.join(
 DEFAULT_OUTPUT_DIRECTORY = os.path.join(os.path.dirname(__file__), "data/outputs")
 
 # test directories
+TEST_OUTPUT_DIRECTORY = os.path.join(REPO_PATH, "tests/data/outputs"
+        )
+TEST_USER_INPUTS_PVCOMPARE = os.path.join(REPO_PATH, "tests/data/user_inputs/pvcompare_inputs"
+        )
+TEST_USER_INPUTS_MVS = os.path.join(REPO_PATH, "tests/data/user_inputs/mvs_inputs"
+        )
+TEST_STATIC_INPUTS = os.path.join(REPO_PATH, "tests/data/static_inputs"
+        )
+TEST_COLLECTION_MVS_INPUTS_DIRECTORY = os.path.join(REPO_PATH, "tests/data/user_inputs_collection/mvs_inputs")
+
 TEST_DATA_HEAT = os.path.join(REPO_PATH, "tests/test_data/test_inputs_heat")

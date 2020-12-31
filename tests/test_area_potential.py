@@ -9,15 +9,14 @@ https://docs.python.org/3/library/unittest.html are also good support.
 """
 
 import os
+import pvcompare.constants as constants
 from pvcompare.area_potential import calculate_area_potential
 
 
 class TestCalculateAreaPotential:
     @classmethod
     def setup_class(self):
-        self.user_input_directory = os.path.join(
-            os.path.dirname(__file__), "data/user_inputs/pvcompare_inputs/"
-        )
+        self.user_input_directory = constants.TEST_USER_INPUTS_PVCOMPARE
 
     def test_storeys_of_calculate_area_potential(self):
 

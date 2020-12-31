@@ -11,6 +11,7 @@ https://docs.python.org/3/library/unittest.html are also good support.
 import pandas as pd
 import os
 import numpy as np
+import pvcompare.constants as constants
 
 from pvcompare.demand import (
     calculate_power_demand,
@@ -28,15 +29,9 @@ class TestDemandProfiles:
         self.country = "France"
         self.population = 4800
         self.year = 2015
-        self.user_input_directory = os.path.join(
-            os.path.dirname(__file__), "data/user_inputs/pvcompare_inputs"
-        )
-        self.static_input_directory = os.path.join(
-            os.path.dirname(__file__), "data/static_inputs"
-        )
-        self.test_mvs_directory = os.path.join(
-            os.path.dirname(__file__), "data/user_inputs/mvs_inputs"
-        )
+        self.user_input_directory = constants.TEST_USER_INPUTS_PVCOMPARE
+        self.static_input_directory = constants.TEST_STATIC_INPUTS
+        self.test_mvs_directory = constants.TEST_USER_INPUTS_MVS
 
         ts = pd.DataFrame()
         ts["h0"] = [19052, 19052, 14289, 19052, 19052, 14289]

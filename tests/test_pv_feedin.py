@@ -37,12 +37,8 @@ class TestPvtime_series:
         weather_df["precipitable_water"] = [1, 2]
         weather_df.index = ["2014-07-01 13:00:00+00:00", "2014-07-01 14:00:00+00:00"]
         weather_df.index = pd.to_datetime(weather_df.index, utc=True)
-        self.test_mvs_directory = os.path.join(
-            os.path.dirname(__file__), "data/user_inputs/mvs_inputs"
-        )
-        self.user_input_directory = os.path.join(
-            os.path.dirname(__file__), "data/user_inputs/pvcompare_inputs"
-        )
+        self.test_mvs_directory = constants.TEST_USER_INPUTS_MVS
+        self.user_input_directory = constants.TEST_USER_INPUTS_PVCOMPARE
         self.weather = weather_df
 
         self.population = 4600
