@@ -247,7 +247,7 @@ def calculate_heat_demand(
     """
     Calculates heat demand profile for `storeys` and `country`.
 
-    The heat demand is calculated for a given number of storeys in a certain country
+    The heat demand is calculated for a given number of houses with a given number of storeys in a certain country
     and year. The annual heat demand is calculated by the following procedure:
 
     1) the residential heat demand for a country is requested from [2]
