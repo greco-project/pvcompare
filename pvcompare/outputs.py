@@ -690,10 +690,14 @@ if __name__ == "__main__":
     mvs_input_directory = os.path.join(
         constants.TEST_DATA_DIRECTORY, "test_inputs_loop_mvs"
     )
-    # loop_dict_location = {"step1": (country, latitude, longitude), "step2": (country, latitude, longitude)}
-    loop_dict_storeys = {"start": 3, "stop": 5, "step": 1}
-    loop_dict_technologies = {"step1": "cpv", "step2": "si", "step3": "psi"}
-    loop_dict_hp_temp = {"start": 15, "stop": 25, "step": 5}
+    loop_type = "hp_temp"
+
+    if loop_type == "storeys":
+        loop_dict = {"start": 3, "stop": 5, "step": 1}
+    elif loop_type == "technologies":
+        loop_dict = {"step1": "cpv", "step2": "si", "step3": "psi"}
+    elif loop_type == "hp_temp":
+        loop_dict = {"start": 15, "stop": 25, "step": 5}
 
     # loop_pvcompare(
     #     scenario_name,
@@ -702,8 +706,8 @@ if __name__ == "__main__":
     #     year,
     #     storeys,
     #     country,
-    #     loop_type="hp_temp",
-    #     loop_dict=loop_dict_hp_temp,
+    #     loop_type=loop_type,
+    #     loop_dict=loop_dict,
     #     mvs_input_directory=None,
     #     output_directory=None,
     #     input_directory=None,
