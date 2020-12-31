@@ -201,15 +201,13 @@ def add_sector_coupling(
         user_input_directory = constants.DEFAULT_USER_INPUT_DIRECTORY
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
-    if input_directory is None:
-        input_directory = constants.DEFAULT_INPUT_DIRECTORY
     energy_conversion = pd.read_csv(
         os.path.join(mvs_input_directory, "csv_elements", "energyConversion.csv"),
         header=0,
         index_col=0,
     )
     heat_pump_and_chillers = pd.read_csv(
-        os.path.join(input_directory, "heat_pumps_and_chillers.csv"),
+        os.path.join(user_input_directory, "heat_pumps_and_chillers.csv"),
         header=0,
         index_col=0,
     )

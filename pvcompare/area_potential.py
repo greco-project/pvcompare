@@ -14,7 +14,7 @@ except ImportError:
     plt = None
 
 
-def calculate_area_potential(storeys, input_directory, surface_type):
+def calculate_area_potential(storeys, user_input_directory, surface_type):
 
     """
     Calculates the area potential.

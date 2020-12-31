@@ -5,7 +5,6 @@ import os
 from pandas.util.testing import assert_series_equal
 
 from pvcompare import heat_pump_and_chiller as hc
-from pvcompare.constants import TEST_DATA_HEAT
 import pvcompare.constants as constants
 
 
@@ -116,14 +115,14 @@ class TestCalculateCopsAndEers:
             os.path.join(
                 self.mvs_input_directory,
                 "time_series",
-                "cops_heat_pump_2018_53.2_13.2_35.0",
+                "cops_heat_pump_2018_53.2_13.2_35.0.csv",
             )
         )
 
     def teardown_method(self):
         # delete file
         filename = os.path.join(
-            self.mvs_input_directory, "time_series", "cops_heat_pump_2018_53.2_13.2_35.0"
+            self.mvs_input_directory, "time_series", "cops_heat_pump_2018_53.2_13.2_35.0.csv"
         )
         if os.path.exists(filename):
             os.remove(filename)

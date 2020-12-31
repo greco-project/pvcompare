@@ -27,6 +27,8 @@ class TestDemandProfiles:
     def setup_class(self):
         """Setup variables for all tests in this class"""
         self.country = "France"
+        self.lat = 40.0
+        self.lon = 5.0
         self.storeys = 5
         self.year = 2015
         self.user_input_directory = constants.TEST_USER_INPUTS_PVCOMPARE
