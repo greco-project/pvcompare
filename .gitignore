@@ -85,15 +85,13 @@ celerybeat-schedule
 # outputs
 pvcompare/data/outputs/*
 
-# energyProviders.csv used in test_check_inputs.py
-pvcompare/tests/test_data/test_mvs_inputs/csv_elements/energyProviders.csv
-
-# time series for mvs input
+# user inputs
 pvcompare/data/user_inputs/
 
-# tests for plots.py
-pvcompare/tests/test_data/test_outputs/**/*.png
-
+# test outputs
+pvcompare/tests/data/outputs/**/*.png
 # tests for plots.py
 pvcompare/tests/test_data/test_outputs/Test_Scenario/mvs_outputs_loop_specific_costs_500/inputs/*
 pvcompare/tests/test_data/test_outputs/Test_Scenario/mvs_outputs_loop_specific_costs_600/inputs/*
+# test timeseries
+/tests/data/user_inputs/mvs_inputs/time_series/*.csv
