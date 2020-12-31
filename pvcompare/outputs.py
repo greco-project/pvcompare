@@ -53,7 +53,6 @@ def loop_pvcompare(
     mvs_input_directory=None,
     output_directory=None,
     input_directory=None,
-    mvs_output_directory=None,
 ):
     """
     Starts multiple *pvcompare* simulations with a range of values for a
@@ -159,7 +158,7 @@ def loop_pvcompare(
         while number_of_storeys <= loop_dict["stop"]:
 
             single_loop_pvcompare(
-                storeys=storeys,
+                storeys=number_of_storeys,
                 country=country,
                 latitude=latitude,
                 longitude=longitude,
