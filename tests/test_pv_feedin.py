@@ -112,7 +112,7 @@ class TestPvtime_series:
             normalization="NSTC",
         )
         output = ts.sum()
-        assert round(output, 2) == 0.61
+        assert round(output, 2) == 0.64
 
     def test_create_cpv_time_series_NRWC_normalization(self):
 
@@ -125,7 +125,7 @@ class TestPvtime_series:
             normalization="NRWC",
         )
         output = ts.sum()
-        assert round(output, 2) == 0.87
+        assert round(output, 2) == 0.91
 
     def test_create_psi_time_series(self):
         ts = create_psi_time_series(
@@ -347,7 +347,7 @@ class TestPvtime_series:
             normalization="NRWC",
         )
 
-        assert nominal_value == 239.657
+        assert nominal_value == 241.014
 
     def test_nominal_values_pv_NRWC_psi(self):
         technology = "psi"
@@ -382,7 +382,7 @@ def test_calculate_NRWC_peak_cpv():
 
     peak2 = calculate_NRWC_peak(technology="cpv")
 
-    assert round(peak2, 2) == 23.97
+    assert round(peak2, 2) == 24.1
 
 
 def test_calculate_NRWC_peak_psi():
