@@ -242,4 +242,3 @@ if __name__ == "__main__":
     apply_mvs(
         scenario_name=scenario_name, output_directory=None, mvs_input_directory=None
     )
-
