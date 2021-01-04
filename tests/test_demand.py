@@ -26,8 +26,10 @@ class TestDemandProfiles:
     def setup_class(self):
         """Setup variables for all tests in this class"""
         self.country = "France"
-        self.population = 4800
+        self.storeys = 5
         self.year = 2015
+        self.lat = 40
+        self.lon = 5
         self.test_input_directory = os.path.join(
             os.path.dirname(__file__), "test_data/test_pvcompare_inputs"
         )
@@ -78,14 +80,14 @@ class TestDemandProfiles:
 
     def test_power_demand_exists(self):
 
-        filename = f"electricity_load_{self.country}_{self.population}_{self.year}.csv"
+        filename = f"electricity_load_{self.year}_{self.country}_{self.storeys}.csv"
         if os.path.exists(
             os.path.join(self.test_mvs_directory, "time_series", filename)
         ):
             os.remove(os.path.join(self.test_mvs_directory, "time_series", filename))
         calculate_power_demand(
             country=self.country,
-            population=self.population,
+            storeys=self.storeys,
             year=self.year,
             input_directory=self.test_input_directory,
             mvs_input_directory=self.test_mvs_directory,
@@ -99,18 +101,18 @@ class TestDemandProfiles:
 
         a = calculate_power_demand(
             country=self.country,
-            population=self.population,
+            storeys=self.storeys,
             year=self.year,
             input_directory=self.test_input_directory,
             mvs_input_directory=self.test_mvs_directory,
             column="demand_01",
         )
 
-        assert a["kWh"].sum() == 32666542.239902988
+        assert a["kWh"].sum() == 326665422.39902985
 
     def test_heat_demand_exists(self):
 
-        filename = f"heat_load_{self.country}_{self.population}_{self.year}.csv"
+        filename = f"heat_load_{self.year}_{self.lat}_{self.lon}_{self.storeys}.csv"
         if os.path.exists(
             os.path.join(self.test_mvs_directory, "time_series", filename)
         ):
@@ -118,7 +120,9 @@ class TestDemandProfiles:
 
         calculate_heat_demand(
             country=self.country,
-            population=self.population,
+            lat=self.lat,
+            lon=self.lon,
+            storeys=self.storeys,
             year=self.year,
             input_directory=self.test_input_directory,
             weather=self.weather,
@@ -138,7 +142,9 @@ class TestDemandProfiles:
 
         a = calculate_heat_demand(
             country=self.country,
-            population=self.population,
+            lat=self.lat,
+            lon=self.lon,
+            storeys=self.storeys,
             year=self.year,
             input_directory=self.test_input_directory,
             weather=self.weather,
@@ -146,7 +152,7 @@ class TestDemandProfiles:
             column="demand_02",
         )
 
-        assert a["kWh"].sum() == 10969639.113628691
+        assert a["kWh"].sum() == 109696391.13628691
 
         self.bp["value"].loc["include warm water"] = self.include_ww
         self.bp.to_csv(
@@ -162,7 +168,9 @@ class TestDemandProfiles:
 
         a = calculate_heat_demand(
             country=self.country,
-            population=self.population,
+            lat=self.lat,
+            lon=self.lon,
+            storeys=self.storeys,
             year=self.year,
             input_directory=self.test_input_directory,
             weather=self.weather,
@@ -170,7 +178,7 @@ class TestDemandProfiles:
             column="demand_02",
         )
 
-        assert a["kWh"].sum() == 11984233.752677418
+        assert a["kWh"].sum() == 119842337.52677417
 
         self.bp["value"].loc["include warm water"] = self.include_ww
         self.bp.to_csv(
