@@ -14,3 +14,4 @@ file_name,str,si_180_25_2014_40.416775_-3.70379.csv
 energyVector,str,Electricity
 renewableAsset,bool,True
 type_oemof,str,source
+emission_factor,kgCO2eq/unit,0

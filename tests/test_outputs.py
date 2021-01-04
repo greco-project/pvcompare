@@ -28,6 +28,7 @@ class TestPlotProfiles:
         self.timeseries_directory = os.path.join(
             self.mvs_output_directory, "/timeseries/"
         )
+        self.storeys = 5
 
     def test_plot_all_flows_year(self):
         """ """
