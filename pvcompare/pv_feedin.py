@@ -59,11 +59,11 @@ def create_pv_components(
     Reads 'pv_setup.csv', for each `surface_type` listed in `pv_setup`,
     one PV time series is created with regard to the technology and its
     orientation. All time series are normalized with the method specified in
-    `normalization` and stored as csv files in `mvs_input_directory/time_series`.
+    `normalization` and stored as csv files in `user_inputs_mvs_directory/time_series`.
     Further the area potential of the `surface_type` with regard to the building
     parameters defined in 'building_parameters.csv' in `input_directory` is calculated
     and the maximum installed capacity (nominal value) is calculated. Both parameters
-    are stored into `mvs_input_directory/csv_elements/energyProduction.csv`.
+    are stored into `user_inputs_mvs_directory/csv_elements/energyProduction.csv`.
 
     Parameters
     ----------
@@ -83,7 +83,7 @@ def create_pv_components(
         if true plots created pv times series
     user_input_directory: str or None
         Directory of the user inputs. If None,
-        `constants.DEFAULT_USER_INPUT_DIRECTORY` is used as user_input_directory.
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
     mvs_input_directory: str
         if None: ./data/mvs_inputs/
@@ -105,7 +105,7 @@ def create_pv_components(
         logging.info("loading pv setup conditions from input directory.")
 
         if user_input_directory == None:
-            user_input_directory = constants.DEFAULT_USER_INPUT_DIRECTORY
+            user_input_directory = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
 
         data_path = os.path.join(user_input_directory, "pv_setup.csv")
         pv_setup = pd.read_csv(data_path)
@@ -130,7 +130,7 @@ def create_pv_components(
 
     #  define time series directory
     if mvs_input_directory is None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
     time_series_directory = os.path.join(mvs_input_directory, "time_series")
 
     # parse through pv_setup file and create time series for each technology
@@ -776,7 +776,7 @@ def calculate_NRWC_peak(technology):
     surface_tilt = get_optimal_pv_angle(lat=lat)
 
     static_input_directory = (
-        constants.DEFAULT_STATIC_INPUT_DIRECTORY
+        constants.DEFAULT_STATIC_INPUTS_DIRECTORY
     )  # todo: übergebe diesen Parameter!!
     weather_file = os.path.join(
         static_input_directory, "weatherdata_52.52437_13.41053_2014.csv"

@@ -71,14 +71,14 @@ def calculate_load_profiles(
         # todo add
     static_input_directory: str or None
         Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_input_directory.
+        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_inputs_directory.
         Default: None.
     user_input_directory: str or None
         Directory of the user inputs. If None,
-        `constants.DEFAULT_USER_INPUT_DIRECTORY` is used as user_input_directory.
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
     mvs_input_directory : str or None
-        Path to mvs input directory. If None: DEFAULT_MVS_INPUT_DIRECTORY. Default: None.
+        Path to mvs input directory. If None: DEFAULT_USER_INPUTS_MVS_DIRECTORY. Default: None.
 
     Returns
     ------
@@ -86,11 +86,11 @@ def calculate_load_profiles(
     """
 
     if static_input_directory == None:
-        static_input_directory = constants.DEFAULT_STATIC_INPUT_DIRECTORY
+        static_input_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
     if user_input_directory == None:
-        user_input_directory = constants.DEFAULT_USER_INPUT_DIRECTORY
+        user_input_directory = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
     if mvs_input_directory is None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
 
     # load eneryConsumption.csv
     energyConsumption = pd.read_csv(
@@ -171,14 +171,14 @@ def calculate_power_demand(
         # todo
     user_input_directory: str or None
         Directory of the user inputs. If None,
-        `constants.DEFAULT_USER_INPUT_DIRECTORY` is used as user_input_directory.
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
     mvs_input_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_MVS_INPUT_DIRECTORY` is used as mvs_input_directory.
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
         Default: None.
     mvs_input_directory: str or None
-        Path to mvs input directory. If None: DEFAULT_MVS_INPUT_DIRECTORY.  Default: None.
+        Path to mvs input directory. If None: DEFAULT_USER_INPUTS_MVS_DIRECTORY.  Default: None.
 
     Returns
     -------
@@ -187,11 +187,11 @@ def calculate_power_demand(
     """
 
     if static_input_directory == None:
-        static_input_directory = constants.DEFAULT_STATIC_INPUT_DIRECTORY
+        static_input_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
     if user_input_directory == None:
-        user_input_directory = constants.DEFAULT_USER_INPUT_DIRECTORY
+        user_input_directory = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
     if mvs_input_directory == None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
 
     # load calendar for holidays
     logging.info("loading calender for %s" % country)
@@ -311,14 +311,14 @@ def calculate_heat_demand(
         weather Data Frame # todo add requirements
     user_input_directory: str or None
         Directory of the user inputs. If None,
-        `constants.DEFAULT_USER_INPUT_DIRECTORY` is used as user_input_directory.
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
     mvs_input_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_MVS_INPUT_DIRECTORY` is used as mvs_input_directory.
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
         Default: None.
     mvs_input_directory: str or None
-        Path to mvs input directory. If None: DEFAULT_MVS_INPUT_DIRECTORY.  Default: None.
+        Path to mvs input directory. If None: DEFAULT_USER_INPUTS_MVS_DIRECTORY.  Default: None.
 
 
     Returns
@@ -328,11 +328,11 @@ def calculate_heat_demand(
     """
 
     if static_input_directory == None:
-        static_input_directory = constants.DEFAULT_STATIC_INPUT_DIRECTORY
+        static_input_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
     if user_input_directory == None:
-        user_input_directory = constants.DEFAULT_USER_INPUT_DIRECTORY
+        user_input_directory = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
     if mvs_input_directory == None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
 
     # load workelendar for country
     cal = get_workalendar_class(country)
@@ -460,7 +460,7 @@ def calculate_heat_demand(
     shifted_heat_demand.rename(columns={"h0": "kWh"}, inplace=True)
 
     if mvs_input_directory is None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
     timeseries_directory = os.path.join(mvs_input_directory, "time_series/")
 
     logging.info(

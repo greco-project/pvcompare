@@ -53,7 +53,7 @@ def calculate_cops_and_eers(
         ("chiller") are calculated. Default: "heat_pump".
     user_input_directory: str or None
         Directory of the user inputs. If None,
-        `constants.DEFAULT_USER_INPUT_DIRECTORY` is used as user_input_directory.
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
     mvs_input_directory: str or None
         Path to input directory containing files that describe the energy
@@ -68,9 +68,9 @@ def calculate_cops_and_eers(
     """
     # read parameters from file
     if user_input_directory == None:
-        user_input_directory = constants.DEFAULT_USER_INPUT_DIRECTORY
+        user_input_directory = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
     if mvs_input_directory == None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
     filename = os.path.join(user_input_directory, "heat_pumps_and_chillers.csv")
 
     try:
@@ -141,7 +141,7 @@ def calculate_cops_and_eers(
     efficiency_series = df[column_name]
     efficiency_series.name = "no_unit"
 
-    # save time series to `mvs_input_directory/time_series`
+    # save time series to `user_inputs_mvs_directory/time_series`
     time_series_directory = os.path.join(mvs_input_directory, "time_series")
 
     logging.info(
@@ -177,7 +177,7 @@ def add_sector_coupling(
     user_input_directory: str or None
         Path to user input directory of pvcompare containing file
         `heat_pumps_and_chillers.csv` that specifies heat pump and/or chiller
-        data. Default: DEFAULT_USER_INPUT_DIRECTORY (see :func:`~pvcompare.constants`.
+        data. Default: DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY (see :func:`~pvcompare.constants`.
     mvs_input_directory: str or None
         Path to input directory containing files that describe the energy
         system and that are an input to MVS. Default:
@@ -198,9 +198,9 @@ def add_sector_coupling(
     """
     # read energyConversion.csv file
     if user_input_directory == None:
-        user_input_directory = constants.DEFAULT_USER_INPUT_DIRECTORY
+        user_input_directory = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
     if mvs_input_directory is None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
     energy_conversion = pd.read_csv(
         os.path.join(mvs_input_directory, "csv_elements", "energyConversion.csv"),
         header=0,
@@ -277,7 +277,7 @@ def add_sector_coupling(
                     user_input_directory=user_input_directory,
                 )
                 logging.info(
-                    "COPs successfully calculated and saved in `mvs_input_directory/time_series`."
+                    "COPs successfully calculated and saved in `user_inputs_mvs_directory/time_series`."
                 )
 
         # display warning if heat demand seems to be missing in energyConsumption.csv

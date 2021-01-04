@@ -85,20 +85,20 @@ def loop_pvcompare(
         For technology, the form of the dict should be: {"step1": "si", "step2": "cpv", "step3": "psi"}
         For year/storeys/hp_temp, the form of the dict should be: {"start": "1", "stop": "10", "step": "2"}
     mvs_input_directory: str or None
-        Default: `mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY`
+        Default: `user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY`
     output_directory: str or None
         Path to output directory.
-        Default: `output_directory = constants.DEFAULT_OUTPUT_DIRECTORY`
+        Default: `output_directory = constants.DEFAULT_OUTPUTS_DIRECTORY`
 
     Returns
     -------
 
     """
-    # checks of output_directory and mvs_input_directory is None
+    # checks of output_directory and user_inputs_mvs_directory is None
     if mvs_input_directory == None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
     if output_directory == None:
-        output_directory = constants.DEFAULT_OUTPUT_DIRECTORY
+        output_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
     if input_directory == None:
         input_directory = constants.DEFAULT_INPUT_DIRECTORY
 
@@ -253,7 +253,7 @@ def single_loop_pvcompare(
         longitude=longitude,
         year=year,
         input_directory=input_directory,
-        mvs_input_directory=mvs_input_directory,
+        user_inputs_mvs_directory=mvs_input_directory,
         plot=plot,
         pv_setup=pv_setup,
     )
@@ -337,10 +337,10 @@ def loop_mvs(
         Name of the Scenario. The name should follow the scheme:
         "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
     mvs_input_directory: str or None
-        Default: `mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY`
+        Default: `user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY`
     output_directory: str or None
         Path to output directory.
-        Default: `output_directory = constants.DEFAULT_OUTPUT_DIRECTORY`
+        Default: `output_directory = constants.DEFAULT_OUTPUTS_DIRECTORY`
 
     Returns
     -------
@@ -473,7 +473,7 @@ def plot_all_flows(
     # check if scenario is specified or the timeseries directory is given
     if timeseries_directory is None:
         if output_directory == None:
-            output_directory = constants.DEFAULT_OUTPUT_DIRECTORY
+            output_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
         scenario_folder = os.path.join(output_directory, scenario_name)
         if timeseries_directory == None:
             timeseries_directory = os.path.join(scenario_folder, "mvs_outputs")
@@ -576,7 +576,7 @@ def plot_kpi_loop(
         "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
     output_directory: str
         Path to output directory.
-        Default: constants.DEFAULT_OUTPUT_DIRECTORY
+        Default: constants.DEFAULT_OUTPUTS_DIRECTORY
     loop_output_directory: str
         Path to loop output directory
         Default: os.path.join(output_directory, 'scenario_name', loop_outputs + str(variable_name))
@@ -592,7 +592,7 @@ def plot_kpi_loop(
 
     if output_directory == None:
         scenario_folder = os.path.join(
-            constants.DEFAULT_OUTPUT_DIRECTORY, scenario_name
+            constants.DEFAULT_OUTPUTS_DIRECTORY, scenario_name
         )
     else:
         scenario_folder = os.path.join(output_directory, scenario_name)
@@ -708,7 +708,7 @@ if __name__ == "__main__":
     #     country,
     #     loop_type=loop_type,
     #     loop_dict=loop_dict,
-    #     mvs_input_directory=None,
+    #     user_inputs_mvs_directory=None,
     #     output_directory=None,
     #     input_directory=None,
     # )
@@ -725,7 +725,7 @@ if __name__ == "__main__":
     #     stop=600,
     #     step=100,
     #     output_directory=output_directory,
-    #     mvs_input_directory=mvs_input_directory,
+    #     user_inputs_mvs_directory=user_inputs_mvs_directory,
     #     scenario_name=scenario_name,
     # )
 
@@ -735,7 +735,7 @@ if __name__ == "__main__":
         calendar_week=None,
         weekday=5,
         timeseries_directory=os.path.join(
-            constants.DEFAULT_OUTPUT_DIRECTORY,
+            constants.DEFAULT_OUTPUTS_DIRECTORY,
             scenario_name,
             "mvs_outputs_loop_hp_temp_15",
         ),

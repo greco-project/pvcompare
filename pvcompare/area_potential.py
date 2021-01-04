@@ -34,7 +34,7 @@ def calculate_area_potential(storeys, user_input_directory, surface_type):
         the population of the district
     user_input_directory: str or None
         Directory of the user inputs. If None,
-        `constants.DEFAULT_USER_INPUT_DIRECTORY` is used as user_input_directory.
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
     surface_type: str
         possible values: "flat_roof", "gable_roof", "east_facade",

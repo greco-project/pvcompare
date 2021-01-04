@@ -1,5 +1,5 @@
 """
-This module reads existing csv files from "mvs_input_directory/csv_elements/"
+This module reads existing csv files from "user_inputs_mvs_directory/csv_elements/"
 and adapts the values of parameters according to the current simulation.
 
 functions this module contains:
@@ -40,7 +40,7 @@ def add_scenario_name_to_project_data(mvs_input_directory, scenario_name):
     ----------
     mvs_input_directory: str
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_MVS_INPUT_DIRECTORY` is used as mvs_input_directory.
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
     scenario_name: str
         Name of the Scenario. The name should follow the scheme:
         "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
@@ -76,10 +76,10 @@ def add_location_and_year_to_project_data(
     ----------
     mvs_input_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_MVS_INPUT_DIRECTORY` is used as mvs_input_directory.
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
     static_input_directory: str or None
         Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_input_directory.
+        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_inputs_directory.
     latitude: float
         latitude of the location
     longitude: float
@@ -161,7 +161,7 @@ def check_for_valid_country_year(country, year, static_input_directory):
         year of simulation
     static_input_directory: str or None
         Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_input_directory.
+        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_inputs_directory.
 
     Returns
     -------
@@ -228,10 +228,10 @@ def add_electricity_price(static_input_directory, mvs_input_directory):
     -----------
     mvs_input_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_MVS_INPUT_DIRECTORY` is used as mvs_input_directory.
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
     static_input_directory: str or None
         Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_input_directory.
+        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_inputs_directory.
 
     Returns
     --------
@@ -282,7 +282,7 @@ def overwrite_mvs_energy_production_file(
         orientation
     mvs_input_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_MVS_INPUT_DIRECTORY` is used as mvs_input_directory.
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
 
     Returns
     ---------
@@ -296,7 +296,7 @@ def overwrite_mvs_energy_production_file(
 
     # load mvs user input file
     if mvs_input_directory is None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
     if collections_mvs_input_directory is None:
         collections_mvs_input_directory = (
             constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY
@@ -372,7 +372,7 @@ def add_parameters_to_energy_production_file(
         maximum value of installable capacity
     mvs_input_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_MVS_INPUT_DIRECTORY` is used as mvs_input_directory.
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
 
     Returns
     -------
@@ -414,7 +414,7 @@ def add_file_name_to_energy_consumption_file(
         file name of the demand time series
     mvs_input_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_MVS_INPUT_DIRECTORY` is used as mvs_input_directory.
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
 
     Returns
     -------
@@ -441,7 +441,7 @@ def add_evaluated_period_to_simulation_settings(time_series, mvs_input_directory
         pv time series
     mvs_input_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_MVS_INPUT_DIRECTORY` is used as mvs_input_directory.
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
 
     Returns
     ------
@@ -474,7 +474,7 @@ def add_parameter_to_mvs_file(
     ----------
     mvs_input_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_MVS_INPUT_DIRECTORY` is used as mvs_input_directory.
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
     mvs_filename: str
         name of the mvs-csv file
     mvs_row: str
@@ -492,7 +492,7 @@ def add_parameter_to_mvs_file(
     None
     """
     if mvs_input_directory == None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
 
     filename = os.path.join(mvs_input_directory, "csv_elements", mvs_filename)
     # load mvs_csv_file
@@ -524,7 +524,7 @@ def load_parameter_from_mvs_file(
     ----------
     mvs_input_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_MVS_INPUT_DIRECTORY` is used as mvs_input_directory.
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
     mvs_filename: str
         name of the mvs-csv file
     mvs_row: str
@@ -539,7 +539,7 @@ def load_parameter_from_mvs_file(
     """
 
     if mvs_input_directory == None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+        mvs_input_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
 
     filename = os.path.join(mvs_input_directory, "csv_elements", mvs_filename)
     # load mvs_csv_file
