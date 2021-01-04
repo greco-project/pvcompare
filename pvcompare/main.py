@@ -118,7 +118,7 @@ def apply_pvcompare(
         input_directory=input_directory,
         mvs_input_directory=mvs_input_directory,
         year=year,
-        normalization="NRWC",
+        normalization=None,
     )
 
     # add sector coupling in case heat pump or chiller exists in energyConversion.csv
