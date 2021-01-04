@@ -10,3 +10,4 @@ inflow_direction,str,Electricity bus
 outflow_direction,str,Electricity bus
 energyVector,str,Electricity
 type_oemof,str,source
+emission_factor,kgCO2eq/kWh,0.338
