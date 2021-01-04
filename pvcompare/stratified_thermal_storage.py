@@ -194,6 +194,8 @@ def add_strat_tes(
     # Set path if path is None
     if mvs_input_directory is None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+    if input_directory is None:
+        input_directory = constants.DEFAULT_INPUT_DIRECTORY
 
     # Set path for results in time series
     time_series_directory = os.path.join(mvs_input_directory, "time_series")
@@ -221,9 +223,17 @@ def add_strat_tes(
         index_col=0,
     )
 
+    # 4. Read stratified_thermal_storage.csv
+    storage_input_data = pd.read_csv(
+        os.path.join(input_directory, "stratified_thermal_storage.csv"),
+        header=0,
+        index_col=0,
+    )
+
     # Create add on to filename (year, lat, lon)
     year = maya.parse(weather.index[int(len(weather) / 2)]).datetime().year
-    add_on = f"_{year}_{lat}_{lon}"
+    temp_high = storage_input_data.at["temp_h", "var_value"]
+    add_on = f"_{year}_{lat}_{lon}_{temp_high}"
 
     # *********************************************************************************************
     # Check if stratified thermal storage exists in specified system and is implemented in
@@ -318,7 +328,7 @@ def add_strat_tes(
                     result_filename = os.path.join(
                         mvs_input_directory,
                         "time_series",
-                        f"{value_name_underscore}_{year}_{lat}_{lon}.csv",
+                        f"{value_name_underscore}_{year}_{lat}_{lon}_{temp_high}.csv",
                     )
                     logging.info(
                         f"File containing {value_name} is missing: {filename_csv} \nCalculated times series of {value_name} are used instead."
@@ -329,7 +339,7 @@ def add_strat_tes(
                         "storage capacity"
                     ][time_value].replace(
                         filename_csv_excl_path,
-                        f"{value_name_underscore}_{year}_{lat}_{lon}.csv",
+                        f"{value_name_underscore}_{year}_{lat}_{lon}_{temp_high}.csv",
                     )
 
                 if file_exists == False:
