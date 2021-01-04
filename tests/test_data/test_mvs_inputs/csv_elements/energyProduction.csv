@@ -13,3 +13,4 @@ outflow_direction,str,PV bus1
 type_oemof,str,source
 unit,str,kWp
 energyVector,str,Electricity
+emission_factor,kgCO2eq/unit,0
