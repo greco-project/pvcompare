@@ -131,7 +131,9 @@ def calculate_cops_and_eers(
     df = pd.DataFrame(weather[temperature_col])
     df[column_name] = efficiency
 
-    # set negative COPs/EERs to nan
+    # set negative COPs/EERs to np.inf
+    # COP/EER below zero results from temp_low > temp_high
+    # and will therefore be represented with COP/EER -> infinity
     indices = df.loc[df[column_name] < 0].index
     df[column_name][indices] = np.inf
 
