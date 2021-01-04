@@ -71,14 +71,14 @@ class TestCalcStratTesParam:
             os.path.join(
                 TEST_DATA_HEAT,
                 "time_series",
-                "fixed_thermal_losses_absolute_2018_53.2_13.2.csv",
+                "fixed_thermal_losses_absolute_2018_53.2_13.2_95.0.csv",
             )
         )
         assert os.path.exists(
             os.path.join(
                 TEST_DATA_HEAT,
                 "time_series",
-                "fixed_thermal_losses_relative_2018_53.2_13.2.csv",
+                "fixed_thermal_losses_relative_2018_53.2_13.2_95.0.csv",
             )
         )
 
@@ -144,13 +144,13 @@ class TestAddStratTes:
         filename = os.path.join(
             TEST_DATA_HEAT,
             "time_series",
-            "fixed_thermal_losses_absolute_2018_53.2_13.2.csv",
+            "fixed_thermal_losses_absolute_2018_53.2_13.2_95.0.csv",
         )
         assert os.path.exists(filename) == True
         # filename in storage_02.csv does not change
         df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
         assert (
-            "fixed_thermal_losses_absolute_2018_53.2_13.2.csv"
+            "fixed_thermal_losses_absolute_2018_53.2_13.2_95.0.csv"
             in df.loc["fixed_thermal_losses_absolute"].item()
         ) == True
 
@@ -159,12 +159,12 @@ class TestAddStratTes:
         filename_1 = os.path.join(
             TEST_DATA_HEAT,
             "time_series",
-            "fixed_thermal_losses_absolute_2018_53.2_13.2.csv",
+            "fixed_thermal_losses_absolute_2018_53.2_13.2_95.0.csv",
         )
         filename_2 = os.path.join(
             TEST_DATA_HEAT,
             "time_series",
-            "fixed_thermal_losses_relative_2018_53.2_13.2.csv",
+            "fixed_thermal_losses_relative_2018_53.2_13.2_95.0.csv",
         )
         if os.path.exists(filename_1):
             os.remove(filename_1)
@@ -211,13 +211,13 @@ class TestAddStratTes_file_non_existent:
         filename = os.path.join(
             TEST_DATA_HEAT,
             "time_series",
-            "fixed_thermal_losses_absolute_2018_53.2_13.2.csv",
+            "fixed_thermal_losses_absolute_2018_53.2_13.2_95.0.csv",
         )
         assert os.path.exists(filename) == False
         # filename in storage_02.csv does not change
         df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
         assert (
-            "fixed_thermal_losses_absolute_2017_53.2_13.2.csv"
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_95.0.csv"
             in df.loc["fixed_thermal_losses_absolute"].item()
         ) == True
 
@@ -226,12 +226,12 @@ class TestAddStratTes_file_non_existent:
         filename_1 = os.path.join(
             TEST_DATA_HEAT,
             "time_series",
-            "fixed_thermal_losses_absolute_2017_53.2_13.2.csv",
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_95.0.csv",
         )
         filename_2 = os.path.join(
             TEST_DATA_HEAT,
             "time_series",
-            "fixed_thermal_losses_relative_2017_53.2_13.2.csv",
+            "fixed_thermal_losses_relative_2017_53.2_13.2_95.0.csv",
         )
         if os.path.exists(filename_1):
             os.remove(filename_1)
@@ -278,7 +278,7 @@ class TestAddStratTes_file_constant_losses:
         filename = os.path.join(
             TEST_DATA_HEAT,
             "time_series",
-            "fixed_thermal_losses_absolute_2018_53.2_13.2.csv",
+            "fixed_thermal_losses_absolute_2018_53.2_13.2_95.0.csv",
         )
 
         assert os.path.exists(filename) == False
