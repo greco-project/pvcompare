@@ -1,0 +1,17 @@
+building parameter,value
+number of storeys,5
+population per storey,24
+total storey area,1232
+length south facade,56
+length eastwest facade,22
+hight storey,3
+room temperature,20
+heating limit temperature,15
+include warm water,False
+filename_total_consumption,total_consumption_residential.csv
+filename_total_SH,total_consumption_residential_SH.csv
+filename_total_WH,total_consumption_residential_WH.csv
+filename_elect_SH,electricity_consumption_residential_SH.csv
+filename_elect_WH,electricity_consumption_residential_WH.csv
+filename_residential_electricity_demand,total_electricity_consumption_residential.csv
+filename_country_population,EUROSTAT_population.csv

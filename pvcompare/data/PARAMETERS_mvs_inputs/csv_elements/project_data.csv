@@ -1,8 +1,0 @@
-,unit,project_data,comments
-country,str,Germany,filled in by pvcompare
-latitude,str,52.52437,filled in by pvcompare
-longitude,str,13.41053,filled in by pvcompare
-project_id,str,1,
-project_name,str,net zero energy community,
-scenario_id,str,1,
-scenario_name,str,Scenario 1,

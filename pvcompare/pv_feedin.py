@@ -48,7 +48,7 @@ def create_pv_components(
     year,
     pv_setup=None,
     plot=True,
-    input_directory=None,
+    user_input_directory=None,
     mvs_input_directory=None,
     psi_type="Chen",
     normalization="NRWC",
@@ -81,8 +81,10 @@ def create_pv_components(
         If `pv_setup` is None, it is loaded from the `input_directory/pv_setup.cvs`.
     plot: bool
         if true plots created pv times series
-    input_directory: str
-        if None: ./data/inputs/
+    user_input_directory: str or None
+        Directory of the user inputs. If None,
+        `constants.DEFAULT_USER_INPUT_DIRECTORY` is used as user_input_directory.
+        Default: None.
     mvs_input_directory: str
         if None: ./data/mvs_inputs/
     psi_type: str
@@ -102,10 +104,10 @@ def create_pv_components(
         # read example pv_setup file
         logging.info("loading pv setup conditions from input directory.")
 
-        if input_directory is None:
-            input_directory = constants.DEFAULT_INPUT_DIRECTORY
+        if user_input_directory == None:
+            user_input_directory = constants.DEFAULT_USER_INPUT_DIRECTORY
 
-        data_path = os.path.join(input_directory, "pv_setup.csv")
+        data_path = os.path.join(user_input_directory, "pv_setup.csv")
         pv_setup = pd.read_csv(data_path)
         logging.info("setup conditions successfully loaded.")
 
@@ -125,9 +127,6 @@ def create_pv_components(
             "The file pv_setup does not contain all required columns"
             "surface_azimuth, surface_tilt and technology."
         )
-
-    # check if mvs_input/energyProduction.csv contains all power plants
-    check_inputs.check_mvs_energy_production_file(pv_setup, mvs_input_directory)
 
     #  define time series directory
     if mvs_input_directory is None:
@@ -231,7 +230,7 @@ def create_pv_components(
             )
         else:
             area = area_potential.calculate_area_potential(
-                storeys, input_directory, surface_type=row["surface_type"]
+                storeys, user_input_directory, surface_type=row["surface_type"]
             )
 
         # calculate nominal value of the powerplant
@@ -246,7 +245,7 @@ def create_pv_components(
         # save the file name of the time series and the nominal value to
         # mvs_inputs/elements/csv/energyProduction.csv
         check_inputs.add_parameters_to_energy_production_file(
-            pp_number=i + 1,
+            technology=row["technology"],
             ts_filename=ts_csv,
             nominal_value=nominal_value,
             mvs_input_directory=mvs_input_directory,
@@ -776,16 +775,18 @@ def calculate_NRWC_peak(technology):
     year = 2014
     surface_tilt = get_optimal_pv_angle(lat=lat)
 
-    input_directory = constants.DEFAULT_INPUT_DIRECTORY
+    static_input_directory = (
+        constants.DEFAULT_STATIC_INPUT_DIRECTORY
+    )  # todo: übergebe diesen Parameter!!
     weather_file = os.path.join(
-        input_directory, "weatherdata_52.52437_13.41053_2014.csv"
+        static_input_directory, "weatherdata_52.52437_13.41053_2014.csv"
     )
     if os.path.isfile(weather_file):
         weather = pd.read_csv(weather_file, index_col=0)
     else:
         logging.error(
             f"the weather file {weather_file} does not exist. Please"
-            f"make sure the weather file is in {input_directory}."
+            f"make sure the weather file is in {static_input_directory}."
         )
     weather.index = pd.to_datetime(weather.index, utc=True)
     # calculate poa_global for tilted surface

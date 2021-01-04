@@ -26,10 +26,14 @@ def apply_pvcompare(
     latitude=None,
     longitude=None,
     year=None,
-    input_directory=None,
+    static_input_directory=None,
+    user_input_directory=None,
     mvs_input_directory=None,
+    collections_mvs_input_directory=None,
     plot=False,
     pv_setup=None,
+    overwrite_grid_costs=True,
+    overwrite_pv_parameters=True,
 ):
     """
     Runs the main functionalities of pvcompare.
@@ -51,9 +55,13 @@ def apply_pvcompare(
         Longitude of the location. Default: None.
     year: int
         Year of the simulation. Default: None.
-    input_directory: str or None
-        Directory of the pvcompare specific inputs. If None,
-        `constants.DEFAULT_INPUT_DIRECTORY` is used as mvs_input_directory.
+    static_input_directory: str or None
+        Directory of the pvcompare static inputs. If None,
+        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_input_directory.
+        Default: None.
+    user_input_directory: str or None
+        Directory of the user inputs. If None,
+        `constants.DEFAULT_USER_INPUT_DIRECTORY` is used as user_input_directory.
         Default: None.
     mvs_input_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
@@ -69,6 +77,9 @@ def apply_pvcompare(
         A tilt of 0 resembles a vertical orientation.
         If `pv_setup` is None, it is loaded from the `input_directory/pv_setup.cvs`.
         Default: None.
+    overwrite_grid_costs: bool
+
+    overwrite_pv_parameters: bool
 
     Returns
     -------
@@ -77,29 +88,35 @@ def apply_pvcompare(
 
     """
 
-    if input_directory == None:
-        input_directory = constants.DEFAULT_INPUT_DIRECTORY
+    if static_input_directory == None:
+        static_input_directory = constants.DEFAULT_STATIC_INPUT_DIRECTORY
+    if user_input_directory == None:
+        user_input_directory = constants.DEFAULT_USER_INPUT_DIRECTORY
     if mvs_input_directory == None:
         mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
 
-    # if all([latitude, longitude, country, year]) == False:
-    check_inputs.add_project_data(
-        mvs_input_directory, latitude, longitude, country, year
+    # add location and year to project data
+    (
+        latitude,
+        longitude,
+        country,
+        year,
+    ) = check_inputs.add_location_and_year_to_project_data(
+        mvs_input_directory, static_input_directory, latitude, longitude, country, year
     )
     # add electroicity price specified by country
-    check_inputs.add_electricity_price()
+    if overwrite_grid_costs == True:
+        check_inputs.add_electricity_price(
+            static_input_directory=static_input_directory,
+            mvs_input_directory=mvs_input_directory,
+        )
 
     # check if weather data already exists
     weather_file = os.path.join(
-        input_directory, f"weatherdata_{latitude}_{longitude}_{year}.csv"
+        static_input_directory, f"weatherdata_{latitude}_{longitude}_{year}.csv"
     )
     if os.path.isfile(weather_file):
-        weather = pd.read_csv(
-            os.path.join(
-                input_directory, f"weatherdata_{latitude}_{longitude}_{year}.csv"
-            ),
-            index_col=0,
-        )
+        weather = pd.read_csv(weather_file, index_col=0,)
     else:
         # if era5 import works this line can be used
         weather = era5.load_era5_weatherdata(lat=latitude, lon=longitude, year=year)
@@ -107,6 +124,13 @@ def apply_pvcompare(
     # add datetimeindex
     weather.index = pd.to_datetime(weather.index)
 
+    # check energyProduction.csv file for the correct pv technology
+    check_inputs.overwrite_mvs_energy_production_file(
+        mvs_input_directory,
+        user_input_directory,
+        collections_mvs_input_directory,
+        overwrite_pv_parameters,
+    )
     pv_feedin.create_pv_components(
         lat=latitude,
         lon=longitude,
@@ -114,7 +138,7 @@ def apply_pvcompare(
         storeys=storeys,
         pv_setup=pv_setup,
         plot=plot,
-        input_directory=input_directory,
+        user_input_directory=user_input_directory,
         mvs_input_directory=mvs_input_directory,
         year=year,
         normalization="NRWC",
@@ -124,7 +148,7 @@ def apply_pvcompare(
     # note: chiller was not tested, yet.
     heat_pump_and_chiller.add_sector_coupling(
         mvs_input_directory=mvs_input_directory,
-        input_directory=input_directory,
+        user_input_directory=user_input_directory,
         weather=weather,
         lat=latitude,
         lon=longitude,
@@ -136,7 +160,8 @@ def apply_pvcompare(
         lon=longitude,
         storeys=storeys,
         year=year,
-        input_directory=input_directory,
+        static_input_directory=static_input_directory,
+        user_input_directory=user_input_directory,
         mvs_input_directory=mvs_input_directory,
         weather=weather,
     )
@@ -229,6 +254,6 @@ if __name__ == "__main__":
         country=country,
     )
 
-    apply_mvs(
-        scenario_name=scenario_name, output_directory=None, mvs_input_directory=None
-    )
+    # apply_mvs(
+    #     scenario_name=scenario_name, output_directory=None, mvs_input_directory=None
+    # )
