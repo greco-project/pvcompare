@@ -229,7 +229,9 @@ def apply_mvs(
         )
 
     # adapt parameter 'scenario_name' in 'project_data.csv'.
-    check_inputs.add_scenario_name_to_project_data(user_inputs_mvs_directory, scenario_name)
+    check_inputs.add_scenario_name_to_project_data(
+        user_inputs_mvs_directory, scenario_name
+    )
 
     mvs.main(
         path_input_folder=user_inputs_mvs_directory,
