@@ -125,32 +125,15 @@ Functions that request the weather data of one year and one location from the ER
     era5.format_pvcompare
     era5.weather_df_from_era5
 
-
-.. _loops:
-
-Automated loops
-===============
-
-Functions that help to loop over simulations while alterating a specific parameter (sensitivity).
+Output functions
+================
 
 .. autosummary::
     :toctree: temp/
 
-    automated_loop.loop
-
-
-.. _plots:
-
-Plotting
-========
-
-Functions for plotting mvs results.
-
-.. autosummary::
-    :toctree: temp/
-
-    plots.plot_all_flows
-    plots.plot_kpi_loop
+    outputs.loop_mvs
+    outputs.plot_all_flows
+    outputs.plot_kpi_loop
 
 
 

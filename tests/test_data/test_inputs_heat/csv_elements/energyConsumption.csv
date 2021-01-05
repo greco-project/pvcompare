@@ -1,8 +1,0 @@
-,unit,Electricity demand,Heat demand
-unit,str,kW,kWh
-inflow_direction,str,Electricity,Heat
-file_name,str,electricity_load.csv,heat_load.csv
-energyVector,str,Electricity,Heat
-type_oemof,str,sink,sink
-type_asset,str,demand,demand
-dsm,str,False,False

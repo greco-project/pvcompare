@@ -1,7 +1,0 @@
-,unit,simulation_settings
-evaluated_period,days,0
-oemof_file_name,str,MVS_results.oemof
-output_lp_file,bool,False
-restore_from_oemof_file,bool,False
-start_date,str,None
-timestep,minutes,60
