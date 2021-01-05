@@ -48,8 +48,8 @@ def create_pv_components(
     year,
     pv_setup=None,
     plot=True,
-    user_input_directory=None,
-    mvs_input_directory=None,
+    user_inputs_pvcompare_directory=None,
+    user_inputs_mvs_directory=None,
     psi_type="Chen",
     normalization="NRWC",
 ):
@@ -81,11 +81,11 @@ def create_pv_components(
         If `pv_setup` is None, it is loaded from the `input_directory/pv_setup.cvs`.
     plot: bool
         if true plots created pv times series
-    user_input_directory: str or None
+    user_inputs_pvcompare_directory: str or None
         Directory of the user inputs. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
-    mvs_input_directory: str
+    user_inputs_mvs_directory: str
         if None: ./data/mvs_inputs/
     psi_type: str
         "Korte" or "Chen"
@@ -104,10 +104,12 @@ def create_pv_components(
         # read example pv_setup file
         logging.info("loading pv setup conditions from input directory.")
 
-        if user_input_directory == None:
-            user_input_directory = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        if user_inputs_pvcompare_directory == None:
+            user_inputs_pvcompare_directory = (
+                constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+            )
 
-        data_path = os.path.join(user_input_directory, "pv_setup.csv")
+        data_path = os.path.join(user_inputs_pvcompare_directory, "pv_setup.csv")
         pv_setup = pd.read_csv(data_path)
         logging.info("setup conditions successfully loaded.")
 
@@ -129,9 +131,9 @@ def create_pv_components(
         )
 
     #  define time series directory
-    if mvs_input_directory is None:
-        mvs_input_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
-    time_series_directory = os.path.join(mvs_input_directory, "time_series")
+    if user_inputs_mvs_directory is None:
+        user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
+    time_series_directory = os.path.join(user_inputs_mvs_directory, "time_series")
 
     # parse through pv_setup file and create time series for each technology
     for i, row in pv_setup.iterrows():
@@ -204,7 +206,7 @@ def create_pv_components(
 
         # add "evaluated_period" to simulation_settings.csv
         check_inputs.add_evaluated_period_to_simulation_settings(
-            time_series=time_series, mvs_input_directory=mvs_input_directory
+            time_series=time_series, user_inputs_mvs_directory=user_inputs_mvs_directory
         )
 
         if plot == True:
@@ -230,7 +232,9 @@ def create_pv_components(
             )
         else:
             area = area_potential.calculate_area_potential(
-                storeys, user_input_directory, surface_type=row["surface_type"]
+                storeys,
+                user_inputs_pvcompare_directory,
+                surface_type=row["surface_type"],
             )
 
         # calculate nominal value of the powerplant
@@ -248,7 +252,7 @@ def create_pv_components(
             technology=row["technology"],
             ts_filename=ts_csv,
             nominal_value=nominal_value,
-            mvs_input_directory=mvs_input_directory,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
         )
     if plot == True:
         plt.show()

@@ -114,8 +114,8 @@ def apply_pvcompare(
     # add electroicity price specified by country
     if overwrite_grid_costs == True:
         check_inputs.add_electricity_price(
-            static_input_directory=static_inputs_directory,
-            mvs_input_directory=user_inputs_mvs_directory,
+            static_inputs_directory=static_inputs_directory,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
         )
 
     # check if weather data already exists
@@ -133,8 +133,8 @@ def apply_pvcompare(
 
     # check energyProduction.csv file for the correct pv technology
     check_inputs.overwrite_mvs_energy_production_file(
-        mvs_input_directory=user_inputs_mvs_directory,
-        user_input_directory=user_inputs_pvcompare_directory,
+        user_inputs_mvs_directory=user_inputs_mvs_directory,
+        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
         collections_mvs_input_directory=collections_mvs_input_directory,
         overwrite_pv_parameters=overwrite_pv_parameters,
     )
@@ -145,17 +145,17 @@ def apply_pvcompare(
         storeys=storeys,
         pv_setup=pv_setup,
         plot=plot,
-        user_input_directory=user_inputs_pvcompare_directory,
-        mvs_input_directory=user_inputs_mvs_directory,
+        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+        user_inputs_mvs_directory=user_inputs_mvs_directory,
         year=year,
-        normalization="NRWC",
+        normalization="NSTC",
     )
 
     # add sector coupling in case heat pump or chiller exists in energyConversion.csv
     # note: chiller was not tested, yet.
     heat_pump_and_chiller.add_sector_coupling(
-        mvs_input_directory=user_inputs_mvs_directory,
-        user_input_directory=user_inputs_pvcompare_directory,
+        user_inputs_mvs_directory=user_inputs_mvs_directory,
+        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
         weather=weather,
         lat=latitude,
         lon=longitude,
@@ -167,18 +167,18 @@ def apply_pvcompare(
         lon=longitude,
         storeys=storeys,
         year=year,
-        static_input_directory=static_inputs_directory,
-        user_input_directory=user_inputs_pvcompare_directory,
-        mvs_input_directory=user_inputs_mvs_directory,
+        static_inputs_directory=static_inputs_directory,
+        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+        user_inputs_mvs_directory=user_inputs_mvs_directory,
         weather=weather,
     )
 
 
 def apply_mvs(
     scenario_name,
-    mvs_input_directory=None,
+    user_inputs_mvs_directory=None,
     mvs_output_directory=None,
-    output_directory=None,
+    outputs_directory=None,
 ):
     r"""
     Starts the energy system simulation with MVS and stores results.
@@ -188,19 +188,16 @@ def apply_mvs(
     scenario_name: str
         Name of the Scenario. The name should follow the scheme:
         "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
-    mvs_input_directory: str or None
+    user_inputs_mvs_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
         Default: None.
-    output_directory: str
+    outputs_directory: str
         Path to output directory.
         Default: constants.DEFAULT_OUTPUTS_DIRECTORY
     mvs_output_directory: str or None
         Directory in which simulation results are stored. If None,
         "output_directory/scenario_name/ is used as mvs_output_directory.
-        Default: None.
-    loop_variable: str
-        Name of the variable that is varied within :py:func:`~.outputs.loop`.
         Default: None.
 
     Returns
@@ -208,15 +205,15 @@ def apply_mvs(
     Stores simulation results in `mvs_output_directory`.
 
     """
-    if mvs_input_directory == None:
-        mvs_input_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
-    if output_directory == None:
-        output_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
-        if not os.path.isdir(output_directory):
-            os.mkdir(output_directory)
+    if user_inputs_mvs_directory is None:
+        user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
+    if outputs_directory is None:
+        outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
+    if not os.path.isdir(outputs_directory):
+        os.mkdir(outputs_directory)
 
-    scenario_folder = os.path.join(output_directory, scenario_name)
-    if mvs_output_directory == None:
+    scenario_folder = os.path.join(outputs_directory, scenario_name)
+    if mvs_output_directory is None:
         mvs_output_directory = os.path.join(scenario_folder, "mvs_outputs")
     # check if output folder exists, if not: create it
     if not os.path.isdir(scenario_folder):
@@ -232,10 +229,12 @@ def apply_mvs(
         )
 
     # adapt parameter 'scenario_name' in 'project_data.csv'.
-    check_inputs.add_scenario_name_to_project_data(mvs_input_directory, scenario_name)
+    check_inputs.add_scenario_name_to_project_data(
+        user_inputs_mvs_directory, scenario_name
+    )
 
     mvs.main(
-        path_input_folder=mvs_input_directory,
+        path_input_folder=user_inputs_mvs_directory,
         path_output_folder=mvs_output_directory,
         input_type="csv",
         overwrite=True,

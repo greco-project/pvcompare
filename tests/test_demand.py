@@ -31,8 +31,8 @@ class TestDemandProfiles:
         self.lon = 5.0
         self.storeys = 5
         self.year = 2015
-        self.user_input_directory = constants.TEST_USER_INPUTS_PVCOMPARE
-        self.static_input_directory = constants.TEST_STATIC_INPUTS
+        self.user_inputs_pvcompare_directory = constants.TEST_USER_INPUTS_PVCOMPARE
+        self.static_inputs_directory = constants.TEST_STATIC_INPUTS
         self.test_mvs_directory = constants.TEST_USER_INPUTS_MVS
 
         ts = pd.DataFrame()
@@ -59,7 +59,9 @@ class TestDemandProfiles:
         self.weather = weather_df
 
         self.bp = pd.read_csv(
-            os.path.join(self.user_input_directory, "building_parameters.csv"),
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "building_parameters.csv"
+            ),
             index_col=0,
         )
         self.heating_lim_temp = pd.to_numeric(
@@ -87,9 +89,9 @@ class TestDemandProfiles:
             country=self.country,
             storeys=self.storeys,
             year=self.year,
-            user_input_directory=self.user_input_directory,
-            static_input_directory=self.static_input_directory,
-            mvs_input_directory=self.test_mvs_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            static_inputs_directory=self.static_inputs_directory,
+            user_inputs_mvs_directory=self.test_mvs_directory,
             column="Electricity demand",
         )
         assert os.path.exists(
@@ -102,9 +104,9 @@ class TestDemandProfiles:
             country=self.country,
             storeys=self.storeys,
             year=self.year,
-            user_input_directory=self.user_input_directory,
-            static_input_directory=self.static_input_directory,
-            mvs_input_directory=self.test_mvs_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            static_inputs_directory=self.static_inputs_directory,
+            user_inputs_mvs_directory=self.test_mvs_directory,
             column="Electricity demand",
         )
 
@@ -124,10 +126,10 @@ class TestDemandProfiles:
             lon=self.lon,
             storeys=self.storeys,
             year=self.year,
-            user_input_directory=self.user_input_directory,
-            static_input_directory=self.static_input_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            static_inputs_directory=self.static_inputs_directory,
             weather=self.weather,
-            mvs_input_directory=self.test_mvs_directory,
+            user_inputs_mvs_directory=self.test_mvs_directory,
             column="Heat demand",
         )
         assert os.path.exists(
@@ -138,7 +140,9 @@ class TestDemandProfiles:
 
         self.bp["value"].loc["include warm water"] = False
         self.bp.to_csv(
-            os.path.join(self.user_input_directory, "building_parameters.csv")
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "building_parameters.csv"
+            )
         )
 
         a = calculate_heat_demand(
@@ -147,10 +151,10 @@ class TestDemandProfiles:
             lon=self.lon,
             storeys=self.storeys,
             year=self.year,
-            user_input_directory=self.user_input_directory,
-            static_input_directory=self.static_input_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            static_inputs_directory=self.static_inputs_directory,
             weather=self.weather,
-            mvs_input_directory=self.test_mvs_directory,
+            user_inputs_mvs_directory=self.test_mvs_directory,
             column="Heat demand",
         )
 
@@ -158,14 +162,18 @@ class TestDemandProfiles:
 
         self.bp["value"].loc["include warm water"] = self.include_ww
         self.bp.to_csv(
-            os.path.join(self.user_input_directory, "building_parameters.csv")
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "building_parameters.csv"
+            )
         )
 
     def test_calculate_heat_demand_with_ww(self):
 
         self.bp["value"].loc["include warm water"] = True
         self.bp.to_csv(
-            os.path.join(self.user_input_directory, "building_parameters.csv")
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "building_parameters.csv"
+            )
         )
 
         a = calculate_heat_demand(
@@ -174,10 +182,10 @@ class TestDemandProfiles:
             lon=self.lon,
             storeys=self.storeys,
             year=self.year,
-            user_input_directory=self.user_input_directory,
-            static_input_directory=self.static_input_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            static_inputs_directory=self.static_inputs_directory,
             weather=self.weather,
-            mvs_input_directory=self.test_mvs_directory,
+            user_inputs_mvs_directory=self.test_mvs_directory,
             column="Heat demand",
         )
 
@@ -185,7 +193,9 @@ class TestDemandProfiles:
 
         self.bp["value"].loc["include warm water"] = self.include_ww
         self.bp.to_csv(
-            os.path.join(self.user_input_directory, "building_parameters.csv")
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "building_parameters.csv"
+            )
         )
 
     def test_adjust_heat_demand(self):

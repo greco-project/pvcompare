@@ -38,7 +38,7 @@ class TestPvtime_series:
         weather_df.index = ["2014-07-01 13:00:00+00:00", "2014-07-01 14:00:00+00:00"]
         weather_df.index = pd.to_datetime(weather_df.index, utc=True)
         self.test_mvs_directory = constants.TEST_USER_INPUTS_MVS
-        self.user_input_directory = constants.TEST_USER_INPUTS_PVCOMPARE
+        self.user_inputs_pvcompare_directory = constants.TEST_USER_INPUTS_PVCOMPARE
         self.weather = weather_df
 
         self.population = 4600
@@ -111,7 +111,7 @@ class TestPvtime_series:
             normalization="NSTC",
         )
         output = ts.sum()
-        assert round(output, 2) == 0.61
+        assert round(output, 2) == 0.64
 
     def test_create_cpv_time_series_NRWC_normalization(self):
 
@@ -124,7 +124,7 @@ class TestPvtime_series:
             normalization="NRWC",
         )
         output = ts.sum()
-        assert round(output, 2) == 0.87
+        assert round(output, 2) == 0.91
 
     def test_create_psi_time_series(self):
         ts = create_psi_time_series(
@@ -169,7 +169,9 @@ class TestPvtime_series:
         assert round(output, 1) == 0.9
 
     def test_create_create_pv_components_wrong_technology_in_pvsetup(self):
-        pv_setup_filename = os.path.join(self.user_input_directory, "pv_setup.csv")
+        pv_setup_filename = os.path.join(
+            self.user_inputs_pvcompare_directory, "pv_setup.csv"
+        )
         pv_setup = pd.read_csv(pv_setup_filename)
 
         pv_setup.at[1, "technology"] = None
@@ -182,14 +184,16 @@ class TestPvtime_series:
                 self.population,
                 pv_setup=pv_setup,
                 plot=False,
-                user_input_directory=self.user_input_directory,
-                mvs_input_directory=self.test_mvs_directory,
+                user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+                user_inputs_mvs_directory=self.test_mvs_directory,
                 normalization="NRWC",
                 year=self.year,
             )
 
     def test_create_create_pv_components_wrong_surface_type_in_pvsetup(self):
-        pv_setup_filename = os.path.join(self.user_input_directory, "pv_setup.csv")
+        pv_setup_filename = os.path.join(
+            self.user_inputs_pvcompare_directory, "pv_setup.csv"
+        )
         pv_setup = pd.read_csv(pv_setup_filename)
 
         pv_setup.at[1, "surface_type"] = None
@@ -202,8 +206,8 @@ class TestPvtime_series:
                 self.population,
                 pv_setup=pv_setup,
                 plot=False,
-                user_input_directory=self.user_input_directory,
-                mvs_input_directory=self.test_mvs_directory,
+                user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+                user_inputs_mvs_directory=self.test_mvs_directory,
                 year=self.year,
             )
 
@@ -326,7 +330,7 @@ class TestPvtime_series:
             normalization="NRWC",
         )
 
-        assert nominal_value == 239.657
+        assert nominal_value == 241.014
 
     def test_nominal_values_pv_NRWC_psi(self):
         technology = "psi"
@@ -361,7 +365,7 @@ def test_calculate_NRWC_peak_cpv():
 
     peak2 = calculate_NRWC_peak(technology="cpv")
 
-    assert round(peak2, 2) == 23.97
+    assert round(peak2, 2) == 24.1
 
 
 def test_calculate_NRWC_peak_psi():

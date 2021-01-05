@@ -1,16 +1,16 @@
-index,unit,PV si,PV si1,PV cpv,PV psi
-age_installed,year,0,0,0,0
-capex_fix,currency,,,,
-capex_var,currency/unit,,,,
-file_name,str,si_180.0_25_2015_40.0_5.2.csv,,,
-installedCap,kWp,0,0,0,0
-maximumCap,kWp,33576.867,,,
-lifetime,year,25,25,25,25
-opex_fix,currency/unit/year,,,,
-opex_var,currency/kWh,,,,
-optimizeCap,bool,True,True,True,True
-outflow_direction,str,PV bus,PV bus,PV bus,PV bus
-type_oemof,str,source,source,source,source
-unit,str,kWp,kWp,kWp,kWp
-energyVector,str,Electricity,Electricity,Electricity,Electricity
-latitude,,,,,
+index,unit,PV si,PV cpv,PV psi
+age_installed,year,0,0,0
+capex_fix,currency,,,
+capex_var,currency/unit,,,
+file_name,str,si_180.0_25_2015_40.0_5.2.csv,,
+installedCap,kWp,0,0,0
+maximumCap,kWp,33576.867,,
+lifetime,year,25,25,25
+opex_fix,currency/unit/year,,,
+opex_var,currency/kWh,,,
+optimizeCap,bool,True,True,True
+outflow_direction,str,PV bus,PV bus,PV bus
+type_oemof,str,source,source,source
+unit,str,kWp,kWp,kWp
+energyVector,str,Electricity,Electricity,Electricity
+latitude,,,,
