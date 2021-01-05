@@ -59,7 +59,9 @@ class TestDemandProfiles:
         self.weather = weather_df
 
         self.bp = pd.read_csv(
-            os.path.join(self.user_inputs_pvcompare_directory, "building_parameters.csv"),
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "building_parameters.csv"
+            ),
             index_col=0,
         )
         self.heating_lim_temp = pd.to_numeric(
@@ -138,7 +140,9 @@ class TestDemandProfiles:
 
         self.bp["value"].loc["include warm water"] = False
         self.bp.to_csv(
-            os.path.join(self.user_inputs_pvcompare_directory, "building_parameters.csv")
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "building_parameters.csv"
+            )
         )
 
         a = calculate_heat_demand(
@@ -158,14 +162,18 @@ class TestDemandProfiles:
 
         self.bp["value"].loc["include warm water"] = self.include_ww
         self.bp.to_csv(
-            os.path.join(self.user_inputs_pvcompare_directory, "building_parameters.csv")
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "building_parameters.csv"
+            )
         )
 
     def test_calculate_heat_demand_with_ww(self):
 
         self.bp["value"].loc["include warm water"] = True
         self.bp.to_csv(
-            os.path.join(self.user_inputs_pvcompare_directory, "building_parameters.csv")
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "building_parameters.csv"
+            )
         )
 
         a = calculate_heat_demand(
@@ -185,7 +193,9 @@ class TestDemandProfiles:
 
         self.bp["value"].loc["include warm water"] = self.include_ww
         self.bp.to_csv(
-            os.path.join(self.user_inputs_pvcompare_directory, "building_parameters.csv")
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "building_parameters.csv"
+            )
         )
 
     def test_adjust_heat_demand(self):

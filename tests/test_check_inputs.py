@@ -35,7 +35,9 @@ class TestDemandProfiles:
         self.user_inputs_mvs_directory = constants.TEST_USER_INPUTS_MVS
         self.user_inputs_pvcompare_directory = constants.TEST_USER_INPUTS_PVCOMPARE
         self.static_inputs_directory = constants.TEST_STATIC_INPUTS
-        self.collections_mvs_input_directory = constants.TEST_COLLECTION_MVS_INPUTS_DIRECTORY
+        self.collections_mvs_input_directory = (
+            constants.TEST_COLLECTION_MVS_INPUTS_DIRECTORY
+        )
         data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
         self.pv_setup = pd.read_csv(data_path)
 
@@ -44,17 +46,22 @@ class TestDemandProfiles:
         scenario_name = "Test_scenario_check_inputs"
         # set scenario Name to None
         project_data = pd.read_csv(
-            os.path.join(self.user_inputs_mvs_directory, "csv_elements/project_data.csv"),
+            os.path.join(
+                self.user_inputs_mvs_directory, "csv_elements/project_data.csv"
+            ),
             index_col=0,
         )
         project_data.at["scenario_name", "project_data"] = None
 
         add_scenario_name_to_project_data(
-            user_inputs_mvs_directory=self.user_inputs_mvs_directory, scenario_name=scenario_name
+            user_inputs_mvs_directory=self.user_inputs_mvs_directory,
+            scenario_name=scenario_name,
         )
         # check project_data
         project_data = pd.read_csv(
-            os.path.join(self.user_inputs_mvs_directory, "csv_elements/project_data.csv"),
+            os.path.join(
+                self.user_inputs_mvs_directory, "csv_elements/project_data.csv"
+            ),
             index_col=0,
         )
         mvs_scenario_name = project_data.at["scenario_name", "project_data"]
@@ -115,13 +122,17 @@ class TestDemandProfiles:
     def test_add_project_data_with_latitude_is_none(self):
 
         project_data = pd.read_csv(
-            os.path.join(self.user_inputs_mvs_directory, "csv_elements/project_data.csv"),
+            os.path.join(
+                self.user_inputs_mvs_directory, "csv_elements/project_data.csv"
+            ),
             index_col=0,
             header=0,
         )
         project_data.at["latitude", "project_data"] = None
         project_data.to_csv(
-            os.path.join(self.user_inputs_mvs_directory, "csv_elements/project_data.csv")
+            os.path.join(
+                self.user_inputs_mvs_directory, "csv_elements/project_data.csv"
+            )
         )
 
         with pytest.raises(ValueError):
@@ -157,13 +168,17 @@ class TestDemandProfiles:
     def test_overwrite_mvs_energy_production_file_overwrite_is_false(self):
 
         file = pd.read_csv(
-            os.path.join(self.user_inputs_mvs_directory, "csv_elements/energyProduction.csv"),
+            os.path.join(
+                self.user_inputs_mvs_directory, "csv_elements/energyProduction.csv"
+            ),
             index_col=0,
             header=0,
         )
         file.at["latitude", "project_data"] = None
         file.to_csv(
-            os.path.join(self.user_inputs_mvs_directory, "csv_elements/energyProduction.csv")
+            os.path.join(
+                self.user_inputs_mvs_directory, "csv_elements/energyProduction.csv"
+            )
         )
 
         with pytest.raises(ValueError):
@@ -186,7 +201,9 @@ class TestDemandProfiles:
         file.to_csv(filename)
 
         # load pv_setup.py
-        pv_setup_filename = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
+        pv_setup_filename = os.path.join(
+            self.user_inputs_pvcompare_directory, "pv_setup.csv"
+        )
         pv_setup = pd.read_csv(pv_setup_filename)
 
         pv_setup.at[0, "technology"] = "si"

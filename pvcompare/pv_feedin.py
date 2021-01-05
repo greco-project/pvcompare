@@ -105,7 +105,9 @@ def create_pv_components(
         logging.info("loading pv setup conditions from input directory.")
 
         if user_inputs_pvcompare_directory == None:
-            user_inputs_pvcompare_directory = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+            user_inputs_pvcompare_directory = (
+                constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+            )
 
         data_path = os.path.join(user_inputs_pvcompare_directory, "pv_setup.csv")
         pv_setup = pd.read_csv(data_path)
@@ -230,7 +232,9 @@ def create_pv_components(
             )
         else:
             area = area_potential.calculate_area_potential(
-                storeys, user_inputs_pvcompare_directory, surface_type=row["surface_type"]
+                storeys,
+                user_inputs_pvcompare_directory,
+                surface_type=row["surface_type"],
             )
 
         # calculate nominal value of the powerplant

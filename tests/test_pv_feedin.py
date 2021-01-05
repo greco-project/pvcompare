@@ -169,7 +169,9 @@ class TestPvtime_series:
         assert round(output, 1) == 0.9
 
     def test_create_create_pv_components_wrong_technology_in_pvsetup(self):
-        pv_setup_filename = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
+        pv_setup_filename = os.path.join(
+            self.user_inputs_pvcompare_directory, "pv_setup.csv"
+        )
         pv_setup = pd.read_csv(pv_setup_filename)
 
         pv_setup.at[1, "technology"] = None
@@ -189,7 +191,9 @@ class TestPvtime_series:
             )
 
     def test_create_create_pv_components_wrong_surface_type_in_pvsetup(self):
-        pv_setup_filename = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
+        pv_setup_filename = os.path.join(
+            self.user_inputs_pvcompare_directory, "pv_setup.csv"
+        )
         pv_setup = pd.read_csv(pv_setup_filename)
 
         pv_setup.at[1, "surface_type"] = None

@@ -100,7 +100,9 @@ def loop_pvcompare(
     if outputs_directory == None:
         outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
     if user_inputs_pvcompare_directory == None:
-        user_inputs_pvcompare_directory = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        user_inputs_pvcompare_directory = (
+            constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        )
 
     loop_output_directory = create_loop_output_structure(
         outputs_directory=outputs_directory,
@@ -205,7 +207,9 @@ def loop_pvcompare(
     elif loop_type is "hp_temp":
         temp_high = loop_dict["start"]
 
-        data_path = os.path.join(user_inputs_pvcompare_directory, "heat_pumps_and_chillers.csv")
+        data_path = os.path.join(
+            user_inputs_pvcompare_directory, "heat_pumps_and_chillers.csv"
+        )
         while temp_high <= loop_dict["stop"]:
             # load input parameters from pv_setup.csv
             hp_file = pd.read_csv(data_path, index_col=0)
@@ -359,7 +363,9 @@ def loop_mvs(
         outputs_directory, scenario_name, variable_name
     )
     # define filename of variable that should be looped over
-    csv_filename = os.path.join(user_inputs_mvs_directory, "csv_elements", csv_file_variable)
+    csv_filename = os.path.join(
+        user_inputs_mvs_directory, "csv_elements", csv_file_variable
+    )
     csv_file = pd.read_csv(csv_filename, index_col=0)
 
     # loop over the variable
@@ -546,7 +552,11 @@ def plot_all_flows(
 
 
 def plot_kpi_loop(
-    variable_name, kpi, scenario_name, outputs_directory=None, loop_output_directory=None
+    variable_name,
+    kpi,
+    scenario_name,
+    outputs_directory=None,
+    loop_output_directory=None,
 ):
 
     """

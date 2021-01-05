@@ -30,7 +30,7 @@ class TestCalculateCopsAndEers:
             temperature_col="temp_air",
             mode="heat_pump",
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-           user_inputs_mvs_directory=self.mvs_input_directory,
+            user_inputs_mvs_directory=self.mvs_input_directory,
         )
         cops_exp = pd.Series(
             [
@@ -67,7 +67,7 @@ class TestCalculateCopsAndEers:
             temperature_col="temp_air",
             mode="heat_pump",
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-           user_inputs_mvs_directory=self.mvs_input_directory,
+            user_inputs_mvs_directory=self.mvs_input_directory,
         )
         cops_exp = pd.Series(
             [
@@ -98,7 +98,7 @@ class TestCalculateCopsAndEers:
                 temperature_col="temp_air",
                 mode="misspelled_mode",
                 user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-               user_inputs_mvs_directory=self.mvs_input_directory,
+                user_inputs_mvs_directory=self.mvs_input_directory,
             )
 
     def test_calculate_cops_and_eers_saved_file(self):
@@ -109,7 +109,7 @@ class TestCalculateCopsAndEers:
             temperature_col="temp_air",
             mode="heat_pump",
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-           user_inputs_mvs_directory=self.mvs_input_directory,
+            user_inputs_mvs_directory=self.mvs_input_directory,
         )
         assert os.path.exists(
             os.path.join(
@@ -163,7 +163,7 @@ class TestAddSectorCoupling:
             lat=self.lat,
             lon=self.lon,
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-           user_inputs_mvs_directory=self.mvs_input_directory,
+            user_inputs_mvs_directory=self.mvs_input_directory,
         )
         # no file created
         filename = os.path.join(
@@ -183,7 +183,7 @@ class TestAddSectorCoupling:
             lat=self.lat,
             lon=self.lon,
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-           user_inputs_mvs_directory=self.mvs_input_directory,
+            user_inputs_mvs_directory=self.mvs_input_directory,
         )
         # file created
         filename = os.path.join(
@@ -206,7 +206,7 @@ class TestAddSectorCoupling:
             lat=self.lat,
             lon=self.lon,
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-           user_inputs_mvs_directory=self.mvs_input_directory,
+            user_inputs_mvs_directory=self.mvs_input_directory,
         )
         # no file created
         filename = os.path.join(

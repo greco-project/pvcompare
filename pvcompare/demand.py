@@ -88,7 +88,9 @@ def calculate_load_profiles(
     if static_inputs_directory == None:
         static_inputs_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
     if user_inputs_pvcompare_directory == None:
-        user_inputs_pvcompare_directory = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        user_inputs_pvcompare_directory = (
+            constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        )
     if user_inputs_mvs_directory is None:
         user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
 
@@ -187,7 +189,9 @@ def calculate_power_demand(
     if static_inputs_directory == None:
         static_inputs_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
     if user_inputs_pvcompare_directory == None:
-        user_inputs_pvcompare_directory = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        user_inputs_pvcompare_directory = (
+            constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        )
     if user_inputs_mvs_directory == None:
         user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
 
@@ -198,7 +202,8 @@ def calculate_power_demand(
 
     logging.info("loading residential electricity demand")
     bp = pd.read_csv(
-        os.path.join(user_inputs_pvcompare_directory, "building_parameters.csv"), index_col=0
+        os.path.join(user_inputs_pvcompare_directory, "building_parameters.csv"),
+        index_col=0,
     )
 
     filename_residential_electricity_demand = bp.at[
@@ -326,7 +331,9 @@ def calculate_heat_demand(
     if static_inputs_directory == None:
         static_inputs_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
     if user_inputs_pvcompare_directory == None:
-        user_inputs_pvcompare_directory = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        user_inputs_pvcompare_directory = (
+            constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        )
     if user_inputs_mvs_directory == None:
         user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
 
@@ -349,7 +356,8 @@ def calculate_heat_demand(
     # consumption for SH and WH and subtracting the electrical consumption of
     # SH and WH for a country
     bp = pd.read_csv(
-        os.path.join(user_inputs_pvcompare_directory, "building_parameters.csv"), index_col=0
+        os.path.join(user_inputs_pvcompare_directory, "building_parameters.csv"),
+        index_col=0,
     )
     filename_total_SH = os.path.join(
         static_inputs_directory, bp.at["filename_total_SH", "value"]
@@ -472,7 +480,9 @@ def calculate_heat_demand(
     # save the file name of the time series and the nominal value to
     # mvs_inputs/elements/csv/energyProduction.csv
     check_inputs.add_file_name_to_energy_consumption_file(
-        column=column, ts_filename=h_demand_csv, user_inputs_mvs_directory=user_inputs_mvs_directory
+        column=column,
+        ts_filename=h_demand_csv,
+        user_inputs_mvs_directory=user_inputs_mvs_directory,
     )
     return shifted_heat_demand
 

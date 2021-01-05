@@ -60,7 +60,12 @@ def add_scenario_name_to_project_data(user_inputs_mvs_directory, scenario_name):
 
 
 def add_location_and_year_to_project_data(
-    user_inputs_mvs_directory, static_inputs_directory, latitude, longitude, country, year
+    user_inputs_mvs_directory,
+    static_inputs_directory,
+    latitude,
+    longitude,
+    country,
+    year,
 ):
 
     """
@@ -301,7 +306,9 @@ def overwrite_mvs_energy_production_file(
         collections_mvs_input_directory = (
             constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY
         )
-    filename = os.path.join(user_inputs_mvs_directory, "csv_elements/" "energyProduction.csv")
+    filename = os.path.join(
+        user_inputs_mvs_directory, "csv_elements/" "energyProduction.csv"
+    )
     user_input_ep = pd.read_csv(filename, index_col=0)
 
     if not overwrite_pv_parameters:

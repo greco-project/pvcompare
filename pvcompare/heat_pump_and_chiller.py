@@ -67,10 +67,14 @@ def calculate_cops_and_eers(
     """
     # read parameters from file
     if user_inputs_pvcompare_directory == None:
-        user_inputs_pvcompare_directory = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        user_inputs_pvcompare_directory = (
+            constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        )
     if user_inputs_mvs_directory == None:
         user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
-    filename = os.path.join(user_inputs_pvcompare_directory, "heat_pumps_and_chillers.csv")
+    filename = os.path.join(
+        user_inputs_pvcompare_directory, "heat_pumps_and_chillers.csv"
+    )
 
     try:
         parameters = pd.read_csv(filename, header=0, index_col=0).loc[mode]
@@ -155,7 +159,11 @@ def calculate_cops_and_eers(
 
 
 def add_sector_coupling(
-    weather, lat, lon, user_inputs_pvcompare_directory=None, user_inputs_mvs_directory=None
+    weather,
+    lat,
+    lon,
+    user_inputs_pvcompare_directory=None,
+    user_inputs_mvs_directory=None,
 ):
     """
     Add heat sector if heat pump or chiller in 'energyConversion.csv'.
@@ -197,7 +205,9 @@ def add_sector_coupling(
     """
     # read energyConversion.csv file
     if user_inputs_pvcompare_directory == None:
-        user_inputs_pvcompare_directory = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        user_inputs_pvcompare_directory = (
+            constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        )
     if user_inputs_mvs_directory is None:
         user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
     energy_conversion = pd.read_csv(
@@ -281,7 +291,9 @@ def add_sector_coupling(
 
         # display warning if heat demand seems to be missing in energyConsumption.csv
         energy_consumption = pd.read_csv(
-            os.path.join(user_inputs_mvs_directory, "csv_elements", "energyConsumption.csv"),
+            os.path.join(
+                user_inputs_mvs_directory, "csv_elements", "energyConsumption.csv"
+            ),
             header=0,
             index_col=0,
         )
