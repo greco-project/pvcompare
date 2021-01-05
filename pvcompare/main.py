@@ -4,7 +4,7 @@ import logging
 import sys
 import os
 
-import multi_vector_simulator.cli as mvs
+import multi_vector_simulator.cli as cli
 
 # internal imports
 from pvcompare import era5
@@ -133,6 +133,7 @@ def apply_pvcompare(
 
     # check energyProduction.csv file for the correct pv technology
     check_inputs.overwrite_mvs_energy_production_file(
+        pv_setup=pv_setup,
         user_inputs_mvs_directory=user_inputs_mvs_directory,
         user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
         collections_mvs_input_directory=collections_mvs_input_directory,
@@ -233,12 +234,14 @@ def apply_mvs(
         user_inputs_mvs_directory, scenario_name
     )
 
-    mvs.main(
+    cli.main(
+        overwrite = False,
+        pdf_report=False,
+        input_type="csv",
         path_input_folder=user_inputs_mvs_directory,
         path_output_folder=mvs_output_directory,
-        input_type="csv",
-        overwrite=True,
-        save_png=True,
+        display_output = "info",
+        lp_file_output = False,
     )
 
 
@@ -252,14 +255,14 @@ if __name__ == "__main__":
     country = "Germany"
     scenario_name = "Scenario_B2"
 
-    apply_pvcompare(
-        latitude=latitude,
-        longitude=longitude,
-        year=year,
-        storeys=storeys,
-        country=country,
-    )
-
-    # apply_mvs(
-    #     scenario_name=scenario_name, output_directory=None, user_inputs_mvs_directory=None
+    # apply_pvcompare(
+    #     latitude=latitude,
+    #     longitude=longitude,
+    #     year=year,
+    #     storeys=storeys,
+    #     country=country,
     # )
+
+    apply_mvs(
+        scenario_name=scenario_name, outputs_directory=None, user_inputs_mvs_directory=None
+    )
