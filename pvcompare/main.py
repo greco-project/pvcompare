@@ -197,7 +197,7 @@ def apply_mvs(
         Default: constants.DEFAULT_OUTPUTS_DIRECTORY
     mvs_output_directory: str or None
         Directory in which simulation results are stored. If None,
-        `constants.DEFAULT_MVS_OUTPUT_DIRECTORY` is used as user_inputs_mvs_directory.
+        "output_directory/scenario_name/ is used as mvs_output_directory.
         Default: None.
     loop_variable: str
         Name of the variable that is varied within :py:func:`~.outputs.loop`.
