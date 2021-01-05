@@ -8,53 +8,104 @@ Otherwise https://docs.pytest.org/en/latest/ and
 https://docs.python.org/3/library/unittest.html are also good support.
 """
 
+import pvcompare.main as main
 import os
-import pytest
-import logging
-from pvcompare import main
-from pvcompare import constants
-import multi_vector_simulator as mvs
+import glob
+import argparse
+import mock
+import shutil
 
+class TestBenchmarkApplyPvcompare():
+    @classmethod
+    def setup_class(self):
+    # DEFINE USER INPUTS
+        self.latitude = 52.5243700  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
+        self.longitude = 13.4105300  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
+        self.year = 2014
+        self.storeys = 5
+        self.country = "Germany"
+        self.scenario_name = "Scenario_A1"
 
-def test_main(self):
+        # DEFAULT PARAMETERS
+        self.user_inputs_pvcompare_directory = os.path.join(
+    os.path.dirname(__file__), "data_benchmark_tests/user_inputs_apply_pvcompare/pvcompare_inputs/"
+)
+        self.static_inputs_directory = None
+        self.user_inputs_mvs_directory = os.path.join(
+    os.path.dirname(__file__), "data_benchmark_tests/user_inputs_apply_pvcompare/mvs_inputs/"
+)
+        self.pv_setup = None
+        self.outputs_directory = os.path.join(
+    os.path.dirname(__file__), "data_benchmark_tests/outputs")
 
-    latitude = 52.5243700  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
+# RUN PVCOMPARE PRE-CALCULATIONS:
+# - calculate PV timeseries
+# - if sectorcoupling: calculate heat pump generation
+# - calculate electricity and heat demand
 
-    longitude = 13.4105300  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
-    year = 2014
-    storeys = 5
-    country = "Germany"
-    scenario_name = "Test_loop_mvs"
-    output_directory = constants.TEST_DATA_OUTPUT
-    mvs_input_directory = os.path.join(constants.TEST_DATA_DIRECTORY,
-                                       "test_inputs_loop_mvs")
+    def test_apply_pvcompare(self):
 
+        main.apply_pvcompare(
+            storeys=self.storeys,
+            country=self.country,
+            latitude=self.latitude,
+            longitude=self.longitude,
+            year=self.year,
+            static_inputs_directory=self.static_inputs_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            user_inputs_mvs_directory=self.user_inputs_mvs_directory,
+            plot=False,
+            pv_setup=self.pv_setup,
+            overwrite_grid_costs=True,
+            overwrite_pv_parameters=True,
+            )
 
+        assert os.path.isfile(os.path.join(self.user_inputs_mvs_directory, "time_series" , "si_180_38_2014_52.52437_13.41053.csv"))
 
-    main.apply_pvcompare(
-        latitude=latitude,
-        longitude=longitude,
-        year=year,
-        storeys=storeys,
-        country=country,
-    )
+    @mock.patch("argparse.ArgumentParser.parse_args",
+                return_value=argparse.Namespace())
+    def test_apply_mvs(self, margs):
+        """ """
+        main.apply_pvcompare(
+            storeys=self.storeys,
+            country=self.country,
+            latitude=self.latitude,
+            longitude=self.longitude,
+            year=self.year,
+            static_inputs_directory=self.static_inputs_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            user_inputs_mvs_directory=self.user_inputs_mvs_directory,
+            plot=False,
+            pv_setup=self.pv_setup,
+            overwrite_grid_costs=True,
+            overwrite_pv_parameters=True,
+            )
 
-    main.apply_mvs(
-        scenario_name=scenario_name, output_directory=output_directory,
-        mvs_input_directory=mvs_input_directory
-    )
+        main.apply_mvs(
+            scenario_name=self.scenario_name,
+            outputs_directory=self.outputs_directory,
+            user_inputs_mvs_directory=self.user_inputs_mvs_directory,
+        )
 
-def test_mvs():
-    """ """
+        assert os.path.isdir(os.path.join(self.outputs_directory, self.scenario_name))
 
-    output_directory = constants.TEST_DATA_OUTPUT
-    mvs_input_directory = os.path.join(constants.TEST_DATA_DIRECTORY,
-                                       "test_inputs_loop_mvs")
-    mvs.main(
-        path_input_folder=mvs_input_directory,
-        path_output_folder=output_directory,
-        input_type="csv",
-        overwrite=True,
-        pdf_report=False,
-        save_png=True,
-    )
+    def teardown_method(self):
+        # delete file
+        directory = os.path.join(
+            self.user_inputs_mvs_directory,
+            "time_series"
+        )
+        filelist = glob.glob(os.path.join(directory, "*.csv"))
+        for f in filelist:
+            os.remove(f)
+
+        scenario_folder = os.path.join(self.outputs_directory, self.scenario_name)
+        shutil.rmtree(scenario_folder)
+
+# RUN MVS OEMOF SIMULATTION
+# main.apply_mvs(
+#     scenario_name=scenario_name,
+#     output_directory=outputs_directory,
+#     user_inputs_mvs_directory=user_inputs_mvs_directory,
+# )
+
