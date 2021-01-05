@@ -20,7 +20,7 @@ class TestCalculateCopsAndEers:
         self.lat = 53.2
         self.lon = 13.2
         self.mvs_input_directory = constants.TEST_USER_INPUTS_MVS
-        self.user_input_directory = constants.TEST_USER_INPUTS_PVCOMPARE
+        self.user_inputs_pvcompare_directory = constants.TEST_USER_INPUTS_PVCOMPARE
 
     def test_calculate_cops_and_eers_heat_pump_without_icing(self):
         cops = hc.calculate_cops_and_eers(
@@ -29,8 +29,8 @@ class TestCalculateCopsAndEers:
             lon=self.lon,
             temperature_col="temp_air",
             mode="heat_pump",
-            user_input_directory=self.user_input_directory,
-            mvs_input_directory=self.mvs_input_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+           user_inputs_mvs_directory=self.mvs_input_directory,
         )
         cops_exp = pd.Series(
             [
@@ -49,7 +49,7 @@ class TestCalculateCopsAndEers:
     @pytest.fixture(scope="function")
     def add_icing_to_csv(self):
         filename = os.path.join(
-            self.user_input_directory, "heat_pumps_and_chillers.csv"
+            self.user_inputs_pvcompare_directory, "heat_pumps_and_chillers.csv"
         )
         original_data = pd.read_csv(filename, header=0, index_col=0)
         data = original_data.copy()
@@ -66,8 +66,8 @@ class TestCalculateCopsAndEers:
             lon=self.lon,
             temperature_col="temp_air",
             mode="heat_pump",
-            user_input_directory=self.user_input_directory,
-            mvs_input_directory=self.mvs_input_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+           user_inputs_mvs_directory=self.mvs_input_directory,
         )
         cops_exp = pd.Series(
             [
@@ -97,8 +97,8 @@ class TestCalculateCopsAndEers:
                 lon=self.lon,
                 temperature_col="temp_air",
                 mode="misspelled_mode",
-                user_input_directory=self.user_input_directory,
-                mvs_input_directory=self.mvs_input_directory,
+                user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+               user_inputs_mvs_directory=self.mvs_input_directory,
             )
 
     def test_calculate_cops_and_eers_saved_file(self):
@@ -108,8 +108,8 @@ class TestCalculateCopsAndEers:
             lon=self.lon,
             temperature_col="temp_air",
             mode="heat_pump",
-            user_input_directory=self.user_input_directory,
-            mvs_input_directory=self.mvs_input_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+           user_inputs_mvs_directory=self.mvs_input_directory,
         )
         assert os.path.exists(
             os.path.join(
@@ -144,7 +144,7 @@ class TestAddSectorCoupling:
         self.filename_conversion = os.path.join(
             self.mvs_input_directory, "csv_elements", "energyConversion.csv"
         )
-        self.user_input_directory = constants.TEST_USER_INPUTS_PVCOMPARE
+        self.user_inputs_pvcompare_directory = constants.TEST_USER_INPUTS_PVCOMPARE
 
     @pytest.fixture(scope="class", autouse=True)
     def select_conv_tech(self):
@@ -162,8 +162,8 @@ class TestAddSectorCoupling:
             weather=self.weather,
             lat=self.lat,
             lon=self.lon,
-            user_input_directory=self.user_input_directory,
-            mvs_input_directory=self.mvs_input_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+           user_inputs_mvs_directory=self.mvs_input_directory,
         )
         # no file created
         filename = os.path.join(
@@ -182,8 +182,8 @@ class TestAddSectorCoupling:
             weather=self.weather,
             lat=self.lat,
             lon=self.lon,
-            user_input_directory=self.user_input_directory,
-            mvs_input_directory=self.mvs_input_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+           user_inputs_mvs_directory=self.mvs_input_directory,
         )
         # file created
         filename = os.path.join(
@@ -205,8 +205,8 @@ class TestAddSectorCoupling:
             weather=self.weather,
             lat=self.lat,
             lon=self.lon,
-            user_input_directory=self.user_input_directory,
-            mvs_input_directory=self.mvs_input_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+           user_inputs_mvs_directory=self.mvs_input_directory,
         )
         # no file created
         filename = os.path.join(

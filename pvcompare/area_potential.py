@@ -14,7 +14,7 @@ except ImportError:
     plt = None
 
 
-def calculate_area_potential(storeys, user_input_directory, surface_type):
+def calculate_area_potential(storeys, user_inputs_pvcompare_directory, surface_type):
 
     """
     Calculates the area potential.
@@ -32,7 +32,7 @@ def calculate_area_potential(storeys, user_input_directory, surface_type):
     ----------
     population: int
         the population of the district
-    user_input_directory: str or None
+    user_inputs_pvcompare_directory: str or None
         Directory of the user inputs. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
@@ -49,7 +49,7 @@ def calculate_area_potential(storeys, user_input_directory, surface_type):
 
     # read building parameters
     logging.info("loading building parameters from building_parameters.csv ")
-    data_path = os.path.join(user_input_directory, "building_parameters.csv")
+    data_path = os.path.join(user_inputs_pvcompare_directory, "building_parameters.csv")
 
     # load input parameters from building_parameters.csv
     bp = pd.read_csv(data_path, index_col=0)

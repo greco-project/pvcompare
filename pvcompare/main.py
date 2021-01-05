@@ -114,8 +114,8 @@ def apply_pvcompare(
     # add electroicity price specified by country
     if overwrite_grid_costs == True:
         check_inputs.add_electricity_price(
-            static_input_directory=static_inputs_directory,
-            mvs_input_directory=user_inputs_mvs_directory,
+            static_inputs_directory=static_inputs_directory,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
         )
 
     # check if weather data already exists
@@ -133,8 +133,8 @@ def apply_pvcompare(
 
     # check energyProduction.csv file for the correct pv technology
     check_inputs.overwrite_mvs_energy_production_file(
-        mvs_input_directory=user_inputs_mvs_directory,
-        user_input_directory=user_inputs_pvcompare_directory,
+        user_inputs_mvs_directory=user_inputs_mvs_directory,
+        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
         collections_mvs_input_directory=collections_mvs_input_directory,
         overwrite_pv_parameters=overwrite_pv_parameters,
     )
@@ -145,8 +145,8 @@ def apply_pvcompare(
         storeys=storeys,
         pv_setup=pv_setup,
         plot=plot,
-        user_input_directory=user_inputs_pvcompare_directory,
-        mvs_input_directory=user_inputs_mvs_directory,
+        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+        user_inputs_mvs_directory=user_inputs_mvs_directory,
         year=year,
         normalization="NSTC",
     )
@@ -154,8 +154,8 @@ def apply_pvcompare(
     # add sector coupling in case heat pump or chiller exists in energyConversion.csv
     # note: chiller was not tested, yet.
     heat_pump_and_chiller.add_sector_coupling(
-        mvs_input_directory=user_inputs_mvs_directory,
-        user_input_directory=user_inputs_pvcompare_directory,
+        user_inputs_mvs_directory=user_inputs_mvs_directory,
+        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
         weather=weather,
         lat=latitude,
         lon=longitude,
@@ -167,9 +167,9 @@ def apply_pvcompare(
         lon=longitude,
         storeys=storeys,
         year=year,
-        static_input_directory=static_inputs_directory,
-        user_input_directory=user_inputs_pvcompare_directory,
-        mvs_input_directory=user_inputs_mvs_directory,
+        static_inputs_directory=static_inputs_directory,
+        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+        user_inputs_mvs_directory=user_inputs_mvs_directory,
         weather=weather,
     )
 

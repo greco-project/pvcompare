@@ -16,13 +16,13 @@ from pvcompare.area_potential import calculate_area_potential
 class TestCalculateAreaPotential:
     @classmethod
     def setup_class(self):
-        self.user_input_directory = constants.TEST_USER_INPUTS_PVCOMPARE
+        self.user_inputs_pvcompare_directory = constants.TEST_USER_INPUTS_PVCOMPARE
 
     def test_storeys_of_calculate_area_potential(self):
 
         a = calculate_area_potential(
             storeys=5,
-            user_input_directory=self.user_input_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
             surface_type="flat_roof",
         )
         assert a == 197120.0
