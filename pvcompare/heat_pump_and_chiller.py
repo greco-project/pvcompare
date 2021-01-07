@@ -286,14 +286,6 @@ def add_sector_coupling(
             header=0,
             index_col=0,
         )
-        if (
-            not "Heat" in energy_consumption.loc["inflow_direction"].values
-            and not "heat" in energy_consumption.loc["inflow_direction"].values
-        ):
-            logging.warning(
-                "Heat demand might be missing in `energyConsumption.csv` as none of "
-                + "the assets' inflow direction is named 'Heat' nor 'heat'."
-            )
 
     # chiller
     if "chiller" in [key.split("_")[0] for key in energy_conversion.keys()]:
