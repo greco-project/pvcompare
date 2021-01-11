@@ -11,3 +11,4 @@ multi_vector_simulator==0.5.4
 git+https://github.com/greco-project/greco_technologies.git@dev
 git+https://github.com/isi-ies-group/cpvlib.git@2020-11
 xlrd==1.2.0
+mock>=3.0.5
