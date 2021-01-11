@@ -1,10 +1,16 @@
-import pandas as pd
-
-
 mod_params_cpv = {
-    "theta_ref": [5,15,25,35,45,55,65,75,85],
-    "iam_ref": [1,0.995364158,0.987678419,0.951445651,0.880444065,0.818958155,0.027327071,0,0],
-    "aoi_limit": 60,
+    "theta_ref": [5, 15, 25, 35, 45, 55, 65, 75, 85],
+    "iam_ref": [
+        1,
+        0.995364158,
+        0.987678419,
+        0.951445651,
+        0.880444065,
+        0.818958155,
+        0.027327071,
+        0,
+        0,
+    ],
     "gamma_ref": 5.524,
     "mu_gamma": 0.003,
     "I_L_ref": 0.96,
@@ -48,7 +54,6 @@ mod_params_cpv.update(UF_parameters_cpv)
 # https://pvpmc.sandia.gov/PVLIB_Matlab_Help/html/pvl_calcparams_PVsyst_help.html
 mod_params_flatplate = {
     "gamma_ref": 1.1,
-    "aoi_limit": 60,
     "mu_gamma": -0.0003,
     "I_L_ref": 8,
     "I_o_ref": 2.2e-9,
@@ -66,6 +71,7 @@ mod_params_flatplate = {
     "i_mp": 3.51,
     "v_mp": 1.26,
     "p_mp": 4.44,
+    "aoi_limit": 60,
 }
 
 

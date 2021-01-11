@@ -73,18 +73,32 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     8. **unit**: str, kW
 
 * energyConversion.csv
-    1. **age_installed**: year, 0 (for all components such as charge controllers and inverters)
+    1. **age_installed**: year, 0 (for all components such as charge controllers, inverters and heat pumps)
     2. **development_costs**: currency, 0 (for all components)
     3. **specific_costs**: currency/kW
         a. **storage_charge_controller_in** and **storage_charge_controller_out**: 46 (According to this `source <https://alteredenergy.com/wholesale-cost-of-solar-charge-controllers/>`_, a 12 Volts, 80 Amperes Solar Charge Controller costs about 50 USD, which is about 46 €/kW.)
         b. **solar_inverter_01**: 230 (Per `this <https://www.solaranlage-ratgeber.de/photovoltaik/photovoltaik-wirtschaftlichkeit/photovoltaik-anschaffungskosten>`_, the cost of inverters are around 230 Euro/kW.)
+        c. **heat_pump_air_air_2015**: 450 (According to `Danish energy agency's technology data of an air-to-air heat pump [dea_hp_aa] <https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf>`_ on page 87.)
+        d. **heat_pump_air_air_2020**: 425 (According to dea_hp_aa)
+        e. **heat_pump_air_air_2030**: 316.67 (According to dea_hp_aa)
+        f. **heat_pump_air_air_2050**: 300 (According to dea_hp_aa)
+        g. **heat_pump_air_water_2015**: 1000 (According to `Danish energy agency's technology data of an air-to-air heat pump [dea_hp_aw] <https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf>`_ on page 89.)
+        h. **heat_pump_air_water_2020**: 940 (According to dea_hp_aw)
+        i. **heat_pump_air_water_2030**: 850 (According to dea_hp_aw)
+        j. **heat_pump_air_water_2050**: 760 (According to dea_hp_aw)
+        k. **heat_pump_brine_water_2015**: 1600 (According to `Danish energy agency's technology data of an air-to-air heat pump [dea_hp_bw] <https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf>`_ on page 93.)
+        l. **heat_pump_brine_water_2020**: 1500 (According to dea_hp_bw)
+        m. **heat_pump_brine_water_2030**: 1400 (According to dea_hp_bw)
+        n. **heat_pump_brine_water_2050**: 1200 (According to dea_hp_bw)
     4. **efficiency**: factor
         a. **storage_charge_controller_in** and **storage_charge_controller_out**: 1
         b. **solar_inverter_01**: 0.95 (European efficiency is around 0.95, per several sources. `Fronius <https://www.fronius.com/en/photovoltaics/products>`_, for example.)
+        c. **heat_pump**: "{'file_name': 'None', 'header': 'no_unit', 'unit': ''}"
     5. **inflow_direction**: str
         a. **storage_charge_controller_in**: Electricity
         b. **storage_charge_controller_out**: ESS Li-Ion
         c. **solar_inverter_01**: PV bus1 (if there are more inverters such as **solar_inverter_02**, then the buses from which the electricity flows into the inverter happens, will be named accordingly. E.g.: PV bus2.)
+        d. **heat_pump**: Electricity bus
     6. **installedCap**: kW, 0 (for all components)
     7. **label**: str
         a. **storage_charge_controller_in** and **storage_charge_controller_out**: Charge Contoller ESS Li-Ion (charge)
@@ -92,16 +106,36 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     8. **lifetime**: year
         a. **storage_charge_controller_in** and **storage_charge_controller_out**: 15 (According to this `website <https://www.google.com/url?q=https://solarpanelsvenue.com/what-is-a-charge-controller/&sa=D&ust=1591697986335000&usg=AFQjCNE54Zbsv-Gd2UZb-_SY_QNG5Ig2fQ>`_, the lifetime of charge controllers is around 15 years.)
         b. **solar_inverter_01**: 10 (`Lifetime <https://thosesolarguys.com/how-long-do-solar-inverters-last/>`_ of solar (string) inverters is around 10 years.)
+        c. **heat_pump_air_air**: 12 (According to dea_hp_aa)
+        d. **heat_pump_air_water**: 18 (According to dea_hp_aw)
+        e. **heat_pump_brine_water**: 20 (According to dea_hp_bw)
     9. **specific_costs_om**: currency/kW
         a. **storage_charge_controller_in** and **storage_charge_controller_out**: 0 (According to `AM Solar <https://amsolar.com/diy-rv-solar-instructions/edmaintenance>`_, maintainence work on charge controllers is minimal. So we can consider the costs to be covered by specific_cost_om in fixcost.csv, which is just the system O&M cost.)
         b. **solar_inverter_01**: 6 (From page 11 in this 2015 Sandia `document <https://prod-ng.sandia.gov/techlib-noauth/access-control.cgi/2016/160649r.pdf>`_, assuming one maintainence activity per year, we can take 7 USD/kW or 6 €/kW.)
+        c. **heat_pump_air_air_2015**: 42.5 (According to dea_hp_aa)
+        d. **heat_pump_air_air_2020**: 40.5 (According to dea_hp_aa)
+        e. **heat_pump_air_air_2030**: 24.33 (According to dea_hp_aa)
+        f. **heat_pump_air_air_2050**: 22 (According to dea_hp_aa)
+        g. **heat_pump_air_water_2015**: 29.1 (According to dea_hp_aw)
+        h. **heat_pump_air_water_2020**: 27.8 (According to dea_hp_aw)
+        i. **heat_pump_air_water_2030**: 25.5 (According to dea_hp_aw)
+        j. **heat_pump_air_water_2050**: 23.9 (According to dea_hp_aw)
+        k. **heat_pump_brine_water_2015**: 29.1 (According to dea_hp_bw)
+        l. **heat_pump_brine_water_2020**: 27.8 (According to dea_hp_bw)
+        m. **heat_pump_brine_water_2030**: 25.5 (According to dea_hp_bw)
+        n. **heat_pump_brine_water_2050**: 23.9 (According to dea_hp_bw)
     10. **dispatch_price**: currency/kWh, 0 (for all components)
     11. **optimizeCap**: bool, True (for all components)
     12. **outflow_direction**: str
-        a. **storage_charge_controller_in**: ESS Li-Ion
-        b. **storage_charge_controller_out**: Electricity
-        c. **solar_inverter_01**: Electricity (if there are more solar inverters, this value applies for them as well)
-    13. **energyVector**: str, Electricity (same for all the components)
+         a. **storage_charge_controller_in**: ESS Li-Ion
+         b. **storage_charge_controller_out**: Electricity
+         c. **solar_inverter_01**: Electricity (if there are more solar inverters, this value applies for them as well)
+         d. **heat_pump**: Heat bus
+    13. **energyVector**: str
+         a. **storage_charge_controller_in**: Electricity
+         b. **storage_charge_controller_out**: Electricity
+         c. **solar_inverter_01**: Electricity
+         d. **heat_pump**: Heat
     14. **type_oemof**: str, transformer (same for all the components)
     15. **unit**: str, kW (applies to all the components)
 

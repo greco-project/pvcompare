@@ -82,20 +82,21 @@ celerybeat-schedule
 # dotenv
 .env
 
-# outputs
-pvcompare/data/outputs/*
+#empty directories with .gitignore files in them:
+# - data/outputs
+# - data/user_inputs/mvs_inputs/
+# - data/user_inputs/pvcompare_inputs/
+# - examples/example_outputs
 
-# energyProviders.csv used in test_check_inputs.py
-pvcompare/tests/test_data/test_mvs_inputs/csv_elements/energyProviders.csv
-
-# time series for mvs input
-pvcompare/data/mvs_inputs/*
-pvcompare/data/mvs_inputs_template_sector_coupling/time_series
+#example timeseries
+examples/example_user_inputs/mvs_inputs_electricity_sector/timeseries/*
+examples/example_user_inputs/mvs_inputs_sector_coupling/timeseries/*
 
 
-# tests for plots.py
-pvcompare/tests/test_data/test_outputs/**/*.png
-
+# test outputs
+pvcompare/tests/data/outputs/**/*.png
 # tests for plots.py
 pvcompare/tests/test_data/test_outputs/Test_Scenario/mvs_outputs_loop_specific_costs_500/inputs/*
 pvcompare/tests/test_data/test_outputs/Test_Scenario/mvs_outputs_loop_specific_costs_600/inputs/*
+#test csv's
+/tests/data/user_inputs/mvs_inputs/csv_elements/
