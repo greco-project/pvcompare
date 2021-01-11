@@ -99,4 +99,4 @@ pvcompare/tests/data/outputs/**/*.png
 pvcompare/tests/test_data/test_outputs/Test_Scenario/mvs_outputs_loop_specific_costs_500/inputs/*
 pvcompare/tests/test_data/test_outputs/Test_Scenario/mvs_outputs_loop_specific_costs_600/inputs/*
 #test csv's
-/tests/data/user_inputs/mvs_inputs/csv_elements/
+/tests/data/user_inputs/mvs_inputs/csv_elements/*
