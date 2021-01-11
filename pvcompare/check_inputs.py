@@ -260,7 +260,7 @@ def add_electricity_price(static_inputs_directory, user_inputs_mvs_directory):
         user_inputs_mvs_directory=user_inputs_mvs_directory,
         mvs_filename="energyProviders.csv",
         mvs_row="energy_price",
-        mvs_column="DSO",
+        mvs_column="Electricity grid",
         pvcompare_parameter=electricity_price,
         warning=True,
     )
@@ -271,7 +271,7 @@ def overwrite_mvs_energy_production_file(
     user_inputs_mvs_directory,
     user_inputs_pvcompare_directory,
     overwrite_pv_parameters,
-    collections_mvs_input_directory,
+    collections_mvs_inputs_directory=None,
 ):
     """
     Inserts default values for PV technologies defined in pv_setup.csv
@@ -295,17 +295,16 @@ def overwrite_mvs_energy_production_file(
     None
     """
     # load pv_setup.csv
-    if pv_setup is None:
-        pv_setup = pd.read_csv(
-            os.path.join(user_inputs_pvcompare_directory, "pv_setup.csv"), index_col=0
-        )
+    pv_setup = pd.read_csv(
+        os.path.join(user_inputs_pvcompare_directory, "pv_setup.csv"), index_col=0
+    )
     technologies = pv_setup["technology"].values
 
     # load mvs user input file
     if user_inputs_mvs_directory is None:
         user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
-    if collections_mvs_input_directory is None:
-        collections_mvs_input_directory = (
+    if collections_mvs_inputs_directory is None:
+        collections_mvs_inputs_directory = (
             constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY
         )
     filename = os.path.join(
@@ -339,12 +338,12 @@ def overwrite_mvs_energy_production_file(
             user_input_ep.columns.difference(["index", "unit"]), 1, inplace=True
         )
         # get pv parameters from collection_mvs_inputs
-        if collections_mvs_input_directory is None:
-            collections_mvs_input_directory = (
+        if collections_mvs_inputs_directory is None:
+            collections_mvs_inputs_directory = (
                 constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY
             )
         collection_filename = os.path.join(
-            collections_mvs_input_directory, "csv_elements", "energyProduction.csv"
+            collections_mvs_inputs_directory, "csv_elements", "energyProduction.csv"
         )
         collection_ep = pd.read_csv(collection_filename, index_col=0)
         for t in technologies:

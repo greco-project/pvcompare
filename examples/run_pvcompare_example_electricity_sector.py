@@ -8,14 +8,14 @@ longitude = 13.4105300  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athe
 year = 2014
 storeys = 5
 country = "Germany"
-scenario_name = "Scenario_A1"
+scenario_name = "Scenario_example_electricity_sector"
 
 # DEFAULT PARAMETERS
 user_inputs_pvcompare_directory = constants.EXAMPLE_USER_INPUTS_PVCOMPARE
 static_inputs_directory = None
 user_inputs_mvs_directory = constants.EXAMPLE_USER_INPUTS_MVS_ELECTRICITY
 pv_setup = None
-outputs_directory = constants.EXAMPLE_DIRECTORY
+outputs_directory = constants.EXAMPLE_OUTPUTS_DIRECTORY
 
 # RUN PVCOMPARE PRE-CALCULATIONS:
 # - calculate PV timeseries
@@ -40,6 +40,6 @@ main.apply_pvcompare(
 # RUN MVS OEMOF SIMULATTION
 main.apply_mvs(
     scenario_name=scenario_name,
-    output_directory=outputs_directory,
-    mvs_input_directory=user_inputs_mvs_directory,
+    mvs_output_directory=outputs_directory,
+    user_inputs_mvs_directory=user_inputs_mvs_directory,
 )

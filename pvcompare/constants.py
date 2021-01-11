@@ -20,6 +20,7 @@ DEFAULT_OUTPUTS_DIRECTORY = os.path.join(os.path.dirname(__file__), "data/output
 
 # example directories
 EXAMPLE_DIRECTORY = os.path.join(REPO_PATH, "examples")
+EXAMPLE_OUTPUTS_DIRECTORY = os.path.join(REPO_PATH, "examples/example_outputs")
 EXAMPLE_USER_INPUTS_PVCOMPARE = os.path.join(
     REPO_PATH, "examples/example_user_inputs/pvcompare_inputs"
 )

@@ -7,6 +7,7 @@ calculating the available area potential for PV-modules on the rooftop and facad
 import pandas as pd
 import os
 import logging
+import pvcompare.constants as constants
 
 try:
     import matplotlib.pyplot as plt
@@ -106,6 +107,8 @@ def calculate_area_potential(storeys, user_inputs_pvcompare_directory, surface_t
 if __name__ == "__main__":
 
     area = calculate_area_potential(
-        storeys=5, input_directory="./data/inputs/", surface_type="flat_roof"
+        storeys=5,
+        user_inputs_pvcompare_directory=constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY,
+        surface_type="flat_roof",
     )
     print(area)

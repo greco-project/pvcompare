@@ -35,7 +35,7 @@ class TestDemandProfiles:
         self.user_inputs_mvs_directory = constants.TEST_USER_INPUTS_MVS
         self.user_inputs_pvcompare_directory = constants.TEST_USER_INPUTS_PVCOMPARE
         self.static_inputs_directory = constants.TEST_STATIC_INPUTS
-        self.collections_mvs_input_directory = (
+        self.collections_mvs_inputs_directory = (
             constants.TEST_COLLECTION_MVS_INPUTS_DIRECTORY
         )
         data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
@@ -152,7 +152,7 @@ class TestDemandProfiles:
         )
         file = pd.read_csv(filename, index_col=0)
 
-        file.at["energy_price", "DSO"] = 0.2403
+        file.at["energy_price", "Electricity grid"] = 0.2403
         file.to_csv(filename)
 
         add_electricity_price(
@@ -161,7 +161,7 @@ class TestDemandProfiles:
         )
         # load csv
         file = pd.read_csv(filename, index_col=0)
-        electricity_price = file.at["energy_price", "DSO"]
+        electricity_price = file.at["energy_price", "Electricity grid"]
 
         assert float(electricity_price) == 0.2403
 
@@ -185,7 +185,7 @@ class TestDemandProfiles:
             overwrite_mvs_energy_production_file(
                 user_inputs_mvs_directory=self.user_inputs_mvs_directory,
                 user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-                collections_mvs_input_directory=self.collections_mvs_input_directory,
+                collections_mvs_inputs_directory=self.collections_mvs_inputs_directory,
                 overwrite_pv_parameters=False,
             )
 
@@ -215,7 +215,7 @@ class TestDemandProfiles:
         overwrite_mvs_energy_production_file(
             user_inputs_mvs_directory=self.user_inputs_mvs_directory,
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-            collections_mvs_input_directory=self.collections_mvs_input_directory,
+            collections_mvs_inputs_directory=self.collections_mvs_inputs_directory,
             overwrite_pv_parameters=True,
         )
         # load energyProduction.csv

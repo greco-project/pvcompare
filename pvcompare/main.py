@@ -4,7 +4,7 @@ import logging
 import sys
 import os
 
-import multi_vector_simulator.cli as cli
+import multi_vector_simulator.cli as mvs
 
 # internal imports
 from pvcompare import era5
@@ -29,7 +29,7 @@ def apply_pvcompare(
     static_inputs_directory=None,
     user_inputs_pvcompare_directory=None,
     user_inputs_mvs_directory=None,
-    collections_mvs_input_directory=None,
+    collections_mvs_inputs_directory=None,
     plot=False,
     pv_setup=None,
     overwrite_grid_costs=True,
@@ -60,8 +60,8 @@ def apply_pvcompare(
         `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_input_directory.
         Default: None.
     user_inputs_pvcompare_directory: str or None
-        Directory of the user inputs. If None,
-        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_input_directory.
+        If None, `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used
+        as user_input_directory.
         Default: None.
     user_inputs_mvs_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
@@ -78,8 +78,12 @@ def apply_pvcompare(
         If `pv_setup` is None, it is loaded from the `input_directory/pv_setup.cvs`.
         Default: None.
     overwrite_grid_costs: bool
-
+        Default: True. If True, the energy-price is changed according to the
+        country.
     overwrite_pv_parameters: bool
+        Default: True. If true, the pv components in energyProduction.csv are
+        overwritten with default values from 'data/user_inputs_collection/'
+        according to the pv plants defined in 'pv_setup'.
 
     Returns
     -------
@@ -136,7 +140,7 @@ def apply_pvcompare(
         pv_setup=pv_setup,
         user_inputs_mvs_directory=user_inputs_mvs_directory,
         user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
-        collections_mvs_input_directory=collections_mvs_input_directory,
+        collections_mvs_inputs_directory=collections_mvs_inputs_directory,
         overwrite_pv_parameters=overwrite_pv_parameters,
     )
     pv_feedin.create_pv_components(
@@ -178,8 +182,8 @@ def apply_pvcompare(
 def apply_mvs(
     scenario_name,
     user_inputs_mvs_directory=None,
-    mvs_output_directory=None,
     outputs_directory=None,
+    mvs_output_directory=None,
 ):
     r"""
     Starts the energy system simulation with MVS and stores results.
@@ -197,8 +201,9 @@ def apply_mvs(
         Path to output directory.
         Default: constants.DEFAULT_OUTPUTS_DIRECTORY
     mvs_output_directory: str or None
-        Directory in which simulation results are stored. If None,
-        "output_directory/scenario_name/ is used as mvs_output_directory.
+        This parameter should be set to None. It is filled filled in automatically
+        according to 'outputs_directory' and 'scenario_name':
+        'pvcompare/data/outputs/scenario_name/mvs_output'.
         Default: None.
 
     Returns
@@ -234,14 +239,12 @@ def apply_mvs(
         user_inputs_mvs_directory, scenario_name
     )
 
-    cli.main(
-        overwrite = False,
-        pdf_report=False,
-        input_type="csv",
+    mvs.main(
         path_input_folder=user_inputs_mvs_directory,
         path_output_folder=mvs_output_directory,
-        display_output = "info",
-        lp_file_output = False,
+        input_type="csv",
+        overwrite=True,
+        save_png=True,
     )
 
 
@@ -255,14 +258,14 @@ if __name__ == "__main__":
     country = "Germany"
     scenario_name = "Scenario_B2"
 
-    # apply_pvcompare(
-    #     latitude=latitude,
-    #     longitude=longitude,
-    #     year=year,
-    #     storeys=storeys,
-    #     country=country,
-    # )
-
-    apply_mvs(
-        scenario_name=scenario_name, outputs_directory=None, user_inputs_mvs_directory=None
+    apply_pvcompare(
+        latitude=latitude,
+        longitude=longitude,
+        year=year,
+        storeys=storeys,
+        country=country,
     )
+
+    # apply_mvs(
+    #     scenario_name=scenario_name, outputs_directory=None, user_inputs_mvs_directory=None
+    # )
