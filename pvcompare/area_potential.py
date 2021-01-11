@@ -107,6 +107,8 @@ def calculate_area_potential(storeys, user_inputs_pvcompare_directory, surface_t
 if __name__ == "__main__":
 
     area = calculate_area_potential(
-        storeys=5, user_inputs_pvcompare_directory=constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY, surface_type="flat_roof"
+        storeys=5,
+        user_inputs_pvcompare_directory=constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY,
+        surface_type="flat_roof",
     )
     print(area)

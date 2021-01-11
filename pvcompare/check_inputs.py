@@ -303,7 +303,9 @@ def overwrite_mvs_energy_production_file(
     if user_inputs_mvs_directory is None:
         user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
     if collections_mvs_inputs_directory is None:
-         collections_mvs_inputs_directory = constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY
+        collections_mvs_inputs_directory = (
+            constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY
+        )
     filename = os.path.join(
         user_inputs_mvs_directory, "csv_elements/" "energyProduction.csv"
     )
