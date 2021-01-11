@@ -1,7 +1,8 @@
 ,unit,storage_01
-inflow_direction,str,ESS Li-Ion
+label,str,ESS Li-Ion
 optimizeCap,bool,True
-outflow_direction,str,ESS Li-Ion
-type_oemof,str,storage
+outflow_direction,str,ESS Li-Ion bus
+inflow_direction,str,ESS Li-Ion bus
 storage_filename,str,storage_01.csv
 energyVector,str,Electricity
+type_oemof,str,storage

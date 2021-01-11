@@ -44,7 +44,7 @@ def create_pv_components(
     lat,
     lon,
     weather,
-    population,
+    storeys,
     year,
     pv_setup=None,
     plot=True,
@@ -71,8 +71,8 @@ def create_pv_components(
         latitude
     lon: float
         longitude
-    population: num
-        population
+    storeys: num
+        number of storeys
     pv_setup: dict or None
         Specifies the PV technologies and their installation details used in the
         simulation. The dictionary contains columns: surface_type, technology,
@@ -231,7 +231,7 @@ def create_pv_components(
             )
         else:
             area = area_potential.calculate_area_potential(
-                population, input_directory, surface_type=row["surface_type"]
+                storeys, input_directory, surface_type=row["surface_type"]
             )
 
         # calculate nominal value of the powerplant
