@@ -109,10 +109,5 @@ class TestMain():
         if os.path.exists(scenario_folder):
             shutil.rmtree(scenario_folder, ignore_errors=True)
 
-# RUN MVS OEMOF SIMULATTION
-# main.apply_mvs(
-#     scenario_name=scenario_name,
-#     output_directory=outputs_directory,
-#     user_inputs_mvs_directory=user_inputs_mvs_directory,
-# )
+
 
