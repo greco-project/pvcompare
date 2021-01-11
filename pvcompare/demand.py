@@ -216,9 +216,17 @@ def calculate_power_demand(
         static_inputs_directory, filename_residential_electricity_demand
     )
     powerstat = pd.read_csv(filename_elec, sep=":", index_col=0, header=1)
+
     # loading residential space heating
     electr_SH = pd.read_csv(filename_electr_SH, sep=":", index_col=0, header=1)
     electr_SH[str(year)] = pd.to_numeric(electr_SH[str(year)], errors="coerce")
+
+    # loading residential water heating
+    filename_electr_WH = os.path.join(
+        static_inputs_directory, bp.at["filename_elect_WH", "value"]
+    )
+    electr_WH = pd.read_csv(filename_electr_WH, sep=":", index_col=0, header=1)
+    electr_WH[str(year)] = pd.to_numeric(electr_WH[str(year)], errors="coerce")
 
     # loading population for simulation
     filename_population = bp.at["filename_country_population", "value"]
@@ -233,8 +241,8 @@ def calculate_power_demand(
     # calculate annual demand. Substract electricity SH from total SH.
     # Convert mtoe in kWh
     national_energyconsumption = (
-        powerstat.at[country, str(year)] - electr_SH.at[country, str(year)]
-    ) * 11630000000
+        powerstat.at[country, str(year)] - electr_SH.at[country, str(year)] -
+        electr_WH.at[country, str(year)]) * 11630000000
     annual_demand_per_population = (
         national_energyconsumption / populations.at[country, str(year)]
     ) * population
@@ -299,7 +307,8 @@ def calculate_heat_demand(
     """
     Calculates heat demand profile for `storeys` and `country`.
 
-    The heat demand is calculated for a given number of houses with a given number of storeys in a certain country
+    The heat demand is calculated for a given number of houses with a given
+    number of storeys in a certain country
     and year. The annual heat demand is calculated by the following procedure:
 
     1) the residential heat demand for a country is requested from [2]
@@ -378,20 +387,15 @@ def calculate_heat_demand(
     filename_total_WH = os.path.join(
         static_inputs_directory, bp.at["filename_total_WH", "value"]
     )
-    filename_electr_WH = os.path.join(
-        static_inputs_directory, bp.at["filename_elect_WH", "value"]
-    )
     population_per_storey = int(bp.at["population per storey", "value"])
     number_of_houses = int(bp.at["number of houses", "value"])
     population = storeys * population_per_storey * number_of_houses
 
     total_SH = pd.read_csv(filename_total_SH, sep=":", index_col=0, header=1)
     total_WH = pd.read_csv(filename_total_WH, sep=":", index_col=0, header=1)
-    electr_WH = pd.read_csv(filename_electr_WH, sep=":", index_col=0, header=1)
 
     total_SH[str(year)] = pd.to_numeric(total_SH[str(year)], errors="coerce")
     total_WH[str(year)] = pd.to_numeric(total_WH[str(year)], errors="coerce")
-    electr_WH[str(year)] = pd.to_numeric(electr_WH[str(year)], errors="coerce")
     # load population
     filename_population = bp.at["filename_country_population", "value"]
     filename1 = os.path.join(static_inputs_directory, filename_population)
@@ -404,9 +408,7 @@ def calculate_heat_demand(
         heat_demand / populations.at[country, str(year)]
     ) * population
     # Heat demand of households for water heating
-    heat_demand_ww = (
-        total_WH.at[country, str(year)] - electr_WH.at[country, str(year)]
-    ) * 11630000000
+    heat_demand_ww = total_WH.at[country, str(year)] * 11630000000
     annual_heat_demand_ww_per_population = (
         heat_demand_ww / populations.at[country, str(year)]
     ) * population
