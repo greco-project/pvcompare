@@ -40,6 +40,6 @@ main.apply_pvcompare(
 # RUN MVS OEMOF SIMULATTION
 main.apply_mvs(
     scenario_name=scenario_name,
-    output_directory=outputs_directory,
-    mvs_input_directory=user_inputs_mvs_directory,
+    mvs_output_directory=outputs_directory,
+    user_inputs_mvs_directory=user_inputs_mvs_directory,
 )
