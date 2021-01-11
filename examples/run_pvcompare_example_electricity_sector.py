@@ -15,7 +15,7 @@ user_inputs_pvcompare_directory = constants.EXAMPLE_USER_INPUTS_PVCOMPARE
 static_inputs_directory = None
 user_inputs_mvs_directory = constants.EXAMPLE_USER_INPUTS_MVS_ELECTRICITY
 pv_setup = None
-outputs_directory = constants.EXAMPLE_DIRECTORY
+outputs_directory = constants.EXAMPLE_OUTPUTS_DIRECTORY
 
 # RUN PVCOMPARE PRE-CALCULATIONS:
 # - calculate PV timeseries

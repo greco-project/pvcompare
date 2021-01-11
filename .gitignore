@@ -82,14 +82,16 @@ celerybeat-schedule
 # dotenv
 .env
 
-# outputs
-pvcompare/data/outputs/*
+#empty directories with .gitignore files in them:
+# - data/outputs
+# - data/user_inputs/mvs_inputs/
+# - data/user_inputs/pvcompare_inputs/
+# - examples/example_outputs
 
 #example timeseries
 examples/example_user_inputs/mvs_inputs_electricity_sector/timeseries/*
 examples/example_user_inputs/mvs_inputs_sector_coupling/timeseries/*
-# user inputs
-pvcompare/data/user_inputs/*
+
 
 # test outputs
 pvcompare/tests/data/outputs/**/*.png
