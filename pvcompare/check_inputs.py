@@ -260,7 +260,7 @@ def add_electricity_price(static_inputs_directory, user_inputs_mvs_directory):
         user_inputs_mvs_directory=user_inputs_mvs_directory,
         mvs_filename="energyProviders.csv",
         mvs_row="energy_price",
-        mvs_column="DSO",
+        mvs_column="Electricity grid",
         pvcompare_parameter=electricity_price,
         warning=True,
     )

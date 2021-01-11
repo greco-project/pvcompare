@@ -152,7 +152,7 @@ class TestDemandProfiles:
         )
         file = pd.read_csv(filename, index_col=0)
 
-        file.at["energy_price", "DSO"] = 0.2403
+        file.at["energy_price", "Electricity grid"] = 0.2403
         file.to_csv(filename)
 
         add_electricity_price(
@@ -161,7 +161,7 @@ class TestDemandProfiles:
         )
         # load csv
         file = pd.read_csv(filename, index_col=0)
-        electricity_price = file.at["energy_price", "DSO"]
+        electricity_price = file.at["energy_price", "Electricity grid"]
 
         assert float(electricity_price) == 0.2403
 

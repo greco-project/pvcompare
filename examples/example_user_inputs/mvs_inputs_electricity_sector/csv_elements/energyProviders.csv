@@ -1,4 +1,4 @@
-,unit,DSO
+,unit,Electricity grid
 unit,str,kW
 optimizeCap,bool,True
 energy_price,currency/kWh,0.2165
