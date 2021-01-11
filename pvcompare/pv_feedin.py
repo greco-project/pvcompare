@@ -48,8 +48,8 @@ def create_pv_components(
     year,
     pv_setup=None,
     plot=True,
-    input_directory=None,
-    mvs_input_directory=None,
+    user_inputs_pvcompare_directory=None,
+    user_inputs_mvs_directory=None,
     psi_type="Chen",
     normalization="NRWC",
 ):
@@ -59,11 +59,11 @@ def create_pv_components(
     Reads 'pv_setup.csv', for each `surface_type` listed in `pv_setup`,
     one PV time series is created with regard to the technology and its
     orientation. All time series are normalized with the method specified in
-    `normalization` and stored as csv files in `mvs_input_directory/time_series`.
+    `normalization` and stored as csv files in `user_inputs_mvs_directory/time_series`.
     Further the area potential of the `surface_type` with regard to the building
     parameters defined in 'building_parameters.csv' in `input_directory` is calculated
     and the maximum installed capacity (nominal value) is calculated. Both parameters
-    are stored into `mvs_input_directory/csv_elements/energyProduction.csv`.
+    are stored into `user_inputs_mvs_directory/csv_elements/energyProduction.csv`.
 
     Parameters
     ----------
@@ -81,9 +81,11 @@ def create_pv_components(
         If `pv_setup` is None, it is loaded from the `input_directory/pv_setup.cvs`.
     plot: bool
         if true plots created pv times series
-    input_directory: str
-        if None: ./data/inputs/
-    mvs_input_directory: str
+    user_inputs_pvcompare_directory: str or None
+        Directory of the user inputs. If None,
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
+        Default: None.
+    user_inputs_mvs_directory: str
         if None: ./data/mvs_inputs/
     psi_type: str
         "Korte" or "Chen"
@@ -102,10 +104,12 @@ def create_pv_components(
         # read example pv_setup file
         logging.info("loading pv setup conditions from input directory.")
 
-        if input_directory is None:
-            input_directory = constants.DEFAULT_INPUT_DIRECTORY
+        if user_inputs_pvcompare_directory == None:
+            user_inputs_pvcompare_directory = (
+                constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+            )
 
-        data_path = os.path.join(input_directory, "pv_setup.csv")
+        data_path = os.path.join(user_inputs_pvcompare_directory, "pv_setup.csv")
         pv_setup = pd.read_csv(data_path)
         logging.info("setup conditions successfully loaded.")
 
@@ -126,13 +130,10 @@ def create_pv_components(
             "surface_azimuth, surface_tilt and technology."
         )
 
-    # check if mvs_input/energyProduction.csv contains all power plants
-    check_inputs.check_mvs_energy_production_file(pv_setup, mvs_input_directory)
-
     #  define time series directory
-    if mvs_input_directory is None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
-    time_series_directory = os.path.join(mvs_input_directory, "time_series")
+    if user_inputs_mvs_directory is None:
+        user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
+    time_series_directory = os.path.join(user_inputs_mvs_directory, "time_series")
 
     # parse through pv_setup file and create time series for each technology
     for i, row in pv_setup.iterrows():
@@ -205,7 +206,7 @@ def create_pv_components(
 
         # add "evaluated_period" to simulation_settings.csv
         check_inputs.add_evaluated_period_to_simulation_settings(
-            time_series=time_series, mvs_input_directory=mvs_input_directory
+            time_series=time_series, user_inputs_mvs_directory=user_inputs_mvs_directory
         )
 
         if plot == True:
@@ -231,7 +232,9 @@ def create_pv_components(
             )
         else:
             area = area_potential.calculate_area_potential(
-                storeys, input_directory, surface_type=row["surface_type"]
+                storeys,
+                user_inputs_pvcompare_directory,
+                surface_type=row["surface_type"],
             )
 
         # calculate nominal value of the powerplant
@@ -246,10 +249,10 @@ def create_pv_components(
         # save the file name of the time series and the nominal value to
         # mvs_inputs/elements/csv/energyProduction.csv
         check_inputs.add_parameters_to_energy_production_file(
-            pp_number=i + 1,
+            technology=row["technology"],
             ts_filename=ts_csv,
             nominal_value=nominal_value,
-            mvs_input_directory=mvs_input_directory,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
         )
     if plot == True:
         plt.show()
@@ -776,16 +779,18 @@ def calculate_NRWC_peak(technology):
     year = 2014
     surface_tilt = get_optimal_pv_angle(lat=lat)
 
-    input_directory = constants.DEFAULT_INPUT_DIRECTORY
+    static_input_directory = (
+        constants.DEFAULT_STATIC_INPUTS_DIRECTORY
+    )  # todo: übergebe diesen Parameter!!
     weather_file = os.path.join(
-        input_directory, "weatherdata_52.52437_13.41053_2014.csv"
+        static_input_directory, "weatherdata_52.52437_13.41053_2014.csv"
     )
     if os.path.isfile(weather_file):
         weather = pd.read_csv(weather_file, index_col=0)
     else:
         logging.error(
             f"the weather file {weather_file} does not exist. Please"
-            f"make sure the weather file is in {input_directory}."
+            f"make sure the weather file is in {static_input_directory}."
         )
     weather.index = pd.to_datetime(weather.index, utc=True)
     # calculate poa_global for tilted surface

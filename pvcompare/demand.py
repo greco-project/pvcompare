@@ -52,8 +52,9 @@ def calculate_load_profiles(
     storeys,
     year,
     weather,
-    input_directory=None,
-    mvs_input_directory=None,
+    static_inputs_directory=None,
+    user_inputs_pvcompare_directory=None,
+    user_inputs_mvs_directory=None,
 ):
     """
     Calculates electricity and heat load profiles and saves them to csv.
@@ -68,24 +69,34 @@ def calculate_load_profiles(
         Year for which power demand time series is calculated, needs to be between 2011 - 2015.
     weather :
         # todo add
-    input_directory: str or None
-        Path to input directory of pvcompare. If None: DEFAULT_INPUT_DIRECTORY. Default: None.
-    mvs_input_directory : str or None
-        Path to mvs input directory. If None: DEFAULT_MVS_INPUT_DIRECTORY. Default: None.
+    static_inputs_directory: str or None
+        Directory of the pvcompare static inputs. If None,
+        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_inputs_directory.
+        Default: None.
+    user_inputs_pvcompare_directory: str or None
+        Directory of the user inputs. If None,
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
+        Default: None.
+    user_inputs_mvs_directory : str or None
+        Path to mvs input directory. If None: DEFAULT_USER_INPUTS_MVS_DIRECTORY. Default: None.
 
     Returns
     ------
     None
     """
 
-    if input_directory is None:
-        input_directory = constants.DEFAULT_INPUT_DIRECTORY
-    if mvs_input_directory is None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+    if static_inputs_directory == None:
+        static_inputs_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
+    if user_inputs_pvcompare_directory == None:
+        user_inputs_pvcompare_directory = (
+            constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        )
+    if user_inputs_mvs_directory is None:
+        user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
 
     # load eneryConsumption.csv
     energyConsumption = pd.read_csv(
-        os.path.join(mvs_input_directory, "csv_elements/energyConsumption.csv"),
+        os.path.join(user_inputs_mvs_directory, "csv_elements/energyConsumption.csv"),
         index_col=0,
     )
 
@@ -99,8 +110,9 @@ def calculate_load_profiles(
                     storeys=storeys,
                     year=year,
                     weather=weather,
-                    input_directory=input_directory,
-                    mvs_input_directory=mvs_input_directory,
+                    static_inputs_directory=static_inputs_directory,
+                    user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+                    user_inputs_mvs_directory=user_inputs_mvs_directory,
                     column=column,
                 )
             elif energyConsumption.at["energyVector", column] == "Electricity":
@@ -108,8 +120,9 @@ def calculate_load_profiles(
                     country=country,
                     storeys=storeys,
                     year=year,
-                    input_directory=input_directory,
-                    mvs_input_directory=mvs_input_directory,
+                    static_inputs_directory=static_inputs_directory,
+                    user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+                    user_inputs_mvs_directory=user_inputs_mvs_directory,
                     column=column,
                 )
             else:
@@ -121,7 +134,13 @@ def calculate_load_profiles(
 
 
 def calculate_power_demand(
-    country, storeys, year, column, input_directory=None, mvs_input_directory=None
+    country,
+    storeys,
+    year,
+    column,
+    static_inputs_directory=None,
+    user_inputs_pvcompare_directory=None,
+    user_inputs_mvs_directory=None,
 ):
     """
     Calculates electricity demand profile for `population` and `country`.
@@ -151,10 +170,15 @@ def calculate_power_demand(
     column: str
         name of the demand column
     weather: pd.DataFrame
-    input_directory: str or None
-        Path to input directory of pvcompare. If None: DEFAULT_INPUT_DIRECTORY. Default: None.
-    mvs_input_directory: str or None
-        Path to mvs input directory. If None: DEFAULT_MVS_INPUT_DIRECTORY.  Default: None.
+        # todo
+    user_inputs_pvcompare_directory: str or None
+        Directory of the user inputs. If None,
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
+        Default: None.
+    user_inputs_mvs_directory: str or None
+        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
 
     Returns
     -------
@@ -162,17 +186,24 @@ def calculate_power_demand(
         hourly time series of the electrical demand
     """
 
+    if static_inputs_directory == None:
+        static_inputs_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
+    if user_inputs_pvcompare_directory == None:
+        user_inputs_pvcompare_directory = (
+            constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        )
+    if user_inputs_mvs_directory == None:
+        user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
+
+    # load calendar for holidays
     logging.info("loading calender for %s" % country)
     cal = get_workalendar_class(country)
     holidays = dict(cal.holidays(int(year)))
 
     logging.info("loading residential electricity demand")
-
-    if input_directory is None:
-        input_directory = constants.DEFAULT_INPUT_DIRECTORY
-
     bp = pd.read_csv(
-        os.path.join(input_directory, "building_parameters.csv"), index_col=0
+        os.path.join(user_inputs_pvcompare_directory, "building_parameters.csv"),
+        index_col=0,
     )
 
     filename_residential_electricity_demand = bp.at[
@@ -185,11 +216,11 @@ def calculate_power_demand(
     population = storeys * population_per_storey * number_of_houses
 
     filename_elec = os.path.join(
-        input_directory, filename_residential_electricity_demand
+        static_inputs_directory, filename_residential_electricity_demand
     )
     powerstat = pd.read_csv(filename_elec, sep=":", index_col=0, header=1)
 
-    filename1 = os.path.join(input_directory, filename_population)
+    filename1 = os.path.join(static_inputs_directory, filename_population)
     populations = pd.read_csv(filename1, index_col=0, sep=",")
     # convert mtoe in kWh
     national_energyconsumption = powerstat.at[country, str(year)] * 11630000000
@@ -218,9 +249,7 @@ def calculate_power_demand(
     # rename column "h0" to kWh
     shifted_elec_demand.rename(columns={"h0": "kWh"}, inplace=True)
 
-    if mvs_input_directory is None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
-    timeseries_directory = os.path.join(mvs_input_directory, "time_series/")
+    timeseries_directory = os.path.join(user_inputs_mvs_directory, "time_series/")
 
     logging.info(
         "The electrical load profile is completly calculated and "
@@ -235,10 +264,10 @@ def calculate_power_demand(
 
     # save the file name of the time series and the nominal value to
     # mvs_inputs/elements/csv/energyProduction.csv
-    check_inputs.add_parameters_to_energy_consumption_file(
+    check_inputs.add_file_name_to_energy_consumption_file(
         column=column,
         ts_filename=el_demand_csv,
-        mvs_input_directory=mvs_input_directory,
+        user_inputs_mvs_directory=user_inputs_mvs_directory,
     )
 
     return shifted_elec_demand
@@ -252,8 +281,9 @@ def calculate_heat_demand(
     year,
     weather,
     column,
-    input_directory=None,
-    mvs_input_directory=None,
+    static_inputs_directory=None,
+    user_inputs_pvcompare_directory=None,
+    user_inputs_mvs_directory=None,
 ):
     """
     Calculates heat demand profile for `storeys` and `country`.
@@ -282,10 +312,14 @@ def calculate_heat_demand(
         name of the demand
     weather: :pandas:`pandas.DataFrame<frame>`
         weather Data Frame # todo add requirements
-    input_directory: str or None
-        Path to input directory of pvcompare. If None: DEFAULT_INPUT_DIRECTORY. Default: None.
-    mvs_input_directory: str or None
-        Path to mvs input directory. If None: DEFAULT_MVS_INPUT_DIRECTORY.  Default: None.
+    user_inputs_pvcompare_directory: str or None
+        Directory of the user inputs. If None,
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
+        Default: None.
+    user_inputs_mvs_directory: str or None
+        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
 
 
     Returns
@@ -293,6 +327,15 @@ def calculate_heat_demand(
     shifted_heat_demand : :pandas:`pandas.Series<series>`
         Hourly heat demand time series.
     """
+
+    if static_inputs_directory == None:
+        static_inputs_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
+    if user_inputs_pvcompare_directory == None:
+        user_inputs_pvcompare_directory = (
+            constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        )
+    if user_inputs_mvs_directory == None:
+        user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
 
     # load workelendar for country
     cal = get_workalendar_class(country)
@@ -312,23 +355,21 @@ def calculate_heat_demand(
     # The annual heat consumption is calculated by adding up the total
     # consumption for SH and WH and subtracting the electrical consumption of
     # SH and WH for a country
-    if input_directory is None:
-        input_directory = constants.DEFAULT_INPUT_DIRECTORY
-
     bp = pd.read_csv(
-        os.path.join(input_directory, "building_parameters.csv"), index_col=0
+        os.path.join(user_inputs_pvcompare_directory, "building_parameters.csv"),
+        index_col=0,
     )
     filename_total_SH = os.path.join(
-        input_directory, bp.at["filename_total_SH", "value"]
+        static_inputs_directory, bp.at["filename_total_SH", "value"]
     )
     filename_total_WH = os.path.join(
-        input_directory, bp.at["filename_total_WH", "value"]
+        static_inputs_directory, bp.at["filename_total_WH", "value"]
     )
     filename_electr_SH = os.path.join(
-        input_directory, bp.at["filename_elect_SH", "value"]
+        static_inputs_directory, bp.at["filename_elect_SH", "value"]
     )
     filename_electr_WH = os.path.join(
-        input_directory, bp.at["filename_elect_WH", "value"]
+        static_inputs_directory, bp.at["filename_elect_WH", "value"]
     )
     population_per_storey = int(bp.at["population per storey", "value"])
     number_of_houses = int(bp.at["number of houses", "value"])
@@ -343,9 +384,9 @@ def calculate_heat_demand(
     total_WH[str(year)] = pd.to_numeric(total_WH[str(year)], errors="coerce")
     electr_SH[str(year)] = pd.to_numeric(electr_SH[str(year)], errors="coerce")
     electr_WH[str(year)] = pd.to_numeric(electr_WH[str(year)], errors="coerce")
-
+    # load population
     filename_population = bp.at["filename_country_population", "value"]
-    filename1 = os.path.join(input_directory, filename_population)
+    filename1 = os.path.join(static_inputs_directory, filename_population)
     populations = pd.read_csv(filename1, index_col=0, sep=",")
 
     # convert Mtoe in kWh
@@ -422,9 +463,9 @@ def calculate_heat_demand(
     shifted_heat_demand = shift_working_hours(country=country, ts=demand)
     shifted_heat_demand.rename(columns={"h0": "kWh"}, inplace=True)
 
-    if mvs_input_directory is None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
-    timeseries_directory = os.path.join(mvs_input_directory, "time_series/")
+    if user_inputs_mvs_directory is None:
+        user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
+    timeseries_directory = os.path.join(user_inputs_mvs_directory, "time_series/")
 
     logging.info(
         "The electrical load profile is completely calculated and "
@@ -438,8 +479,10 @@ def calculate_heat_demand(
     shifted_heat_demand.to_csv(filename, index=False)
     # save the file name of the time series and the nominal value to
     # mvs_inputs/elements/csv/energyProduction.csv
-    check_inputs.add_parameters_to_energy_consumption_file(
-        column=column, ts_filename=h_demand_csv, mvs_input_directory=mvs_input_directory
+    check_inputs.add_file_name_to_energy_consumption_file(
+        column=column,
+        ts_filename=h_demand_csv,
+        user_inputs_mvs_directory=user_inputs_mvs_directory,
     )
     return shifted_heat_demand
 
@@ -618,74 +661,3 @@ def get_workalendar_class(country):
                 return _class()
 
     return None
-
-
-if __name__ == "__main__":
-
-    # weather = pd.read_csv("./data/inputs/weatherdata.csv")
-    #
-    # mvs_input_directory = "./data/mvs_inputs/"
-    # input_directory = "./data/inputs/"
-    # #    calculate_power_demand(country='Bulgaria', population=600, year='2011',
-    # #                           input_directory=None, plot=True,
-    # #                           mvs_input_directory=mvs_input_directory)
-    # calculate_load_profiles(
-    #     country="Germany",
-    #     population=600,
-    #     year=2001,
-    #     weather=weather,
-    #     plot=True,
-    #     input_directory=None,
-    #     mvs_input_directory=mvs_input_directory,
-    # )
-
-    # check_if_country_is_valid(country="Spain", input_directory=input_directory)
-
-    country = "Spain"
-    population = 4800
-    year = 2014
-    input_directory = constants.DEFAULT_INPUT_DIRECTORY
-    test_mvs_directory = "../tests/test_data/test_mvs_inputs"
-
-    ts = pd.DataFrame()
-    ts["h0"] = [19052, 19052, 14289, 19052, 19052, 14289]
-    ts.index = [
-        "2014-01-01 13:30:00+00:00",
-        "2014-01-01 14:00:00+00:00",
-        "2014-01-01 14:30:00+00:00",
-        "2014-01-01 15:00:00+00:00",
-        "2014-01-01 15:30:00+00:00",
-        "2014-01-01 16:00:00+00:00",
-    ]
-    ts.index = pd.to_datetime(ts.index)
-
-    weather_df = pd.DataFrame()
-    weather_df["temp_air"] = [4, 5]
-    weather_df["wind_speed"] = [2, 2.5]
-    weather_df["dhi"] = [100, 120]
-    weather_df["dni"] = [120, 150]
-    weather_df["ghi"] = [200, 220]
-    weather_df.index = ["2014-01-01 13:00:00+00:00", "2014-01-01 14:00:00+00:00"]
-    weather_df.index = pd.to_datetime(weather_df.index)
-    weather = weather_df
-
-    d = calculate_heat_demand(
-        country=country,
-        population=population,
-        year=year,
-        weather=weather,
-        input_directory=input_directory,
-        mvs_input_directory=test_mvs_directory,
-    )
-
-    print(d.sum().values)
-
-    #
-    # output = shift_working_hours(country=country, ts=ts)
-    # print(output['h0'].sum())
-    #
-    # cal=get_workalendar_class(country)
-    # print(cal.__class__.__name__)
-
-#    if cal == <workalendar.europe.spain.Spain object at 0x7f8e29b16390>:
-#        print(cal.__class__.__name__)

@@ -1,0 +1,3 @@
+,unit,Electricity bus,ESS Li-Ion bus,PV bus,Heat bus
+
+energyVector,str,Electricity,Electricity,Electricity,Heat

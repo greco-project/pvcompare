@@ -11,6 +11,7 @@ https://docs.python.org/3/library/unittest.html are also good support.
 import pandas as pd
 import os
 import numpy as np
+import pvcompare.constants as constants
 
 from pvcompare.demand import (
     calculate_power_demand,
@@ -26,16 +27,13 @@ class TestDemandProfiles:
     def setup_class(self):
         """Setup variables for all tests in this class"""
         self.country = "France"
+        self.lat = 40.0
+        self.lon = 5.0
         self.storeys = 5
         self.year = 2015
-        self.lat = 40
-        self.lon = 5
-        self.test_input_directory = os.path.join(
-            os.path.dirname(__file__), "test_data/test_pvcompare_inputs"
-        )
-        self.test_mvs_directory = os.path.join(
-            os.path.dirname(__file__), "test_data/test_mvs_inputs"
-        )
+        self.user_inputs_pvcompare_directory = constants.TEST_USER_INPUTS_PVCOMPARE
+        self.static_inputs_directory = constants.TEST_STATIC_INPUTS
+        self.test_mvs_directory = constants.TEST_USER_INPUTS_MVS
 
         ts = pd.DataFrame()
         ts["h0"] = [19052, 19052, 14289, 19052, 19052, 14289]
@@ -61,7 +59,9 @@ class TestDemandProfiles:
         self.weather = weather_df
 
         self.bp = pd.read_csv(
-            os.path.join(self.test_input_directory, "building_parameters.csv"),
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "building_parameters.csv"
+            ),
             index_col=0,
         )
         self.heating_lim_temp = pd.to_numeric(
@@ -89,9 +89,10 @@ class TestDemandProfiles:
             country=self.country,
             storeys=self.storeys,
             year=self.year,
-            input_directory=self.test_input_directory,
-            mvs_input_directory=self.test_mvs_directory,
-            column="demand_01",
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            static_inputs_directory=self.static_inputs_directory,
+            user_inputs_mvs_directory=self.test_mvs_directory,
+            column="Electricity demand",
         )
         assert os.path.exists(
             os.path.join(self.test_mvs_directory, "time_series", filename)
@@ -103,9 +104,10 @@ class TestDemandProfiles:
             country=self.country,
             storeys=self.storeys,
             year=self.year,
-            input_directory=self.test_input_directory,
-            mvs_input_directory=self.test_mvs_directory,
-            column="demand_01",
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            static_inputs_directory=self.static_inputs_directory,
+            user_inputs_mvs_directory=self.test_mvs_directory,
+            column="Electricity demand",
         )
 
         assert a["kWh"].sum() == 326665422.39902985
@@ -124,10 +126,11 @@ class TestDemandProfiles:
             lon=self.lon,
             storeys=self.storeys,
             year=self.year,
-            input_directory=self.test_input_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            static_inputs_directory=self.static_inputs_directory,
             weather=self.weather,
-            mvs_input_directory=self.test_mvs_directory,
-            column="demand_02",
+            user_inputs_mvs_directory=self.test_mvs_directory,
+            column="Heat demand",
         )
         assert os.path.exists(
             os.path.join(self.test_mvs_directory, "time_series", filename)
@@ -137,7 +140,9 @@ class TestDemandProfiles:
 
         self.bp["value"].loc["include warm water"] = False
         self.bp.to_csv(
-            os.path.join(self.test_input_directory, "building_parameters.csv")
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "building_parameters.csv"
+            )
         )
 
         a = calculate_heat_demand(
@@ -146,24 +151,29 @@ class TestDemandProfiles:
             lon=self.lon,
             storeys=self.storeys,
             year=self.year,
-            input_directory=self.test_input_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            static_inputs_directory=self.static_inputs_directory,
             weather=self.weather,
-            mvs_input_directory=self.test_mvs_directory,
-            column="demand_02",
+            user_inputs_mvs_directory=self.test_mvs_directory,
+            column="Heat demand",
         )
 
         assert a["kWh"].sum() == 109696391.13628691
 
         self.bp["value"].loc["include warm water"] = self.include_ww
         self.bp.to_csv(
-            os.path.join(self.test_input_directory, "building_parameters.csv")
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "building_parameters.csv"
+            )
         )
 
     def test_calculate_heat_demand_with_ww(self):
 
         self.bp["value"].loc["include warm water"] = True
         self.bp.to_csv(
-            os.path.join(self.test_input_directory, "building_parameters.csv")
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "building_parameters.csv"
+            )
         )
 
         a = calculate_heat_demand(
@@ -172,17 +182,20 @@ class TestDemandProfiles:
             lon=self.lon,
             storeys=self.storeys,
             year=self.year,
-            input_directory=self.test_input_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            static_inputs_directory=self.static_inputs_directory,
             weather=self.weather,
-            mvs_input_directory=self.test_mvs_directory,
-            column="demand_02",
+            user_inputs_mvs_directory=self.test_mvs_directory,
+            column="Heat demand",
         )
 
         assert a["kWh"].sum() == 119842337.52677417
 
         self.bp["value"].loc["include warm water"] = self.include_ww
         self.bp.to_csv(
-            os.path.join(self.test_input_directory, "building_parameters.csv")
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "building_parameters.csv"
+            )
         )
 
     def test_adjust_heat_demand(self):
