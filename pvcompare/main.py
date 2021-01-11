@@ -29,7 +29,7 @@ def apply_pvcompare(
     static_inputs_directory=None,
     user_inputs_pvcompare_directory=None,
     user_inputs_mvs_directory=None,
-    collections_mvs_input_directory=None,
+    collections_mvs_inputs_directory=None,
     plot=False,
     pv_setup=None,
     overwrite_grid_costs=True,
@@ -139,7 +139,7 @@ def apply_pvcompare(
     check_inputs.overwrite_mvs_energy_production_file(
         user_inputs_mvs_directory=user_inputs_mvs_directory,
         user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
-        collections_mvs_input_directory=collections_mvs_input_directory,
+        collections_mvs_inputs_directory=collections_mvs_inputs_directory,
         overwrite_pv_parameters=overwrite_pv_parameters,
     )
     pv_feedin.create_pv_components(

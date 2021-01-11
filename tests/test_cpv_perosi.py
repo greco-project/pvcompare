@@ -36,7 +36,7 @@ class TestPvtime_series:
         weather_df.index = pd.date_range(
             start="2014-08-01 09:00", freq="H", periods=2, tz="Europe/Berlin"
         )
-        self.mvs_input_directory = constants.TEST_USER_INPUTS_MVS
+        self.mvs_inputs_directory = constants.TEST_USER_INPUTS_MVS
         self.weather = weather_df
 
         self.population = 4600

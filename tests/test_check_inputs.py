@@ -35,7 +35,7 @@ class TestDemandProfiles:
         self.user_inputs_mvs_directory = constants.TEST_USER_INPUTS_MVS
         self.user_inputs_pvcompare_directory = constants.TEST_USER_INPUTS_PVCOMPARE
         self.static_inputs_directory = constants.TEST_STATIC_INPUTS
-        self.collections_mvs_input_directory = (
+        self.collections_mvs_inputs_directory = (
             constants.TEST_COLLECTION_MVS_INPUTS_DIRECTORY
         )
         data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
@@ -185,7 +185,7 @@ class TestDemandProfiles:
             overwrite_mvs_energy_production_file(
                 user_inputs_mvs_directory=self.user_inputs_mvs_directory,
                 user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-                collections_mvs_input_directory=self.collections_mvs_input_directory,
+                collections_mvs_inputs_directory=self.collections_mvs_inputs_directory,
                 overwrite_pv_parameters=False,
             )
 
@@ -215,7 +215,7 @@ class TestDemandProfiles:
         overwrite_mvs_energy_production_file(
             user_inputs_mvs_directory=self.user_inputs_mvs_directory,
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-            collections_mvs_input_directory=self.collections_mvs_input_directory,
+            collections_mvs_inputs_directory=self.collections_mvs_inputs_directory,
             overwrite_pv_parameters=True,
         )
         # load energyProduction.csv

@@ -19,7 +19,7 @@ class TestCalculateCopsAndEers:
         )
         self.lat = 53.2
         self.lon = 13.2
-        self.mvs_input_directory = constants.TEST_USER_INPUTS_MVS
+        self.mvs_inputs_directory = constants.TEST_USER_INPUTS_MVS
         self.user_inputs_pvcompare_directory = constants.TEST_USER_INPUTS_PVCOMPARE
 
     def test_calculate_cops_and_eers_heat_pump_without_icing(self):
@@ -30,7 +30,7 @@ class TestCalculateCopsAndEers:
             temperature_col="temp_air",
             mode="heat_pump",
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-            user_inputs_mvs_directory=self.mvs_input_directory,
+            user_inputs_mvs_directory=self.mvs_inputs_directory,
         )
         cops_exp = pd.Series(
             [
@@ -67,7 +67,7 @@ class TestCalculateCopsAndEers:
             temperature_col="temp_air",
             mode="heat_pump",
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-            user_inputs_mvs_directory=self.mvs_input_directory,
+            user_inputs_mvs_directory=self.mvs_inputs_directory,
         )
         cops_exp = pd.Series(
             [
@@ -98,7 +98,7 @@ class TestCalculateCopsAndEers:
                 temperature_col="temp_air",
                 mode="misspelled_mode",
                 user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-                user_inputs_mvs_directory=self.mvs_input_directory,
+                user_inputs_mvs_directory=self.mvs_inputs_directory,
             )
 
     def test_calculate_cops_and_eers_saved_file(self):
@@ -109,11 +109,11 @@ class TestCalculateCopsAndEers:
             temperature_col="temp_air",
             mode="heat_pump",
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-            user_inputs_mvs_directory=self.mvs_input_directory,
+            user_inputs_mvs_directory=self.mvs_inputs_directory,
         )
         assert os.path.exists(
             os.path.join(
-                self.mvs_input_directory,
+                self.mvs_inputs_directory,
                 "time_series",
                 "cops_heat_pump_2018_53.2_13.2_35.0.csv",
             )
@@ -122,7 +122,7 @@ class TestCalculateCopsAndEers:
     def teardown_method(self):
         # delete file
         filename = os.path.join(
-            self.mvs_input_directory,
+            self.mvs_inputs_directory,
             "time_series",
             "cops_heat_pump_2018_53.2_13.2_35.0.csv",
         )
@@ -140,9 +140,9 @@ class TestAddSectorCoupling:
         )
         self.lat = 53.2
         self.lon = 13.2
-        self.mvs_input_directory = constants.TEST_USER_INPUTS_MVS
+        self.mvs_inputs_directory = constants.TEST_USER_INPUTS_MVS
         self.filename_conversion = os.path.join(
-            self.mvs_input_directory, "csv_elements", "energyConversion.csv"
+            self.mvs_inputs_directory, "csv_elements", "energyConversion.csv"
         )
         self.user_inputs_pvcompare_directory = constants.TEST_USER_INPUTS_PVCOMPARE
 
@@ -163,11 +163,11 @@ class TestAddSectorCoupling:
             lat=self.lat,
             lon=self.lon,
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-            user_inputs_mvs_directory=self.mvs_input_directory,
+            user_inputs_mvs_directory=self.mvs_inputs_directory,
         )
         # no file created
         filename = os.path.join(
-            self.mvs_input_directory,
+            self.mvs_inputs_directory,
             "time_series",
             "cops_heat_pump_2018_53.2_13.2_35.0.csv",
         )
@@ -183,11 +183,11 @@ class TestAddSectorCoupling:
             lat=self.lat,
             lon=self.lon,
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-            user_inputs_mvs_directory=self.mvs_input_directory,
+            user_inputs_mvs_directory=self.mvs_inputs_directory,
         )
         # file created
         filename = os.path.join(
-            self.mvs_input_directory,
+            self.mvs_inputs_directory,
             "time_series",
             "cops_heat_pump_2018_53.2_13.2_35.0.csv",
         )
@@ -206,11 +206,11 @@ class TestAddSectorCoupling:
             lat=self.lat,
             lon=self.lon,
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
-            user_inputs_mvs_directory=self.mvs_input_directory,
+            user_inputs_mvs_directory=self.mvs_inputs_directory,
         )
         # no file created
         filename = os.path.join(
-            self.mvs_input_directory,
+            self.mvs_inputs_directory,
             "time_series",
             "cops_heat_pump_2018_53.2_13.2_35.0.csv",
         )
@@ -236,7 +236,7 @@ class TestAddSectorCoupling:
     def teardown_method(self):
         # delete file
         filename = os.path.join(
-            self.mvs_input_directory,
+            self.mvs_inputs_directory,
             "time_series",
             "cops_heat_pump_2018_53.2_13.2_35.0.csv",
         )
