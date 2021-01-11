@@ -71,6 +71,10 @@ def create_pv_components(
         latitude
     lon: float
         longitude
+    weather: :pandas:`pandas.DataFrame<frame>`
+        hourly weather data frame with the columns:
+        time, latitude, longitude, wind_speed, temp_air, ghi, dhi, dni,
+        precipitable_water.
     storeys: num
         number of storeys
     pv_setup: dict or None
