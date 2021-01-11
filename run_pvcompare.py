@@ -27,9 +27,9 @@ main.apply_pvcompare(
     latitude=latitude,
     longitude=longitude,
     year=year,
-    static_inputs=static_inputs_directory,
-    user_inputs=user_inputs_pvcompare_directory,
-    mvs_inputs=user_inputs_mvs_directory,
+    static_inputs_directory=static_inputs_directory,
+    user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+    user_inputs_mvs_directory=user_inputs_mvs_directory,
     plot=False,
     pv_setup=pv_setup,
     overwrite_grid_costs=True,
@@ -39,6 +39,6 @@ main.apply_pvcompare(
 # RUN MVS OEMOF SIMULATTION
 main.apply_mvs(
     scenario_name=scenario_name,
-    output_directory=outputs_directory,
-    mvs_input_directory=user_inputs_mvs_directory,
+    outputs_directory=outputs_directory,
+    user_inputs_mvs_directory=user_inputs_mvs_directory,
 )
