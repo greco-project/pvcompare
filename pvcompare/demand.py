@@ -216,7 +216,7 @@ def calculate_power_demand(
         static_inputs_directory, filename_residential_electricity_demand
     )
     powerstat = pd.read_csv(filename_elec, sep=":", index_col=0, header=1)
-    #loading residential space heating
+    # loading residential space heating
     electr_SH = pd.read_csv(filename_electr_SH, sep=":", index_col=0, header=1)
     electr_SH[str(year)] = pd.to_numeric(electr_SH[str(year)], errors="coerce")
 
@@ -232,7 +232,9 @@ def calculate_power_demand(
 
     # calculate annual demand. Substract electricity SH from total SH.
     # Convert mtoe in kWh
-    national_energyconsumption = (powerstat.at[country, str(year)] - electr_SH.at[country, str(year)]) * 11630000000
+    national_energyconsumption = (
+        powerstat.at[country, str(year)] - electr_SH.at[country, str(year)]
+    ) * 11630000000
     annual_demand_per_population = (
         national_energyconsumption / populations.at[country, str(year)]
     ) * population
@@ -397,9 +399,7 @@ def calculate_heat_demand(
 
     # convert Mtoe in kWh
     # Heat demand of residential for space heating
-    heat_demand = (
-        total_SH.at[country, str(year)]
-    ) * 11630000000
+    heat_demand = (total_SH.at[country, str(year)]) * 11630000000
     annual_heat_demand_per_population = (
         heat_demand / populations.at[country, str(year)]
     ) * population
