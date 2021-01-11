@@ -241,8 +241,10 @@ def calculate_power_demand(
     # calculate annual demand. Substract electricity SH from total SH.
     # Convert mtoe in kWh
     national_energyconsumption = (
-        powerstat.at[country, str(year)] - electr_SH.at[country, str(year)] -
-        electr_WH.at[country, str(year)]) * 11630000000
+        powerstat.at[country, str(year)]
+        - electr_SH.at[country, str(year)]
+        - electr_WH.at[country, str(year)]
+    ) * 11630000000
     annual_demand_per_population = (
         national_energyconsumption / populations.at[country, str(year)]
     ) * population
