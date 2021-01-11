@@ -8,7 +8,7 @@ longitude = 13.4105300  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athe
 year = 2014
 storeys = 5
 country = "Germany"
-scenario_name = "Scenario_A1"
+scenario_name = "Scenario_example_electricity_sector"
 
 # DEFAULT PARAMETERS
 user_inputs_pvcompare_directory = constants.EXAMPLE_USER_INPUTS_PVCOMPARE
