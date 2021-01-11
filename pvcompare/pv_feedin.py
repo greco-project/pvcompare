@@ -51,7 +51,7 @@ def create_pv_components(
     user_inputs_pvcompare_directory=None,
     user_inputs_mvs_directory=None,
     psi_type="Chen",
-    normalization="NRWC",
+    normalization="NSTC",
 ):
     """
     Creates feed-in time series for all surface types in `pv_setup` or 'pv_setup.csv'.
@@ -244,7 +244,7 @@ def create_pv_components(
             surface_azimuth=j,
             surface_tilt=k,
             psi_type=psi_type,
-            normalization="NINT",
+            normalization="NSTC",
         )
         # save the file name of the time series and the nominal value to
         # mvs_inputs/elements/csv/energyProduction.csv
@@ -584,19 +584,20 @@ def create_psi_time_series(
             module_parameters_1=param1,
             module_parameters_2=param2,
         )
-        return (
-            pvcompare.perosi.perosi.create_pero_si_timeseries(
-                year,
-                lat,
-                lon,
-                surface_azimuth,
-                surface_tilt,
-                atmos_data=atmos_data,
-                number_hours=number_rows,
-                psi_type=psi_type,
-            )
-            / peak
-        ).clip(0)
+        output = pvcompare.perosi.perosi.create_pero_si_timeseries(
+            year,
+            lat,
+            lon,
+            surface_azimuth,
+            surface_tilt,
+            atmos_data=atmos_data,
+            number_hours=number_rows,
+            psi_type=psi_type,
+        )
+        # substract losses 35% in order to get to a realistic performance ratio
+        output = output - output * 0.45
+
+        return (output / peak).clip(0)
 
 
 def nominal_values_pv(
@@ -727,9 +728,11 @@ def get_peak(technology, normalization, module_parameters_1, module_parameters_2
             return peak
         elif technology == "psi":
             # calculate peak power with 10 % CTM losses
-            peak = (module_parameters_1.p_mp + module_parameters_1.p_mp) - (
-                (module_parameters_2.p_mp + module_parameters_2.p_mp) / 100
-            ) * 10
+            peak = (
+                module_parameters_1.p_mp
+                + module_parameters_2.p_mp
+                - (module_parameters_1.p_mp + module_parameters_2.p_mp) * 0.1
+            )
             return peak
     elif normalization == "NRWC":
         return calculate_NRWC_peak(technology=technology)

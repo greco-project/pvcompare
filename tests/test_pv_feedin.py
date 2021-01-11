@@ -138,7 +138,7 @@ class TestPvtime_series:
             psi_type="Chen",
         )
         output = ts.sum()
-        assert round(output, 1) == 0.2
+        assert round(output, 1) == 0.3
 
     def test_create_psi_time_series_NSTC_normalization(self):
         ts = create_psi_time_series(
@@ -152,7 +152,7 @@ class TestPvtime_series:
             psi_type="Chen",
         )
         output = ts.sum()
-        assert round(output, 1) == 0.6
+        assert round(output, 1) == 0.7
 
     def test_create_psi_time_series_NRWC_normalization(self):
         ts = create_psi_time_series(
@@ -166,7 +166,7 @@ class TestPvtime_series:
             psi_type="Chen",
         )
         output = ts.sum()
-        assert round(output, 1) == 0.9
+        assert round(output, 1) == 0.5
 
     def test_create_create_pv_components_wrong_technology_in_pvsetup(self):
         pv_setup_filename = os.path.join(
@@ -300,7 +300,7 @@ class TestPvtime_series:
             normalization="NSTC",
         )
 
-        assert nominal_value == 286.924
+        assert nominal_value == 201.559
 
     def test_nominal_values_pv_NRWC_si(self):
 
@@ -345,7 +345,7 @@ class TestPvtime_series:
             normalization="NRWC",
         )
 
-        assert nominal_value == 203.513
+        assert nominal_value == 271.351
 
     def test_get_optimal_pv_angle(self):
 
@@ -372,7 +372,7 @@ def test_calculate_NRWC_peak_psi():
 
     peak3 = calculate_NRWC_peak(technology="psi")
 
-    assert round(peak3, 2) == 248.08
+    assert round(peak3, 2) == 330.78
 
 
 # # one can test that exception are raised
