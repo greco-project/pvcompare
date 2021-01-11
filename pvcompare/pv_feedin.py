@@ -594,7 +594,7 @@ def create_psi_time_series(
             number_hours=number_rows,
             psi_type=psi_type,
         )
-        # substract losses 35% in order to get to a realistic performance ratio
+        # substract losses 45% in order to get to a realistic performance ratio
         output = output - output * 0.45
 
         return (output / peak).clip(0)
