@@ -60,8 +60,8 @@ def apply_pvcompare(
         `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_input_directory.
         Default: None.
     user_inputs_pvcompare_directory: str or None
-        Directory of the user inputs. If None,
-        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_input_directory.
+        If None, `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used
+        as user_input_directory.
         Default: None.
     user_inputs_mvs_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
@@ -78,8 +78,12 @@ def apply_pvcompare(
         If `pv_setup` is None, it is loaded from the `input_directory/pv_setup.cvs`.
         Default: None.
     overwrite_grid_costs: bool
-
+        Default: True. If True, the energy-price is changed according to the
+        country.
     overwrite_pv_parameters: bool
+        Default: True. If true, the pv components in energyProduction.csv are
+        overwritten with default values from 'data/user_inputs_collection/'
+        according to the pv plants defined in 'pv_setup'.
 
     Returns
     -------
@@ -177,8 +181,8 @@ def apply_pvcompare(
 def apply_mvs(
     scenario_name,
     user_inputs_mvs_directory=None,
-    mvs_output_directory=None,
     outputs_directory=None,
+    mvs_output_directory=None,
 ):
     r"""
     Starts the energy system simulation with MVS and stores results.
@@ -196,8 +200,9 @@ def apply_mvs(
         Path to output directory.
         Default: constants.DEFAULT_OUTPUTS_DIRECTORY
     mvs_output_directory: str or None
-        Directory in which simulation results are stored. If None,
-        `constants.DEFAULT_MVS_OUTPUT_DIRECTORY` is used as user_inputs_mvs_directory.
+        This parameter should be set to None. It is filled filled in automatically
+        according to 'outputs_directory' and 'scenario_name':
+        'pvcompare/data/outputs/scenario_name/mvs_output'.
         Default: None.
 
     Returns
@@ -261,5 +266,5 @@ if __name__ == "__main__":
     )
 
     # apply_mvs(
-    #     scenario_name=scenario_name, output_directory=None, user_inputs_mvs_directory=None
+    #     scenario_name=scenario_name, outputs_directory=None, user_inputs_mvs_directory=None
     # )

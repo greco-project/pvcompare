@@ -10,6 +10,25 @@ import logging
 
 
 def create_loop_output_structure(outputs_directory, scenario_name, variable_name):
+    """
+    Defines the path of the loop_output_directory.
+
+    Parameters
+    ----------
+    outputs_directory: str
+        Path to output directory.
+        Default: constants.DEFAULT_OUTPUTS_DIRECTORY.
+    scenario_name: str
+        Name of the Scenario. The name should follow the scheme:
+        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+    variable_name: str
+        name of the variable that is atapted in each loop.
+
+    Returns
+    -------
+    str
+        path of the loop_output_directory.
+    """
 
     # defines scenario folder and loop_output_directory
     scenario_folder = os.path.join(outputs_directory, scenario_name)
@@ -73,7 +92,7 @@ def loop_pvcompare(
         longitude of the location
     year: int
         year
-    storeys:int
+    storeys: int
         number of storeys
     country: str
         country of location
@@ -84,15 +103,21 @@ def loop_pvcompare(
         For location, the form of the dict should be: {"step1": ["country", "lat", "lon"], "step2": ["country", "lat", "lon"], etc}.
         For technology, the form of the dict should be: {"step1": "si", "step2": "cpv", "step3": "psi"}
         For year/storeys/hp_temp, the form of the dict should be: {"start": "1", "stop": "10", "step": "2"}
+    pv_setup: dict or None
+        If `pv_setup` is None, it is loaded from the `input_directory/pv_setup.cvs`.
+        Default: None.
     user_inputs_mvs_directory: str or None
         Default: `user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY`
     outputs_directory: str or None
         Path to output directory.
         Default: `outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY`
+    user_inputs_pvcompare_directory: str or None
+        If None, `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used
+        as user_input_directory. Default: None.
 
     Returns
     -------
-
+        None
     """
     # checks of outputs_directory and user_inputs_mvs_directory is None
     if user_inputs_mvs_directory == None:
@@ -249,6 +274,42 @@ def single_loop_pvcompare(
     loop_type,
     step,
 ):
+    """
+
+    Parameters
+    ----------
+    storeys: int
+        number of storeys
+    country: str
+        country name
+    latitude: float
+        latitude of the location
+    longitude: foat
+        longitude of the location
+    year: int
+        year
+    user_inputs_pvcompare_directory: str or None
+        If None, `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used
+        as user_input_directory. Default: None.
+    user_inputs_mvs_directory: str or None
+        Default: `user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY`
+    outputs_directory: str or None
+        Path to output directory.
+        Default: `outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY`
+    plot: bool
+        default: False
+    loop_output_directory: str
+        output directory defined in 'pvcompare.outputs.create_loop_output_structure()'.
+    loop_type: str
+        possible values: 'location', 'year', 'storeys', 'technology', 'hp_temp'.
+        Defines the variable or variables that are changed with each loop.
+    step: str or int
+        Gradation of the loop variable.
+
+    Returns
+    -------
+        None
+    """
 
     main.apply_pvcompare(
         storeys=storeys,
@@ -272,7 +333,7 @@ def single_loop_pvcompare(
     main.apply_mvs(
         scenario_name,
         user_inputs_mvs_directory=user_inputs_mvs_directory,
-        mvs_output_directoryoutput_directory=mvs_output_directory,
+        mvs_output_directory=mvs_output_directory,
         outputs_directory=outputs_directory,
     )
 
