@@ -56,7 +56,9 @@ def load_era5_weatherdata(lat, lon, year):
         weather_df["ghi"], solar_zenith=spa["zenith"], times=weather_df.index
     ).fillna(0)
 
-    weather_df["dhi"] = weather_df["ghi"] - (weather_df["dni"] * np.cos(np.deg2rad(spa["zenith"])))
+    weather_df["dhi"] = weather_df["ghi"] - (
+        weather_df["dni"] * np.cos(np.deg2rad(spa["zenith"]))
+    )
 
     logging.info("weatherdata successfully converted into pvlib format.")
     return weather_df
@@ -148,13 +150,13 @@ def format_pvcompare(ds):
     # convert temperature to Celsius (from Kelvin)
     ds["temp_air"] = ds.t2m - 273.15
 
-    #ds["dirhi"] = (ds.fdir / 3600.0).assign_attrs(units="W/m^2")
+    # ds["dirhi"] = (ds.fdir / 3600.0).assign_attrs(units="W/m^2")
     ds["ghi"] = (ds.ssrd / 3600.0).assign_attrs(
         units="W/m^2", long_name="global horizontal irradiation"
     )
-    #ds["dhi"] = (ds.ghi - ds.dirhi).assign_attrs(
+    # ds["dhi"] = (ds.ghi - ds.dirhi).assign_attrs(
     #    units="W/m^2", long_name="direct irradiation"
-    #)
+    # )
     ds["precipitable_water"] = (ds.tcwv / 10).assign_attrs(
         units="kg/m^2", long_name="total column water vapour"
     )
