@@ -16,10 +16,11 @@ import mock
 import shutil
 import pandas as pd
 
-class TestMain():
+
+class TestMain:
     @classmethod
     def setup_class(self):
-    # DEFINE USER INPUTS
+        # DEFINE USER INPUTS
         self.latitude = 52.5243700  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
         self.longitude = 13.4105300  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
         self.year = 2014
@@ -29,22 +30,23 @@ class TestMain():
 
         # DEFAULT PARAMETERS
         self.user_inputs_pvcompare_directory = os.path.join(
-    os.path.dirname(__file__), "data_test_main/user_inputs/pvcompare_inputs/"
-)
+            os.path.dirname(__file__), "data_test_main/user_inputs/pvcompare_inputs/"
+        )
         self.static_inputs_directory = None
         self.user_inputs_mvs_directory = os.path.join(
-    os.path.dirname(__file__), "data_test_main/user_inputs/mvs_inputs/"
-)
+            os.path.dirname(__file__), "data_test_main/user_inputs/mvs_inputs/"
+        )
         self.outputs_directory = os.path.join(
-    os.path.dirname(__file__), "data_test_main/outputs")
+            os.path.dirname(__file__), "data_test_main/outputs"
+        )
         self.user_inputs_collection_mvs = os.path.join(
-    os.path.dirname(__file__), "data/user_inputs_collection/mvs_inputs/"
-)
+            os.path.dirname(__file__), "data/user_inputs_collection/mvs_inputs/"
+        )
 
-# RUN PVCOMPARE PRE-CALCULATIONS:
-# - calculate PV timeseries
-# - if sectorcoupling: calculate heat pump generation
-# - calculate electricity and heat demand
+    # RUN PVCOMPARE PRE-CALCULATIONS:
+    # - calculate PV timeseries
+    # - if sectorcoupling: calculate heat pump generation
+    # - calculate electricity and heat demand
 
     def test_apply_pvcompare(self):
 
@@ -62,12 +64,17 @@ class TestMain():
             pv_setup=None,
             overwrite_grid_costs=True,
             overwrite_pv_parameters=True,
+        )
+
+        assert os.path.isfile(
+            os.path.join(
+                self.user_inputs_mvs_directory,
+                "time_series",
+                "si_180_38_2014_52.52437_13.41053.csv",
             )
+        )
 
-        assert os.path.isfile(os.path.join(self.user_inputs_mvs_directory, "time_series" , "si_180_38_2014_52.52437_13.41053.csv"))
-
-    @mock.patch("argparse.ArgumentParser.parse_args",
-                return_value=argparse.Namespace())
+    @mock.patch("argparse.ArgumentParser.parse_args", return_value=argparse.Namespace())
     def test_apply_mvs(self, margs):
         """ """
 
@@ -85,7 +92,7 @@ class TestMain():
             pv_setup=None,
             overwrite_grid_costs=True,
             overwrite_pv_parameters=True,
-            )
+        )
 
         main.apply_mvs(
             scenario_name=self.scenario_name,
@@ -97,10 +104,7 @@ class TestMain():
 
     def teardown_method(self):
         # delete file
-        directory = os.path.join(
-            self.user_inputs_mvs_directory,
-            "time_series"
-        )
+        directory = os.path.join(self.user_inputs_mvs_directory, "time_series")
         filelist = glob.glob(os.path.join(directory, "*.csv"))
         for f in filelist:
             os.remove(f)
@@ -108,6 +112,3 @@ class TestMain():
         scenario_folder = os.path.join(self.outputs_directory, self.scenario_name)
         if os.path.exists(scenario_folder):
             shutil.rmtree(scenario_folder, ignore_errors=True)
-
-
-

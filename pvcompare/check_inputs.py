@@ -298,7 +298,7 @@ def overwrite_mvs_energy_production_file(
     if pv_setup is None:
         pv_setup = pd.read_csv(
             os.path.join(user_inputs_pvcompare_directory, "pv_setup.csv"), index_col=0
-    )
+        )
     technologies = pv_setup["technology"].values
 
     # load mvs user input file
