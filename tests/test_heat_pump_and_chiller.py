@@ -222,9 +222,7 @@ class TestAddSectorCoupling:
     def test_add_sector_coupling_multiple_heat_pumps(self):
         pass
 
-    def test_add_sector_coupling_warning_no_heat_demand_in_energy_consumption(
-        self,
-    ):
+    def test_add_sector_coupling_warning_no_heat_demand_in_energy_consumption(self,):
         pass
 
     def test_add_sector_coupling_no_warning(self):

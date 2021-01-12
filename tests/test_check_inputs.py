@@ -86,11 +86,7 @@ class TestDemandProfiles:
         filename = os.path.join(
             self.user_inputs_mvs_directory, "csv_elements/project_data.csv"
         )
-        file = pd.read_csv(
-            filename,
-            index_col=0,
-            header=0,
-        )
+        file = pd.read_csv(filename, index_col=0, header=0,)
         file.at["country", "project_data"] = "Spain"
         file.at["latitude", "project_data"] = 40.0
         file.at["longitude", "project_data"] = 5.2
@@ -199,11 +195,7 @@ class TestDemandProfiles:
         filename = os.path.join(
             self.user_inputs_mvs_directory, "csv_elements/energyProduction.csv"
         )
-        file = pd.read_csv(
-            filename,
-            index_col=0,
-            header=0,
-        )
+        file = pd.read_csv(filename, index_col=0, header=0,)
         # delete all columns
         file.drop(file.columns.difference(["index", "unit"]), 1, inplace=True)
         file.to_csv(filename)
@@ -227,11 +219,7 @@ class TestDemandProfiles:
             overwrite_pv_parameters=True,
         )
         # load energyProduction.csv
-        file = pd.read_csv(
-            filename,
-            index_col=0,
-            header=0,
-        )
+        file = pd.read_csv(filename, index_col=0, header=0,)
 
         assert set(["PV si", "PV cpv", "PV psi"]).issubset(file.columns)
 
@@ -241,11 +229,7 @@ class TestDemandProfiles:
         filename = os.path.join(
             self.user_inputs_mvs_directory, "csv_elements/energyProduction.csv"
         )
-        file = pd.read_csv(
-            filename,
-            index_col=0,
-            header=0,
-        )
+        file = pd.read_csv(filename, index_col=0, header=0,)
         test_filename = "test_csv.csv"
         technology = "si"
         file.at["maximumCap", "PV " + technology] = None
@@ -258,11 +242,7 @@ class TestDemandProfiles:
             nominal_value=1000,
             user_inputs_mvs_directory=self.user_inputs_mvs_directory,
         )
-        file2 = pd.read_csv(
-            filename,
-            index_col=0,
-            header=0,
-        )
+        file2 = pd.read_csv(filename, index_col=0, header=0,)
         maxcap = int(file2.at["maximumCap", "PV " + technology])
 
         assert maxcap == 1000
@@ -273,11 +253,7 @@ class TestDemandProfiles:
         filename = os.path.join(
             self.user_inputs_mvs_directory, "csv_elements/energyConsumption.csv"
         )
-        file = pd.read_csv(
-            filename,
-            index_col=0,
-            header=0,
-        )
+        file = pd.read_csv(filename, index_col=0, header=0,)
         file.at["file_name", "Electricity demand"] = None
         file.to_csv(filename)
 
@@ -287,11 +263,7 @@ class TestDemandProfiles:
             user_inputs_mvs_directory=self.user_inputs_mvs_directory,
         )
 
-        file2 = pd.read_csv(
-            filename,
-            index_col=0,
-            header=0,
-        )
+        file2 = pd.read_csv(filename, index_col=0, header=0,)
 
         assert file2.at["file_name", "Electricity demand"] == "test_demand.csv"
 
@@ -301,11 +273,7 @@ class TestDemandProfiles:
         filename = os.path.join(
             self.user_inputs_mvs_directory, "csv_elements", "simulation_settings.csv"
         )
-        file = pd.read_csv(
-            filename,
-            index_col=0,
-            header=0,
-        )
+        file = pd.read_csv(filename, index_col=0, header=0,)
         file.at["evaluated_period", "simulation_settings"] = None
         file.to_csv(filename)
 
@@ -315,20 +283,12 @@ class TestDemandProfiles:
             "si_180_38_2014_52.52437_13.41053.csv",
         )
 
-        ts = pd.read_csv(
-            ts_file,
-            index_col=0,
-            header=0,
-        )
+        ts = pd.read_csv(ts_file, index_col=0, header=0,)
         add_evaluated_period_to_simulation_settings(
             time_series=ts, user_inputs_mvs_directory=self.user_inputs_mvs_directory
         )
 
-        file = pd.read_csv(
-            filename,
-            index_col=0,
-            header=0,
-        )
+        file = pd.read_csv(filename, index_col=0, header=0,)
 
         assert (
             int(file.at["evaluated_period", "simulation_settings"])
