@@ -211,7 +211,7 @@ class TestPvtime_series:
                 year=self.year,
             )
 
-    def test_nominal_values_pv_NSTC_si(self):
+    def test_nominal_values_si(self):
 
         technology = "si"
         area = 1000
@@ -222,12 +222,10 @@ class TestPvtime_series:
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
             psi_type="Chen",
-            normalization="NSTC",
         )
-
         assert nominal_value == 170.337
 
-    def test_nominal_values_pv_NINT_cpv(self):
+    def test_nominal_values_cpv(self):
         technology = "cpv"
         area = 1000
 
@@ -237,57 +235,11 @@ class TestPvtime_series:
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
             psi_type="Chen",
-            normalization="NINT",
-        )
-
-        assert nominal_value == 320.0
-
-    def test_nominal_values_pv_NINT_psi(self):
-        technology = "psi"
-        area = 1000
-
-        nominal_value = nominal_values_pv(
-            technology=technology,
-            area=area,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            psi_type="Chen",
-            normalization="NINT",
-        )
-
-        assert nominal_value == 240
-
-    def test_nominal_values_pv_NSTC_si(self):
-
-        technology = "si"
-        area = 1000
-
-        nominal_value = nominal_values_pv(
-            technology=technology,
-            area=area,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            psi_type="Chen",
-            normalization="NSTC",
-        )
-        assert nominal_value == 170.337
-
-    def test_nominal_values_pv_NSTC_cpv(self):
-        technology = "cpv"
-        area = 1000
-
-        nominal_value = nominal_values_pv(
-            technology=technology,
-            area=area,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            psi_type="Chen",
-            normalization="NSTC",
         )
 
         assert nominal_value == 343.381
 
-    def test_nominal_values_pv_NSTC_psi(self):
+    def test_nominal_values_psi(self):
         technology = "psi"
         area = 1000
 
@@ -297,53 +249,11 @@ class TestPvtime_series:
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
             psi_type="Chen",
-            normalization="NSTC",
         )
 
         assert nominal_value == 201.559
 
-    def test_nominal_values_pv_NRWC_si(self):
 
-        technology = "si"
-        area = 1000
-
-        nominal_value = nominal_values_pv(
-            technology=technology,
-            area=area,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            psi_type="Chen",
-            normalization="NRWC",
-        )
-        assert nominal_value == 140.542
-
-    def test_nominal_values_pv_NRWC_cpv(self):
-        technology = "cpv"
-        area = 1000
-
-        nominal_value = nominal_values_pv(
-            technology=technology,
-            area=area,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            psi_type="Chen",
-            normalization="NRWC",
-        )
-
-        assert nominal_value == 241.014
-
-    def test_nominal_values_pv_NRWC_psi(self):
-        technology = "psi"
-        area = 1000
-
-        nominal_value = nominal_values_pv(
-            technology=technology,
-            area=area,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            psi_type="Chen",
-            normalization="NRWC",
-        )
 
         assert nominal_value == 271.351
 
@@ -354,25 +264,6 @@ class TestPvtime_series:
         assert output == 25
 
 
-def test_calculate_NRWC_peak_si():
-
-    peak1 = calculate_NRWC_peak(technology="si")
-
-    assert round(peak1, 2) == 230.91
-
-
-def test_calculate_NRWC_peak_cpv():
-
-    peak2 = calculate_NRWC_peak(technology="cpv")
-
-    assert round(peak2, 2) == 24.1
-
-
-def test_calculate_NRWC_peak_psi():
-
-    peak3 = calculate_NRWC_peak(technology="psi")
-
-    assert round(peak3, 2) == 330.78
 
 
 # # one can test that exception are raised
