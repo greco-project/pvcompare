@@ -51,7 +51,7 @@ def create_pv_components(
     user_inputs_pvcompare_directory=None,
     user_inputs_mvs_directory=None,
     psi_type="Chen",
-    normalization="NSTC",
+    normalization=True,
 ):
     """
     Creates feed-in time series for all surface types in `pv_setup` or 'pv_setup.csv'.
@@ -95,7 +95,7 @@ def create_pv_components(
         "Korte" or "Chen"
     normalization: bool
         If True: Time series is normalized. Otherwise absolute time series is
-        returned.
+        returned. Default: True.
 
 
     Returns
@@ -557,9 +557,7 @@ def create_psi_time_series(
             import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
         peak = get_peak(
-            technology="psi",
-            module_parameters_1=param1,
-            module_parameters_2=param2,
+            technology="psi", module_parameters_1=param1, module_parameters_2=param2,
         )
         output = pvcompare.perosi.perosi.create_pero_si_timeseries(
             year,
@@ -577,9 +575,7 @@ def create_psi_time_series(
         return (output / peak).clip(0)
 
 
-def nominal_values_pv(
-    technology, area, surface_azimuth, surface_tilt, psi_type
-):
+def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type):
 
     """
     calculates the maximum installed capacity for each pv module.
@@ -614,9 +610,7 @@ def nominal_values_pv(
             surface_tilt=surface_tilt,
         )
         peak = get_peak(
-            technology,
-            module_parameters_1=module_parameters,
-            module_parameters_2=None,
+            technology, module_parameters_1=module_parameters, module_parameters_2=None,
         )
         module_size = module_parameters["A_c"]
         nominal_value = round((area / module_size) * peak) / 1000
@@ -643,9 +637,7 @@ def nominal_values_pv(
 
         # calculate peak power with 5 % CTM losses nad 5 % cell connection losses
         peak = get_peak(
-            technology,
-            module_parameters_1=param1,
-            module_parameters_2=param2,
+            technology, module_parameters_1=param1, module_parameters_2=param2,
         )
         module_size = param1.A / 10000  # in m^2
         nominal_value = round((area / module_size) * peak) / 1000
@@ -696,7 +688,3 @@ def get_peak(technology, module_parameters_1, module_parameters_2):
             - (module_parameters_1.p_mp + module_parameters_2.p_mp) * 0.1
         )
         return peak
-
-
-
-
