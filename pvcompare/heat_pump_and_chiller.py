@@ -9,6 +9,7 @@ import pandas as pd
 import os
 import logging
 import maya
+import numpy as np
 
 import oemof.thermal.compression_heatpumps_and_chillers as cmpr_hp_chiller
 
