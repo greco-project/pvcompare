@@ -1,0 +1,8 @@
+,unit,Electricity demand,Heat demand
+dsm,str,False,False
+file_name,str,electricity_load_2015_France_5.csv,heat_load_2015_40.0_5.0_5.csv
+type_asset,str,demand,demand
+type_oemof,str,sink,sink
+energyVector,str,Electricity,Heat
+inflow_direction,str,Electricity,Heat
+unit,str,kW,kW
