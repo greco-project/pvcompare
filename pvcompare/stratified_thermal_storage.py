@@ -23,7 +23,10 @@ from pvcompare import check_inputs
 
 
 def calc_strat_tes_param(
-    weather, temperature_col="temp_air", user_inputs_pvcompare_directory=None, user_inputs_mvs_directory=None,
+    weather,
+    temperature_col="temp_air",
+    user_inputs_pvcompare_directory=None,
+    user_inputs_mvs_directory=None,
 ):
     """
 
@@ -142,7 +145,12 @@ def save_time_dependent_values(
 
 
 def add_strat_tes(
-    weather, lat, lon, storage_csv, user_inputs_pvcompare_directory=None, user_inputs_mvs_directory=None
+    weather,
+    lat,
+    lon,
+    storage_csv,
+    user_inputs_pvcompare_directory=None,
+    user_inputs_mvs_directory=None,
 ):
     """
     Adds stratified thermal storage if it exists either in 'energyStorage.csv' or in

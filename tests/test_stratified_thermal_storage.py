@@ -99,7 +99,9 @@ class TestCalcStratTesParam:
     def teardown_method(self):
         # delete file
         filename = os.path.join(
-            TEST_USER_INPUTS_MVS, "time_series", "fixed_thermal_losses_relative_test.csv"
+            TEST_USER_INPUTS_MVS,
+            "time_series",
+            "fixed_thermal_losses_relative_test.csv",
         )
 
         if os.path.exists(filename):
