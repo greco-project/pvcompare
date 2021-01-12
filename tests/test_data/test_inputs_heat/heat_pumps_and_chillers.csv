@@ -1,3 +1,0 @@
-mode,quality_grade,temp_high,temp_low,factor_icing,temp_threshold_icing
-heat_pump,0.35,35,,None,None
-chiller,0.3,,15,,

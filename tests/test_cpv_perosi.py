@@ -36,9 +36,7 @@ class TestPvtime_series:
         weather_df.index = pd.date_range(
             start="2014-08-01 09:00", freq="H", periods=2, tz="Europe/Berlin"
         )
-        self.test_mvs_directory = os.path.join(
-            os.path.dirname(__file__), "test_data/test_mvs_inputs"
-        )
+        self.mvs_inputs_directory = constants.TEST_USER_INPUTS_MVS
         self.weather = weather_df
 
         self.population = 4600
@@ -117,4 +115,4 @@ class TestPvtime_series:
 
         sum = output.sum()
 
-        assert round(sum, 2) == 4.35
+        assert round(sum, 2) == 5.0
