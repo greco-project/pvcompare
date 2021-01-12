@@ -9,11 +9,8 @@ https://docs.python.org/3/library/unittest.html are also good support.
 """
 
 import os
-import pytest
-import logging
 from pvcompare.outputs import plot_all_flows, plot_kpi_loop, loop_mvs
 from pvcompare import constants
-import shutil
 
 
 class TestPlotProfiles:
@@ -21,9 +18,9 @@ class TestPlotProfiles:
     def setup_class(self):
         """Setup variables for all tests in this class"""
         self.scenario_name = "Test_Scenario"
-        self.output_directory = constants.TEST_DATA_OUTPUT
+        self.outputs_directory = constants.TEST_OUTPUTS_DIRECTORY
         self.mvs_output_directory = os.path.join(
-            self.output_directory, self.scenario_name, "mvs_outputs"
+            self.outputs_directory, self.scenario_name, "mvs_outputs"
         )
         self.timeseries_directory = os.path.join(
             self.mvs_output_directory, "/timeseries/"
@@ -37,7 +34,7 @@ class TestPlotProfiles:
         scenario_name = "Test_Scenario"
 
         timeseries_directory = os.path.join(
-            self.output_directory, scenario_name, "mvs_outputs_loop_specific_costs_500"
+            self.outputs_directory, scenario_name, "mvs_outputs_loop_specific_costs_500"
         )
         filename = os.path.join(
             timeseries_directory, f"plot_{timeseries_name[:-5]}_{period}.png"
@@ -46,7 +43,7 @@ class TestPlotProfiles:
             os.remove(filename)
 
         plot_all_flows(
-            output_directory=self.output_directory,
+            outputs_directory=self.outputs_directory,
             timeseries_directory=timeseries_directory,
             timeseries_name=timeseries_name,
             month=None,
@@ -66,7 +63,7 @@ class TestPlotProfiles:
         scenario_name = "Test_Scenario"
 
         timeseries_directory = os.path.join(
-            self.output_directory, scenario_name, "mvs_outputs_loop_specific_costs_500"
+            self.outputs_directory, scenario_name, "mvs_outputs_loop_specific_costs_500"
         )
         filename = os.path.join(
             timeseries_directory, f"plot_{timeseries_name[:-5]}_{period}.png"
@@ -75,7 +72,7 @@ class TestPlotProfiles:
             os.remove(filename)
 
         plot_all_flows(
-            output_directory=self.output_directory,
+            outputs_directory=self.outputs_directory,
             timeseries_directory=timeseries_directory,
             timeseries_name=timeseries_name,
             month=None,
@@ -95,7 +92,7 @@ class TestPlotProfiles:
         scenario_name = "Test_Scenario"
 
         timeseries_directory = os.path.join(
-            self.output_directory, scenario_name, "mvs_outputs_loop_specific_costs_500"
+            self.outputs_directory, scenario_name, "mvs_outputs_loop_specific_costs_500"
         )
         filename = os.path.join(
             timeseries_directory, f"plot_{timeseries_name[:-5]}_{period}.png"
@@ -104,7 +101,7 @@ class TestPlotProfiles:
             os.remove(filename)
 
         plot_all_flows(
-            output_directory=self.output_directory,
+            outputs_directory=self.outputs_directory,
             timeseries_directory=timeseries_directory,
             timeseries_name=timeseries_name,
             month=month,
@@ -119,7 +116,7 @@ class TestPlotProfiles:
         variable_name = "specific_costs"
         scenario_name = "Test_Scenario"
         loop_output_directory = os.path.join(
-            self.output_directory, scenario_name, "loop_outputs_" + str(variable_name)
+            self.outputs_directory, scenario_name, "loop_outputs_" + str(variable_name)
         )
 
         filename = os.path.join(
@@ -132,7 +129,7 @@ class TestPlotProfiles:
             scenario_name=scenario_name,
             variable_name=variable_name,
             kpi=["costs total PV", "Degree of autonomy"],
-            output_directory=self.output_directory,
+            outputs_directory=self.outputs_directory,
         )
 
         assert os.path.exists(filename)

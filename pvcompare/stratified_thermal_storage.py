@@ -23,7 +23,7 @@ from pvcompare import check_inputs
 
 
 def calc_strat_tes_param(
-    weather, temperature_col="temp_air", input_directory=None, mvs_input_directory=None,
+    weather, temperature_col="temp_air", user_inputs_pvcompare_directory=None, user_inputs_mvs_directory=None,
 ):
     """
 
@@ -35,11 +35,11 @@ def calc_strat_tes_param(
     temperature_col : str
         Name of column in `weather` containing ambient temperature.
         Default: "temp_air".
-    input_directory: str or None
-        Path to input directory of pvcompare containing file
-        `heat_pumps_and_chillers.csv` that specifies heat pump and/or chiller
-        data. Default: DEFAULT_INPUT_DIRECTORY (see :func:`~pvcompare.constants`.
-    mvs_input_directory: str or None
+    user_inputs_pvcompare_directory: str or None
+        Directory of the user inputs. If None,
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
+        Default: None.
+    user_inputs_mvs_directory: str or None
         Path to input directory containing files that describe the energy
         system and that are an input to MVS. Default:
         DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`.
@@ -65,14 +65,14 @@ def calc_strat_tes_param(
     # *********************************************************************************************
     # Set paths - Read and prepare data
     # *********************************************************************************************
-    if input_directory is None:
-        input_directory = constants.DEFAULT_INPUT_DIRECTORY
+    if user_inputs_pvcompare_directory is None:
+        input_directory = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
 
-    if mvs_input_directory is None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
+    if user_inputs_mvs_directory == None:
+        user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
 
     input_data_filename = os.path.join(
-        input_directory, "stratified_thermal_storage.csv"
+        user_inputs_pvcompare_directory, "stratified_thermal_storage.csv"
     )
     input_data = pd.read_csv(input_data_filename, header=0, index_col=0)["var_value"]
 
@@ -142,7 +142,7 @@ def save_time_dependent_values(
 
 
 def add_strat_tes(
-    weather, lat, lon, storage_csv, input_directory=None, mvs_input_directory=None
+    weather, lat, lon, storage_csv, user_inputs_pvcompare_directory=None, user_inputs_mvs_directory=None
 ):
     """
     Adds stratified thermal storage if it exists either in 'energyStorage.csv' or in
@@ -162,14 +162,14 @@ def add_strat_tes(
         Longitude of ambient temperature location in `weather`.
     storage_csv : str
         Name of the storage specific file
-    input_directory: str or None
-        Path to input directory of pvcompare containing file
-        `stratified_thermal_storage.csv` that specifies stratified thermal storage
-        data. Default: DEFAULT_INPUT_DIRECTORY (see :func:`~pvcompare.constants`.
-    mvs_input_directory: str or None
+    user_inputs_pvcompare_directory: str or None
+        Directory of the user inputs. If None,
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
+        Default: None.
+    user_inputs_mvs_directory: str or None
         Path to input directory containing files that describe the energy
         system and that are an input to MVS. Default:
-        DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`).
+        DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`.
 
     Notes
     -----
@@ -192,40 +192,42 @@ def add_strat_tes(
     # Set paths
     # *********************************************************************************************
     # Set path if path is None
-    if mvs_input_directory is None:
-        mvs_input_directory = constants.DEFAULT_MVS_INPUT_DIRECTORY
-    if input_directory is None:
-        input_directory = constants.DEFAULT_INPUT_DIRECTORY
+    if user_inputs_pvcompare_directory == None:
+        user_inputs_pvcompare_directory = (
+            constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        )
+    if user_inputs_mvs_directory == None:
+        user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
 
     # Set path for results in time series
-    time_series_directory = os.path.join(mvs_input_directory, "time_series")
+    time_series_directory = os.path.join(user_inputs_mvs_directory, "time_series")
 
     # *********************************************************************************************
     # Read files
     # *********************************************************************************************
     # 1. Read energyStorage.csv
     energy_storage = pd.read_csv(
-        os.path.join(mvs_input_directory, "csv_elements", "energyStorage.csv"),
+        os.path.join(user_inputs_mvs_directory, "csv_elements", "energyStorage.csv"),
         header=0,
         index_col=0,
     )
     # 2. Read energyConversion.csv
     energy_conversion = pd.read_csv(
-        os.path.join(mvs_input_directory, "csv_elements", "energyConversion.csv"),
+        os.path.join(user_inputs_mvs_directory, "csv_elements", "energyConversion.csv"),
         header=0,
         index_col=0,
     )
 
     # 3. Read storage_xx.csv from input value
     storage_xx = pd.read_csv(
-        os.path.join(mvs_input_directory, "csv_elements", storage_csv),
+        os.path.join(user_inputs_mvs_directory, "csv_elements", storage_csv),
         header=0,
         index_col=0,
     )
 
     # 4. Read stratified_thermal_storage.csv
     storage_input_data = pd.read_csv(
-        os.path.join(input_directory, "stratified_thermal_storage.csv"),
+        os.path.join(user_inputs_pvcompare_directory, "stratified_thermal_storage.csv"),
         header=0,
         index_col=0,
     )
@@ -271,8 +273,8 @@ def add_strat_tes(
         fixed_losses_absolute,
     ) = calc_strat_tes_param(
         weather=weather,
-        mvs_input_directory=mvs_input_directory,
-        input_directory=input_directory,
+        user_inputs_mvs_directory=user_inputs_mvs_directory,
+        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
     )
     logging.info(f"Stratified thermal storage successfully precalculated.")
     # Save calculated nominal storage capacity and loss rate to storage_xx.csv
@@ -280,11 +282,11 @@ def add_strat_tes(
         nominal_storage_capacity=nominal_storage_capacity,
         loss_rate=loss_rate,
         storage_csv=storage_csv,
-        mvs_input_directory=mvs_input_directory,
+        user_inputs_mvs_directory=user_inputs_mvs_directory,
     )
     # 3. Replace old storage_xx.csv with new one that contains calculated values
     storage_xx = pd.read_csv(
-        os.path.join(mvs_input_directory, "csv_elements", storage_csv),
+        os.path.join(user_inputs_mvs_directory, "csv_elements", storage_csv),
         header=0,
         index_col=0,
     )
@@ -320,13 +322,13 @@ def add_strat_tes(
                 # check if result file exists
                 filename_csv_excl_path = value.split("'")[3]
                 filename_csv = os.path.join(
-                    mvs_input_directory, "time_series", filename_csv_excl_path
+                    user_inputs_mvs_directory, "time_series", filename_csv_excl_path
                 )
 
                 if not os.path.isfile(filename_csv):
                     year = weather.index[int(len(weather) / 2)].year
                     result_filename = os.path.join(
-                        mvs_input_directory,
+                        user_inputs_mvs_directory,
                         "time_series",
                         f"{value_name_underscore}_{year}_{lat}_{lon}_{temp_high}.csv",
                     )
@@ -346,7 +348,7 @@ def add_strat_tes(
                     # update storage_xx.csv
                     storage_xx.to_csv(
                         os.path.join(
-                            mvs_input_directory, "csv_elements", f"{storage_csv}"
+                            user_inputs_mvs_directory, "csv_elements", f"{storage_csv}"
                         )
                     )
                     # Write results of time dependent values if non existent
@@ -380,7 +382,7 @@ def run_stratified_thermal_storage():
     ) = calc_strat_tes_param(
         weather=weather,
         temperature_col="temp_air",
-        mvs_input_directory="./data/mvs_inputs_template_sector_coupling/",
+        user_inputs_mvs_directory="./data/mvs_inputs_template_sector_coupling/",
     )
 
     parameter = {
