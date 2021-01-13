@@ -595,7 +595,6 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
         surface azimuth of the modules
     surface_tilt: float
         surface tilt of the modules
-    normalization: str
 
     Returns
     -------
