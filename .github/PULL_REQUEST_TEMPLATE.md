@@ -10,6 +10,7 @@ The following steps were realized, as well (if applies):
 - [ ] Write test(s) for your new patch of code
 - :x: Update the CHANGELOG.md (let's start this after the first release)
 - [ ] Apply black (`black . --exclude docs/`)
+- [ ] Check if benchmark tests pass locally (`EXECUTE_TESTS_ON=master pytest`)
 
 
 *Please mark above checkboxes as following:*
