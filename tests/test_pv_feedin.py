@@ -19,8 +19,6 @@ from pvcompare.pv_feedin import (
     nominal_values_pv,
     create_cpv_time_series,
     get_optimal_pv_angle,
-    calculate_NRWC_peak,
-    get_peak,
 )
 
 
@@ -48,7 +46,7 @@ class TestPvtime_series:
         self.surface_tilt = 30
         self.year = 2015
 
-    def test_create_si_times_eries(self):
+    def test_create_si_absolute_time_series(self):
 
         ts = create_si_time_series(
             lat=self.lat,
@@ -56,12 +54,12 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalization=None,
+            normalization=False,
         )
         output = round(ts.values.sum(), 3)
         assert output == 0.216
 
-    def test_create_si_times_eries__NSTC_normalization(self):
+    def test_create_si_normalized_times_eries(self):
 
         ts = create_si_time_series(
             lat=self.lat,
@@ -69,25 +67,12 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalization="NSTC",
+            normalization=True,
         )
         output = round(ts.values.sum(), 3)
         assert output == 0.773
 
-    def test_create_si_times_eries__NRWC_normalization(self):
-
-        ts = create_si_time_series(
-            lat=self.lat,
-            lon=self.lon,
-            weather=self.weather,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            normalization="NRWC",
-        )
-        output = round(ts.values.sum(), 3)
-        assert output == 0.937
-
-    def test_create_cpv_time_series(self):
+    def test_create_absolute_cpv_time_series(self):
 
         ts = create_cpv_time_series(
             lat=self.lat,
@@ -95,12 +80,12 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalization=None,
+            normalization=False,
         )
         output = ts.sum()
         assert round(output, 2) == 0.02
 
-    def test_create_cpv_time_series_NSTC_normalization(self):
+    def test_create_cpv_normalized_time_series(self):
 
         ts = create_cpv_time_series(
             lat=self.lat,
@@ -108,25 +93,12 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalization="NSTC",
+            normalization=True,
         )
         output = ts.sum()
         assert round(output, 2) == 0.64
 
-    def test_create_cpv_time_series_NRWC_normalization(self):
-
-        ts = create_cpv_time_series(
-            lat=self.lat,
-            lon=self.lon,
-            weather=self.weather,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            normalization="NRWC",
-        )
-        output = ts.sum()
-        assert round(output, 2) == 0.91
-
-    def test_create_psi_time_series(self):
+    def test_create_absolute_psi_time_series(self):
         ts = create_psi_time_series(
             lat=self.lat,
             lon=self.lon,
@@ -134,13 +106,13 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalization=None,
+            normalization=False,
             psi_type="Chen",
         )
         output = ts.sum()
         assert round(output, 1) == 0.3
 
-    def test_create_psi_time_series_NSTC_normalization(self):
+    def test_create_psi_normalized_time_series(self):
         ts = create_psi_time_series(
             lat=self.lat,
             lon=self.lon,
@@ -148,25 +120,11 @@ class TestPvtime_series:
             weather=self.weather,
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
-            normalization="NSTC",
+            normalization=True,
             psi_type="Chen",
         )
         output = ts.sum()
         assert round(output, 1) == 0.7
-
-    def test_create_psi_time_series_NRWC_normalization(self):
-        ts = create_psi_time_series(
-            lat=self.lat,
-            lon=self.lon,
-            year=self.year,
-            weather=self.weather,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            normalization="NRWC",
-            psi_type="Chen",
-        )
-        output = ts.sum()
-        assert round(output, 1) == 0.5
 
     def test_create_create_pv_components_wrong_technology_in_pvsetup(self):
         pv_setup_filename = os.path.join(
@@ -186,7 +144,7 @@ class TestPvtime_series:
                 plot=False,
                 user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
                 user_inputs_mvs_directory=self.test_mvs_directory,
-                normalization="NRWC",
+                normalization=True,
                 year=self.year,
             )
 
@@ -209,9 +167,10 @@ class TestPvtime_series:
                 user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
                 user_inputs_mvs_directory=self.test_mvs_directory,
                 year=self.year,
+                normalization="NSTC",
             )
 
-    def test_nominal_values_pv_NSTC_si(self):
+    def test_nominal_values_si(self):
 
         technology = "si"
         area = 1000
@@ -222,12 +181,10 @@ class TestPvtime_series:
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
             psi_type="Chen",
-            normalization="NSTC",
         )
-
         assert nominal_value == 170.337
 
-    def test_nominal_values_pv_NINT_cpv(self):
+    def test_nominal_values_cpv(self):
         technology = "cpv"
         area = 1000
 
@@ -237,57 +194,13 @@ class TestPvtime_series:
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
             psi_type="Chen",
-            normalization="NINT",
-        )
-
-        assert nominal_value == 320.0
-
-    def test_nominal_values_pv_NINT_psi(self):
-        technology = "psi"
-        area = 1000
-
-        nominal_value = nominal_values_pv(
-            technology=technology,
-            area=area,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            psi_type="Chen",
-            normalization="NINT",
-        )
-
-        assert nominal_value == 240
-
-    def test_nominal_values_pv_NSTC_si(self):
-
-        technology = "si"
-        area = 1000
-
-        nominal_value = nominal_values_pv(
-            technology=technology,
-            area=area,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            psi_type="Chen",
-            normalization="NSTC",
-        )
-        assert nominal_value == 170.337
-
-    def test_nominal_values_pv_NSTC_cpv(self):
-        technology = "cpv"
-        area = 1000
-
-        nominal_value = nominal_values_pv(
-            technology=technology,
-            area=area,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            psi_type="Chen",
-            normalization="NSTC",
         )
 
         assert nominal_value == 343.381
 
-    def test_nominal_values_pv_NSTC_psi(self):
+
+    def test_nominal_values_psi(self):
+      
         technology = "psi"
         area = 1000
 
@@ -297,82 +210,17 @@ class TestPvtime_series:
             surface_azimuth=self.surface_azimuth,
             surface_tilt=self.surface_tilt,
             psi_type="Chen",
-            normalization="NSTC",
         )
 
-        assert nominal_value == 201.559
-
-    def test_nominal_values_pv_NRWC_si(self):
-
-        technology = "si"
-        area = 1000
-
-        nominal_value = nominal_values_pv(
-            technology=technology,
-            area=area,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            psi_type="Chen",
-            normalization="NRWC",
-        )
-        assert nominal_value == 140.542
-
-    def test_nominal_values_pv_NRWC_cpv(self):
-        technology = "cpv"
-        area = 1000
-
-        nominal_value = nominal_values_pv(
-            technology=technology,
-            area=area,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            psi_type="Chen",
-            normalization="NRWC",
-        )
-
-        assert nominal_value == 241.014
-
-    def test_nominal_values_pv_NRWC_psi(self):
-        technology = "psi"
-        area = 1000
-
-        nominal_value = nominal_values_pv(
-            technology=technology,
-            area=area,
-            surface_azimuth=self.surface_azimuth,
-            surface_tilt=self.surface_tilt,
-            psi_type="Chen",
-            normalization="NRWC",
-        )
 
         assert nominal_value == 271.351
+
 
     def test_get_optimal_pv_angle(self):
 
         output = get_optimal_pv_angle(self.lat)
 
         assert output == 25
-
-
-def test_calculate_NRWC_peak_si():
-
-    peak1 = calculate_NRWC_peak(technology="si")
-
-    assert round(peak1, 2) == 230.91
-
-
-def test_calculate_NRWC_peak_cpv():
-
-    peak2 = calculate_NRWC_peak(technology="cpv")
-
-    assert round(peak2, 2) == 24.1
-
-
-def test_calculate_NRWC_peak_psi():
-
-    peak3 = calculate_NRWC_peak(technology="psi")
-
-    assert round(peak3, 2) == 330.78
 
 
 # # one can test that exception are raised
