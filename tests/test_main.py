@@ -82,9 +82,8 @@ class TestMain:
     @pytest.mark.skipif(
         EXECUTE_TESTS_ON not in (TESTS_ON_MASTER),
         reason="Benchmark test deactivated, set env variable "
-               "EXECUTE_TESTS_ON to 'master' to run this test",
+        "EXECUTE_TESTS_ON to 'master' to run this test",
     )
-
     @mock.patch("argparse.ArgumentParser.parse_args", return_value=argparse.Namespace())
     def test_apply_mvs(self, margs):
         """ """
