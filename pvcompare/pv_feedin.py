@@ -575,7 +575,6 @@ def create_psi_time_series(
         return (output / peak).clip(0)
 
 
-
 def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type):
 
     """

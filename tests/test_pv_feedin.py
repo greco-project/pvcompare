@@ -198,9 +198,8 @@ class TestPvtime_series:
 
         assert nominal_value == 343.381
 
-
     def test_nominal_values_psi(self):
-      
+
         technology = "psi"
         area = 1000
 
@@ -212,9 +211,7 @@ class TestPvtime_series:
             psi_type="Chen",
         )
 
-
         assert nominal_value == 201.559
-
 
     def test_get_optimal_pv_angle(self):
 
