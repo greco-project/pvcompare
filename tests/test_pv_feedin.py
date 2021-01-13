@@ -213,7 +213,7 @@ class TestPvtime_series:
         )
 
 
-        assert nominal_value == 271.351
+        assert nominal_value == 201.559
 
 
     def test_get_optimal_pv_angle(self):
