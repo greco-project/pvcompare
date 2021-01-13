@@ -14,7 +14,10 @@ import glob
 import argparse
 import mock
 import shutil
-import pandas as pd
+import pytest
+
+TESTS_ON_MASTER = "master"
+EXECUTE_TESTS_ON = os.environ.get("EXECUTE_TESTS_ON", "skip")
 
 
 class TestMain:
@@ -73,6 +76,14 @@ class TestMain:
                 "si_180_38_2014_52.52437_13.41053.csv",
             )
         )
+
+    # this ensures that the test is only run if explicitly executed, i.e. not when the
+    # `pytest` command alone is called
+    @pytest.mark.skipif(
+        EXECUTE_TESTS_ON not in (TESTS_ON_MASTER),
+        reason="Benchmark test deactivated, set env variable "
+               "EXECUTE_TESTS_ON to 'master' to run this test",
+    )
 
     @mock.patch("argparse.ArgumentParser.parse_args", return_value=argparse.Namespace())
     def test_apply_mvs(self, margs):
