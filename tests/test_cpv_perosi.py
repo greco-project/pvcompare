@@ -101,7 +101,7 @@ class TestPvtime_series:
         )
 
         sum = output.sum()
-        assert sum == 54.4476555501316
+        assert sum == 72.59687406684213
 
     def test_create_cpv_time_series(self):
 
