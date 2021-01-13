@@ -9,6 +9,7 @@ import pandas as pd
 import os
 import logging
 import maya
+import numpy as np
 
 import oemof.thermal.compression_heatpumps_and_chillers as cmpr_hp_chiller
 
@@ -136,9 +137,11 @@ def calculate_cops_and_eers(
     df = pd.DataFrame(weather[temperature_col])
     df[column_name] = efficiency
 
-    # set negative COPs/EERs to nan
+    # set negative COPs/EERs to np.inf
+    # COP/EER below zero results from temp_low > temp_high
+    # and will therefore be represented with COP/EER -> infinity
     indices = df.loc[df[column_name] < 0].index
-    df[column_name][indices] = 0
+    df[column_name][indices] = np.inf
 
     # extract COPs/EERs as pd.Series from data frame
     efficiency_series = df[column_name]
