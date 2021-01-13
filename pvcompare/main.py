@@ -57,15 +57,15 @@ def apply_pvcompare(
         Year of the simulation. Default: None.
     static_inputs_directory: str or None
         Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_input_directory.
+        `constants.DEFAULT_STCATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
         Default: None.
     user_inputs_pvcompare_directory: str or None
         If None, `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used
-        as user_input_directory.
+        as  user_inputs_pvcompare_directory.
         Default: None.
     user_inputs_mvs_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as mvs_input_directory.
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
         Default: None.
     plot: bool
         If True, plots of the PV feed-in time series are created in
@@ -75,7 +75,7 @@ def apply_pvcompare(
         simulation. The dictionary contains columns: surface_type, technology,
         surface_azimuth, surface_tilt.
         A tilt of 0 resembles a vertical orientation.
-        If `pv_setup` is None, it is loaded from the `input_directory/pv_setup.cvs`.
+        If `pv_setup` is None, it is loaded from the `user_inputs_pvcompare_directory/pv_setup.cvs`.
         Default: None.
     overwrite_grid_costs: bool
         Default: True. If True, the energy-price is changed according to the
@@ -87,7 +87,7 @@ def apply_pvcompare(
 
     Returns
     -------
-    Saves calculated time series to `timeseries` folder in `mvs_input_directory` and
+    Saves calculated time series to `timeseries` folder in `user_inputs_mvs_directory and
     updates csv files in `csv_elements` folder.
 
     """

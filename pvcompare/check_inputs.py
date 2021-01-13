@@ -84,7 +84,7 @@ def add_location_and_year_to_project_data(
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
     static_inputs_directory: str or None
         Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_inputs_directory.
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
     latitude: float
         latitude of the location
     longitude: float
@@ -166,7 +166,7 @@ def check_for_valid_country_year(country, year, static_inputs_directory):
         year of simulation
     static_inputs_directory: str or None
         Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_inputs_directory.
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
 
     Returns
     -------
@@ -236,7 +236,7 @@ def add_electricity_price(static_inputs_directory, user_inputs_mvs_directory):
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
     static_inputs_directory: str or None
         Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_inputs_directory.
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
 
     Returns
     --------
