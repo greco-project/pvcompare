@@ -25,6 +25,7 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     4. **longitude**: str, 5.875387 * *auto_calc*
     5. **project_id**: str, 1
     6. **project_name**: str, net zero energy community
+    7. **scenario_description**: str, Simulation of scenario scenario_name
 
 * economic_data.csv
     1. **curency**: str, EUR (stands for euro; can be replaced by SEK, if the system is located in Sweden, for instance).
