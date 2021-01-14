@@ -1,16 +1,16 @@
-,unit,Solar inverter,Heat pump
+,unit,Solar inverter,Gas heating
 unit,str,kW,kW
 optimizeCap,bool,True,True
 maximumCap,None or float,None,None
 installedCap,kW,0,0
 age_installed,year,0,0
-lifetime,year,15,12
+lifetime,year,15,25
 development_costs,currency,0,0
-specific_costs,currency/kW,230,450
-specific_costs_om,currency/kW/year,6,42.5
+specific_costs,currency/kW,230,320
+specific_costs_om,currency/kW/year,6,20.9
 dispatch_price,currency/kWh,0,0
-efficiency,factor,0.95,"{'file_name': 'None', 'header': 'no_unit', 'unit': ''}"
-inflow_direction,str,PV bus,Electricity bus
+efficiency,factor,0.95,0.97
+inflow_direction,str,PV bus,Gas bus
 outflow_direction,str,Electricity bus,Heat bus
 energyVector,str,Electricity,Heat
 type_oemof,str,transformer,transformer
