@@ -344,6 +344,15 @@ def create_pero_si_timeseries(
             f"The cell_type is {psi_type}. It is not recognized. Please "
             "choose between 'Korte' and 'Chen'."
         )
+    for x in cell_type:
+        if x == "Korte_pero":
+            import pvcompare.perosi.data.cell_parameters_korte_pero as param
+        elif x == "Korte_si":
+            import pvcompare.perosi.data.cell_parameters_korte_si as param
+        elif x == "Chen_pero":
+            import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_pero as param
+        elif x == "Chen_si":
+            import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_si as param
 
     timeseries = create_timeseries(
         lat=lat,
@@ -355,9 +364,7 @@ def create_pero_si_timeseries(
         cell_type=cell_type,
         number_hours=number_hours,
     )
-    output = (timeseries.iloc[:, 0] + timeseries.iloc[:, 1]) * 20000
-    # add losses
-    output = output - (output * 0.25)
+    output = (timeseries.iloc[:, 0] + timeseries.iloc[:, 1]) * param.Ns
 
     return output
 
