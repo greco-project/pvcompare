@@ -1,4 +1,4 @@
-,unit,Electricity demand, Heat demand
+,unit,Electricity demand,Heat demand
 unit,str,kW,kW
 file_name,str,,
 inflow_direction,str,Electricity bus,Heat bus
