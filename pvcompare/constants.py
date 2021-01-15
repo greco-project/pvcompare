@@ -30,6 +30,9 @@ EXAMPLE_USER_INPUTS_MVS_ELECTRICITY = os.path.join(
 EXAMPLE_USER_INPUTS_MVS_SECTOR_COUPLING = os.path.join(
     REPO_PATH, "examples/example_user_inputs/mvs_inputs_sector_coupling"
 )
+EXAMPLE_USER_INPUTS_MVS_SECTOR_COUPLING_GAS = os.path.join(
+    REPO_PATH, "examples/example_user_inputs/mvs_inputs_sector_coupling_gas"
+)
 
 # test directories
 TEST_OUTPUTS_DIRECTORY = os.path.join(REPO_PATH, "tests/data/outputs")
