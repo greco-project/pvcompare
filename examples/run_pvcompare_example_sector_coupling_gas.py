@@ -16,7 +16,7 @@ user_inputs_pvcompare_directory = constants.EXAMPLE_USER_INPUTS_PVCOMPARE
 static_inputs_directory = None
 user_inputs_mvs_directory = constants.EXAMPLE_USER_INPUTS_MVS_SECTOR_COUPLING_GAS
 pv_setup = None
-outputs_directory = os.path.join(constants.EXAMPLE_OUTPUTS_DIRECTORY, scenario_name)
+outputs_directory = constants.EXAMPLE_OUTPUTS_DIRECTORY
 
 # RUN PVCOMPARE PRE-CALCULATIONS:
 # - calculate PV timeseries
@@ -41,6 +41,6 @@ main.apply_pvcompare(
 # RUN MVS OEMOF SIMULATTION
 main.apply_mvs(
     scenario_name=scenario_name,
-    mvs_output_directory=outputs_directory,
+    outputs_directory=outputs_directory,
     user_inputs_mvs_directory=user_inputs_mvs_directory,
 )
