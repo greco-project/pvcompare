@@ -57,7 +57,7 @@ def apply_pvcompare(
         Year of the simulation. Default: None.
     static_inputs_directory: str or None
         Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STCATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
         Default: None.
     user_inputs_pvcompare_directory: str or None
         If None, `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used
