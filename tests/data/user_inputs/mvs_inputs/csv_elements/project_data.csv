@@ -6,3 +6,4 @@ project_id,str,1
 project_name,str,net zero energy community
 scenario_id,str,1
 scenario_name,str,Test_scenario_check_inputs
+scenario_description,str,Simulation of Test_scenario_check_inputs
