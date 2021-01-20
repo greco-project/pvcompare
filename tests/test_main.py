@@ -26,7 +26,7 @@ class TestMain:
         # DEFINE USER INPUTS
         self.latitude = 52.5243700  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
         self.longitude = 13.4105300  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
-        self.year = 2014
+        self.year = 2017
         self.storeys = 5
         self.country = "Germany"
         self.scenario_name = "Scenario_MAIN"
@@ -73,7 +73,7 @@ class TestMain:
             os.path.join(
                 self.user_inputs_mvs_directory,
                 "time_series",
-                "si_180_38_2014_52.52437_13.41053.csv",
+                "si_180_38_2017_52.52437_13.41053.csv",
             )
         )
 
