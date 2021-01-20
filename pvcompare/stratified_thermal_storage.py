@@ -240,7 +240,7 @@ def add_strat_tes(
         index_col=0,
     )
 
-    # Create add on to filename (year, lat, lon)
+    # Create add on to filename (year, lat, lon, temp_high)
     year = maya.parse(weather.index[int(len(weather) / 2)]).datetime().year
     temp_high = storage_input_data.at["temp_h", "var_value"]
     add_on = f"_{year}_{lat}_{lon}_{temp_high}"
@@ -300,7 +300,7 @@ def add_strat_tes(
     )
 
     # *********************************************************************************************
-    # Check if time dependent data exists. Else calculate time series
+    # Check if time dependent data exists. Else save above calculated time series
     # *********************************************************************************************
     file_exists = True
     # Put all the time dependent values in a list
