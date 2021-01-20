@@ -48,6 +48,9 @@ jobs:
               sudo apt-get install gcc
               sudo apt-get install libgfortran4
               sudo apt-get install gfortran
+              sudo apt-get install graphviz
+              sudo apt-get install coinor-cbc
+              sudo apt-get install wkhtmltopdf
 
       # Runs a set of commands using the runners shell
       - name: Install dependencies

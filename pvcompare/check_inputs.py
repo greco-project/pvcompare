@@ -267,6 +267,7 @@ def add_electricity_price(static_inputs_directory, user_inputs_mvs_directory):
 
 
 def overwrite_mvs_energy_production_file(
+    pv_setup,
     user_inputs_mvs_directory,
     user_inputs_pvcompare_directory,
     overwrite_pv_parameters,
@@ -294,9 +295,10 @@ def overwrite_mvs_energy_production_file(
     None
     """
     # load pv_setup.csv
-    pv_setup = pd.read_csv(
-        os.path.join(user_inputs_pvcompare_directory, "pv_setup.csv"), index_col=0
-    )
+    if pv_setup is None:
+        pv_setup = pd.read_csv(
+            os.path.join(user_inputs_pvcompare_directory, "pv_setup.csv"), index_col=0
+        )
     technologies = pv_setup["technology"].values
 
     # load mvs user input file

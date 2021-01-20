@@ -137,6 +137,7 @@ def apply_pvcompare(
 
     # check energyProduction.csv file for the correct pv technology
     check_inputs.overwrite_mvs_energy_production_file(
+        pv_setup=pv_setup,
         user_inputs_mvs_directory=user_inputs_mvs_directory,
         user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
         collections_mvs_inputs_directory=collections_mvs_inputs_directory,
