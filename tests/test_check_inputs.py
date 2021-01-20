@@ -183,6 +183,7 @@ class TestDemandProfiles:
 
         with pytest.raises(ValueError):
             overwrite_mvs_energy_production_file(
+                pv_setup=None,
                 user_inputs_mvs_directory=self.user_inputs_mvs_directory,
                 user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
                 collections_mvs_inputs_directory=self.collections_mvs_inputs_directory,
@@ -213,6 +214,7 @@ class TestDemandProfiles:
 
         # overwrite energyProduction.csv
         overwrite_mvs_energy_production_file(
+            pv_setup=None,
             user_inputs_mvs_directory=self.user_inputs_mvs_directory,
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
             collections_mvs_inputs_directory=self.collections_mvs_inputs_directory,
