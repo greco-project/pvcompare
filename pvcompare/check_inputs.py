@@ -181,24 +181,20 @@ def check_for_valid_country_year(country, year, static_inputs_directory):
         os.path.join(static_inputs_directory, "list_of_workalender_countries.csv"),
         header=0,
     )
-    consumption = pd.read_csv(
-        os.path.join(
-            static_inputs_directory, "total_electricity_consumption_residential.csv"
-        ),
-        header=1,
-        sep=":",
-    )
+    consumption = pd.read_excel(os.path.join(
+            static_inputs_directory, "electricity_consumption_residential.xlsx"
+        ), header=1, index_col=0)
 
     countries_pop = set(pop["country"][:43])
     countries_workalender = set(workalendar["country"])
-    countries_consumption = set(consumption["country"][:32])
+    countries_consumption = set(consumption.index[:30])
 
     years_pop = set([x for x in pop.columns if x != "country"])
     years_consumption = set(
         [
-            x
+            str(x)
             for x in consumption.columns
-            if x not in ["country", "ISO code", "Unit", "Source Code", "Note"]
+            if x not in ["country", "ISO code", "Unit", "Source Code", "Note", "Source"]
         ]
     )
     possible_countries = countries_pop & countries_workalender & countries_consumption
