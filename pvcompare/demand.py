@@ -218,22 +218,25 @@ def calculate_power_demand(
     filename_elec = os.path.join(
         static_inputs_directory, filename_residential_electricity_demand
     )
-    powerstat = pd.read_excel(filename_elec, header = 1, index_col=0)
+    powerstat = pd.read_excel(filename_elec, header=1, index_col=0)
 
     # loading residential space heating
-    electr_SH = pd.read_excel(filename_electr_SH, header = 1, index_col=0)
+    electr_SH = pd.read_excel(filename_electr_SH, header=1, index_col=0)
 
     # loading residential water heating
     filename_electr_WH = os.path.join(
         static_inputs_directory, bp.at["filename_elect_WH", "value"]
     )
-    electr_WH = pd.read_excel(filename_electr_WH, header = 1, index_col=0)
+    electr_WH = pd.read_excel(filename_electr_WH, header=1, index_col=0)
 
     # loading residential cooking demand total
     filename_total_cooking = os.path.join(
-        static_inputs_directory, bp.at["filename_total_cooking_consumption", "value"])
+        static_inputs_directory, bp.at["filename_total_cooking_consumption", "value"]
+    )
     filename_electricity_cooking = os.path.join(
-        static_inputs_directory, bp.at["filename_electricity_cooking_consumption", "value"])
+        static_inputs_directory,
+        bp.at["filename_electricity_cooking_consumption", "value"],
+    )
 
     total_cooking = pd.read_excel(filename_total_cooking, header=1, index_col=0)
     elect_cooking = pd.read_excel(filename_electricity_cooking, header=1, index_col=0)
@@ -257,9 +260,8 @@ def calculate_power_demand(
         powerstat.at[country, year]
         - electr_SH.at[country, year]
         - electr_WH.at[country, year]
-        + (total_cooking.at[country, year]
-        - elect_cooking.at[country, year])
-    ) * 10**9
+        + (total_cooking.at[country, year] - elect_cooking.at[country, year])
+    ) * 10 ** 9
     annual_demand_per_population = (
         national_energyconsumption / float(populations.at[country, str(year)])
     ) * population
@@ -418,12 +420,12 @@ def calculate_heat_demand(
 
     # convert TWh in kWh
     # Heat demand of residential space heating
-    heat_demand = (total_SH.at[country, year]) * 10**9
+    heat_demand = total_SH.at[country, year] * 10 ** 9
     annual_heat_demand_per_population = (
         heat_demand / float(populations.at[country, str(year)])
     ) * population
     # Heat demand of residential water heating
-    heat_demand_ww = total_WH.at[country, year] * 10**9
+    heat_demand_ww = total_WH.at[country, year] * 10 ** 9
     annual_heat_demand_ww_per_population = (
         heat_demand_ww / float(populations.at[country, str(year)])
     ) * population

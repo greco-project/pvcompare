@@ -266,5 +266,7 @@ if __name__ == "__main__":
     )
 
     apply_mvs(
-        scenario_name=scenario_name, outputs_directory=None, user_inputs_mvs_directory=None
+        scenario_name=scenario_name,
+        outputs_directory=None,
+        user_inputs_mvs_directory=None,
     )
