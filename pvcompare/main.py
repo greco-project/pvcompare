@@ -244,6 +244,7 @@ def apply_mvs(
         path_output_folder=mvs_output_directory,
         input_type="csv",
         overwrite=True,
+        save_png=True
     )
 
 
