@@ -126,11 +126,11 @@ class TestAddStratTes:
     def select_conv_tech(self):
         def _select_columns(columns):
             data = pd.DataFrame(original_data[columns])
-            data.to_csv(self.filename_storage_02)
+            data.to_csv(self.filename_storage_02, na_rep="NaN")
 
         original_data = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
         yield _select_columns
-        original_data.to_csv(self.filename_storage_02)
+        original_data.to_csv(self.filename_storage_02, na_rep="NaN")
 
     def test_add_sector_coupling_strat_tes_file_already_exists(self, select_conv_tech):
         select_conv_tech(columns="storage capacity")
@@ -192,11 +192,11 @@ class TestAddStratTes_file_non_existent:
     def select_conv_tech(self):
         def _select_columns(columns):
             data = pd.DataFrame(original_data[columns])
-            data.to_csv(self.filename_storage_02)
+            data.to_csv(self.filename_storage_02, na_rep="NaN")
 
         original_data = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
         yield _select_columns
-        original_data.to_csv(self.filename_storage_02)
+        original_data.to_csv(self.filename_storage_02, na_rep="NaN")
 
     def test_add_sector_coupling_strat_tes_file_non_existent(self, select_conv_tech):
         select_conv_tech(columns="storage capacity")
@@ -258,11 +258,11 @@ class TestAddStratTes_file_constant_losses:
     def select_conv_tech(self):
         def _select_columns(columns):
             data = pd.DataFrame(original_data[columns])
-            data.to_csv(self.filename_storage_02)
+            data.to_csv(self.filename_storage_02, na_rep="NaN")
 
         original_data = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
         yield _select_columns
-        original_data.to_csv(self.filename_storage_02)
+        original_data.to_csv(self.filename_storage_02, na_rep="NaN")
 
     def test_add_sector_coupling_strat_tes_file_const_losses(self, select_conv_tech):
         energy_storage_file_path = os.path.join(
@@ -297,3 +297,5 @@ class TestAddStratTes_file_constant_losses:
         assert float(df.loc["efficiency"].item()) == 0.99907726890329
         assert float(df.loc["fixed_thermal_losses_relative"].item()) == 0.0016
         assert float(df.loc["fixed_thermal_losses_absolute"].item()) == 0.0003
+
+        energy_storage_original.to_csv(energy_storage_file_path, na_rep="NaN")

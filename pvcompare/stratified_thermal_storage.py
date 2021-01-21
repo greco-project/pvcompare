@@ -216,28 +216,15 @@ def add_strat_tes(
         header=0,
         index_col=0,
     )
-    # 2. Read energyConversion.csv
-    energy_conversion = pd.read_csv(
-        os.path.join(user_inputs_mvs_directory, "csv_elements", "energyConversion.csv"),
-        header=0,
-        index_col=0,
-    )
 
-    # 3. Read energyBusses.csv
+    # 2. Read energyBusses.csv
     energy_busses = pd.read_csv(
         os.path.join(user_inputs_mvs_directory, "csv_elements", "energyBusses.csv"),
         header=0,
         index_col=0,
     )
 
-    # 3. Read storage_xx.csv from input value
-    storage_xx = pd.read_csv(
-        os.path.join(user_inputs_mvs_directory, "csv_elements", storage_csv),
-        header=0,
-        index_col=0,
-    )
-
-    # 4. Read stratified_thermal_storage.csv
+    # 3. Read stratified_thermal_storage.csv
     storage_input_data = pd.read_csv(
         os.path.join(user_inputs_pvcompare_directory, "stratified_thermal_storage.csv"),
         header=0,
@@ -352,7 +339,7 @@ def add_strat_tes(
                     storage_xx.to_csv(
                         os.path.join(
                             user_inputs_mvs_directory, "csv_elements", f"{storage_csv}"
-                        )
+                        ), na_rep="NaN"
                     )
                     # Write results of time dependent values if non existent
                     if not os.path.isfile(result_filename):
