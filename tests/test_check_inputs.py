@@ -22,6 +22,7 @@ from pvcompare.check_inputs import (
     add_parameters_to_energy_production_file,
     add_file_name_to_energy_consumption_file,
     add_evaluated_period_to_simulation_settings,
+    add_parameters_to_storage_xx_file,
 )
 
 
@@ -296,3 +297,58 @@ class TestDemandProfiles:
             int(file.at["evaluated_period", "simulation_settings"])
             == len(ts.index) / 24
         )
+
+    def test_add_parameters_to_storage_xx_file(self):
+        """
+        These tests check whether
+
+        1. efficiency and nominal storage capacity are saved to storage_xx.csv correctly in case they are calculated
+        2. efficiency and nominal storage are not replaced by calculated value in case it already exists
+        """
+        loss_rate = 0.01
+        nominal_storage_capacity = 10
+
+        # 1. Test
+        storage_xx_file = "storage_02_const_losses.csv"
+        storage_xx_file_path = os.path.join(
+            self.user_inputs_mvs_directory, "csv_elements", storage_xx_file
+        )
+        storage_xx_original = pd.read_csv(storage_xx_file_path, index_col=0, header=0)
+        add_parameters_to_storage_xx_file(
+            nominal_storage_capacity,
+            loss_rate,
+            storage_xx_file,
+            user_inputs_mvs_directory=self.user_inputs_mvs_directory,
+        )
+        storage_xx = pd.read_csv(storage_xx_file_path, index_col=0, header=0)
+        efficiency = float(storage_xx.at["efficiency", "storage capacity"])
+        installed_cap = float(storage_xx.at["installedCap", "storage capacity"])
+
+        assert efficiency == 1 - loss_rate
+        assert installed_cap == 10
+
+        storage_xx_original.to_csv(storage_xx_file_path, na_rep="NaN")
+
+        # 2. Test
+        storage_xx_file = "storage_02.csv"
+        storage_xx_file_path = os.path.join(
+            self.user_inputs_mvs_directory, "csv_elements", storage_xx_file
+        )
+        storage_xx_original = pd.read_csv(storage_xx_file_path, index_col=0, header=0)
+        storage_xx = storage_xx_original.copy()
+        storage_xx.at["installedCap", "storage capacity"] = 20
+        storage_xx.to_csv(storage_xx_file_path, na_rep="NaN")
+        add_parameters_to_storage_xx_file(
+            nominal_storage_capacity,
+            loss_rate,
+            storage_xx_file,
+            user_inputs_mvs_directory=self.user_inputs_mvs_directory,
+        )
+        storage_xx = pd.read_csv(storage_xx_file_path, index_col=0, header=0)
+        efficiency = float(storage_xx.at["efficiency", "storage capacity"])
+        installed_cap = float(storage_xx.at["installedCap", "storage capacity"])
+
+        assert efficiency == 0.99907726890329
+        assert installed_cap == 20
+
+        storage_xx_original.to_csv(storage_xx_file_path, na_rep="NaN")
