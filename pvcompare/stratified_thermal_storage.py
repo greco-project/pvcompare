@@ -226,6 +226,13 @@ def add_strat_tes(
         index_col=0,
     )
 
+    # 3. Read energyBusses.csv
+    energy_busses = pd.read_csv(
+        os.path.join(user_inputs_mvs_directory, "csv_elements", "energyBusses.csv"),
+        header=0,
+        index_col=0,
+    )
+
     # 3. Read storage_xx.csv from input value
     storage_xx = pd.read_csv(
         os.path.join(user_inputs_mvs_directory, "csv_elements", storage_csv),
@@ -246,30 +253,18 @@ def add_strat_tes(
     add_on = f"_{year}_{lat}_{lon}_{temp_high}"
 
     # *********************************************************************************************
-    # Check if stratified thermal storage exists in specified system and is implemented in
-    # either one of the two or both options of implementing (see notes)
+    # Check if stratified thermal storage exists in specified system
     # *********************************************************************************************
     stratified_thermal_storages = []
-    inflow_tes = None
-    outflow_tes = None
-    # Option 1: With in- and outflow direction feeding in and from heat bus
-    for col in energy_storage.keys():
-        outflow = energy_storage[col]["outflow_direction"]
-        inflow = energy_storage[col]["inflow_direction"]
-        if outflow == "Heat bus" and inflow == "Heat bus":
-            stratified_thermal_storages.extend([col])
 
-    # Option 2: Storage bus with in- and outflow direction as transformer
-    for col in energy_conversion.keys():
-        outflow = energy_conversion[col]["outflow_direction"]
-        inflow = energy_conversion[col]["inflow_direction"]
-        if inflow == "Heat bus":
-            outflow_tes = outflow
-        elif outflow == "Heat bus" and inflow != "Electricity bus":
-            inflow_tes = inflow
-
-    if inflow_tes is not None and inflow_tes == outflow_tes:
-        stratified_thermal_storages.extend([inflow_tes])
+    for bus in energy_busses.keys():
+        if energy_busses[bus]["energyVector"] == "Heat":
+            heat_bus = bus
+            for col in energy_storage.keys():
+                outflow = energy_storage[col]["outflow_direction"]
+                inflow = energy_storage[col]["inflow_direction"]
+                if outflow == heat_bus and inflow == heat_bus:
+                    stratified_thermal_storages.extend([col])
 
     # *********************************************************************************************
     # Do precalculations for the stratified thermal storage
