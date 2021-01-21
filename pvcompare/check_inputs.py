@@ -602,9 +602,17 @@ def add_parameters_to_storage_xx_file(
     parameters = {"installedCap": nominal_storage_capacity, "efficiency": 1 - loss_rate}
 
     for name, param in parameters.items():
-        # insert parameter values
-        storage_xx.loc[[name], ["storage capacity"]] = param
-        logging.info(f"The {name} of the storage has been added to {storage_csv}.")
+        # Check if efficiency and nominal storage capacity already exist and if not
+        # replace with calculated value from loss_rate
+        try:
+            int(float(storage_xx.at[name, "storage capacity"]))
+            logging.info(
+                f"The {name} of the storage already exists in {storage_csv}. Please delete the value in {storage_csv} in order to calculate the storage's {name}"
+            )
+        except ValueError:
+            # insert parameter values
+            storage_xx.loc[[name], ["storage capacity"]] = param
+            logging.info(f"The {name} of the storage has been added to {storage_csv}.")
 
     # Save values in storage_xx.csv
     storage_xx.to_csv(storage_xx_path)
