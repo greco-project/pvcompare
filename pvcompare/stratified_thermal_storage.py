@@ -148,7 +148,6 @@ def add_strat_tes(
     weather,
     lat,
     lon,
-    storage_csv,
     user_inputs_pvcompare_directory=None,
     user_inputs_mvs_directory=None,
 ):
@@ -168,8 +167,6 @@ def add_strat_tes(
         Latitude of ambient temperature location in `weather`.
     lon : float
         Longitude of ambient temperature location in `weather`.
-    storage_csv : str
-        Name of the storage specific file
     user_inputs_pvcompare_directory: str or None
         Directory of the user inputs. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
@@ -280,7 +277,10 @@ def add_strat_tes(
         user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
     )
     logging.info(f"Stratified thermal storage successfully precalculated.")
+
     # Save calculated nominal storage capacity and loss rate to storage_xx.csv
+    storage_csv = energy_storage.at["storage_filename", col]
+
     check_inputs.add_parameters_to_storage_xx_file(
         nominal_storage_capacity=nominal_storage_capacity,
         loss_rate=loss_rate,

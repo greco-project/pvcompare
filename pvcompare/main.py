@@ -183,7 +183,6 @@ def apply_pvcompare(
         weather=weather,
         lat=latitude,
         lon=longitude,
-        storage_csv="storage_02.csv",
         user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
         user_inputs_mvs_directory=user_inputs_mvs_directory,
     )

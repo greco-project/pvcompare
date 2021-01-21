@@ -64,7 +64,6 @@ class TestCalcStratTesParam:
             weather=self.weather,
             lat=self.lat,
             lon=self.lon,
-            storage_csv="storage_02.csv",
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
             user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
         )
@@ -139,7 +138,6 @@ class TestAddStratTes:
             weather=self.weather,
             lat=self.lat,
             lon=self.lon,
-            storage_csv="storage_02.csv",
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
             user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
         )
@@ -206,7 +204,6 @@ class TestAddStratTes_file_non_existent:
             weather=self.weather,
             lat=self.lat,
             lon=self.lon,
-            storage_csv="storage_02.csv",
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
             user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
         )
@@ -268,12 +265,22 @@ class TestAddStratTes_file_constant_losses:
         original_data.to_csv(self.filename_storage_02)
 
     def test_add_sector_coupling_strat_tes_file_const_losses(self, select_conv_tech):
+        energy_storage_file_path = os.path.join(
+            TEST_USER_INPUTS_MVS, "csv_elements", "energyStorage.csv"
+        )
+        energy_storage_original = pd.read_csv(
+            energy_storage_file_path, header=0, index_col=0
+        )
+        energy_storage = energy_storage_original.copy()
+        energy_storage.at[
+            "storage_filename", "storage_02"
+        ] = "storage_02_const_losses.csv"
+        energy_storage.to_csv(energy_storage_file_path, na_rep="NaN")
         select_conv_tech(columns="storage capacity")
         sts.add_strat_tes(
             weather=self.weather,
             lat=self.lat,
             lon=self.lon,
-            storage_csv="storage_02_const_losses.csv",
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
             user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
         )
