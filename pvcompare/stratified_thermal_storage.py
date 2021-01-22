@@ -248,7 +248,8 @@ def add_strat_tes(
                 outflow = energy_storage[col]["outflow_direction"]
                 inflow = energy_storage[col]["inflow_direction"]
                 if outflow == heat_bus and inflow == heat_bus:
-                    stratified_thermal_storages.extend([col])
+                    strat_tes_label = col
+                    stratified_thermal_storages.extend([strat_tes_label])
 
     # *********************************************************************************************
     # Do precalculations for the stratified thermal storage
@@ -266,19 +267,20 @@ def add_strat_tes(
     logging.info(f"Stratified thermal storage successfully precalculated.")
 
     # Save calculated nominal storage capacity and loss rate to storage_xx.csv
-    storage_csv = energy_storage.at["storage_filename", col]
+    if len(stratified_thermal_storages) != 0:
+        storage_csv = energy_storage.at["storage_filename", strat_tes_label]
 
-    check_inputs.add_parameters_to_storage_xx_file(
-        nominal_storage_capacity=nominal_storage_capacity,
-        loss_rate=loss_rate,
-        storage_csv=storage_csv,
-        user_inputs_mvs_directory=user_inputs_mvs_directory,
-    )
-    # 3. Replace old storage_xx.csv with new one that contains calculated values
-    storage_xx = pd.read_csv(
-        os.path.join(user_inputs_mvs_directory, "csv_elements", storage_csv),
-        header=0,
-        index_col=0,
+        check_inputs.add_parameters_to_storage_xx_file(
+            nominal_storage_capacity=nominal_storage_capacity,
+            loss_rate=loss_rate,
+            storage_csv=storage_csv,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
+        )
+        # Replace old storage_xx.csv with new one that contains calculated values
+        storage_xx = pd.read_csv(
+            os.path.join(user_inputs_mvs_directory, "csv_elements", storage_csv),
+            header=0,
+            index_col=0,
     )
 
     # *********************************************************************************************
