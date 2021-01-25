@@ -663,10 +663,8 @@ def plot_kpi_loop(
     output_dict = {}
     for scenario_name in scenario_dict.keys():
         if outputs_directory == None:
-            outputs_directory=constants.DEFAULT_OUTPUTS_DIRECTORY
-            scenario_folder = os.path.join(
-                outputs_directory, scenario_name
-            )
+            outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
+            scenario_folder = os.path.join(outputs_directory, scenario_name)
         else:
             scenario_folder = os.path.join(outputs_directory, scenario_name)
 
@@ -714,7 +712,9 @@ def plot_kpi_loop(
                 output.loc[i, "Total renewable energy use"] = file_sheet3.at[
                     "Total renewable energy use", 0
                 ]
-                output.loc[i, "Renewable factor"] = file_sheet3.at["Renewable factor", 0]
+                output.loc[i, "Renewable factor"] = file_sheet3.at[
+                    "Renewable factor", 0
+                ]
                 output.loc[i, "LCOE PV"] = file_sheet1.at[
                     pv, "levelized_cost_of_energy_of_asset"
                 ]
@@ -728,10 +728,10 @@ def plot_kpi_loop(
                     "Degree of autonomy", 0
                 ]
         output_dict_column = output.to_dict()
- #       output_dict_column = collections.OrderedDict(sorted(output_dict_column.items()))
+        #       output_dict_column = collections.OrderedDict(sorted(output_dict_column.items()))
         output_dict[scenario_dict[scenario_name]] = output_dict_column
 
-#    output.sort_index(inplace=True)
+    #    output.sort_index(inplace=True)
 
     # plot
     fig = plt.figure()
@@ -743,23 +743,23 @@ def plot_kpi_loop(
         ax = fig.add_subplot(num)
         num = num + 1
         for key in output_dict.keys():
-            df=pd.DataFrame()
+            df = pd.DataFrame()
             df = df.from_dict(output_dict[key])
-            df[i].plot(title=i, ax=ax, label = key)
+            df[i].plot(title=i, ax=ax, label=key)
 
     fig.text(0.5, 0.0, str(variable_name), ha="center")
     handles, labels = ax.get_legend_handles_labels()
-    fig.legend(handles, labels, loc = (0.82, 0.825))
+    fig.legend(handles, labels, loc=(0.82, 0.825))
     plt.tight_layout()
 
     fig.savefig(
-        os.path.join(
-            outputs_directory, "plot_scalars_" + str(variable_name) + ".png"
-        )
+        os.path.join(outputs_directory, "plot_scalars_" + str(variable_name) + ".png")
     )
 
-def compare_weather_years(latitude, longitude, static_inputs_directory=None,
-                          outputs_directory = None):
+
+def compare_weather_years(
+    latitude, longitude, static_inputs_directory=None, outputs_directory=None
+):
     """
     Barplot that shows yearly aggregated weather parameters: ghi, dni, dhi and
     temperature.
@@ -796,30 +796,33 @@ def compare_weather_years(latitude, longitude, static_inputs_directory=None,
     for file in os.listdir(static_inputs_directory):
         if file.startswith("weatherdata_" + str(latitude) + "_" + str(longitude)):
             year = file.split(".")[2].split("_")[1]
-            weatherdata=pd.read_csv(os.path.join(static_inputs_directory, file), header=0)
+            weatherdata = pd.read_csv(
+                os.path.join(static_inputs_directory, file), header=0
+            )
             ghi[year] = weatherdata["ghi"]
             temp[year] = weatherdata["temp_air"]
             dni[year] = weatherdata["dni"]
             dhi[year] = weatherdata["dhi"]
 
     # plot
-#    plt.title("All Flows", color="black")
-#    ghi.plot(alpha=0.5).legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
-#    temp.plot().legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
-#    plt.xlabel("time")
-#    plt.ylabel("kW")
+    #    plt.title("All Flows", color="black")
+    #    ghi.plot(alpha=0.5).legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
+    #    temp.plot().legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
+    #    plt.xlabel("time")
+    #    plt.ylabel("kW")
 
     ghi = ghi.reindex(sorted(ghi.columns), axis=1)
     temp = temp.reindex(sorted(temp.columns), axis=1)
     dni = dni.reindex(sorted(dni.columns), axis=1)
     dhi = dhi.reindex(sorted(dhi.columns), axis=1)
 
-    ghi_sum = ghi.sum(axis = 0)
-    temp_sum = temp.sum(axis = 0)
-    dni_sum = dni.sum(axis = 0)
+    ghi_sum = ghi.sum(axis=0)
+    temp_sum = temp.sum(axis=0)
+    dni_sum = dni.sum(axis=0)
     dhi_sum = dhi.sum(axis=0)
 
     import numpy as np
+
     # data to plot
     n_groups = len(ghi.columns)
 
@@ -829,44 +832,52 @@ def compare_weather_years(latitude, longitude, static_inputs_directory=None,
     bar_width = 0.15
     opacity = 0.8
 
-    rects1 = plt.bar(index, ghi_sum, bar_width,
-                     alpha=opacity,
-                     color='tab:blue',
-                     label='ghi')
+    rects1 = plt.bar(
+        index, ghi_sum, bar_width, alpha=opacity, color="tab:blue", label="ghi"
+    )
 
-    rects2 = plt.bar(index + bar_width, dni_sum, bar_width,
-                     alpha=opacity,
-                     color='orange',
-                     label='dni')
+    rects2 = plt.bar(
+        index + bar_width,
+        dni_sum,
+        bar_width,
+        alpha=opacity,
+        color="orange",
+        label="dni",
+    )
 
-    rects3 = plt.bar(index + 2 * bar_width, dhi_sum, bar_width,
-                     alpha=opacity,
-                     color='limegreen',
-                     label='dhi')
+    rects3 = plt.bar(
+        index + 2 * bar_width,
+        dhi_sum,
+        bar_width,
+        alpha=opacity,
+        color="limegreen",
+        label="dhi",
+    )
 
-    rects4 = plt.bar(index + 3 * bar_width, temp_sum, bar_width,
-                     alpha=opacity,
-                     color='pink',
-                     label='temp')
+    rects4 = plt.bar(
+        index + 3 * bar_width,
+        temp_sum,
+        bar_width,
+        alpha=opacity,
+        color="pink",
+        label="temp",
+    )
 
-    plt.xlabel('year')
-    plt.ylabel('kW/year')
-    plt.title('yearly energy yield')
-    plt.xticks(index + bar_width,
-               (ghi.columns))
+    plt.xlabel("year")
+    plt.ylabel("kW/year")
+    plt.title("yearly energy yield")
+    plt.xticks(index + bar_width, (ghi.columns))
     plt.legend()
 
     plt.tight_layout()
 
     # save plot into output directory
     plt.savefig(
-        os.path.join(outputs_directory, f"plot_compare_weatherdata_{latitude}_{longitude}.png"),
+        os.path.join(
+            outputs_directory, f"plot_compare_weatherdata_{latitude}_{longitude}.png"
+        ),
         bbox_inches="tight",
     )
-
-
-
-
 
 
 if __name__ == "__main__":
@@ -876,10 +887,10 @@ if __name__ == "__main__":
     storeys = 5
     country = "Spain"
     scenario_name = "Scenario_W_S_si"
-#    outputs_directory = constants.TEST_DATA_OUTPUT
-#    user_inputs_mvs_directory = os.path.join(
-#        constants.TEST_DATA_DIRECTORY, "test_inputs_loop_mvs"
-#    )
+    #    outputs_directory = constants.TEST_DATA_OUTPUT
+    #    user_inputs_mvs_directory = os.path.join(
+    #        constants.TEST_DATA_DIRECTORY, "test_inputs_loop_mvs"
+    #    )
     loop_type = "year"
 
     if loop_type == "storeys":
@@ -933,9 +944,9 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    scenario_dict = {"Scenario_W_S_cpv":"cpv", "Scenario_W_S_si": "si"}
+    scenario_dict = {"Scenario_W_S_cpv": "cpv", "Scenario_W_S_si": "si"}
     plot_kpi_loop(
-        scenario_dict = scenario_dict,
+        scenario_dict=scenario_dict,
         variable_name="year",
         kpi=[
             "installed capacity PV",
@@ -945,4 +956,4 @@ if __name__ == "__main__":
         ],
     )
 
-   # compare_weather_years(latitude= latitude, longitude= longitude, static_inputs_directory=None)
+# compare_weather_years(latitude= latitude, longitude= longitude, static_inputs_directory=None)
