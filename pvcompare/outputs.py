@@ -758,19 +758,129 @@ def plot_kpi_loop(
         )
     )
 
+def compare_weather_years(latitude, longitude, static_inputs_directory=None,
+                          outputs_directory = None):
+    """
+    Barplot that shows yearly aggregated weather parameters: ghi, dni, dhi and
+    temperature.
+
+
+    Parameters
+    ----------
+    latitude: float
+        latitude of the location
+    longitude: float
+        longitude of the location
+    static_inputs_directory: str
+        if None: 'constants.DEFAULT_STATIC_INPUTS_DIRECTORY'
+    outputs_directory: str
+        if None: 'constants.DEFAULT_OUTPUTS_DIRECTORY
+    Returns
+    -------
+        None
+        The plot is saved into the `output_directory`.
+    -------
+
+    """
+
+    if static_inputs_directory == None:
+        static_inputs_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
+
+    if outputs_directory == None:
+        outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
+
+    ghi = pd.DataFrame()
+    temp = pd.DataFrame()
+    dni = pd.DataFrame()
+    dhi = pd.DataFrame()
+    for file in os.listdir(static_inputs_directory):
+        if file.startswith("weatherdata_" + str(latitude) + "_" + str(longitude)):
+            year = file.split(".")[2].split("_")[1]
+            weatherdata=pd.read_csv(os.path.join(static_inputs_directory, file), header=0)
+            ghi[year] = weatherdata["ghi"]
+            temp[year] = weatherdata["temp_air"]
+            dni[year] = weatherdata["dni"]
+            dhi[year] = weatherdata["dhi"]
+
+    # plot
+#    plt.title("All Flows", color="black")
+#    ghi.plot(alpha=0.5).legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
+#    temp.plot().legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
+#    plt.xlabel("time")
+#    plt.ylabel("kW")
+
+    ghi = ghi.reindex(sorted(ghi.columns), axis=1)
+    temp = temp.reindex(sorted(temp.columns), axis=1)
+    dni = dni.reindex(sorted(dni.columns), axis=1)
+    dhi = dhi.reindex(sorted(dhi.columns), axis=1)
+
+    ghi_sum = ghi.sum(axis = 0)
+    temp_sum = temp.sum(axis = 0)
+    dni_sum = dni.sum(axis = 0)
+    dhi_sum = dhi.sum(axis=0)
+
+    import numpy as np
+    # data to plot
+    n_groups = len(ghi.columns)
+
+    # create plot
+    fig, ax = plt.subplots(figsize=(10, 7))
+    index = np.arange(n_groups)
+    bar_width = 0.15
+    opacity = 0.8
+
+    rects1 = plt.bar(index, ghi_sum, bar_width,
+                     alpha=opacity,
+                     color='tab:blue',
+                     label='ghi')
+
+    rects2 = plt.bar(index + bar_width, dni_sum, bar_width,
+                     alpha=opacity,
+                     color='orange',
+                     label='dni')
+
+    rects3 = plt.bar(index + 2 * bar_width, dhi_sum, bar_width,
+                     alpha=opacity,
+                     color='limegreen',
+                     label='dhi')
+
+    rects4 = plt.bar(index + 3 * bar_width, temp_sum, bar_width,
+                     alpha=opacity,
+                     color='pink',
+                     label='temp')
+
+    plt.xlabel('year')
+    plt.ylabel('kW/year')
+    plt.title('yearly energy yield')
+    plt.xticks(index + bar_width,
+               (ghi.columns))
+    plt.legend()
+
+    plt.tight_layout()
+
+    # save plot into output directory
+    plt.savefig(
+        os.path.join(outputs_directory, f"plot_compare_weatherdata_{latitude}_{longitude}.png"),
+        bbox_inches="tight",
+    )
+
+
+
+
+
 
 if __name__ == "__main__":
-    latitude = 52.5243700
-    longitude = 13.4105300
-    year = 2014  # a year between 2011-2013!!!
+    latitude = 40.416775
+    longitude = -3.703790
+    year = 2010  # a year between 2011-2013!!!
     storeys = 5
-    country = "Germany"
-    scenario_name = "Scenario_Y1"
-    outputs_directory = constants.TEST_DATA_OUTPUT
-    user_inputs_mvs_directory = os.path.join(
-        constants.TEST_DATA_DIRECTORY, "test_inputs_loop_mvs"
-    )
-    loop_type = "hp_temp"
+    country = "Spain"
+    scenario_name = "Scenario_W_S_si"
+#    outputs_directory = constants.TEST_DATA_OUTPUT
+#    user_inputs_mvs_directory = os.path.join(
+#        constants.TEST_DATA_DIRECTORY, "test_inputs_loop_mvs"
+#    )
+    loop_type = "year"
 
     if loop_type == "storeys":
         loop_dict = {"start": 3, "stop": 5, "step": 1}
@@ -778,6 +888,8 @@ if __name__ == "__main__":
         loop_dict = {"step1": "cpv", "step2": "si", "step3": "psi"}
     elif loop_type == "hp_temp":
         loop_dict = {"start": 15, "stop": 25, "step": 5}
+    elif loop_type == "year":
+        loop_dict = {"start": 2010, "stop": 2017, "step": 1}
 
     # loop_pvcompare(
     #     scenario_name,
@@ -809,25 +921,28 @@ if __name__ == "__main__":
     #     scenario_name=scenario_name,
     # )
 
-    plot_all_flows(
-        scenario_name=scenario_name,
-        month=None,
-        calendar_week=None,
-        weekday=5,
-        timeseries_directory=os.path.join(
-            constants.DEFAULT_OUTPUTS_DIRECTORY,
-            scenario_name,
-            "mvs_outputs_loop_hp_temp_15",
-        ),
+    # plot_all_flows(
+    #     scenario_name=scenario_name,
+    #     month=None,
+    #     calendar_week=None,
+    #     weekday=5,
+    #     timeseries_directory=os.path.join(
+    #         constants.DEFAULT_OUTPUTS_DIRECTORY,
+    #         scenario_name,
+    #         "mvs_outputs_loop_hp_temp_15",
+    #     ),
+    # )
+
+    scenario_dict = {"Scenario_W_S_cpv":"cpv", "Scenario_W_S_si": "si"}
+    plot_kpi_loop(
+        scenario_dict = scenario_dict,
+        variable_name="year",
+        kpi=[
+            "installed capacity PV",
+            "Total renewable energy use",
+            "self consumption",
+            "self sufficiency",
+        ],
     )
 
-    # plot_kpi_loop(
-    #     scenario_name=scenario_name,
-    #     variable_name="hp_temp",
-    #     kpi=[
-    #         "costs total PV",
-    #         "Degree of autonomy",
-    #         "self consumption",
-    #         "self sufficiency",
-    #     ],
-    # )
+   # compare_weather_years(latitude= latitude, longitude= longitude, static_inputs_directory=None)
