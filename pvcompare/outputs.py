@@ -615,7 +615,7 @@ def plot_all_flows(
 def plot_kpi_loop(
     variable_name,
     kpi,
-    scenario_name,
+    scenario_dict,
     outputs_directory=None,
     loop_output_directory=None,
 ):
@@ -642,15 +642,15 @@ def plot_kpi_loop(
             "self consumption",
             "self sufficiency",
             "Degree of autonomy"
-    scenario_name: str
-        Name of the Scenario. The name should follow the scheme:
-        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+    scenario_dict: dictionary
+        dictionary with the scenario Names that should be compared as keys and
+        label for that scenario as value. e.g.: {"Scenario_A1" : "si", "Scenario_A2": "cpv"}
+         Notice: allscenarios you want to compare, need to include the
+         loop-outputs for the same variable / steps. The scenario names name
+         should follow the scheme: "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
     outputs_directory: str
         Path to output directory.
         Default: constants.DEFAULT_OUTPUTS_DIRECTORY
-    loop_output_directory: str
-        Path to loop output directory
-        Default: os.path.join(outputs_directory, 'scenario_name', loop_outputs + str(variable_name))
 
     Returns
     -------
@@ -660,74 +660,78 @@ def plot_kpi_loop(
 
 
     """
+    output_dict = {}
+    for scenario_name in scenario_dict.keys():
+        if outputs_directory == None:
+            outputs_directory=constants.DEFAULT_OUTPUTS_DIRECTORY
+            scenario_folder = os.path.join(
+                outputs_directory, scenario_name
+            )
+        else:
+            scenario_folder = os.path.join(outputs_directory, scenario_name)
 
-    if outputs_directory == None:
-        scenario_folder = os.path.join(
-            constants.DEFAULT_OUTPUTS_DIRECTORY, scenario_name
-        )
-    else:
-        scenario_folder = os.path.join(outputs_directory, scenario_name)
-    if loop_output_directory == None:
         loop_output_directory = os.path.join(
             scenario_folder, "loop_outputs_" + str(variable_name)
         )
+        # parse through scalars folder and read in all excel sheets
+        output = pd.DataFrame()
+        for filepath in list(
+            glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
+        ):
 
-    output = pd.DataFrame()
-    # parse through scalars folder and read in all excel sheets
-    for filepath in list(
-        glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
-    ):
+            file_sheet1 = pd.read_excel(
+                filepath, header=0, index_col=1, sheet_name="cost_matrix"
+            )
+            file_sheet2 = pd.read_excel(
+                filepath, header=0, index_col=1, sheet_name="scalar_matrix"
+            )
+            file_sheet3 = pd.read_excel(
+                filepath, header=0, index_col=0, sheet_name="scalars"
+            )
 
-        file_sheet1 = pd.read_excel(
-            filepath, header=0, index_col=1, sheet_name="cost_matrix"
-        )
-        file_sheet2 = pd.read_excel(
-            filepath, header=0, index_col=1, sheet_name="scalar_matrix"
-        )
-        file_sheet3 = pd.read_excel(
-            filepath, header=0, index_col=0, sheet_name="scalars"
-        )
+            # get variable value from filepath
+            i_split_one = filepath.split("_")[::-1][0]
+            i = i_split_one.split(".")[0]
+            i_num = i
+            # get all different pv assets
+            csv_directory = os.path.join(
+                scenario_folder,
+                "mvs_outputs_loop_" + str(variable_name) + "_" + str(i_num),
+                "inputs",
+                "csv_elements",
+            )
+            energyProduction = pd.read_csv(
+                os.path.join(csv_directory, "energyProduction.csv"), index_col=0
+            )
+            energyProduction = energyProduction.drop(["unit"], axis=1)
+            pv_labels = energyProduction.columns
+            # get total costs pv and installed capacity
+            for pv in pv_labels:
+                output.loc[i, "costs total PV"] = file_sheet1.at[pv, "costs_total"]
+                output.loc[i, "installed capacity PV"] = file_sheet2.at[
+                    pv, "optimizedAddCap"
+                ]
+                output.loc[i, "Total renewable energy use"] = file_sheet3.at[
+                    "Total renewable energy use", 0
+                ]
+                output.loc[i, "Renewable factor"] = file_sheet3.at["Renewable factor", 0]
+                output.loc[i, "LCOE PV"] = file_sheet1.at[
+                    pv, "levelized_cost_of_energy_of_asset"
+                ]
+                output.loc[i, "self consumption"] = file_sheet3.at[
+                    "Onsite energy fraction", 0
+                ]
+                output.loc[i, "self sufficiency"] = file_sheet3.at[
+                    "Onsite energy matching", 0
+                ]
+                output.loc[i, "Degree of autonomy"] = file_sheet3.at[
+                    "Degree of autonomy", 0
+                ]
+        output_dict_column = output.to_dict()
+ #       output_dict_column = collections.OrderedDict(sorted(output_dict_column.items()))
+        output_dict[scenario_dict[scenario_name]] = output_dict_column
 
-        # get variable value from filepath
-        i_split_one = filepath.split("_")[::-1][0]
-        i = i_split_one.split(".")[0]
-        i_num = i
-        # get all different pv assets
-        csv_directory = os.path.join(
-            scenario_folder,
-            "mvs_outputs_loop_" + str(variable_name) + "_" + str(i_num),
-            "inputs",
-            "csv_elements",
-        )
-        energyProduction = pd.read_csv(
-            os.path.join(csv_directory, "energyProduction.csv"), index_col=0
-        )
-        energyProduction = energyProduction.drop(["unit"], axis=1)
-        pv_labels = energyProduction.columns
-        # get total costs pv and installed capacity
-        for pv in pv_labels:
-            output.loc[i, "costs total PV"] = file_sheet1.at[pv, "costs_total"]
-            output.loc[i, "installed capacity PV"] = file_sheet2.at[
-                pv, "optimizedAddCap"
-            ]
-            output.loc[i, "Total renewable energy use"] = file_sheet3.at[
-                "Total renewable energy use", 0
-            ]
-            output.loc[i, "Renewable factor"] = file_sheet3.at["Renewable factor", 0]
-            output.loc[i, "LCOE PV"] = file_sheet1.at[
-                pv, "levelized_cost_of_energy_of_asset"
-            ]
-            output.loc[i, "self consumption"] = file_sheet3.at[
-                "Onsite energy fraction", 0
-            ]
-            output.loc[i, "self sufficiency"] = file_sheet3.at[
-                "Onsite energy matching", 0
-            ]
-            output.loc[i, "Degree of autonomy"] = file_sheet3.at[
-                "Degree of autonomy", 0
-            ]
-
-    output.sort_index(inplace=True)
+#    output.sort_index(inplace=True)
 
     # plot
     fig = plt.figure()
@@ -738,14 +742,19 @@ def plot_kpi_loop(
     for i in kpi:
         ax = fig.add_subplot(num)
         num = num + 1
-        output[i].plot(title=i, ax=ax, legend=False)
+        for key in output_dict.keys():
+            df=pd.DataFrame()
+            df = df.from_dict(output_dict[key])
+            df[i].plot(title=i, ax=ax, label = key)
 
     fig.text(0.5, 0.0, str(variable_name), ha="center")
+    handles, labels = ax.get_legend_handles_labels()
+    fig.legend(handles, labels, loc = (0.82, 0.825))
     plt.tight_layout()
 
     fig.savefig(
         os.path.join(
-            loop_output_directory, "plot_scalars_" + str(variable_name) + ".png"
+            outputs_directory, "plot_scalars_" + str(variable_name) + ".png"
         )
     )
 
