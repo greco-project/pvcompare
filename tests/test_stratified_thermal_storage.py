@@ -12,7 +12,6 @@ from pvcompare.constants import TEST_USER_INPUTS_MVS
 from pvcompare.constants import TEST_USER_INPUTS_PVCOMPARE
 
 EXECUTE_TESTS_ON = os.environ.get("EXECUTE_TESTS_ON", "skip")
-EXECUTE_TESTS_ON = "master"
 TESTS_ON_MASTER = "master"
 
 
