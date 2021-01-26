@@ -10,7 +10,7 @@ from pvcompare.constants import TEST_USER_INPUTS_PVCOMPARE
 class TestCalcStratTesParam:
     @classmethod
     def setup_class(self):
-        self.date_range = pd.date_range("2018", periods=6, freq="H")
+        self.date_range = pd.date_range("2017", periods=6, freq="H")
         self.weather = pd.DataFrame(
             [11.85, 6.85, 2.0, 0.0, -3.0, 27.0],
             columns=["temp_air"],
@@ -71,14 +71,14 @@ class TestCalcStratTesParam:
             os.path.join(
                 TEST_USER_INPUTS_MVS,
                 "time_series",
-                "fixed_thermal_losses_absolute_2018_53.2_13.2_95.0.csv",
+                "fixed_thermal_losses_absolute_2017_53.2_13.2_95.0.csv",
             )
         )
         assert os.path.exists(
             os.path.join(
                 TEST_USER_INPUTS_MVS,
                 "time_series",
-                "fixed_thermal_losses_relative_2018_53.2_13.2_95.0.csv",
+                "fixed_thermal_losses_relative_2017_53.2_13.2_95.0.csv",
             )
         )
 
@@ -110,7 +110,7 @@ class TestCalcStratTesParam:
 class TestAddStratTes:
     @classmethod
     def setup_class(self):
-        self.date_range = pd.date_range("2018", periods=6, freq="H")
+        self.date_range = pd.date_range("2017", periods=6, freq="H")
         self.weather = pd.DataFrame(
             [11.85, 6.85, 2.0, 0.0, -3.0, 27.0],
             columns=["temp_air"],
@@ -118,19 +118,19 @@ class TestAddStratTes:
         )
         self.lat = 53.2
         self.lon = 13.2
-        self.filename_storage_02 = os.path.join(
-            TEST_USER_INPUTS_MVS, "csv_elements", "storage_02.csv"
+        self.filename_storage_xx = os.path.join(
+            TEST_USER_INPUTS_MVS, "csv_elements", "storage_TES.csv"
         )
 
     @pytest.fixture(scope="class", autouse=True)
     def select_conv_tech(self):
         def _select_columns(columns):
             data = pd.DataFrame(original_data[columns])
-            data.to_csv(self.filename_storage_02, na_rep="NaN")
+            data.to_csv(self.filename_storage_xx, na_rep="NaN")
 
-        original_data = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
+        original_data = pd.read_csv(self.filename_storage_xx, header=0, index_col=0)
         yield _select_columns
-        original_data.to_csv(self.filename_storage_02, na_rep="NaN")
+        original_data.to_csv(self.filename_storage_xx, na_rep="NaN")
 
     def test_add_sector_coupling_strat_tes_file_already_exists(self, select_conv_tech):
         select_conv_tech(columns="storage capacity")
@@ -145,13 +145,13 @@ class TestAddStratTes:
         filename = os.path.join(
             TEST_USER_INPUTS_MVS,
             "time_series",
-            "fixed_thermal_losses_absolute_2018_53.2_13.2_95.0.csv",
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_95.0.csv",
         )
         assert os.path.exists(filename) == True
-        # filename in storage_02.csv does not change
-        df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
+        # filename in storage_TES.csv does not change
+        df = pd.read_csv(self.filename_storage_xx, header=0, index_col=0)
         assert (
-            "fixed_thermal_losses_absolute_2018_53.2_13.2_95.0.csv"
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_95.0.csv"
             in df.loc["fixed_thermal_losses_absolute"].item()
         ) == True
 
@@ -160,12 +160,12 @@ class TestAddStratTes:
         filename_1 = os.path.join(
             TEST_USER_INPUTS_MVS,
             "time_series",
-            "fixed_thermal_losses_absolute_2018_53.2_13.2_95.0.csv",
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_95.0.csv",
         )
         filename_2 = os.path.join(
             TEST_USER_INPUTS_MVS,
             "time_series",
-            "fixed_thermal_losses_relative_2018_53.2_13.2_95.0.csv",
+            "fixed_thermal_losses_relative_2017_53.2_13.2_95.0.csv",
         )
         if os.path.exists(filename_1):
             os.remove(filename_1)
@@ -184,19 +184,19 @@ class TestAddStratTes_file_non_existent:
         )
         self.lat = 53.2
         self.lon = 13.2
-        self.filename_storage_02 = os.path.join(
-            TEST_USER_INPUTS_MVS, "csv_elements", "storage_02.csv"
+        self.filename_storage_xx = os.path.join(
+            TEST_USER_INPUTS_MVS, "csv_elements", "storage_TES.csv"
         )
 
     @pytest.fixture(scope="class", autouse=True)
     def select_conv_tech(self):
         def _select_columns(columns):
             data = pd.DataFrame(original_data[columns])
-            data.to_csv(self.filename_storage_02, na_rep="NaN")
+            data.to_csv(self.filename_storage_xx, na_rep="NaN")
 
-        original_data = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
+        original_data = pd.read_csv(self.filename_storage_xx, header=0, index_col=0)
         yield _select_columns
-        original_data.to_csv(self.filename_storage_02, na_rep="NaN")
+        original_data.to_csv(self.filename_storage_xx, na_rep="NaN")
 
     def test_add_sector_coupling_strat_tes_file_non_existent(self, select_conv_tech):
         select_conv_tech(columns="storage capacity")
@@ -214,8 +214,8 @@ class TestAddStratTes_file_non_existent:
             "fixed_thermal_losses_absolute_2018_53.2_13.2_95.0.csv",
         )
         assert os.path.exists(filename) == False
-        # filename in storage_02.csv does not change
-        df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
+        # filename in storage_TES.csv does not change
+        df = pd.read_csv(self.filename_storage_xx, header=0, index_col=0)
         assert (
             "fixed_thermal_losses_absolute_2017_53.2_13.2_95.0.csv"
             in df.loc["fixed_thermal_losses_absolute"].item()
@@ -250,19 +250,19 @@ class TestAddStratTes_file_constant_losses:
         )
         self.lat = 53.2
         self.lon = 13.2
-        self.filename_storage_02 = os.path.join(
-            TEST_USER_INPUTS_MVS, "csv_elements", "storage_02_const_losses.csv"
+        self.filename_storage_TES = os.path.join(
+            TEST_USER_INPUTS_MVS, "csv_elements", "storage_TES_const_losses.csv"
         )
 
     @pytest.fixture(scope="class", autouse=True)
     def select_conv_tech(self):
         def _select_columns(columns):
             data = pd.DataFrame(original_data[columns])
-            data.to_csv(self.filename_storage_02, na_rep="NaN")
+            data.to_csv(self.filename_storage_TES, na_rep="NaN")
 
-        original_data = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
+        original_data = pd.read_csv(self.filename_storage_TES, header=0, index_col=0)
         yield _select_columns
-        original_data.to_csv(self.filename_storage_02, na_rep="NaN")
+        original_data.to_csv(self.filename_storage_TES, na_rep="NaN")
 
     def test_add_sector_coupling_strat_tes_file_const_losses(self, select_conv_tech):
         energy_storage_file_path = os.path.join(
@@ -273,8 +273,8 @@ class TestAddStratTes_file_constant_losses:
         )
         energy_storage = energy_storage_original.copy()
         energy_storage.at[
-            "storage_filename", "storage_02"
-        ] = "storage_02_const_losses.csv"
+            "storage_filename", "storage_TES"
+        ] = "storage_TES_const_losses.csv"
         energy_storage.to_csv(energy_storage_file_path, na_rep="NaN")
         select_conv_tech(columns="storage capacity")
         sts.add_strat_tes(
@@ -288,12 +288,12 @@ class TestAddStratTes_file_constant_losses:
         filename = os.path.join(
             TEST_USER_INPUTS_MVS,
             "time_series",
-            "fixed_thermal_losses_absolute_2018_53.2_13.2_95.0.csv",
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_95.0.csv",
         )
 
         assert os.path.exists(filename) == False
         # check efficiency
-        df = pd.read_csv(self.filename_storage_02, header=0, index_col=0)
+        df = pd.read_csv(self.filename_storage_TES, header=0, index_col=0)
         assert float(df.loc["efficiency"].item()) == 0.99907726890329
         assert float(df.loc["fixed_thermal_losses_relative"].item()) == 0.0016
         assert float(df.loc["fixed_thermal_losses_absolute"].item()) == 0.0003
