@@ -646,7 +646,7 @@ def plot_kpi_loop(
         dictionary with the scenario names that should be compared as keys and
         a label for the scenario as value. e.g.: {"Scenario_A1" : "si", "Scenario_A2": "cpv"}
          Notice: all scenarios you want to compare, need to include the
-         loop-outputs for the same variable / steps. The scenario names name
+         loop-outputs for the same variable / steps. The scenario names
          should follow the scheme: "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
     outputs_directory: str
         Path to output directory.
