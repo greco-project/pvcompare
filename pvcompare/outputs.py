@@ -643,7 +643,7 @@ def plot_kpi_loop(
             "self sufficiency",
             "Degree of autonomy"
     scenario_dict: dictionary
-        dictionary with the scenario Names that should be compared as keys and
+        dictionary with the scenario names that should be compared as keys and
         label for that scenario as value. e.g.: {"Scenario_A1" : "si", "Scenario_A2": "cpv"}
          Notice: allscenarios you want to compare, need to include the
          loop-outputs for the same variable / steps. The scenario names name
