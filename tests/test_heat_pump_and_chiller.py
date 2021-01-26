@@ -11,7 +11,7 @@ import pvcompare.constants as constants
 class TestCalculateCopsAndEers:
     @classmethod
     def setup_class(self):
-        self.date_range = pd.date_range("2018", periods=6, freq="H")
+        self.date_range = pd.date_range("2017", periods=6, freq="H")
         self.weather = pd.DataFrame(
             [11.85, 6.85, 2.0, 0.0, -3.0, 27.0],
             columns=["temp_air"],
@@ -115,7 +115,7 @@ class TestCalculateCopsAndEers:
             os.path.join(
                 self.mvs_inputs_directory,
                 "time_series",
-                "cops_heat_pump_2018_53.2_13.2_35.0.csv",
+                "cops_heat_pump_2017_53.2_13.2_35.0.csv",
             )
         )
 
@@ -124,7 +124,7 @@ class TestCalculateCopsAndEers:
         filename = os.path.join(
             self.mvs_inputs_directory,
             "time_series",
-            "cops_heat_pump_2018_53.2_13.2_35.0.csv",
+            "cops_heat_pump_2017_53.2_13.2_35.0.csv",
         )
         if os.path.exists(filename):
             os.remove(filename)
@@ -136,7 +136,7 @@ class TestAddSectorCoupling:
         self.weather = pd.DataFrame(
             [10.0, 5.0, 0.0, -3.0, 27.0],
             columns=["temp_air"],
-            index=pd.date_range("2018", periods=5, freq="H"),
+            index=pd.date_range("2017", periods=5, freq="H"),
         )
         self.lat = 53.2
         self.lon = 13.2
@@ -169,7 +169,7 @@ class TestAddSectorCoupling:
         filename = os.path.join(
             self.mvs_inputs_directory,
             "time_series",
-            "cops_heat_pump_2018_53.2_13.2_35.0.csv",
+            "cops_heat_pump_2017_53.2_13.2_35.0.csv",
         )
         assert os.path.exists(filename) == False
         # filename in energyConversion.csv does not change
@@ -189,13 +189,13 @@ class TestAddSectorCoupling:
         filename = os.path.join(
             self.mvs_inputs_directory,
             "time_series",
-            "cops_heat_pump_2018_53.2_13.2_35.0.csv",
+            "cops_heat_pump_2017_53.2_13.2_35.0.csv",
         )
         assert os.path.exists(filename) == True
         # filename in energyConversion.csv changed
         df = pd.read_csv(self.filename_conversion, header=0, index_col=0)
         assert (
-            "cops_heat_pump_2018_53.2_13.2_35.0.csv"
+            "cops_heat_pump_2017_53.2_13.2_35.0.csv"
             in df.loc["efficiency"].heat_pump_file_non_existent
         ) == True
 
@@ -212,7 +212,7 @@ class TestAddSectorCoupling:
         filename = os.path.join(
             self.mvs_inputs_directory,
             "time_series",
-            "cops_heat_pump_2018_53.2_13.2_35.0.csv",
+            "cops_heat_pump_2017_53.2_13.2_35.0.csv",
         )
         assert os.path.exists(filename) == False
         # check efficiency
@@ -238,7 +238,7 @@ class TestAddSectorCoupling:
         filename = os.path.join(
             self.mvs_inputs_directory,
             "time_series",
-            "cops_heat_pump_2018_53.2_13.2_35.0.csv",
+            "cops_heat_pump_2017_53.2_13.2_35.0.csv",
         )
         if os.path.exists(filename):
             os.remove(filename)
