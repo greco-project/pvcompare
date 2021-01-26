@@ -281,7 +281,7 @@ def add_strat_tes(
             os.path.join(user_inputs_mvs_directory, "csv_elements", storage_csv),
             header=0,
             index_col=0,
-    )
+        )
 
     # *********************************************************************************************
     # Check if time dependent data exists. Else save above calculated time series
@@ -341,7 +341,8 @@ def add_strat_tes(
                     storage_xx.to_csv(
                         os.path.join(
                             user_inputs_mvs_directory, "csv_elements", f"{storage_csv}"
-                        ), na_rep="NaN"
+                        ),
+                        na_rep="NaN",
                     )
                     # Write results of time dependent values if non existent
                     if not os.path.isfile(result_filename):
