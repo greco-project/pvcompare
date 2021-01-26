@@ -309,7 +309,7 @@ class TestDemandProfiles:
         nominal_storage_capacity = 10
 
         # 1. Test
-        storage_xx_file = "storage_02_const_losses.csv"
+        storage_xx_file = "storage_TES.csv"
         storage_xx_file_path = os.path.join(
             self.user_inputs_mvs_directory, "csv_elements", storage_xx_file
         )
@@ -330,7 +330,7 @@ class TestDemandProfiles:
         storage_xx_original.to_csv(storage_xx_file_path, na_rep="NaN")
 
         # 2. Test
-        storage_xx_file = "storage_02.csv"
+        storage_xx_file = "storage_TES_const_losses.csv"
         storage_xx_file_path = os.path.join(
             self.user_inputs_mvs_directory, "csv_elements", storage_xx_file
         )
