@@ -1,4 +1,4 @@
 surface_type,surface_azimuth,surface_tilt,technology
-flat_roof,180.0,optimal,si
-flat_roof,180.0,optimal,cpv
-flat_roof,180.0,optimal,psi
+flat_roof,180,optimal,si
+flat_roof,180,optimal,cpv
+flat_roof,180,optimal,psi

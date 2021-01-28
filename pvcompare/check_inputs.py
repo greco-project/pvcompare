@@ -84,7 +84,7 @@ def add_location_and_year_to_project_data(
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
     static_inputs_directory: str or None
         Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_inputs_directory.
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
     latitude: float
         latitude of the location
     longitude: float
@@ -166,7 +166,7 @@ def check_for_valid_country_year(country, year, static_inputs_directory):
         year of simulation
     static_inputs_directory: str or None
         Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_inputs_directory.
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
 
     Returns
     -------
@@ -181,24 +181,24 @@ def check_for_valid_country_year(country, year, static_inputs_directory):
         os.path.join(static_inputs_directory, "list_of_workalender_countries.csv"),
         header=0,
     )
-    consumption = pd.read_csv(
+    consumption = pd.read_excel(
         os.path.join(
-            static_inputs_directory, "total_electricity_consumption_residential.csv"
+            static_inputs_directory, "electricity_consumption_residential.xlsx"
         ),
         header=1,
-        sep=":",
+        index_col=0,
     )
 
     countries_pop = set(pop["country"][:43])
     countries_workalender = set(workalendar["country"])
-    countries_consumption = set(consumption["country"][:32])
+    countries_consumption = set(consumption.index[:30])
 
     years_pop = set([x for x in pop.columns if x != "country"])
     years_consumption = set(
         [
-            x
+            str(x)
             for x in consumption.columns
-            if x not in ["country", "ISO code", "Unit", "Source Code", "Note"]
+            if x not in ["country", "ISO code", "Unit", "Source Code", "Note", "Source"]
         ]
     )
     possible_countries = countries_pop & countries_workalender & countries_consumption
@@ -236,7 +236,7 @@ def add_electricity_price(static_inputs_directory, user_inputs_mvs_directory):
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
     static_inputs_directory: str or None
         Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STCATIC_INPUT_DIRECTORY` is used as static_inputs_directory.
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
 
     Returns
     --------
@@ -267,6 +267,7 @@ def add_electricity_price(static_inputs_directory, user_inputs_mvs_directory):
 
 
 def overwrite_mvs_energy_production_file(
+    pv_setup,
     user_inputs_mvs_directory,
     user_inputs_pvcompare_directory,
     overwrite_pv_parameters,
@@ -294,9 +295,10 @@ def overwrite_mvs_energy_production_file(
     None
     """
     # load pv_setup.csv
-    pv_setup = pd.read_csv(
-        os.path.join(user_inputs_pvcompare_directory, "pv_setup.csv"), index_col=0
-    )
+    if pv_setup is None:
+        pv_setup = pd.read_csv(
+            os.path.join(user_inputs_pvcompare_directory, "pv_setup.csv"), index_col=0
+        )
     technologies = pv_setup["technology"].values
 
     # load mvs user input file

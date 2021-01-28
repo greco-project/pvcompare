@@ -110,7 +110,7 @@ class TestDemandProfiles:
             column="Electricity demand",
         )
 
-        assert a["kWh"].sum() == 285357442.64794844
+        assert a["kWh"].sum() == 78311663.0098876
 
     def test_heat_demand_exists(self):
 
@@ -158,7 +158,7 @@ class TestDemandProfiles:
             column="Heat demand",
         )
 
-        assert a["kWh"].sum() == 123687978.49736209
+        assert a["kWh"].sum() == 123665757.10763434
 
         self.bp["value"].loc["include warm water"] = self.include_ww
         self.bp.to_csv(
@@ -189,7 +189,7 @@ class TestDemandProfiles:
             column="Heat demand",
         )
 
-        assert a["kWh"].sum() == 144081902.51147062
+        assert a["kWh"].sum() == 144055983.2783797
 
         self.bp["value"].loc["include warm water"] = self.include_ww
         self.bp.to_csv(
