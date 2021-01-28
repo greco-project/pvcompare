@@ -152,7 +152,7 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
          b. **storage_charge_controller_out**: Electricity
          c. **solar_inverter_01**: Electricity
          d. **heat_pump**: Heat
-         e. **natural_gas_boiler**: Heat
+         e. **natural_gas_boiler**: Heat (Because of convention to define energyVector based on output flow for an energy conversion asset. See `mvs documentation on parameters <https://multi-vector-simulator.readthedocs.io/en/stable/MVS_parameters.html#list-of-parameters>`_)
     14. **type_oemof**: str, transformer (same for all the components)
     15. **unit**: str, kW (applies to all the components)
 
