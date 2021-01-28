@@ -1,4 +1,4 @@
-,unit,Electricity grid,Gas plant 2015,Gas plant 2020,Gas plant 2030,Gas plant 2050
+,unit,Electricity grid,Gas plant 2015 Germany,Gas plant 2020 Germany,Gas plant 2030 Germany,Gas plant 2050 Germany
 unit,str,kW,kW,kW,kW,kW
 optimizeCap,bool,True,True,True,True,True
 energy_price,currency/kWh,0.2165,0.071,0.076,0.085,0.096

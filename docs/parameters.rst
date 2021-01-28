@@ -152,7 +152,7 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
          b. **storage_charge_controller_out**: Electricity
          c. **solar_inverter_01**: Electricity
          d. **heat_pump**: Heat
-         e. **natural_gas_boiler**: Heat (Because of convention to define energyVector based on output flow for an energy conversion asset. See `mvs documentation on parameters <https://multi-vector-simulator.readthedocs.io/en/stable/MVS_parameters.html#list-of-parameters>`_)
+         e. **natural_gas_boiler**: eHeat (Because of convention to define energyVector based on output flow for an energy conversion asset. See `mvs documentation on parameters <https://multi-vector-simulator.readthedocs.io/en/stable/MVS_parameters.html#list-of-parameters>`_)
     14. **type_oemof**: str, transformer (same for all the components)
     15. **unit**: str, kW (applies to all the components)
 
@@ -184,10 +184,10 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
 * energyProviders.csv:
     1. **energy_price**: currency/kWh,
         a. **Electricity grid**: 0.24  * *auto_calc* (0.24 €/kWh is the average household electricity price of Spain for 2019S1. Obtained from `Eurostat <https://ec.europa.eu/eurostat/statistics-explained/images/d/d9/Electricity_prices%2C_first_semester_of_2017-2019_%28EUR_per_kWh%29.png>`_.)
-        b. **Gas plant_2015**: 0.071 (Linear interpolated value from `ewi, gws, prognos [ewi_n_gas] <https://www.bmwi.de/Redaktion/DE/Publikationen/Studien/entwicklung-der-energiemaerkte-energiereferenzprognose-endbericht.pdf?__blob=publicationFile&v=7>`_ on page 73)
-        c. **Gas plant_2020**: 0.076 (According to ewi_n_gas)
-        d. **Gas plant_2030**: 0.085 (According to ewi_n_gas)
-        e. **Gas plant_2050**: 0.096 (According to ewi_n_gas)
+        b. **Gas plant 2015 Germany**: 0.071 (Linear interpolated value from `ewi, gws, prognos [ewi_n_gas] <https://www.bmwi.de/Redaktion/DE/Publikationen/Studien/entwicklung-der-energiemaerkte-energiereferenzprognose-endbericht.pdf?__blob=publicationFile&v=7>`_ on page 73)
+        c. **Gas plant 2020 Germany**: 0.076 (According to ewi_n_gas)
+        d. **Gas plant 2030 Germany**: 0.085 (According to ewi_n_gas)
+        e. **Gas plant 2050 Germany**: 0.096 (According to ewi_n_gas)
     2. **feedin_tariff**: currency/kWh,
         a. **Electricity grid**: (0.10 €/kWh is for Germany. We do not have data for Spain yet.)
         b. **Gas plant**: 0
