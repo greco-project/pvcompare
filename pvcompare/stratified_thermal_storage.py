@@ -12,6 +12,7 @@ using functions implemented in oemof.thermal (github.com/oemof/oemof-thermal)
 """
 
 import pandas as pd
+import math
 import os
 import logging
 import maya
@@ -103,6 +104,12 @@ def calc_strat_tes_param(
         )
         * 1000
     )
+
+    try:
+        int(float(nominal_storage_capacity))
+    except ValueError:
+        if math.isnan(nominal_storage_capacity) is True:
+            nominal_storage_capacity = 0
 
     (
         loss_rate,

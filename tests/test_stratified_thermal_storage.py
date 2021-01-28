@@ -1,6 +1,7 @@
 import pytest
 import pandas as pd
 import numpy as np
+import math
 import os
 import pvcompare.constants as constants
 import pvcompare.main as main
@@ -321,6 +322,51 @@ class TestCalcStratTesParam:
             assert np.round(value, 7) == np.round(results_rel_losses[item], 7)
         for item, value in enumerate(fixed_losses_absolute):
             assert np.round(value, 7) == np.round(results_abs_losses[item], 7)
+
+    def test_calc_strat_tes_param_nominal_storage_capacity_nan_to_zero(self):
+        (
+            nominal_storage_capacity,
+            loss_rate,
+            fixed_losses_relative,
+            fixed_losses_absolute,
+        ) = sts.calc_strat_tes_param(
+            weather=self.weather,
+            temperature_col="temp_air",
+            user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
+            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+        )
+
+        strat_tes = pd.read_csv(
+            os.path.join(TEST_USER_INPUTS_PVCOMPARE, "stratified_thermal_storage.csv"),
+            header=0,
+            index_col=0,
+        )
+        height = strat_tes.at["height", "var_value"]
+        assert math.isnan(height) == True
+        assert nominal_storage_capacity == 0
+
+    def test_calculate_losses_saved_file(self):
+        sts.add_strat_tes(
+            weather=self.weather,
+            lat=self.lat,
+            lon=self.lon,
+            user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
+            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+        )
+        assert os.path.exists(
+            os.path.join(
+                TEST_USER_INPUTS_MVS,
+                "time_series",
+                "fixed_thermal_losses_absolute_2017_53.2_13.2_95.0.csv",
+            )
+        )
+        assert os.path.exists(
+            os.path.join(
+                TEST_USER_INPUTS_MVS,
+                "time_series",
+                "fixed_thermal_losses_relative_2017_53.2_13.2_95.0.csv",
+            )
+        )
 
     def test_calculate_losses_saved_file(self):
         sts.add_strat_tes(
