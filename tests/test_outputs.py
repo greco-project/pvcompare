@@ -123,7 +123,10 @@ class TestPlotProfiles:
             name = name + "_" + str(scenario_name)
 
         filename = os.path.join(
-            os.path.join(self.outputs_directory, "plot_scalars" + str(name) + "_"+ str(variable_name) + ".png")
+            os.path.join(
+                self.outputs_directory,
+                "plot_scalars" + str(name) + "_" + str(variable_name) + ".png",
+            )
         )
         if os.path.exists(filename):
             os.remove(filename)
