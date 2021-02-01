@@ -7,7 +7,7 @@ import shutil
 import glob
 import matplotlib.pyplot as plt
 import logging
-
+import numpy as np
 
 def create_loop_output_structure(outputs_directory, scenario_name, variable_name):
     """
@@ -617,7 +617,6 @@ def plot_kpi_loop(
     kpi,
     scenario_dict,
     outputs_directory=None,
-    loop_output_directory=None,
 ):
 
     """
@@ -728,13 +727,10 @@ def plot_kpi_loop(
                     "Degree of autonomy", 0
                 ]
         output_dict_column = output.to_dict()
-        #       output_dict_column = collections.OrderedDict(sorted(output_dict_column.items()))
         output_dict[scenario_dict[scenario_name]] = output_dict_column
 
-    #    output.sort_index(inplace=True)
-
     # plot
-    fig = plt.figure()
+    fig = plt.figure(figsize=(10, 7))
     rows = len(kpi)
     num = (
         rows * 100 + 11
@@ -744,16 +740,20 @@ def plot_kpi_loop(
         num = num + 1
         for key in output_dict.keys():
             df = pd.DataFrame()
-            df = df.from_dict(output_dict[key])
-            df[i].plot(title=i, ax=ax, label=key)
+            df = df.from_dict(output_dict[key]) 
+            df[i].plot(title=i, style='.', ax=ax, label=key, fontsize=10)
 
-    fig.text(0.5, 0.0, str(variable_name), ha="center")
+    fig.text(0.5, 0.0, str(variable_name), ha="center", fontsize=10)
     handles, labels = ax.get_legend_handles_labels()
-    fig.legend(handles, labels, loc=(0.82, 0.825))
+    fig.legend(handles, labels, loc=(0.88, 0.87))
     plt.tight_layout()
 
+    name = ""
+    for scenario_name in scenario_dict.keys():
+        name = name + "_" + str(scenario_name)
+
     fig.savefig(
-        os.path.join(outputs_directory, "plot_scalars_" + str(variable_name) + ".png")
+        os.path.join(outputs_directory, "plot_scalars" + str(name) + "_"+ str(variable_name) + ".png")
     )
 
 
@@ -804,12 +804,6 @@ def compare_weather_years(
             dni[year] = weatherdata["dni"]
             dhi[year] = weatherdata["dhi"]
 
-    # plot
-    #    plt.title("All Flows", color="black")
-    #    ghi.plot(alpha=0.5).legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
-    #    temp.plot().legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
-    #    plt.xlabel("time")
-    #    plt.ylabel("kW")
 
     ghi = ghi.reindex(sorted(ghi.columns), axis=1)
     temp = temp.reindex(sorted(temp.columns), axis=1)
@@ -820,8 +814,6 @@ def compare_weather_years(
     temp_sum = temp.sum(axis=0)
     dni_sum = dni.sum(axis=0)
     dhi_sum = dhi.sum(axis=0)
-
-    import numpy as np
 
     # data to plot
     n_groups = len(ghi.columns)
@@ -886,7 +878,7 @@ if __name__ == "__main__":
     year = 2010  # a year between 2011-2013!!!
     storeys = 5
     country = "Spain"
-    scenario_name = "Scenario_W_S_si"
+    scenario_name = "Scenario_W_G_si"
     #    outputs_directory = constants.TEST_DATA_OUTPUT
     #    user_inputs_mvs_directory = os.path.join(
     #        constants.TEST_DATA_DIRECTORY, "test_inputs_loop_mvs"
@@ -956,4 +948,4 @@ if __name__ == "__main__":
         ],
     )
 
-# compare_weather_years(latitude= latitude, longitude= longitude, static_inputs_directory=None)
+#compare_weather_years(latitude= latitude, longitude= longitude, static_inputs_directory=None)
