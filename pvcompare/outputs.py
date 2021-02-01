@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import logging
 import numpy as np
 
+
 def create_loop_output_structure(outputs_directory, scenario_name, variable_name):
     """
     Defines the path of the loop_output_directory.
@@ -613,10 +614,7 @@ def plot_all_flows(
 
 
 def plot_kpi_loop(
-    variable_name,
-    kpi,
-    scenario_dict,
-    outputs_directory=None,
+    variable_name, kpi, scenario_dict, outputs_directory=None,
 ):
 
     """
@@ -740,8 +738,8 @@ def plot_kpi_loop(
         num = num + 1
         for key in output_dict.keys():
             df = pd.DataFrame()
-            df = df.from_dict(output_dict[key]) 
-            df[i].plot(title=i, style='.', ax=ax, label=key, fontsize=10)
+            df = df.from_dict(output_dict[key])
+            df[i].plot(title=i, style=".", ax=ax, label=key, fontsize=10)
 
     fig.text(0.5, 0.0, str(variable_name), ha="center", fontsize=10)
     handles, labels = ax.get_legend_handles_labels()
@@ -753,7 +751,10 @@ def plot_kpi_loop(
         name = name + "_" + str(scenario_name)
 
     fig.savefig(
-        os.path.join(outputs_directory, "plot_scalars" + str(name) + "_"+ str(variable_name) + ".png")
+        os.path.join(
+            outputs_directory,
+            "plot_scalars" + str(name) + "_" + str(variable_name) + ".png",
+        )
     )
 
 
@@ -803,7 +804,6 @@ def compare_weather_years(
             temp[year] = weatherdata["temp_air"]
             dni[year] = weatherdata["dni"]
             dhi[year] = weatherdata["dhi"]
-
 
     ghi = ghi.reindex(sorted(ghi.columns), axis=1)
     temp = temp.reindex(sorted(temp.columns), axis=1)
@@ -948,4 +948,4 @@ if __name__ == "__main__":
         ],
     )
 
-#compare_weather_years(latitude= latitude, longitude= longitude, static_inputs_directory=None)
+# compare_weather_years(latitude= latitude, longitude= longitude, static_inputs_directory=None)
