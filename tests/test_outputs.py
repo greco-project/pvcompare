@@ -36,7 +36,7 @@ class TestPlotProfiles:
         scenario_name = "Test_Scenario"
 
         timeseries_directory = os.path.join(
-            self.outputs_directory, scenario_name, "mvs_outputs_loop_specific_costs_500"
+            self.outputs_directory, scenario_name, "mvs_outputs_loop_storeys_2011_3"
         )
         filename = os.path.join(
             timeseries_directory, f"plot_{timeseries_name[:-5]}_{period}.png"
@@ -65,7 +65,7 @@ class TestPlotProfiles:
         scenario_name = "Test_Scenario"
 
         timeseries_directory = os.path.join(
-            self.outputs_directory, scenario_name, "mvs_outputs_loop_specific_costs_500"
+            self.outputs_directory, scenario_name, "mvs_outputs_loop_storeys_2011_3"
         )
         filename = os.path.join(
             timeseries_directory, f"plot_{timeseries_name[:-5]}_{period}.png"
@@ -94,7 +94,7 @@ class TestPlotProfiles:
         scenario_name = "Test_Scenario"
 
         timeseries_directory = os.path.join(
-            self.outputs_directory, scenario_name, "mvs_outputs_loop_specific_costs_500"
+            self.outputs_directory, scenario_name, "mvs_outputs_loop_storeys_2011_3"
         )
         filename = os.path.join(
             timeseries_directory, f"plot_{timeseries_name[:-5]}_{period}.png"
@@ -115,7 +115,7 @@ class TestPlotProfiles:
 
     def test_plot_kpi_loop(self):
         """ """
-        variable_name = "specific_costs"
+        variable_name = "storeys"
         scenario_dict = {"Test_Scenario": "si"}
 
         name = ""
@@ -134,7 +134,7 @@ class TestPlotProfiles:
         plot_kpi_loop(
             scenario_dict=scenario_dict,
             variable_name=variable_name,
-            kpi=["costs total PV", "Degree of autonomy"],
+            kpi=["Costs total PV", "Degree of autonomy"],
             outputs_directory=self.outputs_directory,
         )
 
