@@ -142,6 +142,12 @@ class TestPlotProfiles:
 
     def teardown_method(self):
         # delete file
-        filelist = glob.glob(os.path.join(self.outputs_directory, "*.png"))
-        for f in filelist:
+        png_outputs_directory = glob.glob(os.path.join(self.outputs_directory, "*.png"))
+        for f in png_outputs_directory:
             os.remove(f)
+
+        png_timeseries_directory = glob.glob(os.path.join(self.outputs_directory, self.scenario_name, "*/*.png"))
+
+        for f in png_timeseries_directory:
+            os.remove(f)
+
