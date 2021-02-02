@@ -776,7 +776,8 @@ def plot_kpi_loop(
     output.sort_index(inplace=True)
 
     # plot
-    fig = plt.figure(figsize=(9, 11))
+    hight = len(kpi)*2
+    fig = plt.figure(figsize=(7, hight))
     rows = len(kpi)
     num = (
         rows * 100 + 11
@@ -799,11 +800,12 @@ def plot_kpi_loop(
             )
             ax.set_ylabel(y_title[i])
             ax.set_xlabel(variable_name)
+            ax.get_yaxis().set_label_coords(-0.1,0.5)
             ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
 
     #    fig.text(0.5, 0.0, str(variable_name), ha="center", fontsize=10)
     handles, labels = ax.get_legend_handles_labels()
-    fig.legend(handles, labels, loc=(0.88, 0.93))
+    fig.legend(handles, labels, bbox_to_anchor=(0.96, 0.96), loc='upper right', borderaxespad=0.)
 
     plt.tight_layout()
 
@@ -1002,9 +1004,8 @@ if __name__ == "__main__":
             "Installed capacity PV",
             "Total renewable energy",
             "Self consumption",
-            "Self sufficiency",
-            "Degree of autonomy",
             "Total emissions",
+            "Degree of autonomy"
         ],
     )
 
