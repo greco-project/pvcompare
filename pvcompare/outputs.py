@@ -761,15 +761,15 @@ def plot_kpi_loop(
             output_dict[scenario_dict[scenario_name]] = output_dict_column
 
     y_title = {
-        "Costs total PV": "costs total PV \n in EUR",
-        "Installed capacity PV": "installed capacity PV \nin kWp",
+        "Costs total PV": "Costs total PV \n in EUR",
+        "Installed capacity PV": "Installed capacity PV \nin kWp",
         "Total renewable energy": "Total renewable energy \nin kWh",
         "Renewable factor": "Renewable factor \nin %",
         "LCOE PV": "LCOE PV \nin EUR/kWh",
-        "Self consumption": "self consumption \nin %",
-        "Self sufficiency": "self sufficiency \nin %",
+        "Self consumption": "Self consumption \nin %",
+        "Self sufficiency": "Self sufficiency \nin %",
         "Degree of autonomy": "Degree of autonomy \nin %",
-        "Total emissions": "total emissions \nin kgCO2eq/kWh",
+        "Total emissions": "Total emissions \nin kgCO2eq/kWh",
     }
 
     output.sort_index(inplace=True)
