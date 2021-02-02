@@ -7,6 +7,7 @@ import shutil
 import glob
 import matplotlib.pyplot as plt
 import logging
+import numpy as np
 
 
 def create_loop_output_structure(outputs_directory, scenario_name, variable_name):
@@ -614,11 +615,7 @@ def plot_all_flows(
 
 
 def plot_kpi_loop(
-    variable_name,
-    kpi,
-    scenario_name,
-    outputs_directory=None,
-    loop_output_directory=None,
+    variable_name, kpi, scenario_dict, outputs_directory=None,
 ):
 
     """
@@ -643,15 +640,15 @@ def plot_kpi_loop(
             "self consumption",
             "self sufficiency",
             "Degree of autonomy"
-    scenario_name: str
-        Name of the Scenario. The name should follow the scheme:
-        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+    scenario_dict: dictionary
+        dictionary with the scenario names that should be compared as keys and
+        a label for the scenario as value. e.g.: {"Scenario_A1" : "si", "Scenario_A2": "cpv"}
+         Notice: all scenarios you want to compare, need to include the
+         loop-outputs for the same variable / steps. The scenario names
+         should follow the scheme: "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
     outputs_directory: str
         Path to output directory.
         Default: constants.DEFAULT_OUTPUTS_DIRECTORY
-    loop_output_directory: str
-        Path to loop output directory
-        Default: os.path.join(outputs_directory, 'scenario_name', loop_outputs + str(variable_name))
 
     Returns
     -------
@@ -661,23 +658,32 @@ def plot_kpi_loop(
 
 
     """
+    output_dict = {}
+    for scenario_name in scenario_dict.keys():
+        if outputs_directory == None:
+            outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
+            scenario_folder = os.path.join(outputs_directory, scenario_name)
+        else:
+            scenario_folder = os.path.join(outputs_directory, scenario_name)
 
-    if outputs_directory == None:
-        scenario_folder = os.path.join(
-            constants.DEFAULT_OUTPUTS_DIRECTORY, scenario_name
-        )
-    else:
-        scenario_folder = os.path.join(outputs_directory, scenario_name)
-    if loop_output_directory == None:
         loop_output_directory = os.path.join(
             scenario_folder, "loop_outputs_" + str(variable_name)
         )
+        # parse through scalars folder and read in all excel sheets
+        output = pd.DataFrame()
+        for filepath in list(
+            glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
+        ):
 
-    output = pd.DataFrame()
-    # parse through scalars folder and read in all excel sheets
-    for filepath in list(
-        glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
-    ):
+            file_sheet1 = pd.read_excel(
+                filepath, header=0, index_col=1, sheet_name="cost_matrix"
+            )
+            file_sheet2 = pd.read_excel(
+                filepath, header=0, index_col=1, sheet_name="scalar_matrix"
+            )
+            file_sheet3 = pd.read_excel(
+                filepath, header=0, index_col=0, sheet_name="scalars"
+            )
 
         file_sheet1 = pd.read_excel(
             filepath, header=0, index_col=1, sheet_name="cost_matrix"
@@ -735,7 +741,7 @@ def plot_kpi_loop(
     output.sort_index(inplace=True)
 
     # plot
-    fig = plt.figure()
+    fig = plt.figure(figsize=(10, 7))
     rows = len(kpi)
     num = (
         rows * 100 + 11
@@ -743,14 +749,139 @@ def plot_kpi_loop(
     for i in kpi:
         ax = fig.add_subplot(num)
         num = num + 1
-        output.plot(x = "step", y = i, title=i, ax=ax, legend=False)
-    fig.text(0.5, 0.0, str(variable_name), ha="center")
+        for key in output_dict.keys():
+            df = pd.DataFrame()
+            df = df.from_dict(output_dict[key])
+            df[i].plot(title=i, style=".", ax=ax, label=key, fontsize=10)
+
+    fig.text(0.5, 0.0, str(variable_name), ha="center", fontsize=10)
+    handles, labels = ax.get_legend_handles_labels()
+    fig.legend(handles, labels, loc=(0.88, 0.87))
     plt.tight_layout()
+
+    name = ""
+    for scenario_name in scenario_dict.keys():
+        name = name + "_" + str(scenario_name)
 
     fig.savefig(
         os.path.join(
-            loop_output_directory, "plot_scalars_" + str(variable_name) + ".png"
+            outputs_directory,
+            "plot_scalars" + str(name) + "_" + str(variable_name) + ".png",
         )
+    )
+
+
+def compare_weather_years(
+    latitude, longitude, static_inputs_directory=None, outputs_directory=None
+):
+    """
+    Barplot that shows yearly aggregated weather parameters: ghi, dni, dhi and
+    temperature.
+
+
+    Parameters
+    ----------
+    latitude: float
+        latitude of the location
+    longitude: float
+        longitude of the location
+    static_inputs_directory: str
+        if None: 'constants.DEFAULT_STATIC_INPUTS_DIRECTORY'
+    outputs_directory: str
+        if None: 'constants.DEFAULT_OUTPUTS_DIRECTORY
+    Returns
+    -------
+        None
+        The plot is saved into the `output_directory`.
+    -------
+
+    """
+
+    if static_inputs_directory == None:
+        static_inputs_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
+
+    if outputs_directory == None:
+        outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
+
+    ghi = pd.DataFrame()
+    temp = pd.DataFrame()
+    dni = pd.DataFrame()
+    dhi = pd.DataFrame()
+    for file in os.listdir(static_inputs_directory):
+        if file.startswith("weatherdata_" + str(latitude) + "_" + str(longitude)):
+            year = file.split(".")[2].split("_")[1]
+            weatherdata = pd.read_csv(
+                os.path.join(static_inputs_directory, file), header=0
+            )
+            ghi[year] = weatherdata["ghi"]
+            temp[year] = weatherdata["temp_air"]
+            dni[year] = weatherdata["dni"]
+            dhi[year] = weatherdata["dhi"]
+
+    ghi = ghi.reindex(sorted(ghi.columns), axis=1)
+    temp = temp.reindex(sorted(temp.columns), axis=1)
+    dni = dni.reindex(sorted(dni.columns), axis=1)
+    dhi = dhi.reindex(sorted(dhi.columns), axis=1)
+
+    ghi_sum = ghi.sum(axis=0)
+    temp_sum = temp.sum(axis=0)
+    dni_sum = dni.sum(axis=0)
+    dhi_sum = dhi.sum(axis=0)
+
+    # data to plot
+    n_groups = len(ghi.columns)
+
+    # create plot
+    fig, ax = plt.subplots(figsize=(10, 7))
+    index = np.arange(n_groups)
+    bar_width = 0.15
+    opacity = 0.8
+
+    rects1 = plt.bar(
+        index, ghi_sum, bar_width, alpha=opacity, color="tab:blue", label="ghi"
+    )
+
+    rects2 = plt.bar(
+        index + bar_width,
+        dni_sum,
+        bar_width,
+        alpha=opacity,
+        color="orange",
+        label="dni",
+    )
+
+    rects3 = plt.bar(
+        index + 2 * bar_width,
+        dhi_sum,
+        bar_width,
+        alpha=opacity,
+        color="limegreen",
+        label="dhi",
+    )
+
+    rects4 = plt.bar(
+        index + 3 * bar_width,
+        temp_sum,
+        bar_width,
+        alpha=opacity,
+        color="pink",
+        label="temp",
+    )
+
+    plt.xlabel("year")
+    plt.ylabel("kW/year")
+    plt.title("yearly energy yield")
+    plt.xticks(index + bar_width, (ghi.columns))
+    plt.legend()
+
+    plt.tight_layout()
+
+    # save plot into output directory
+    plt.savefig(
+        os.path.join(
+            outputs_directory, f"plot_compare_weatherdata_{latitude}_{longitude}.png"
+        ),
+        bbox_inches="tight",
     )
 
 
@@ -769,7 +900,9 @@ if __name__ == "__main__":
     elif loop_type == "technologies":
         loop_dict = {"step1": "cpv", "step2": "si", "step3": "psi"}
     elif loop_type == "hp_temp":
-        loop_dict = {"start": 15, "stop": 20, "step": 5}
+        loop_dict = {"start": 15, "stop": 25, "step": 5}
+    elif loop_type == "year":
+        loop_dict = {"start": 2010, "stop": 2017, "step": 1}
 
     # loop_pvcompare(
     #     scenario_name=scenario_name,
@@ -813,13 +946,16 @@ if __name__ == "__main__":
     #     ),
     # )
 
+    scenario_dict = {"Scenario_W_S_cpv": "cpv", "Scenario_W_S_si": "si"}
     plot_kpi_loop(
-        scenario_name=scenario_name,
-        variable_name="hp_temp",
+        scenario_dict=scenario_dict,
+        variable_name="year",
         kpi=[
-            "costs total PV",
-            "Degree of autonomy",
+            "installed capacity PV",
+            "Total renewable energy use",
             "self consumption",
             "self sufficiency",
         ],
     )
+
+# compare_weather_years(latitude= latitude, longitude= longitude, static_inputs_directory=None)

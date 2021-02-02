@@ -11,6 +11,8 @@ https://docs.python.org/3/library/unittest.html are also good support.
 import os
 from pvcompare.outputs import plot_all_flows, plot_kpi_loop, loop_mvs
 from pvcompare import constants
+import glob
+import shutil
 
 
 class TestPlotProfiles:
@@ -114,22 +116,32 @@ class TestPlotProfiles:
     def test_plot_kpi_loop(self):
         """ """
         variable_name = "specific_costs"
-        scenario_name = "Test_Scenario"
-        loop_output_directory = os.path.join(
-            self.outputs_directory, scenario_name, "loop_outputs_" + str(variable_name)
-        )
+        scenario_dict = {"Test_Scenario": "si"}
+
+        name = ""
+        for scenario_name in scenario_dict.keys():
+            name = name + "_" + str(scenario_name)
 
         filename = os.path.join(
-            loop_output_directory, "plot_scalars_" + str(variable_name) + ".png"
+            os.path.join(
+                self.outputs_directory,
+                "plot_scalars" + str(name) + "_" + str(variable_name) + ".png",
+            )
         )
         if os.path.exists(filename):
             os.remove(filename)
 
         plot_kpi_loop(
-            scenario_name=scenario_name,
+            scenario_dict=scenario_dict,
             variable_name=variable_name,
             kpi=["costs total PV", "Degree of autonomy"],
             outputs_directory=self.outputs_directory,
         )
 
         assert os.path.exists(filename)
+
+    def teardown_method(self):
+        # delete file
+        filelist = glob.glob(os.path.join(self.outputs_directory, "*.png"))
+        for f in filelist:
+            os.remove(f)
