@@ -685,63 +685,71 @@ def plot_kpi_loop(
                 filepath, header=0, index_col=0, sheet_name="scalars"
             )
 
-        file_sheet1 = pd.read_excel(
-            filepath, header=0, index_col=1, sheet_name="cost_matrix"
-        )
-        file_sheet2 = pd.read_excel(
-            filepath, header=0, index_col=1, sheet_name="scalar_matrix"
-        )
-        file_sheet3 = pd.read_excel(
-            filepath, header=0, index_col=0, sheet_name="scalars"
-        )
 
-        # get variable value from filepath
-        split_path = filepath.split("_")
-        get_step = split_path[::-1][0]
-        step = int(get_step.split(".")[0])
-        year = int(split_path[::-1][1])
-        # get all different pv assets
-        csv_directory = os.path.join(
-            scenario_folder,
-            "mvs_outputs_loop_" + str(variable_name) + "_" + str(year) + "_" + str(step),
-            "inputs",
-            "csv_elements",
-        )
-        energyProduction = pd.read_csv(
-            os.path.join(csv_directory, "energyProduction.csv"), index_col=0
-        )
-        energyProduction = energyProduction.drop(["unit"], axis=1)
-        pv_labels = energyProduction.columns
-        # get total costs pv and installed capacity
-        index = str(year) + str(step)
-        output.loc[index, "step"] = int(step)
-        output.loc[index, "year"] = int(year)
-        for pv in pv_labels:
-            output.loc[index, "costs total PV"] = file_sheet1.at[pv, "costs_total"]
-            output.loc[index, "installed capacity PV"] = file_sheet2.at[
-                pv, "optimizedAddCap"
-            ]
-            output.loc[index, "Total renewable energy use"] = file_sheet3.at[
-                "Total renewable energy use", 0
-            ]
-            output.loc[index, "Renewable factor"] = file_sheet3.at["Renewable factor", 0]
-            output.loc[index, "LCOE PV"] = file_sheet1.at[
-                pv, "levelized_cost_of_energy_of_asset"
-            ]
-            output.loc[index, "self consumption"] = file_sheet3.at[
-                "Onsite energy fraction", 0
-            ]
-            output.loc[index, "self sufficiency"] = file_sheet3.at[
-                "Onsite energy matching", 0
-            ]
-            output.loc[index, "Degree of autonomy"] = file_sheet3.at[
-                "Degree of autonomy", 0
-            ]
+            # get variable value from filepath
+            split_path = filepath.split("_")
+            get_step = split_path[::-1][0]
+            step = int(get_step.split(".")[0])
+            year = int(split_path[::-1][1])
+            # get all different pv assets
+            csv_directory = os.path.join(
+                scenario_folder,
+                "mvs_outputs_loop_" + str(variable_name) + "_" + str(year) + "_" + str(step),
+                "inputs",
+                "csv_elements",
+            )
+            energyProduction = pd.read_csv(
+                os.path.join(csv_directory, "energyProduction.csv"), index_col=0
+            )
+            energyProduction = energyProduction.drop(["unit"], axis=1)
+            pv_labels = energyProduction.columns
+            # get total costs pv and installed capacity
+            index = str(year) + "_" + str(step)
+            output.loc[index, "step"] = int(step)
+            output.loc[index, "year"] = int(year)
+            for pv in pv_labels:
+                output.loc[index, "Costs total PV"] = file_sheet1.at[pv, "costs_total"]
+                output.loc[index, "Installed capacity PV"] = file_sheet2.at[
+                    pv, "optimizedAddCap"
+                ]
+                output.loc[index, "Total renewable energy"] = file_sheet3.at[
+                    "Total renewable energy use", 0
+                ]
+                output.loc[index, "Renewable factor"] = file_sheet3.at["Renewable factor", 0]
+                output.loc[index, "LCOE PV"] = file_sheet1.at[
+                    pv, "levelized_cost_of_energy_of_asset"
+                ]
+                output.loc[index, "Self consumption"] = file_sheet3.at[
+                    "Onsite energy fraction", 0
+                ]
+                output.loc[index, "Self sufficiency"] = file_sheet3.at[
+                    "Onsite energy matching", 0
+                ]
+                output.loc[index, "Degree of autonomy"] = file_sheet3.at[
+                    "Degree of autonomy", 0
+                ]
+                output.loc[index, "Total emissions"] = file_sheet3.at[
+                    "Total emissions", 0
+                ]
+
+
+            output_dict_column = output.to_dict()
+            output_dict[scenario_dict[scenario_name]] = output_dict_column
+
+    y_title = {"Costs total PV" : "costs total PV \n in EUR",
+               "Installed capacity PV":"installed capacity PV \nin kWp",
+               "Total renewable energy":"Total renewable energy \nin kWh",
+               "Renewable factor":"Renewable factor \nin %",
+                "LCOE PV":"LCOE PV \nin EUR/kWh",
+               "Self consumption":"self consumption \nin %",
+               "Self sufficiency":"self sufficiency \nin %",
+               "Degree of autonomy":"Degree of autonomy \nin %",
+               "Total emissions":"total emissions \nin kgCO2eq/kWh"}
 
     output.sort_index(inplace=True)
 
     # plot
-    fig = plt.figure(figsize=(10, 7))
+    fig = plt.figure(figsize=(10, 12))
     rows = len(kpi)
     num = (
         rows * 100 + 11
@@ -752,11 +760,14 @@ def plot_kpi_loop(
         for key in output_dict.keys():
             df = pd.DataFrame()
             df = df.from_dict(output_dict[key])
-            df[i].plot(title=i, style=".", ax=ax, label=key, fontsize=10)
+            df.plot(x = "step", y = i, style=".", ax=ax, label=key, legend=False, sharex=True, xticks=df.step)
+            ax.set_ylabel(y_title[i])
+            ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
 
-    fig.text(0.5, 0.0, str(variable_name), ha="center", fontsize=10)
+#    fig.text(0.5, 0.0, str(variable_name), ha="center", fontsize=10)
     handles, labels = ax.get_legend_handles_labels()
-    fig.legend(handles, labels, loc=(0.88, 0.87))
+    fig.legend(handles, labels, loc=(0.88, 0.93))
+
     plt.tight_layout()
 
     name = ""
@@ -891,9 +902,9 @@ if __name__ == "__main__":
     years = [2011, 2015]  # a year between 2011-2013!!!
     storeys = 5
     country = "Germany"
-    scenario_name = "Scenario_A1"
+    scenario_name = "Scenario_A2"
 
-    loop_type = "hp_temp"
+    loop_type = "storeys"
 
     if loop_type == "storeys":
         loop_dict = {"start": 3, "stop": 5, "step": 1}
@@ -946,15 +957,17 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    scenario_dict = {"Scenario_W_S_cpv": "cpv", "Scenario_W_S_si": "si"}
+    scenario_dict = {"Scenario_A1": "si", "Scenario_A2": "cpv" }
     plot_kpi_loop(
         scenario_dict=scenario_dict,
-        variable_name="year",
+        variable_name="storeys",
         kpi=[
-            "installed capacity PV",
-            "Total renewable energy use",
-            "self consumption",
-            "self sufficiency",
+            "Installed capacity PV",
+            "Total renewable energy",
+            "Self consumption",
+            "Self sufficiency",
+            "Degree of autonomy",
+            "Total emissions"
         ],
     )
 
