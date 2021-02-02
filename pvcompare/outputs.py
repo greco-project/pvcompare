@@ -435,7 +435,7 @@ def loop_mvs(
     )
     csv_file = pd.read_csv(csv_filename, index_col=0)
 
-    #loop over years
+    # loop over years
     for year in years:
         # loop over the variable
         i = start
@@ -448,7 +448,12 @@ def loop_mvs(
             mvs_output_directory = os.path.join(
                 outputs_directory,
                 scenario_name,
-                "mvs_outputs_loop_" + str(variable_name) + "_" + str(year) + "_" + str(i),
+                "mvs_outputs_loop_"
+                + str(variable_name)
+                + "_"
+                + str(year)
+                + "_"
+                + str(i),
             )
 
             # apply mvs for every looping step
@@ -480,7 +485,9 @@ def loop_mvs(
             shutil.copy(src_dir, dst_dir)
 
             excel_file2 = "timeseries_all_busses.xlsx"
-            new_excel_file2 = "timeseries_all_busses_" + str(year) + "_" + str(j) + ".xlsx"
+            new_excel_file2 = (
+                "timeseries_all_busses_" + str(year) + "_" + str(j) + ".xlsx"
+            )
             src_dir = os.path.join(mvs_output_directory, excel_file2)
             dst_dir = os.path.join(loop_output_directory, "timeseries", new_excel_file2)
             shutil.copy(src_dir, dst_dir)
@@ -490,7 +497,7 @@ def loop_mvs(
 
 
 def plot_all_flows(
-    scenario_name,
+    scenario_name=None,
     outputs_directory=None,
     timeseries_directory=None,
     timeseries_name="timeseries_all_busses.xlsx",
@@ -768,7 +775,7 @@ def plot_kpi_loop(
     output.sort_index(inplace=True)
 
     # plot
-    fig = plt.figure(figsize=(10, 12))
+    fig = plt.figure(figsize=(9, 11))
     rows = len(kpi)
     num = (
         rows * 100 + 11
