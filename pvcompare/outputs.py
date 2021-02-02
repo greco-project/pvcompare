@@ -346,7 +346,7 @@ def single_loop_pvcompare(
     shutil.copy(src_dir, dst_dir)
 
     excel_file2 = "timeseries_all_busses.xlsx"
-    new_excel_file2 = "timeseries_all_busses_" + "_" + str(year) + str(step) + ".xlsx"
+    new_excel_file2 = "timeseries_all_busses_" + "_" + str(year) + "_" + str(step) + ".xlsx"
     src_dir = os.path.join(mvs_output_directory, excel_file2)
     dst_dir = os.path.join(loop_output_directory, "timeseries", new_excel_file2)
     shutil.copy(src_dir, dst_dir)
@@ -665,10 +665,15 @@ def plot_kpi_loop(
             scenario_folder = os.path.join(outputs_directory, scenario_name)
         else:
             scenario_folder = os.path.join(outputs_directory, scenario_name)
-
+            if not os.path.isdir(scenario_folder):
+                logging.warning(f"The scenario folder {scenario_name} does not exist.")
         loop_output_directory = os.path.join(
             scenario_folder, "loop_outputs_" + str(variable_name)
         )
+        if not os.path.isdir(loop_output_directory):
+            logging.warning(
+                f"The loop output folder {loop_output_directory} does not exist. "
+                f"Please check the variable_name")
         # parse through scalars folder and read in all excel sheets
         output = pd.DataFrame()
         for filepath in list(
