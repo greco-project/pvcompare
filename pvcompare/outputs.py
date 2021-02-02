@@ -797,7 +797,7 @@ def plot_kpi_loop(
                 xticks=df.step,
             )
             ax.set_ylabel(y_title[i])
-            ax.set_ylabel(variable_name)
+            ax.set_xlabel(variable_name)
             ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
 
     #    fig.text(0.5, 0.0, str(variable_name), ha="center", fontsize=10)
