@@ -209,7 +209,9 @@ def loop_pvcompare(
             for key in loop_dict:
                 technology = loop_dict[key]
 
-                data_path = os.path.join(user_inputs_pvcompare_directory, "pv_setup.csv")
+                data_path = os.path.join(
+                    user_inputs_pvcompare_directory, "pv_setup.csv"
+                )
                 # load input parameters from pv_setup.csv
                 pv_setup = pd.read_csv(data_path)
                 pv_setup.at[0, "technology"] = technology
@@ -346,7 +348,9 @@ def single_loop_pvcompare(
     shutil.copy(src_dir, dst_dir)
 
     excel_file2 = "timeseries_all_busses.xlsx"
-    new_excel_file2 = "timeseries_all_busses_" + "_" + str(year) + "_" + str(step) + ".xlsx"
+    new_excel_file2 = (
+        "timeseries_all_busses_" + "_" + str(year) + "_" + str(step) + ".xlsx"
+    )
     src_dir = os.path.join(mvs_output_directory, excel_file2)
     dst_dir = os.path.join(loop_output_directory, "timeseries", new_excel_file2)
     shutil.copy(src_dir, dst_dir)
@@ -468,7 +472,7 @@ def loop_mvs(
             j = "0000" + str(i)
 
         excel_file1 = "scalars.xlsx"
-        new_excel_file1 = "scalars_" + str(year) + "_"+ str(j) + "_" + ".xlsx"
+        new_excel_file1 = "scalars_" + str(year) + "_" + str(j) + "_" + ".xlsx"
         src_dir = os.path.join(mvs_output_directory, excel_file1)
         dst_dir = os.path.join(loop_output_directory, "scalars", new_excel_file1)
         shutil.copy(src_dir, dst_dir)
@@ -673,7 +677,8 @@ def plot_kpi_loop(
         if not os.path.isdir(loop_output_directory):
             logging.warning(
                 f"The loop output folder {loop_output_directory} does not exist. "
-                f"Please check the variable_name")
+                f"Please check the variable_name"
+            )
         # parse through scalars folder and read in all excel sheets
         output = pd.DataFrame()
         for filepath in list(
@@ -690,7 +695,6 @@ def plot_kpi_loop(
                 filepath, header=0, index_col=0, sheet_name="scalars"
             )
 
-
             # get variable value from filepath
             split_path = filepath.split("_")
             get_step = split_path[::-1][0]
@@ -699,7 +703,12 @@ def plot_kpi_loop(
             # get all different pv assets
             csv_directory = os.path.join(
                 scenario_folder,
-                "mvs_outputs_loop_" + str(variable_name) + "_" + str(year) + "_" + str(step),
+                "mvs_outputs_loop_"
+                + str(variable_name)
+                + "_"
+                + str(year)
+                + "_"
+                + str(step),
                 "inputs",
                 "csv_elements",
             )
@@ -720,7 +729,9 @@ def plot_kpi_loop(
                 output.loc[index, "Total renewable energy"] = file_sheet3.at[
                     "Total renewable energy use", 0
                 ]
-                output.loc[index, "Renewable factor"] = file_sheet3.at["Renewable factor", 0]
+                output.loc[index, "Renewable factor"] = file_sheet3.at[
+                    "Renewable factor", 0
+                ]
                 output.loc[index, "LCOE PV"] = file_sheet1.at[
                     pv, "levelized_cost_of_energy_of_asset"
                 ]
@@ -737,19 +748,20 @@ def plot_kpi_loop(
                     "Total emissions", 0
                 ]
 
-
             output_dict_column = output.to_dict()
             output_dict[scenario_dict[scenario_name]] = output_dict_column
 
-    y_title = {"Costs total PV" : "costs total PV \n in EUR",
-               "Installed capacity PV":"installed capacity PV \nin kWp",
-               "Total renewable energy":"Total renewable energy \nin kWh",
-               "Renewable factor":"Renewable factor \nin %",
-                "LCOE PV":"LCOE PV \nin EUR/kWh",
-               "Self consumption":"self consumption \nin %",
-               "Self sufficiency":"self sufficiency \nin %",
-               "Degree of autonomy":"Degree of autonomy \nin %",
-               "Total emissions":"total emissions \nin kgCO2eq/kWh"}
+    y_title = {
+        "Costs total PV": "costs total PV \n in EUR",
+        "Installed capacity PV": "installed capacity PV \nin kWp",
+        "Total renewable energy": "Total renewable energy \nin kWh",
+        "Renewable factor": "Renewable factor \nin %",
+        "LCOE PV": "LCOE PV \nin EUR/kWh",
+        "Self consumption": "self consumption \nin %",
+        "Self sufficiency": "self sufficiency \nin %",
+        "Degree of autonomy": "Degree of autonomy \nin %",
+        "Total emissions": "total emissions \nin kgCO2eq/kWh",
+    }
 
     output.sort_index(inplace=True)
 
@@ -765,11 +777,20 @@ def plot_kpi_loop(
         for key in output_dict.keys():
             df = pd.DataFrame()
             df = df.from_dict(output_dict[key])
-            df.plot(x = "step", y = i, style=".", ax=ax, label=key, legend=False, sharex=True, xticks=df.step)
+            df.plot(
+                x="step",
+                y=i,
+                style=".",
+                ax=ax,
+                label=key,
+                legend=False,
+                sharex=True,
+                xticks=df.step,
+            )
             ax.set_ylabel(y_title[i])
             ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
 
-#    fig.text(0.5, 0.0, str(variable_name), ha="center", fontsize=10)
+    #    fig.text(0.5, 0.0, str(variable_name), ha="center", fontsize=10)
     handles, labels = ax.get_legend_handles_labels()
     fig.legend(handles, labels, loc=(0.88, 0.93))
 
@@ -962,7 +983,7 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    scenario_dict = {"Scenario_A1": "si", "Scenario_A2": "cpv" }
+    scenario_dict = {"Scenario_A1": "si", "Scenario_A2": "cpv"}
     plot_kpi_loop(
         scenario_dict=scenario_dict,
         variable_name="storeys",
@@ -972,7 +993,7 @@ if __name__ == "__main__":
             "Self consumption",
             "Self sufficiency",
             "Degree of autonomy",
-            "Total emissions"
+            "Total emissions",
         ],
     )
 

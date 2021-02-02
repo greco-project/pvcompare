@@ -146,8 +146,9 @@ class TestPlotProfiles:
         for f in png_outputs_directory:
             os.remove(f)
 
-        png_timeseries_directory = glob.glob(os.path.join(self.outputs_directory, self.scenario_name, "*/*.png"))
+        png_timeseries_directory = glob.glob(
+            os.path.join(self.outputs_directory, self.scenario_name, "*/*.png")
+        )
 
         for f in png_timeseries_directory:
             os.remove(f)
-
