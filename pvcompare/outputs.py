@@ -760,6 +760,7 @@ def plot_kpi_loop(
             output_dict_column = output.to_dict()
             output_dict[scenario_dict[scenario_name]] = output_dict_column
 
+    # define y labels
     y_title = {
         "Costs total PV": "Costs total PV \n in EUR",
         "Installed capacity PV": "Installed capacity PV \nin kWp",
