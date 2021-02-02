@@ -91,7 +91,7 @@ def loop_pvcompare(
         latitude of the location
     longitude: foat
         longitude of the location
-    year: int or list
+    years: list
         year(s) of simulation
     storeys: int
         number of storeys
@@ -359,7 +359,7 @@ def single_loop_pvcompare(
 def loop_mvs(
     latitude,
     longitude,
-    year,
+    years,
     storeys,
     country,
     variable_name,
@@ -386,8 +386,8 @@ def loop_mvs(
         latitude of the location
     longitude: foat
         longitude of the location
-    year: int
-        year
+    years: list
+        year(s) for simulation
     storeys:int
         number of storeys
     country: str
@@ -435,60 +435,62 @@ def loop_mvs(
     )
     csv_file = pd.read_csv(csv_filename, index_col=0)
 
-    # loop over the variable
-    i = start
-    while i <= stop:
-        # change variable value and save this value to csv
-        csv_file.loc[[variable_name], [variable_column]] = i
-        csv_file.to_csv(csv_filename)
+    #loop over years
+    for year in years:
+        # loop over the variable
+        i = start
+        while i <= stop:
+            # change variable value and save this value to csv
+            csv_file.loc[[variable_name], [variable_column]] = i
+            csv_file.to_csv(csv_filename)
 
-        # define mvs_output_directory for every looping step
-        mvs_output_directory = os.path.join(
-            outputs_directory,
-            scenario_name,
-            "mvs_outputs_loop_" + str(variable_name) + "_" + str(year) + "_" + str(i),
-        )
+            # define mvs_output_directory for every looping step
+            mvs_output_directory = os.path.join(
+                outputs_directory,
+                scenario_name,
+                "mvs_outputs_loop_" + str(variable_name) + "_" + str(year) + "_" + str(i),
+            )
 
-        # apply mvs for every looping step
-        main.apply_mvs(
-            scenario_name=scenario_name,
-            mvs_output_directory=mvs_output_directory,
-            user_inputs_mvs_directory=user_inputs_mvs_directory,
-            outputs_directory=outputs_directory,
-        )
+            # apply mvs for every looping step
+            main.apply_mvs(
+                scenario_name=scenario_name,
+                mvs_output_directory=mvs_output_directory,
+                user_inputs_mvs_directory=user_inputs_mvs_directory,
+                outputs_directory=outputs_directory,
+            )
 
-        # copy excel sheets to loop_output_directory
-        number_digits = len(str(stop)) - len(str(i))
+            # copy excel sheets to loop_output_directory
+            number_digits = len(str(stop)) - len(str(i))
 
-        if number_digits == 0:
-            j = str(i)
-        elif number_digits == 1:
-            j = "0" + str(i)
-        elif number_digits == 2:
-            j = "00" + str(i)
-        elif number_digits == 3:
-            j = "000" + str(i)
-        elif number_digits == 4:
-            j = "0000" + str(i)
+            if number_digits == 0:
+                j = str(i)
+            elif number_digits == 1:
+                j = "0" + str(i)
+            elif number_digits == 2:
+                j = "00" + str(i)
+            elif number_digits == 3:
+                j = "000" + str(i)
+            elif number_digits == 4:
+                j = "0000" + str(i)
 
-        excel_file1 = "scalars.xlsx"
-        new_excel_file1 = "scalars_" + str(year) + "_" + str(j) + "_" + ".xlsx"
-        src_dir = os.path.join(mvs_output_directory, excel_file1)
-        dst_dir = os.path.join(loop_output_directory, "scalars", new_excel_file1)
-        shutil.copy(src_dir, dst_dir)
+            excel_file1 = "scalars.xlsx"
+            new_excel_file1 = "scalars_" + str(year) + "_" + str(j) + "_" + ".xlsx"
+            src_dir = os.path.join(mvs_output_directory, excel_file1)
+            dst_dir = os.path.join(loop_output_directory, "scalars", new_excel_file1)
+            shutil.copy(src_dir, dst_dir)
 
-        excel_file2 = "timeseries_all_busses.xlsx"
-        new_excel_file2 = "timeseries_all_busses_" + str(year) + "_" + str(j) + ".xlsx"
-        src_dir = os.path.join(mvs_output_directory, excel_file2)
-        dst_dir = os.path.join(loop_output_directory, "timeseries", new_excel_file2)
-        shutil.copy(src_dir, dst_dir)
+            excel_file2 = "timeseries_all_busses.xlsx"
+            new_excel_file2 = "timeseries_all_busses_" + str(year) + "_" + str(j) + ".xlsx"
+            src_dir = os.path.join(mvs_output_directory, excel_file2)
+            dst_dir = os.path.join(loop_output_directory, "timeseries", new_excel_file2)
+            shutil.copy(src_dir, dst_dir)
 
-        # add another step
-        i = i + step
+            # add another step
+            i = i + step
 
 
 def plot_all_flows(
-    scenario_name=None,
+    scenario_name,
     outputs_directory=None,
     timeseries_directory=None,
     timeseries_name="timeseries_all_busses.xlsx",
