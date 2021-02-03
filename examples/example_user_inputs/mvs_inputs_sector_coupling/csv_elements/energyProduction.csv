@@ -1,12 +1,12 @@
-index,unit,pv_plant_01
+index,unit,PV si
 unit,str,kWp
 optimizeCap,bool,True
-maximumCap,None or float,25454.87
+maximumCap,None or float,33576.867
 installedCap,kWp,0
 age_installed,year,0
 lifetime,year,25
-development_costs,currency,500
-specific_costs,currency/unit,500
+development_costs,currency,0
+specific_costs,currency/unit,935
 specific_costs_om,currency/unit/year,50
 dispatch_price,currency/kWh,0
 outflow_direction,str,PV bus
