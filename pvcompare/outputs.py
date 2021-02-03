@@ -873,7 +873,6 @@ def compare_weather_years(
 
     if static_inputs_directory == None:
         static_inputs_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
-
     if user_inputs_mvs_directory == None:
         user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
     timeseries_directory = os.path.join(user_inputs_mvs_directory, "time_series")
@@ -943,7 +942,7 @@ def compare_weather_years(
 
     ghi_sum.plot(
         kind="bar",
-        color="orange",
+        color="tab:orange",
         ax=ax,
         alpha=opacity,
         width=bar_width,
@@ -952,7 +951,7 @@ def compare_weather_years(
     )
     dni_sum.plot(
         kind="bar",
-        color="yellow",
+        color="gold",
         ax=ax,
         alpha=opacity,
         width=bar_width,
@@ -961,7 +960,7 @@ def compare_weather_years(
     )
     dhi_sum.plot(
         kind="bar",
-        color="green",
+        color="tab:green",
         ax=ax,
         alpha=opacity,
         width=bar_width,
@@ -970,7 +969,7 @@ def compare_weather_years(
     )
     el_sum.plot(
         kind="bar",
-        color="blue",
+        color="tab:blue",
         ax=ax2,
         alpha=opacity,
         width=bar_width,
@@ -1060,18 +1059,18 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    scenario_dict = {"Scenario_A1": "psi"}
-    plot_kpi_loop(
-        scenario_dict=scenario_dict,
-        variable_name="lifetime",
-        kpi=[
-            "Installed capacity PV",
-            "Total renewable energy",
-            "Self consumption",
-            "Total emissions",
-            "Degree of autonomy",
-        ],
-    )
+    # scenario_dict = {"Scenario_A1": "psi"}
+    # plot_kpi_loop(
+    #     scenario_dict=scenario_dict,
+    #     variable_name="lifetime",
+    #     kpi=[
+    #         "Installed capacity PV",
+    #         "Total renewable energy",
+    #         "Self consumption",
+    #         "Total emissions",
+    #         "Degree of autonomy",
+    #     ],
+    # )
 
     compare_weather_years(
         latitude=latitude,
