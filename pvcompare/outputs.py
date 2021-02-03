@@ -9,9 +9,8 @@ import matplotlib.pyplot as plt
 import logging
 import numpy as np
 import seaborn as sns
+
 sns.set()
-
-
 
 
 def create_loop_output_structure(outputs_directory, scenario_name, variable_name):
@@ -836,7 +835,12 @@ def plot_kpi_loop(
 
 
 def compare_weather_years(
-    latitude, longitude, country, static_inputs_directory=None, outputs_directory=None, user_inputs_mvs_directory= None
+    latitude,
+    longitude,
+    country,
+    static_inputs_directory=None,
+    outputs_directory=None,
+    user_inputs_mvs_directory=None,
 ):
     """
     Barplot that shows yearly aggregated weather parameters: ghi, dni, dhi and
@@ -898,19 +902,25 @@ def compare_weather_years(
         if file.startswith("electricity_load_"):
             if file.endswith(str(country) + "_5.csv"):
                 year = int(file.split(".")[0].split("_")[2])
-                electricity_load = pd.read_csv(os.path.join(timeseries_directory, file), header=0)
+                electricity_load = pd.read_csv(
+                    os.path.join(timeseries_directory, file), header=0
+                )
                 electricity_demand[year] = electricity_load["kWh"]
         elif file.startswith("heat_load_"):
             if file.endswith(str(country) + "_5.csv"):
                 year = int(file.split(".")[0].split("_")[2])
-                heat_load = pd.read_csv(os.path.join(timeseries_directory, file), header=0)
-                heat_demand[year]=heat_load["kWh"]
+                heat_load = pd.read_csv(
+                    os.path.join(timeseries_directory, file), header=0
+                )
+                heat_demand[year] = heat_load["kWh"]
 
     ghi = ghi.reindex(sorted(ghi.columns), axis=1)
     temp = temp.reindex(sorted(temp.columns), axis=1)
     dni = dni.reindex(sorted(dni.columns), axis=1)
     dhi = dhi.reindex(sorted(dhi.columns), axis=1)
-    electricity_demand = electricity_demand.reindex(sorted(electricity_demand.columns), axis=1)
+    electricity_demand = electricity_demand.reindex(
+        sorted(electricity_demand.columns), axis=1
+    )
     heat_demand = heat_demand.reindex(sorted(electricity_demand.columns), axis=1)
 
     ghi_sum = ghi.sum(axis=0)
@@ -931,22 +941,54 @@ def compare_weather_years(
 
     ax2 = ax.twinx()
 
-    ghi_sum.plot(kind='bar', color = "orange", ax=ax, alpha = opacity, width=bar_width, label="ghi", position=3)
-    dni_sum.plot(kind='bar', color = "yellow", ax=ax, alpha = opacity,width= bar_width, label="dni", position = 2)
-    dhi_sum.plot(kind='bar', color = "green", ax=ax, alpha = opacity,width=bar_width, label="dhi", position = 1)
-    el_sum.plot(kind='bar', color = "blue", ax=ax2, alpha = opacity,width=bar_width, label="electricity load", position = 0)
-#    he_sum.plot(kind='bar', color = "purple", ax=ax2, alpha = opacity,width=bar_width, label="heat load", position = 0)
+    ghi_sum.plot(
+        kind="bar",
+        color="orange",
+        ax=ax,
+        alpha=opacity,
+        width=bar_width,
+        label="ghi",
+        position=3,
+    )
+    dni_sum.plot(
+        kind="bar",
+        color="yellow",
+        ax=ax,
+        alpha=opacity,
+        width=bar_width,
+        label="dni",
+        position=2,
+    )
+    dhi_sum.plot(
+        kind="bar",
+        color="green",
+        ax=ax,
+        alpha=opacity,
+        width=bar_width,
+        label="dhi",
+        position=1,
+    )
+    el_sum.plot(
+        kind="bar",
+        color="blue",
+        ax=ax2,
+        alpha=opacity,
+        width=bar_width,
+        label="electricity load",
+        position=0,
+    )
+    #    he_sum.plot(kind='bar', color = "purple", ax=ax2, alpha = opacity,width=bar_width, label="heat load", position = 0)
 
     plt.xlabel("year")
     ax.set_ylabel("Irradiance in kW/year")
     ax2.set_ylabel("Demand in kWh/year")
-#    plt.title("yearly energy yield")
-#    plt.xticks(index + bar_width, (ghi.columns))
+    #    plt.title("yearly energy yield")
+    #    plt.xticks(index + bar_width, (ghi.columns))
     ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.1)
     # Put a legend to the right of the current axis
-    ax.legend(loc='lower right', bbox_to_anchor=(-0.05, 0))
-    ax2.legend(loc='lower left', bbox_to_anchor=(1.05, 0))
-#    plt.tight_layout()
+    ax.legend(loc="lower right", bbox_to_anchor=(-0.05, 0))
+    ax2.legend(loc="lower left", bbox_to_anchor=(1.05, 0))
+    #    plt.tight_layout()
 
     # save plot into output directory
     plt.savefig(
@@ -1027,8 +1069,13 @@ if __name__ == "__main__":
             "Total renewable energy",
             "Self consumption",
             "Total emissions",
-            "Degree of autonomy"
+            "Degree of autonomy",
         ],
     )
 
-    compare_weather_years(latitude= latitude, longitude= longitude, country=country, static_inputs_directory=None)
+    compare_weather_years(
+        latitude=latitude,
+        longitude=longitude,
+        country=country,
+        static_inputs_directory=None,
+    )
