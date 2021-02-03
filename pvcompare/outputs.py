@@ -417,6 +417,20 @@ def loop_mvs(
     -------
 
     """
+
+    if outputs_directory is None:
+        outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
+    loop_output_directory = create_loop_output_structure(
+        outputs_directory, scenario_name, variable_name
+    )
+    # define filename of variable that should be looped over
+    if user_inputs_mvs_directory is None:
+        user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
+    csv_filename = os.path.join(
+        user_inputs_mvs_directory, "csv_elements", csv_file_variable
+    )
+    csv_file = pd.read_csv(csv_filename, index_col=0)
+
     # loop over years
     for year in years:
         # apply pvcompare
@@ -427,18 +441,7 @@ def loop_mvs(
             storeys=storeys,
             country=country,
         )
-        if outputs_directory is None:
-            outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
-        loop_output_directory = create_loop_output_structure(
-            outputs_directory, scenario_name, variable_name
-        )
-        # define filename of variable that should be looped over
-        if user_inputs_mvs_directory is None:
-            user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
-        csv_filename = os.path.join(
-            user_inputs_mvs_directory, "csv_elements", csv_file_variable
-        )
-        csv_file = pd.read_csv(csv_filename, index_col=0)
+
 
         # loop over the variable
         i = start
