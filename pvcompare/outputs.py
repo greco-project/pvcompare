@@ -427,11 +427,14 @@ def loop_mvs(
             storeys=storeys,
             country=country,
         )
-
+        if outputs_directory is None:
+            outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
         loop_output_directory = create_loop_output_structure(
             outputs_directory, scenario_name, variable_name
         )
         # define filename of variable that should be looped over
+        if user_inputs_mvs_directory is None:
+            user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
         csv_filename = os.path.join(
             user_inputs_mvs_directory, "csv_elements", csv_file_variable
         )
@@ -967,22 +970,22 @@ if __name__ == "__main__":
     #     outputs_directory=None,
     #     user_inputs_pvcompare_directory=None,
     # )
-    # loop_mvs(
-    #     latitude=latitude,
-    #     longitude=longitude,
-    #     year=year,
-    #     storeys=storeys,
-    #     country=country,
-    #     variable_name="specific_costs",
-    #     variable_column="pv_plant_01",
-    #     csv_file_variable="energyProduction.csv",
-    #     start=500,
-    #     stop=600,
-    #     step=100,
-    #     outputs_directory=outputs_directory,
-    #     user_inputs_mvs_directory=user_inputs_mvs_directory,
-    #     scenario_name=scenario_name,
-    # )
+    loop_mvs(
+        latitude=latitude,
+        longitude=longitude,
+        years=years,
+        storeys=storeys,
+        country=country,
+        variable_name="specific_costs",
+        variable_column="PV si",
+        csv_file_variable="energyProduction.csv",
+        start=500,
+        stop=600,
+        step=100,
+        outputs_directory=None,
+        user_inputs_mvs_directory=None,
+        scenario_name=scenario_name,
+    )
 
     # plot_all_flows(
     #     scenario_name=scenario_name,
@@ -996,17 +999,17 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    scenario_dict = {"Scenario_A1": "si", "Scenario_A2": "cpv"}
-    plot_kpi_loop(
-        scenario_dict=scenario_dict,
-        variable_name="storeys",
-        kpi=[
-            "Installed capacity PV",
-            "Total renewable energy",
-            "Self consumption",
-            "Total emissions",
-            "Degree of autonomy"
-        ],
-    )
+    # scenario_dict = {"Scenario_A1": "si", "Scenario_A2": "cpv"}
+    # plot_kpi_loop(
+    #     scenario_dict=scenario_dict,
+    #     variable_name="storeys",
+    #     kpi=[
+    #         "Installed capacity PV",
+    #         "Total renewable energy",
+    #         "Self consumption",
+    #         "Total emissions",
+    #         "Degree of autonomy"
+    #     ],
+    # )
 
 # compare_weather_years(latitude= latitude, longitude= longitude, static_inputs_directory=None)
