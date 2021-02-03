@@ -417,26 +417,26 @@ def loop_mvs(
     -------
 
     """
-    # apply pvcompare
-    main.apply_pvcompare(
-        latitude=latitude,
-        longitude=longitude,
-        year=year,
-        storeys=storeys,
-        country=country,
-    )
-
-    loop_output_directory = create_loop_output_structure(
-        outputs_directory, scenario_name, variable_name
-    )
-    # define filename of variable that should be looped over
-    csv_filename = os.path.join(
-        user_inputs_mvs_directory, "csv_elements", csv_file_variable
-    )
-    csv_file = pd.read_csv(csv_filename, index_col=0)
-
     # loop over years
     for year in years:
+        # apply pvcompare
+        main.apply_pvcompare(
+            latitude=latitude,
+            longitude=longitude,
+            year=year,
+            storeys=storeys,
+            country=country,
+        )
+
+        loop_output_directory = create_loop_output_structure(
+            outputs_directory, scenario_name, variable_name
+        )
+        # define filename of variable that should be looped over
+        csv_filename = os.path.join(
+            user_inputs_mvs_directory, "csv_elements", csv_file_variable
+        )
+        csv_file = pd.read_csv(csv_filename, index_col=0)
+
         # loop over the variable
         i = start
         while i <= stop:
@@ -947,7 +947,7 @@ if __name__ == "__main__":
 
     if loop_type == "storeys":
         loop_dict = {"start": 3, "stop": 5, "step": 1}
-    elif loop_type == "technologies":
+    elif loop_type == "technology":
         loop_dict = {"step1": "cpv", "step2": "si", "step3": "psi"}
     elif loop_type == "hp_temp":
         loop_dict = {"start": 15, "stop": 25, "step": 5}
