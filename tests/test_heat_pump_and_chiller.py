@@ -385,6 +385,147 @@ class TestCalculateCopsAndEers:
         if os.path.exists(filepath_3):
             os.remove(filepath_3)
 
+    def test_calculate_cops_and_eers_process_temperatures_chiller_temp_low(self):
+        """
+        This tests examine the proper processing of the chiller's
+        low temperature.
+
+        For temp_low it is checked whether it can be passed as
+        - numeric or (1)
+        - time series. (2)
+        - An error is raised if temp_low is empty / NaN. (3)
+
+        In every test, where EERs are calculated, it is checked, whether they are stored in a file
+        with temp_low as characteristic value only if temp_high is constant.
+        """
+        # For convenience reasons of the tests, temp_high will be set to constant value
+        temp_high = 25.0
+
+        # Weather data for chiller
+        hot_weather = pd.DataFrame(
+            [32, 31.5, 30, 34, 32, 33], columns=["temp_air"], index=self.date_range,
+        )
+
+        # (1) temp_low is passed as numeric
+        temp_low = 15.0
+        filename = os.path.join(
+            self.user_inputs_pvcompare_directory, "heat_pumps_and_chillers.csv"
+        )
+        original_data = pd.read_csv(filename, header=0, index_col=0)
+        data = original_data.copy()
+        data["temp_high"]["chiller"] = temp_high
+        data["temp_low"]["chiller"] = temp_low
+        data.to_csv(filename)
+        quality_grade = data["quality_grade"]["chiller"]
+
+        eer_calc = hc.calculate_cops_and_eers(
+            weather=hot_weather,
+            lat=self.lat,
+            lon=self.lon,
+            temperature_col="temp_air",
+            mode="chiller",
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            user_inputs_mvs_directory=self.mvs_inputs_directory,
+        )
+
+        eer_ref = np.multiply(
+            quality_grade,
+            np.divide(np.add(temp_low, 273.15), np.subtract(temp_high, temp_low)),
+        )
+        eer_ref = np.multiply(eer_ref, np.ones(len(hot_weather)))
+        eer_ref = pd.Series(eer_ref, index=self.date_range)
+
+        assert_series_equal(eer_calc, eer_ref, check_names=False)
+        assert (
+            os.path.exists(
+                os.path.join(
+                    self.mvs_inputs_directory,
+                    "time_series",
+                    "eers_chiller_2018_53.2_13.2_15.0.csv",
+                )
+            )
+            == True
+        )
+        original_data.to_csv(filename)
+
+        # (2) temp_low is passed as time series
+        temp_low = [15.0, 14.0, 14.5, 15.0, 15.5, 13.5]
+        temp_low_df = pd.DataFrame(data={"degC": temp_low})
+        temp_low_df.to_csv(
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "temperatures_chiller.csv"
+            )
+        )
+
+        data["temp_high"]["chiller"] = temp_high
+        data["temp_low"][
+            "chiller"
+        ] = "{'file_name': 'temperatures_chiller.csv', 'header': 'degC', 'unit': ''}"
+        data.to_csv(filename)
+
+        eer_calc = hc.calculate_cops_and_eers(
+            weather=hot_weather,
+            lat=self.lat,
+            lon=self.lon,
+            temperature_col="temp_air",
+            mode="chiller",
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            user_inputs_mvs_directory=self.mvs_inputs_directory,
+        )
+
+        eer_ref = np.multiply(
+            quality_grade,
+            np.divide(np.add(temp_low, 273.15), np.subtract(temp_high, temp_low)),
+        )
+        eer_ref = pd.Series(eer_ref, index=self.date_range)
+
+        assert_series_equal(eer_calc, eer_ref, check_names=False)
+        assert (
+            os.path.exists(
+                os.path.join(
+                    self.mvs_inputs_directory,
+                    "time_series",
+                    "eers_chiller_2018_53.2_13.2.csv",
+                )
+            )
+            == True
+        )
+        original_data.to_csv(filename)
+
+        # (3) temp_low is NaN and error is raised
+        temp_low = np.nan
+        data["temp_high"]["chiller"] = temp_high
+        data["temp_low"]["chiller"] = temp_low
+        data.to_csv(filename)
+
+        with pytest.raises(ValueError):
+            hc.calculate_cops_and_eers(
+                weather=hot_weather,
+                lat=self.lat,
+                lon=self.lon,
+                temperature_col="temp_air",
+                mode="chiller",
+                user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+                user_inputs_mvs_directory=self.mvs_inputs_directory,
+            )
+
+        original_data.to_csv(filename)
+
+        # Delete files
+        filename_1 = "eers_chiller_2018_53.2_13.2.csv"
+        filename_2 = "eers_chiller_2018_53.2_13.2_15.0.csv"
+
+        files = [filename_1, filename_2]
+        for file in files:
+            filepath = os.path.join(self.mvs_inputs_directory, "time_series", file)
+            if os.path.exists(filepath):
+                os.remove(filepath)
+
+        filename_3 = "temperatures_chiller.csv"
+        filepath_3 = os.path.join(self.user_inputs_pvcompare_directory, filename_3)
+        if os.path.exists(filepath_3):
+            os.remove(filepath_3)
+
 
 class TestAddSectorCoupling:
     @classmethod
