@@ -84,13 +84,63 @@ def calculate_cops_and_eers(
             f"Parameter `mode` should be 'heat_pump' or 'chiller' but is {mode}"
         )
     # prepare parameters for calc_cops
-    low_temperature = float(parameters.temp_low)
-    high_temp = float(parameters.temp_high)
-    high_temperature = [float(parameters.temp_high)]
-    quality_grade = float(parameters.quality_grade)
 
-    # prepare ambient temperature for calc_cops (list)
-    ambient_temperature = weather[temperature_col].values.tolist()
+    def process_temperatures(temperature, level, mode):
+        # Temperature can be passed in the following way:
+        # 1. As NaN - The lower/higher temperature of the heat pump/chiller equals the ambient temperature time series
+        # 2. As single value (float or int) - The temperature is constant
+        # 3. As time series - The temperature is not constant or differs from ambient temperature (eg. ground source)
+        try:
+            # Numerics and NaNs pass
+            temperature = float(temperature)
+            try:
+                # Numerics pass
+                int(temperature)
+                temperature = [temperature]
+                logging.info(
+                    f"The {mode} is modeled with the constant {level} temperature of {temperature} °C"
+                )
+                return temperature
+            except ValueError:
+                # In case of NaN
+                if (level == "low" and mode == "heat_pump") or (
+                    level == "high" and mode == "chiller"
+                ):
+                    # Prepare ambient temperature for calc_cops (list)
+                    temperature = weather[temperature_col].values.tolist()
+                    logging.info(
+                        f"The {mode} is modeled with the ambient temperature from weather data as {level} temperature."
+                    )
+                    return temperature
+                else:
+                    # Required parameter is missing
+                    raise ValueError(
+                        f"Missing required value of {mode}: Please provide a numeric as {mode}'s {level} temperature in heat_pumps_and_chillers.csv."
+                    )
+        except ValueError:
+            # In case temperatures are provided as time series in separate file
+            try:
+                temp_string = temperature.split("'")
+                temp_filename = temp_string[3]
+                temp_header = temp_string[7]
+                temperature_df = pd.read_csv(
+                    os.path.join(user_inputs_pvcompare_directory, temp_filename)
+                )
+                temperature_df = temperature_df.set_index(temp_header)
+                temperature = temperature_df.index.tolist()
+                logging.info(
+                    f"The {mode} is modeled with passed time series as {level} temperature."
+                )
+                return temperature
+
+            except AttributeError:
+                raise ValueError(
+                    f"Wrong value: Please check the {level} temperature of the {mode}. See the documentation on passing the {mode}'s temperatures for further information"
+                )
+
+    low_temperature = process_temperatures(parameters.temp_low, "low", mode)
+    high_temperature = process_temperatures(parameters.temp_high, "high", mode)
+    quality_grade = float(parameters.quality_grade)
 
     # create add on to filename (year, lat, lon)
     year = maya.parse(weather.index[int(len(weather) / 2)]).datetime().year
@@ -112,7 +162,7 @@ def calculate_cops_and_eers(
 
         efficiency = cmpr_hp_chiller.calc_cops(
             temp_high=high_temperature,
-            temp_low=ambient_temperature,
+            temp_low=low_temperature,
             quality_grade=quality_grade,
             mode=mode,
             temp_threshold_icing=temp_threshold_icing,
@@ -125,7 +175,7 @@ def calculate_cops_and_eers(
 
     elif mode == "chiller":
         efficiency = cmpr_hp_chiller.calc_cops(
-            temp_high=ambient_temperature,
+            temp_high=high_temperature,
             temp_low=low_temperature,
             quality_grade=quality_grade,
             mode=mode,
@@ -135,7 +185,11 @@ def calculate_cops_and_eers(
 
     # add list of cops/eers to data frame
     df = pd.DataFrame(weather[temperature_col])
-    df[column_name] = efficiency
+
+    try:
+        df[column_name] = efficiency
+    except ValueError:
+        df[column_name] = np.multiply(efficiency, np.ones(len(df)))
 
     # set negative COPs/EERs to np.inf
     # COP/EER below zero results from temp_low > temp_high
