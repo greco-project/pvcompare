@@ -86,10 +86,29 @@ def calculate_cops_and_eers(
     # prepare parameters for calc_cops
 
     def process_temperatures(temperature, level, mode):
-        # Temperature can be passed in the following way:
-        # 1. As NaN - The lower/higher temperature of the heat pump/chiller equals the ambient temperature time series
-        # 2. As single value (float or int) - The temperature is constant
-        # 3. As time series - The temperature is not constant or differs from ambient temperature (eg. ground source)
+        """
+        Temperature can be passed in the following way:
+        1. As NaN - The lower/higher temperature of the heat pump/chiller equals the ambient temperature time series
+        2. As single value (float or int) - The temperature is constant
+        3. As time series - The temperature is not constant or differs from ambient temperature (eg. ground source)
+
+        Parameters
+        ----------
+        temperature : float
+        Passed temperature which was written from input data
+
+        level : str
+        Defines whether high or low temperature has been passed.
+
+        mode : str
+        Defines whether COPs of heat pump ("heat_pump") or EERs of chiller
+        ("chiller") are calculated. Default: "heat_pump".
+
+        Returns
+        -------
+        temperature : list
+        Temperature adjusted to use case of plant
+        """
         try:
             # Numerics and NaNs pass
             temperature = float(temperature)
