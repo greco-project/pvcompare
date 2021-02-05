@@ -144,10 +144,13 @@ def calculate_cops_and_eers(
 
     # create add on to filename (year, lat, lon)
     year = maya.parse(weather.index[int(len(weather) / 2)]).datetime().year
-    add_on = f"_{year}_{lat}_{lon}_{high_temp}"
 
     # calculate COPs or EERs with oemof thermal
     if mode == "heat_pump":
+        if len(high_temperature) > 1:
+            add_on = f"_{year}_{lat}_{lon}"
+        elif len(high_temperature) == 1:
+            add_on = f"_{year}_{lat}_{lon}_{high_temperature[0]}"
         # additional parameters for heat_pump mode
         factor_icing = (
             None
@@ -174,6 +177,10 @@ def calculate_cops_and_eers(
         filename = f"cops_heat_pump{add_on}.csv"
 
     elif mode == "chiller":
+        if len(low_temperature) > 1:
+            add_on = f"_{year}_{lat}_{lon}"
+        elif len(low_temperature) == 1:
+            add_on = f"_{year}_{lat}_{lon}_{low_temperature[0]}"
         efficiency = cmpr_hp_chiller.calc_cops(
             temp_high=high_temperature,
             temp_low=low_temperature,
