@@ -266,6 +266,125 @@ class TestCalculateCopsAndEers:
         if os.path.exists(filepath_3):
             os.remove(filepath_3)
 
+    def test_calculate_cops_and_eers_process_temperatures_hp_temp_low(self):
+        """
+        This tests examine the proper processing of the heat pump's
+        low temperature.
+
+        For temp_low it is checked whether it can be passed as
+        - numeric or (has been tested in test_calculate_cops_and_eers_process_temperatures_hp_temp_high() (1))
+        - time series or (1)
+        - empty / NaN - In this case the ambient temperature should
+          be set as temp_low (2)
+
+        In every test, where COPs are calculated, it is checked, whether they are stored in a file
+        with temp_high as characteristic value only if temp_high is constant.
+        """
+        # For convenience reasons of the tests, temp-high will be set to constant value
+        temp_high = 35.0
+
+        filename = os.path.join(
+            self.user_inputs_pvcompare_directory, "heat_pumps_and_chillers.csv"
+        )
+        original_data = pd.read_csv(filename, header=0, index_col=0)
+        data = original_data.copy()
+        quality_grade = data["quality_grade"]["heat_pump"]
+
+        # (1) temp_low is passed as time series
+        temp_low = [12.0, 11.0, 12.0, 13.0, 11.0, 9.5]
+        temp_low_df = pd.DataFrame(data={"degC": temp_low})
+        temp_low_df.to_csv(
+            os.path.join(
+                self.user_inputs_pvcompare_directory, "temperatures_heat_pump.csv"
+            )
+        )
+
+        data["temp_high"]["heat_pump"] = temp_high
+        data["temp_low"][
+            "heat_pump"
+        ] = "{'file_name': 'temperatures_heat_pump.csv', 'header': 'degC', 'unit': ''}"
+        data.to_csv(filename)
+
+        cop_calc = hc.calculate_cops_and_eers(
+            weather=self.weather,
+            lat=self.lat,
+            lon=self.lon,
+            temperature_col="temp_air",
+            mode="heat_pump",
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            user_inputs_mvs_directory=self.mvs_inputs_directory,
+        )
+
+        cop_ref = np.multiply(
+            quality_grade,
+            np.divide(np.add(temp_high, 273.15), np.subtract(temp_high, temp_low)),
+        )
+        cop_ref = np.multiply(cop_ref, np.ones(len(self.weather)))
+        cop_ref = pd.Series(cop_ref, index=self.date_range)
+
+        assert_series_equal(cop_calc, cop_ref, check_names=False)
+        assert (
+            os.path.exists(
+                os.path.join(
+                    self.mvs_inputs_directory,
+                    "time_series",
+                    "cops_heat_pump_2018_53.2_13.2_35.0.csv",
+                )
+            )
+            == True
+        )
+        original_data.to_csv(filename)
+
+        # (2) temp_low is NaN and equals ambient temperature
+        temp_low = np.nan
+        data["temp_high"]["heat_pump"] = temp_high
+        data["temp_low"]["heat_pump"] = temp_low
+        data.to_csv(filename)
+
+        cop_calc = hc.calculate_cops_and_eers(
+            weather=self.weather,
+            lat=self.lat,
+            lon=self.lon,
+            temperature_col="temp_air",
+            mode="heat_pump",
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            user_inputs_mvs_directory=self.mvs_inputs_directory,
+        )
+
+        cop_ref = np.multiply(
+            quality_grade,
+            np.divide(np.add(temp_high, 273.15), np.subtract(temp_high, self.weather)),
+        )
+
+        assert_series_equal(cop_calc, cop_ref["temp_air"], check_names=False)
+        assert (
+            os.path.exists(
+                os.path.join(
+                    self.mvs_inputs_directory,
+                    "time_series",
+                    "cops_heat_pump_2018_53.2_13.2_35.0.csv",
+                )
+            )
+            == True
+        )
+
+        original_data.to_csv(filename)
+
+        # Delete files
+        filename_1 = "cops_heat_pump_2018_53.2_13.2.csv"
+        filename_2 = "cops_heat_pump_2018_53.2_13.2_35.0.csv"
+
+        files = [filename_1, filename_2]
+        for file in files:
+            filepath = os.path.join(self.mvs_inputs_directory, "time_series", file)
+            if os.path.exists(filepath):
+                os.remove(filepath)
+
+        filename_3 = "temperatures_heat_pump.csv"
+        filepath_3 = os.path.join(self.user_inputs_pvcompare_directory, filename_3)
+        if os.path.exists(filepath_3):
+            os.remove(filepath_3)
+
 
 class TestAddSectorCoupling:
     @classmethod
