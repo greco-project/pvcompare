@@ -1,7 +1,7 @@
 ,unit,project_data
 country,str,Germany
-latitude,str,48.1351
-longitude,str,11.582
+latitude,str,52.52437
+longitude,str,13.41053
 project_id,str,1
 project_name,str,Template Sector-coupling
 scenario_id,str,1
