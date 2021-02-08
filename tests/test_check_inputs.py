@@ -165,6 +165,27 @@ class TestDemandProfiles:
 
         assert float(electricity_price) == 0.2239
 
+    def test_add_local_grid_parameters_gas(self):
+        """ """
+        filename = os.path.join(
+            self.user_inputs_mvs_directory, "csv_elements/",
+            "energyProviders.csv"
+        )
+        file = pd.read_csv(filename, index_col=0)
+
+        file.at["energy_price", "Gas plant 01"] = 0.0
+        file.to_csv(filename)
+
+        add_local_grid_parameters(
+            user_inputs_mvs_directory=self.user_inputs_mvs_directory,
+            static_inputs_directory=self.static_inputs_directory,
+        )
+        # load csv
+        file = pd.read_csv(filename, index_col=0)
+        electricity_price = file.at["energy_price", "Gas plant 01"]
+
+        assert float(electricity_price) == 0.0719527075812275
+
     def test_overwrite_mvs_energy_production_file_overwrite_is_false(self):
 
         file = pd.read_csv(

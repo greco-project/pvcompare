@@ -225,7 +225,7 @@ def add_local_grid_parameters(static_inputs_directory, user_inputs_mvs_directory
 
     This function adds the grid parameters (electricity price, feed-in tariff, CO2 emissions,
     renewable share, gas price) from local_grid_parameters.xlsx to energyProviders.csv.
-    The gas_price is only inserted if a column named "Gas plant" exists in energProviders.csv.
+    The gas_price is only inserted if a column that starts with "Gas plant" exists in energProviders.csv.
 
     If the value is already provided in the 'energyProviders.csv' and this value
     differs from the one in 'electricity_prices.csv' a warning is returned. If
@@ -268,7 +268,7 @@ def add_local_grid_parameters(static_inputs_directory, user_inputs_mvs_directory
         "emission_factor",
         "renewable_share",
     ]
-    if "Gas plant" not in energy_providers.columns:
+    if not energy_providers.columns.str.contains('Gas plant').any():
         list_parameters.remove("gas_price")
 
     for parameter in list_parameters:
@@ -282,25 +282,38 @@ def add_local_grid_parameters(static_inputs_directory, user_inputs_mvs_directory
                 f"is not available. Instead a default value of "
                 f"{value} is inserted into the mvs csv."
             )
+        if parameter == "gas_price":
+            for column in energy_providers.columns:
+                if column.startswith("Gas plant"):
 
-        if parameter == "electricity_price":
-            mvs_row = "energy_price"
-            mvs_column = "Electricity grid"
-        elif parameter == "gas_price":
-            mvs_row = "energy_price"
-            mvs_column = "Heat grid"
+                    add_parameter_to_mvs_file(
+                        user_inputs_mvs_directory=user_inputs_mvs_directory,
+                        mvs_filename="energyProviders.csv",
+                        mvs_row="energy_price",
+                        mvs_column=column,
+                        pvcompare_parameter=value,
+                        warning=True,
+                    )
+
+        elif parameter == "electricity_price":
+
+            add_parameter_to_mvs_file(
+                user_inputs_mvs_directory=user_inputs_mvs_directory,
+                mvs_filename="energyProviders.csv",
+                mvs_row="energy_price",
+                mvs_column="Electricity grid",
+                pvcompare_parameter=value,
+                warning=True,
+            )
         else:
-            mvs_row = parameter
-            mvs_column = "Electricity grid"
-
-        add_parameter_to_mvs_file(
-            user_inputs_mvs_directory=user_inputs_mvs_directory,
-            mvs_filename="energyProviders.csv",
-            mvs_row=mvs_row,
-            mvs_column=mvs_column,
-            pvcompare_parameter=value,
-            warning=True,
-        )
+            add_parameter_to_mvs_file(
+                user_inputs_mvs_directory=user_inputs_mvs_directory,
+                mvs_filename="energyProviders.csv",
+                mvs_row=parameter,
+                mvs_column="Electricity grid",
+                pvcompare_parameter=value,
+                warning=True,
+            )
 
 
 def overwrite_mvs_energy_production_file(
