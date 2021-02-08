@@ -147,6 +147,7 @@ def loop_pvcompare(
                 longitude = loop_dict[key][2]
 
                 single_loop_pvcompare(
+                    scenario_name=scenario_name,
                     storeys=storeys,
                     country=country,
                     latitude=latitude,
@@ -168,6 +169,7 @@ def loop_pvcompare(
             while year <= loop_dict["stop"]:
 
                 single_loop_pvcompare(
+                    scenario_name=scenario_name,
                     storeys=storeys,
                     country=country,
                     latitude=latitude,
@@ -190,6 +192,7 @@ def loop_pvcompare(
             while number_of_storeys <= loop_dict["stop"]:
 
                 single_loop_pvcompare(
+                    scenario_name=scenario_name,
                     storeys=number_of_storeys,
                     country=country,
                     latitude=latitude,
@@ -221,6 +224,7 @@ def loop_pvcompare(
                 pv_setup.to_csv(data_path, index=False)
 
                 single_loop_pvcompare(
+                    scenario_name=scenario_name,
                     storeys=storeys,
                     country=country,
                     latitude=latitude,
@@ -249,6 +253,7 @@ def loop_pvcompare(
                 hp_file.to_csv(data_path)
 
                 single_loop_pvcompare(
+                    scenario_name=scenario_name,
                     storeys=storeys,
                     country=country,
                     latitude=latitude,
@@ -267,6 +272,7 @@ def loop_pvcompare(
 
 
 def single_loop_pvcompare(
+    scenario_name,
     storeys,
     country,
     latitude,
@@ -285,6 +291,8 @@ def single_loop_pvcompare(
 
     Parameters
     ----------
+    scenario_name: str
+        name of the scenario.
     storeys: int
         number of storeys
     country: str
@@ -1017,19 +1025,19 @@ if __name__ == "__main__":
     elif loop_type == "year":
         loop_dict = {"start": 2010, "stop": 2017, "step": 1}
 
-    # loop_pvcompare(
-    #     scenario_name=scenario_name,
-    #     latitude=latitude,
-    #     longitude=longitude,
-    #     years=years,
-    #     storeys=storeys,
-    #     country=country,
-    #     loop_type=loop_type,
-    #     loop_dict=loop_dict,
-    #     user_inputs_mvs_directory=None,
-    #     outputs_directory=None,
-    #     user_inputs_pvcompare_directory=None,
-    # )
+    loop_pvcompare(
+        scenario_name=scenario_name,
+        latitude=latitude,
+        longitude=longitude,
+        years=years,
+        storeys=storeys,
+        country=country,
+        loop_type=loop_type,
+        loop_dict=loop_dict,
+        user_inputs_mvs_directory=None,
+        outputs_directory=None,
+        user_inputs_pvcompare_directory=None,
+    )
     # loop_mvs(
     #     latitude=latitude,
     #     longitude=longitude,
@@ -1071,10 +1079,10 @@ if __name__ == "__main__":
     #         "Degree of autonomy",
     #     ],
     # )
-
-    compare_weather_years(
-        latitude=latitude,
-        longitude=longitude,
-        country=country,
-        static_inputs_directory=None,
-    )
+    #
+    # compare_weather_years(
+    #     latitude=latitude,
+    #     longitude=longitude,
+    #     country=country,
+    #     static_inputs_directory=None,
+    # )
