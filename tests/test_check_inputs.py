@@ -17,7 +17,7 @@ from pvcompare.check_inputs import (
     add_scenario_name_to_project_data,
     add_location_and_year_to_project_data,
     check_for_valid_country_year,
-    add_electricity_price,
+    add_local_grid_parameters,
     overwrite_mvs_energy_production_file,
     add_parameters_to_energy_production_file,
     add_file_name_to_energy_consumption_file,
@@ -145,7 +145,7 @@ class TestDemandProfiles:
                 year=self.year,
             )
 
-    def test_add_electricity_price(self):
+    def test_add_local_grid_parameters(self):
         """ """
         filename = os.path.join(
             self.user_inputs_mvs_directory, "csv_elements/", "energyProviders.csv"
@@ -155,7 +155,7 @@ class TestDemandProfiles:
         file.at["energy_price", "Electricity grid"] = 0.2403
         file.to_csv(filename)
 
-        add_electricity_price(
+        add_local_grid_parameters(
             user_inputs_mvs_directory=self.user_inputs_mvs_directory,
             static_inputs_directory=self.static_inputs_directory,
         )
@@ -163,7 +163,7 @@ class TestDemandProfiles:
         file = pd.read_csv(filename, index_col=0)
         electricity_price = file.at["energy_price", "Electricity grid"]
 
-        assert float(electricity_price) == 0.2403
+        assert float(electricity_price) == 0.2239
 
     def test_overwrite_mvs_energy_production_file_overwrite_is_false(self):
 
