@@ -221,13 +221,16 @@ def check_for_valid_country_year(country, year, static_inputs_directory):
 
 def add_local_grid_parameters(static_inputs_directory, user_inputs_mvs_directory):
     """
-    Adds the electricity price from 'electricity_prices.csv' to 'energyProviders.csv'.
+    Adds grid parameters.
 
-    This function adds the cost of electricity for the country and the latest
-     year (2019) from the csv
-    file 'electricity_prices.csv' to 'energyProviders.csv'.
+    This function adds the grid parameters (electricity price, feed-in tariff, CO2 emissions,
+    renewable share, gas price) from local_grid_parameters.xlsx to energyProviders.csv.
+    The gas_price is only inserted if a column named "Gas plant" exists in energProviders.csv.
+
     If the value is already provided in the 'energyProviders.csv' and this value
-    differs from the one in 'electricity_prices.csv' a warning is returned.
+    differs from the one in 'electricity_prices.csv' a warning is returned. If
+    no value is available for the specific country, a default value is inserted
+    instead and a warning is returned.
 
     Parameters
     -----------
@@ -242,7 +245,7 @@ def add_local_grid_parameters(static_inputs_directory, user_inputs_mvs_directory
     --------
     None
     """
-    # load electricity prices
+    # load grid_parameters
     grid_file_path = os.path.join(static_inputs_directory, "local_grid_parameters.xlsx")
     grid_parameters = pd.read_excel(grid_file_path, index_col=0, header=0)
 
@@ -265,7 +268,7 @@ def add_local_grid_parameters(static_inputs_directory, user_inputs_mvs_directory
         "emission_factor",
         "renewable_share",
     ]
-    if "Heat grid" not in energy_providers.columns:
+    if "Gas plant" not in energy_providers.columns:
         list_parameters.remove("gas_price")
 
     for parameter in list_parameters:
