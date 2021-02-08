@@ -261,20 +261,21 @@ def add_strat_tes(
     # *********************************************************************************************
     # Do precalculations for the stratified thermal storage
     # *********************************************************************************************
-    (
-        nominal_storage_capacity,
-        loss_rate,
-        fixed_losses_relative,
-        fixed_losses_absolute,
-    ) = calc_strat_tes_param(
-        weather=weather,
-        user_inputs_mvs_directory=user_inputs_mvs_directory,
-        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
-    )
-    logging.info(f"Stratified thermal storage successfully precalculated.")
-
-    # Save calculated nominal storage capacity and loss rate to storage_xx.csv
     if len(stratified_thermal_storages) != 0:
+        (
+            nominal_storage_capacity,
+            loss_rate,
+            fixed_losses_relative,
+            fixed_losses_absolute,
+        ) = calc_strat_tes_param(
+            weather=weather,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
+            user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+        )
+        logging.info(f"Stratified thermal storage successfully precalculated.")
+
+        # Save calculated nominal storage capacity and loss rate to storage_xx.csv
+
         storage_csv = energy_storage.at["storage_filename", strat_tes_label]
 
         check_inputs.add_parameters_to_storage_xx_file(
@@ -290,76 +291,76 @@ def add_strat_tes(
             index_col=0,
         )
 
-    # *********************************************************************************************
-    # Check if time dependent data exists. Else save above calculated time series
-    # *********************************************************************************************
-    file_exists = True
-    # Put all the time dependent values in a list
-    time_dependent_value = [
-        "fixed_thermal_losses_relative",
-        "fixed_thermal_losses_absolute",
-    ]
-    # Units of the time dependent values
-    unit = ["no_unit", "kWh"]
-    # Explaining name of that value
-    value_name = ["fixed thermal losses relative", "fixed thermal losses absolute"]
-    # Values from precalculation
-    parameter = [fixed_losses_relative, fixed_losses_absolute]
+        # *********************************************************************************************
+        # Check if time dependent data exists. Else save above calculated time series
+        # *********************************************************************************************
+        file_exists = True
+        # Put all the time dependent values in a list
+        time_dependent_value = [
+            "fixed_thermal_losses_relative",
+            "fixed_thermal_losses_absolute",
+        ]
+        # Units of the time dependent values
+        unit = ["no_unit", "kWh"]
+        # Explaining name of that value
+        value_name = ["fixed thermal losses relative", "fixed thermal losses absolute"]
+        # Values from precalculation
+        parameter = [fixed_losses_relative, fixed_losses_absolute]
 
-    for time_value in time_dependent_value:
-        time_value_index = time_dependent_value.index(time_value)
-        value_name_underscore = value_name[time_value_index].replace(" ", "_")
-        for stratified_thermal_storage in stratified_thermal_storages:
-            value = storage_xx["storage capacity"][time_value]
-            try:
-                float(value)
-                logging.info(
-                    f"Stratified thermal storage in column 'storage capacity' of '{storage_csv}' has "
-                    + f"constant {value_name[time_value_index]} {value}. For using temperature dependent values check the documentation."
-                )
-            except ValueError:
-                # check if result file exists
-                filename_csv_excl_path = value.split("'")[3]
-                filename_csv = os.path.join(
-                    user_inputs_mvs_directory, "time_series", filename_csv_excl_path
-                )
-
-                if not os.path.isfile(filename_csv):
-                    year = weather.index[int(len(weather) / 2)].year
-                    result_filename = os.path.join(
-                        user_inputs_mvs_directory,
-                        "time_series",
-                        f"{value_name_underscore}_{year}_{lat}_{lon}_{temp_high}.csv",
-                    )
+        for time_value in time_dependent_value:
+            time_value_index = time_dependent_value.index(time_value)
+            value_name_underscore = value_name[time_value_index].replace(" ", "_")
+            for stratified_thermal_storage in stratified_thermal_storages:
+                value = storage_xx["storage capacity"][time_value]
+                try:
+                    float(value)
                     logging.info(
-                        f"File containing {value_name} is missing: {filename_csv} \nCalculated times series of {value_name} are used instead."
+                        f"Stratified thermal storage in column 'storage capacity' of '{storage_csv}' has "
+                        + f"constant {value_name[time_value_index]} {value}. For using temperature dependent values check the documentation."
                     )
-                    file_exists = False
-                    # write new filename into storage_xx
-                    storage_xx["storage capacity"][time_value] = storage_xx[
-                        "storage capacity"
-                    ][time_value].replace(
-                        filename_csv_excl_path,
-                        f"{value_name_underscore}_{year}_{lat}_{lon}_{temp_high}.csv",
+                except ValueError:
+                    # check if result file exists
+                    filename_csv_excl_path = value.split("'")[3]
+                    filename_csv = os.path.join(
+                        user_inputs_mvs_directory, "time_series", filename_csv_excl_path
                     )
 
-                if file_exists == False:
-                    # update storage_xx.csv
-                    storage_xx.to_csv(
-                        os.path.join(
-                            user_inputs_mvs_directory, "csv_elements", f"{storage_csv}"
-                        ),
-                        na_rep="NaN",
-                    )
-                    # Write results of time dependent values if non existent
-                    if not os.path.isfile(result_filename):
-                        save_time_dependent_values(
-                            parameter[time_value_index],
-                            value_name_underscore,
-                            unit[time_value_index],
-                            result_filename,
-                            time_series_directory,
+                    if not os.path.isfile(filename_csv):
+                        year = weather.index[int(len(weather) / 2)].year
+                        result_filename = os.path.join(
+                            user_inputs_mvs_directory,
+                            "time_series",
+                            f"{value_name_underscore}_{year}_{lat}_{lon}_{temp_high}.csv",
                         )
+                        logging.info(
+                            f"File containing {value_name} is missing: {filename_csv} \nCalculated times series of {value_name} are used instead."
+                        )
+                        file_exists = False
+                        # write new filename into storage_xx
+                        storage_xx["storage capacity"][time_value] = storage_xx[
+                            "storage capacity"
+                        ][time_value].replace(
+                            filename_csv_excl_path,
+                            f"{value_name_underscore}_{year}_{lat}_{lon}_{temp_high}.csv",
+                        )
+
+                    if file_exists == False:
+                        # update storage_xx.csv
+                        storage_xx.to_csv(
+                            os.path.join(
+                                user_inputs_mvs_directory, "csv_elements", f"{storage_csv}"
+                            ),
+                            na_rep="NaN",
+                        )
+                        # Write results of time dependent values if non existent
+                        if not os.path.isfile(result_filename):
+                            save_time_dependent_values(
+                                parameter[time_value_index],
+                                value_name_underscore,
+                                unit[time_value_index],
+                                result_filename,
+                                time_series_directory,
+                            )
 
 
 def run_stratified_thermal_storage():
