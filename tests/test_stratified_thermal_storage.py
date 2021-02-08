@@ -73,6 +73,11 @@ class TestTES:
             header=0,
             index_col=0,
         )
+        self.energy_providers_original = pd.read_csv(
+            os.path.join(self.mvs_csv_inputs_path, "energyProviders.csv"),
+            header=0,
+            index_col=0,
+        )
 
     # # this ensure that the test is only ran if explicitly executed, ie not when the `pytest` command
     # # alone is called
@@ -261,14 +266,165 @@ class TestTES:
         self.energy_storage_original.to_csv(
             os.path.join(self.mvs_csv_inputs_path, "energyStorage.csv"), na_rep="NaN"
         )
+        self.energy_production_original = pd.read_csv(
+            os.path.join(self.mvs_csv_inputs_path, "energyProduction.csv"),
+            header=0,
+            index_col=0,
+        )
 
-    def teardown_method(self):
-        # delete directory
         scenarios = [self.scenario_name, self.scenario_name_with_TES_bus]
         for scenario in scenarios:
             outputs_directory = os.path.join(self.outputs_directory, scenario)
             if os.path.exists(outputs_directory):
                 shutil.rmtree(outputs_directory)
+
+    # # this ensure that the test is only ran if explicitly executed, ie not when the `pytest` command
+    # # alone is called
+
+    @pytest.mark.skipif(
+        EXECUTE_TESTS_ON not in (TESTS_ON_MASTER),
+        reason="Benchmark test deactivated, set env variable "
+        "EXECUTE_TESTS_ON to 'master' to run this test",
+    )
+    @mock.patch("argparse.ArgumentParser.parse_args", return_value=argparse.Namespace())
+    def test_raiseError_temperature_match_hp(self, margs):
+        """
+        These tests check whether a ValueError is raised if there are no further heat providers
+        and the heat pump's high temperature is lower than the TES's high temperature
+
+        A further test checks whether there is no ValueError raised, in case TES's high temperature
+        is lower but a further heat provider (eg. gas plant) exist
+        """
+        strat_tes_file_path = os.path.join(
+            TEST_USER_INPUTS_PVCOMPARE, "stratified_thermal_storage.csv"
+        )
+        strat_tes_original = pd.read_csv(strat_tes_file_path, header=0, index_col=0,)
+        strat_tes = strat_tes_original.copy()
+        strat_tes.at["temp_h", "var_value"] = 90
+        strat_tes.to_csv(strat_tes_file_path, na_rep="NaN")
+
+        with pytest.raises(ValueError):
+            main.apply_pvcompare(
+                storeys=self.storeys,
+                country=self.country,
+                latitude=self.lat,
+                longitude=self.lon,
+                year=self.year,
+                static_inputs_directory=self.static_inputs_directory,
+                user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+                user_inputs_mvs_directory=self.user_inputs_mvs_directory,
+                plot=False,
+                pv_setup=self.pv_setup,
+                overwrite_grid_costs=True,
+                overwrite_pv_parameters=True,
+            )
+
+        # Add gas bus
+        energy_busses = self.energy_busses_original.copy()
+        energy_bus_gas = pd.DataFrame(data={"": ["energyVector"], "Gas bus": ["Heat"]})
+        energy_busses.reset_index(drop=True, inplace=False)
+        energy_busses = energy_busses.join(energy_bus_gas, how="right")
+        energy_busses = energy_busses.set_index("")
+        energy_busses.to_csv(
+            os.path.join(self.mvs_csv_inputs_path, "energyBusses.csv"), na_rep="NaN"
+        )
+
+        # Add gas provider
+        energy_providers = self.energy_providers_original.copy()
+        providers_index = energy_providers.index
+        gas_plant = [
+            "kW",
+            "True",
+            0.5,
+            0,
+            0,
+            1,
+            0,
+            "Gas bus",
+            "Gas bus",
+            "Heat",
+            "source",
+            1.9,
+        ]
+        gas_provider = pd.DataFrame(data={"": providers_index, "Gas plant": gas_plant})
+        gas_provider = gas_provider.set_index(providers_index)
+        energy_providers = energy_providers.join(gas_provider, on=providers_index)
+        energy_providers.to_csv(
+            os.path.join(self.mvs_csv_inputs_path, "energyProviders.csv"), na_rep="NaN"
+        )
+
+        # Add gas converters
+        energy_converters = self.energy_conversion_original.copy()
+        converters_index = energy_converters.index
+        gas_heating = [
+            "kW",
+            True,
+            None,
+            0,
+            0,
+            25,
+            0,
+            320,
+            20.9,
+            0,
+            0.97,
+            "Gas bus",
+            "Heat bus",
+            "Heat",
+            "transformer",
+        ]
+        gas_converter = pd.DataFrame(
+            data={"": converters_index, "Gas heating": gas_heating}
+        )
+        gas_converter = gas_converter.set_index(converters_index)
+        energy_converters = energy_converters.join(gas_converter, on=converters_index)
+        energy_converters.to_csv(
+            os.path.join(self.mvs_csv_inputs_path, "energyConversion.csv"), na_rep="NaN"
+        )
+
+        try:
+            main.apply_pvcompare(
+                storeys=self.storeys,
+                country=self.country,
+                latitude=self.lat,
+                longitude=self.lon,
+                year=self.year,
+                static_inputs_directory=self.static_inputs_directory,
+                user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+                user_inputs_mvs_directory=self.user_inputs_mvs_directory,
+                plot=False,
+                pv_setup=self.pv_setup,
+                overwrite_grid_costs=True,
+                overwrite_pv_parameters=True,
+            )
+            result = 0
+        except ValueError or AttributeError:
+            result = 1
+
+        assert result == 0
+
+        # Revert changes made in mvs csv input files
+        strat_tes_original.to_csv(strat_tes_file_path, na_rep="NaN")
+
+        self.storage_xx_original.to_csv(
+            os.path.join(self.mvs_csv_inputs_path, "storage_TES.csv"), na_rep="NaN"
+        )
+        self.energy_busses_original.to_csv(
+            os.path.join(self.mvs_csv_inputs_path, "energyBusses.csv"), na_rep="NaN"
+        )
+        self.energy_conversion_original.to_csv(
+            os.path.join(self.mvs_csv_inputs_path, "energyConversion.csv"), na_rep="NaN"
+        )
+        self.energy_storage_original.to_csv(
+            os.path.join(self.mvs_csv_inputs_path, "energyStorage.csv"), na_rep="NaN"
+        )
+
+        time_series_path = os.path.join(self.user_inputs_mvs_directory, "time_series")
+        time_series_files = os.listdir(time_series_path)
+
+        for file in time_series_files:
+            if os.path.exists(time_series_path):
+                os.remove(os.path.join(time_series_path, file))
 
 
 class TestCalcStratTesParam:
