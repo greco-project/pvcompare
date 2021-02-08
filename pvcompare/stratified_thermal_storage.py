@@ -348,7 +348,9 @@ def add_strat_tes(
                         # update storage_xx.csv
                         storage_xx.to_csv(
                             os.path.join(
-                                user_inputs_mvs_directory, "csv_elements", f"{storage_csv}"
+                                user_inputs_mvs_directory,
+                                "csv_elements",
+                                f"{storage_csv}",
                             ),
                             na_rep="NaN",
                         )
