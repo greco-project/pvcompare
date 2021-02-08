@@ -1,8 +1,8 @@
 var_name,var_value,var_unit
 height,,m
 diameter,0.99,m
-temp_h,95,degC
-temp_c,60,degC
+temp_h,60,degC
+temp_c,35,degC
 s_iso,100,mm
 lamb_iso,0.03,W/(m*K)
 alpha_inside,10,W/(m2*K)
