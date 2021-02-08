@@ -268,7 +268,7 @@ def add_local_grid_parameters(static_inputs_directory, user_inputs_mvs_directory
         "emission_factor",
         "renewable_share",
     ]
-    if not energy_providers.columns.str.contains('Gas plant').any():
+    if not energy_providers.columns.str.contains("Gas plant").any():
         list_parameters.remove("gas_price")
 
     for parameter in list_parameters:

@@ -168,8 +168,7 @@ class TestDemandProfiles:
     def test_add_local_grid_parameters_gas(self):
         """ """
         filename = os.path.join(
-            self.user_inputs_mvs_directory, "csv_elements/",
-            "energyProviders.csv"
+            self.user_inputs_mvs_directory, "csv_elements/", "energyProviders.csv"
         )
         file = pd.read_csv(filename, index_col=0)
 
