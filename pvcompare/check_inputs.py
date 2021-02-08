@@ -607,7 +607,7 @@ def add_parameters_to_storage_xx_file(
         try:
             int(float(storage_xx.at[name, "storage capacity"]))
             logging.info(
-                f"The {name} of the storage already exists in {storage_csv}. Please delete the value in {storage_csv} in order to calculate the storage's {name}"
+                f"The {name} of the storage already exists in {storage_csv}. If you want to calculate the storage's {name} with pvcompare please delete the value in {storage_csv}."
             )
         except ValueError:
             # insert parameter values
