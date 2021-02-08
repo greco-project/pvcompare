@@ -231,17 +231,39 @@ def add_strat_tes(
         index_col=0,
     )
 
-    # 3. Read stratified_thermal_storage.csv
-    storage_input_data = pd.read_csv(
-        os.path.join(user_inputs_pvcompare_directory, "stratified_thermal_storage.csv"),
+    # 3. Read energyConversion.csv
+    energy_conversion = pd.read_csv(
+        os.path.join(user_inputs_mvs_directory, "csv_elements", "energyConversion.csv"),
         header=0,
         index_col=0,
     )
 
+    # 4. Read energyProviders.csv
+    energy_providers = pd.read_csv(
+        os.path.join(user_inputs_mvs_directory, "csv_elements", "energyProviders.csv"),
+        header=0,
+        index_col=0,
+    )
+
+    # 5. Read stratified_thermal_storage.csv
+    storage_file_path = os.path.join(
+        user_inputs_pvcompare_directory, "stratified_thermal_storage.csv"
+    )
+    if os.path.isfile(storage_file_path):
+        storage_input_data = pd.read_csv(storage_file_path, header=0, index_col=0,)
+        temp_high = storage_input_data.at["temp_h", "var_value"]
+
+    # 6. Read heat_pumps_and_chillers.csv
+    hp_file_path = os.path.join(
+        user_inputs_pvcompare_directory, "heat_pumps_and_chillers.csv"
+    )
+    if os.path.isfile(hp_file_path):
+        hp_input_data = pd.read_csv(hp_file_path, header=0, index_col=0,)
+
     # Create add on to filename (year, lat, lon, temp_high)
     year = maya.parse(weather.index[int(len(weather) / 2)]).datetime().year
-    temp_high = storage_input_data.at["temp_h", "var_value"]
-    add_on = f"_{year}_{lat}_{lon}_{temp_high}"
+    if os.path.isfile(storage_file_path):
+        add_on = f"_{year}_{lat}_{lon}_{temp_high}"
 
     # *********************************************************************************************
     # Check if stratified thermal storage exists in specified system
@@ -257,6 +279,41 @@ def add_strat_tes(
                 if outflow == heat_bus and inflow == heat_bus:
                     strat_tes_label = col
                     stratified_thermal_storages.extend([strat_tes_label])
+
+    # *********************************************************************************************
+    # Check if heat pump exists and no further heat provider in specified system
+    # If it does the temperatures of the stratified thermal storage have to match the ones of the
+    # heat pump. This is also checked below
+    # *********************************************************************************************
+    heat_pumps = []
+    for col in energy_conversion.keys():
+        energy_vector = energy_conversion[col]["energyVector"]
+        inflow = energy_conversion[col]["inflow_direction"]
+        if "Heat" in energy_vector and (
+            "Electricity" in inflow or "electricity" in inflow
+        ):
+            heat_pumps.extend([col])
+
+    heat_providers = []
+    for col in energy_providers.keys():
+        energy_vector = energy_providers[col]["energyVector"]
+        if "Heat" in energy_vector:
+            heat_providers.extend([col])
+
+    if (
+        len(stratified_thermal_storages) != 0
+        and len(heat_pumps) != 0
+        and len(heat_providers) == 0
+    ):
+        if hp_input_data is not None:
+            hp_high_temperature = hp_input_data.at["heat_pump", "temp_high"]
+            if temp_high > hp_high_temperature:
+                raise ValueError(
+                    f"High temperature of the thermal energy storage (T_TES_high = {temp_high}) "
+                    f"is lower than the outlet temperature of the heat pump "
+                    f"T_HP_high = {hp_high_temperature}. Please add a further provider of heat or "
+                    f"adjust T_TES_high"
+                )
 
     # *********************************************************************************************
     # Do precalculations for the stratified thermal storage
