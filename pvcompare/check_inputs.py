@@ -258,8 +258,14 @@ def add_local_grid_parameters(static_inputs_directory, user_inputs_mvs_directory
     )
     energy_providers = pd.read_csv(energy_providers_filename, index_col=0)
 
-    list_parameters = ["electricity_price", "gas_price", "feedin_tariff", "emission_factor", "renewable_share"]
-    if 'Heat grid' not in energy_providers.columns:
+    list_parameters = [
+        "electricity_price",
+        "gas_price",
+        "feedin_tariff",
+        "emission_factor",
+        "renewable_share",
+    ]
+    if "Heat grid" not in energy_providers.columns:
         list_parameters.remove("gas_price")
 
     for parameter in list_parameters:
@@ -268,9 +274,11 @@ def add_local_grid_parameters(static_inputs_directory, user_inputs_mvs_directory
         # check if parameter value is available
         if pd.isna(value) is True:
             value = grid_parameters.at["default", parameter]
-            logging.warning(f"The parameter {parameter} for country {country} "
-                            f"is not available. Instead a default value of "
-                            f"{value} is inserted into the mvs csv.")
+            logging.warning(
+                f"The parameter {parameter} for country {country} "
+                f"is not available. Instead a default value of "
+                f"{value} is inserted into the mvs csv."
+            )
 
         if parameter == "electricity_price":
             mvs_row = "energy_price"
@@ -547,7 +555,6 @@ def add_parameter_to_mvs_file(
         f"The parameter {mvs_row} has been added to the "
         f"mvs input file {mvs_filename}."
     )
-
 
 
 def load_parameter_from_mvs_file(
