@@ -1,6 +1,6 @@
 ,unit,Electricity demand,Heat demand
-unit,str,kW,kW
-file_name,str,,
+unit,str,kW,kWh
+file_name,str,electricity_load.csv,heat_load.csv
 inflow_direction,str,Electricity bus,Heat bus
 energyVector,str,Electricity,Heat
 type_oemof,str,sink,sink
