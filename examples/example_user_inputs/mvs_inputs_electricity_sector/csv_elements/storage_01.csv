@@ -10,5 +10,5 @@ dispatch_price,currency/kWh,NaN,0,0
 c_rate,factor of total capacity (kWh),NaN,1,1
 efficiency,factor,1.0,0.9,0.9
 soc_initial,None or factor,None,NaN,NaN
-soc_max,factor,0.8,NaN,NaN
-soc_min,factor,0.1,NaN,NaN
+soc_max,factor,1,NaN,NaN
+soc_min,factor,0.15,NaN,NaN

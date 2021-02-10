@@ -8,6 +8,9 @@ import glob
 import matplotlib.pyplot as plt
 import logging
 import numpy as np
+import seaborn as sns
+
+sns.set()
 
 
 def create_loop_output_structure(outputs_directory, scenario_name, variable_name):
@@ -144,6 +147,7 @@ def loop_pvcompare(
                 longitude = loop_dict[key][2]
 
                 single_loop_pvcompare(
+                    scenario_name=scenario_name,
                     storeys=storeys,
                     country=country,
                     latitude=latitude,
@@ -165,6 +169,7 @@ def loop_pvcompare(
             while year <= loop_dict["stop"]:
 
                 single_loop_pvcompare(
+                    scenario_name=scenario_name,
                     storeys=storeys,
                     country=country,
                     latitude=latitude,
@@ -187,6 +192,7 @@ def loop_pvcompare(
             while number_of_storeys <= loop_dict["stop"]:
 
                 single_loop_pvcompare(
+                    scenario_name=scenario_name,
                     storeys=number_of_storeys,
                     country=country,
                     latitude=latitude,
@@ -218,6 +224,7 @@ def loop_pvcompare(
                 pv_setup.to_csv(data_path, index=False)
 
                 single_loop_pvcompare(
+                    scenario_name=scenario_name,
                     storeys=storeys,
                     country=country,
                     latitude=latitude,
@@ -246,6 +253,7 @@ def loop_pvcompare(
                 hp_file.to_csv(data_path)
 
                 single_loop_pvcompare(
+                    scenario_name=scenario_name,
                     storeys=storeys,
                     country=country,
                     latitude=latitude,
@@ -264,6 +272,7 @@ def loop_pvcompare(
 
 
 def single_loop_pvcompare(
+    scenario_name,
     storeys,
     country,
     latitude,
@@ -282,6 +291,8 @@ def single_loop_pvcompare(
 
     Parameters
     ----------
+    scenario_name: str
+        name of the scenario.
     storeys: int
         number of storeys
     country: str
@@ -417,6 +428,20 @@ def loop_mvs(
     -------
 
     """
+
+    if outputs_directory is None:
+        outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
+    loop_output_directory = create_loop_output_structure(
+        outputs_directory, scenario_name, variable_name
+    )
+    # define filename of variable that should be looped over
+    if user_inputs_mvs_directory is None:
+        user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
+    csv_filename = os.path.join(
+        user_inputs_mvs_directory, "csv_elements", csv_file_variable
+    )
+    csv_file = pd.read_csv(csv_filename, index_col=0)
+
     # loop over years
     for year in years:
         # apply pvcompare
@@ -427,15 +452,6 @@ def loop_mvs(
             storeys=storeys,
             country=country,
         )
-
-        loop_output_directory = create_loop_output_structure(
-            outputs_directory, scenario_name, variable_name
-        )
-        # define filename of variable that should be looped over
-        csv_filename = os.path.join(
-            user_inputs_mvs_directory, "csv_elements", csv_file_variable
-        )
-        csv_file = pd.read_csv(csv_filename, index_col=0)
 
         # loop over the variable
         i = start
@@ -479,7 +495,7 @@ def loop_mvs(
                 j = "0000" + str(i)
 
             excel_file1 = "scalars.xlsx"
-            new_excel_file1 = "scalars_" + str(year) + "_" + str(j) + "_" + ".xlsx"
+            new_excel_file1 = "scalars_" + str(year) + "_" + str(j) + ".xlsx"
             src_dir = os.path.join(mvs_output_directory, excel_file1)
             dst_dir = os.path.join(loop_output_directory, "scalars", new_excel_file1)
             shutil.copy(src_dir, dst_dir)
@@ -763,20 +779,20 @@ def plot_kpi_loop(
     # define y labels
     y_title = {
         "Costs total PV": "Costs total PV \n in EUR",
-        "Installed capacity PV": "Installed capacity PV \nin kWp",
-        "Total renewable energy": "Total renewable energy \nin kWh",
+        "Installed capacity PV": "Installed capacity \nPV in kWp",
+        "Total renewable energy": "Total renewable \nenergy in kWh",
         "Renewable factor": "Renewable factor \nin %",
         "LCOE PV": "LCOE PV \nin EUR/kWh",
         "Self consumption": "Self consumption \nin %",
         "Self sufficiency": "Self sufficiency \nin %",
-        "Degree of autonomy": "Degree of autonomy \nin %",
+        "Degree of autonomy": "Degree of \nautonomy in %",
         "Total emissions": "Total emissions \nin kgCO2eq/kWh",
     }
 
     output.sort_index(inplace=True)
 
     # plot
-    hight = len(kpi)*2
+    hight = len(kpi) * 2
     fig = plt.figure(figsize=(7, hight))
     rows = len(kpi)
     num = (
@@ -800,12 +816,17 @@ def plot_kpi_loop(
             )
             ax.set_ylabel(y_title[i])
             ax.set_xlabel(variable_name)
-            ax.get_yaxis().set_label_coords(-0.1,0.5)
+            ax.get_yaxis().set_label_coords(-0.13, 0.5)
             ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
 
-    #    fig.text(0.5, 0.0, str(variable_name), ha="center", fontsize=10)
     handles, labels = ax.get_legend_handles_labels()
-    fig.legend(handles, labels, bbox_to_anchor=(0.96, 0.96), loc='upper right', borderaxespad=0.)
+    fig.legend(
+        handles,
+        labels,
+        bbox_to_anchor=(0.96, 0.96),
+        loc="upper right",
+        borderaxespad=0.0,
+    )
 
     plt.tight_layout()
 
@@ -822,7 +843,12 @@ def plot_kpi_loop(
 
 
 def compare_weather_years(
-    latitude, longitude, static_inputs_directory=None, outputs_directory=None
+    latitude,
+    longitude,
+    country,
+    static_inputs_directory=None,
+    outputs_directory=None,
+    user_inputs_mvs_directory=None,
 ):
     """
     Barplot that shows yearly aggregated weather parameters: ghi, dni, dhi and
@@ -835,10 +861,16 @@ def compare_weather_years(
         latitude of the location
     longitude: float
         longitude of the location
+    country: str
+        country of simulation
     static_inputs_directory: str
         if None: 'constants.DEFAULT_STATIC_INPUTS_DIRECTORY'
     outputs_directory: str
         if None: 'constants.DEFAULT_OUTPUTS_DIRECTORY
+    user_inputs_mvs_directory: str or None
+        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
     Returns
     -------
         None
@@ -849,7 +881,9 @@ def compare_weather_years(
 
     if static_inputs_directory == None:
         static_inputs_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
-
+    if user_inputs_mvs_directory == None:
+        user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
+    timeseries_directory = os.path.join(user_inputs_mvs_directory, "time_series")
     if outputs_directory == None:
         outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
 
@@ -857,6 +891,9 @@ def compare_weather_years(
     temp = pd.DataFrame()
     dni = pd.DataFrame()
     dhi = pd.DataFrame()
+    electricity_demand = pd.DataFrame()
+    heat_demand = pd.DataFrame()
+
     for file in os.listdir(static_inputs_directory):
         if file.startswith("weatherdata_" + str(latitude) + "_" + str(longitude)):
             year = file.split(".")[2].split("_")[1]
@@ -868,63 +905,97 @@ def compare_weather_years(
             dni[year] = weatherdata["dni"]
             dhi[year] = weatherdata["dhi"]
 
+    for file in os.listdir(timeseries_directory):
+        if file.startswith("electricity_load_"):
+            if file.endswith(str(country) + "_5.csv"):
+                year = int(file.split(".")[0].split("_")[2])
+                electricity_load = pd.read_csv(
+                    os.path.join(timeseries_directory, file), header=0
+                )
+                electricity_demand[year] = electricity_load["kWh"]
+        elif file.startswith("heat_load_"):
+            if file.endswith(str(country) + "_5.csv"):
+                year = int(file.split(".")[0].split("_")[2])
+                heat_load = pd.read_csv(
+                    os.path.join(timeseries_directory, file), header=0
+                )
+                heat_demand[year] = heat_load["kWh"]
+
     ghi = ghi.reindex(sorted(ghi.columns), axis=1)
     temp = temp.reindex(sorted(temp.columns), axis=1)
     dni = dni.reindex(sorted(dni.columns), axis=1)
     dhi = dhi.reindex(sorted(dhi.columns), axis=1)
+    electricity_demand = electricity_demand.reindex(
+        sorted(electricity_demand.columns), axis=1
+    )
+    heat_demand = heat_demand.reindex(sorted(electricity_demand.columns), axis=1)
 
     ghi_sum = ghi.sum(axis=0)
     temp_sum = temp.sum(axis=0)
     dni_sum = dni.sum(axis=0)
     dhi_sum = dhi.sum(axis=0)
+    el_sum = electricity_demand.sum(axis=0)
+    he_sum = heat_demand.sum(axis=0)
 
     # data to plot
     n_groups = len(ghi.columns)
 
     # create plot
-    fig, ax = plt.subplots(figsize=(10, 7))
-    index = np.arange(n_groups)
+    fig = plt.figure(figsize=(11, 7))  # Create matplotlib figure
+    ax = fig.add_subplot(111)  # Create matplotlib axes
     bar_width = 0.15
     opacity = 0.8
 
-    rects1 = plt.bar(
-        index, ghi_sum, bar_width, alpha=opacity, color="tab:blue", label="ghi"
-    )
+    ax2 = ax.twinx()
 
-    rects2 = plt.bar(
-        index + bar_width,
-        dni_sum,
-        bar_width,
+    ghi_sum.plot(
+        kind="bar",
+        color="tab:orange",
+        ax=ax,
         alpha=opacity,
-        color="orange",
+        width=bar_width,
+        label="ghi",
+        position=3,
+    )
+    dni_sum.plot(
+        kind="bar",
+        color="gold",
+        ax=ax,
+        alpha=opacity,
+        width=bar_width,
         label="dni",
+        position=2,
     )
-
-    rects3 = plt.bar(
-        index + 2 * bar_width,
-        dhi_sum,
-        bar_width,
+    dhi_sum.plot(
+        kind="bar",
+        color="tab:green",
+        ax=ax,
         alpha=opacity,
-        color="limegreen",
+        width=bar_width,
         label="dhi",
+        position=1,
     )
-
-    rects4 = plt.bar(
-        index + 3 * bar_width,
-        temp_sum,
-        bar_width,
+    el_sum.plot(
+        kind="bar",
+        color="tab:blue",
+        ax=ax2,
         alpha=opacity,
-        color="pink",
-        label="temp",
+        width=bar_width,
+        label="electricity load",
+        position=0,
     )
+    #    he_sum.plot(kind='bar', color = "purple", ax=ax2, alpha = opacity,width=bar_width, label="heat load", position = 0)
 
     plt.xlabel("year")
-    plt.ylabel("kW/year")
-    plt.title("yearly energy yield")
-    plt.xticks(index + bar_width, (ghi.columns))
-    plt.legend()
-
-    plt.tight_layout()
+    ax.set_ylabel("Irradiance in kW/year")
+    ax2.set_ylabel("Demand in kWh/year")
+    #    plt.title("yearly energy yield")
+    #    plt.xticks(index + bar_width, (ghi.columns))
+    ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.1)
+    # Put a legend to the right of the current axis
+    ax.legend(loc="lower right", bbox_to_anchor=(-0.05, 0))
+    ax2.legend(loc="lower left", bbox_to_anchor=(1.05, 0))
+    #    plt.tight_layout()
 
     # save plot into output directory
     plt.savefig(
@@ -954,33 +1025,33 @@ if __name__ == "__main__":
     elif loop_type == "year":
         loop_dict = {"start": 2010, "stop": 2017, "step": 1}
 
-    # loop_pvcompare(
-    #     scenario_name=scenario_name,
+    loop_pvcompare(
+        scenario_name=scenario_name,
+        latitude=latitude,
+        longitude=longitude,
+        years=years,
+        storeys=storeys,
+        country=country,
+        loop_type=loop_type,
+        loop_dict=loop_dict,
+        user_inputs_mvs_directory=None,
+        outputs_directory=None,
+        user_inputs_pvcompare_directory=None,
+    )
+    # loop_mvs(
     #     latitude=latitude,
     #     longitude=longitude,
     #     years=years,
     #     storeys=storeys,
     #     country=country,
-    #     loop_type=loop_type,
-    #     loop_dict=loop_dict,
-    #     user_inputs_mvs_directory=None,
-    #     outputs_directory=None,
-    #     user_inputs_pvcompare_directory=None,
-    # )
-    # loop_mvs(
-    #     latitude=latitude,
-    #     longitude=longitude,
-    #     year=year,
-    #     storeys=storeys,
-    #     country=country,
     #     variable_name="specific_costs",
-    #     variable_column="pv_plant_01",
+    #     variable_column="PV si",
     #     csv_file_variable="energyProduction.csv",
     #     start=500,
     #     stop=600,
     #     step=100,
-    #     outputs_directory=outputs_directory,
-    #     user_inputs_mvs_directory=user_inputs_mvs_directory,
+    #     outputs_directory=None,
+    #     user_inputs_mvs_directory=None,
     #     scenario_name=scenario_name,
     # )
 
@@ -996,17 +1067,22 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    scenario_dict = {"Scenario_A1": "si", "Scenario_A2": "cpv"}
-    plot_kpi_loop(
-        scenario_dict=scenario_dict,
-        variable_name="storeys",
-        kpi=[
-            "Installed capacity PV",
-            "Total renewable energy",
-            "Self consumption",
-            "Total emissions",
-            "Degree of autonomy"
-        ],
-    )
-
-# compare_weather_years(latitude= latitude, longitude= longitude, static_inputs_directory=None)
+    # scenario_dict = {"Scenario_A1": "psi"}
+    # plot_kpi_loop(
+    #     scenario_dict=scenario_dict,
+    #     variable_name="lifetime",
+    #     kpi=[
+    #         "Installed capacity PV",
+    #         "Total renewable energy",
+    #         "Self consumption",
+    #         "Total emissions",
+    #         "Degree of autonomy",
+    #     ],
+    # )
+    #
+    # compare_weather_years(
+    #     latitude=latitude,
+    #     longitude=longitude,
+    #     country=country,
+    #     static_inputs_directory=None,
+    # )
