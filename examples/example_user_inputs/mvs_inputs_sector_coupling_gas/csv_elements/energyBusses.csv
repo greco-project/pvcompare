@@ -1,0 +1,2 @@
+,unit,Electricity bus,PV bus,Heat bus,Gas bus
+energyVector,str,Electricity,Electricity,Heat,Gas
