@@ -102,7 +102,7 @@ def calculate_cops_and_eers(
 
         mode : str
         Defines whether COPs of heat pump ("heat_pump") or EERs of chiller
-        ("chiller") are calculated. Default: "heat_pump".
+        ("chiller") are calculated.
 
         Returns
         -------
