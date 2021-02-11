@@ -65,8 +65,10 @@ To model a water or brine source heat pump, you can either
 1.2 Chillers
 ************
 
+.. warning:: At this point it is not possible to run simulations with a chiller. Adjustments need to be made in ``add_sector_coupling`` function of ``heat_pump_and_chiller.py``.
+
 Modelling a chiller is carried out analogously. Here **mode**, **quality_grade** and **temp_low** are required values,
-while passing **temp_high**, **factor_icing** and **temp_threshold_icing** are optional.
+while passing **temp_high** is optional. The parameters **factor_icing** and **temp_threshold_icing** have to be passed empty or as *NaN* or *None*.
 
 To model an air source chiller the parameter **temp_high** is passed empty or with *NaN*.
 In this case the *EER* will be calculated from the weather data, to be more exact from the ambient temperature.
