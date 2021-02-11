@@ -37,7 +37,7 @@ You can also provide your own time series of temperatures in a separate file as 
     heat_pump,0.35,35,"{'file_name': 'temperature_heat_pump.csv', 'header': 'degC', 'unit': ''}",None,None
 
 
-(In this example temperatures are provided in ``temperature_heat_pump.csv``. The file's header is *degC*.)
+(In this example temperatures are provided in ``temperature_heat_pump.csv``, with *degC* as header of the column containing the temperatures.)
 
 To model a water or brine source heat pump, you can either
 
@@ -49,7 +49,7 @@ To model a water or brine source heat pump, you can either
         heat_pump,0.35,35,"{'file_name': 'temperatures_heat_pump.csv', 'header': 'degC', 'unit': ''}",None,None
 
 
-    (In this example temperatures are provided in ``temperature_heat_pump.csv``. The file's header is *degC*.)
+    (In this example temperatures are provided in ``temperature_heat_pump.csv``, with *degC* as header of the column containing the temperatures.)
 
 * pass a numeric with **temp_low** to model a constant inlet temperature:
 
@@ -78,7 +78,7 @@ You can also provide your own time series of temperatures in a separate file as 
     chiller,0.35,"{'file_name': 'temperatures_chiller.csv', 'header': 'degC', 'unit': ''}",15,None,None
 
 
-(In this example temperatures are provided in ``temperature_chiller.csv``. The file's header is *degC*.)
+(In this example temperatures are provided in ``temperature_chiller.csv``, with *degC* as header of the column containing the temperatures.)
 
 To model a water or brine source chiller, you can either
 
@@ -90,7 +90,7 @@ To model a water or brine source chiller, you can either
         heat_pump,0.35,"{'file_name': 'temperatures_chiller.csv', 'header': 'degC', 'unit': ''}",15,None,None
 
 
-    (In this example temperatures are provided in ``temperature_chiller.csv``. The file's header is *degC*.)
+    (In this example temperatures are provided in ``temperature_chiller.csv``, with *degC* as header of the column containing the temperatures.)
 
 * pass a numeric with **temp_high** to model a constant outlet temperature:
 
