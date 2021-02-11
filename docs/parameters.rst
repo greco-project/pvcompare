@@ -74,7 +74,7 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     8. **unit**: str, kW
 
 * energyConversion.csv
-    1. **age_installed**: year, 0 (for all components such as charge controllers, inverters and heat pumps)
+    1. **age_installed**: year, 0 (for all components such as charge controllers, inverters, heat pumps, gas boilers)
     2. **development_costs**: currency, 0 (for all components)
     3. **specific_costs**: currency/kW
         a. **storage_charge_controller_in** and **storage_charge_controller_out**: 46 (According to this `source <https://alteredenergy.com/wholesale-cost-of-solar-charge-controllers/>`_, a 12 Volts, 80 Amperes Solar Charge Controller costs about 50 USD, which is about 46 €/kW.)
@@ -91,15 +91,24 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
         l. **heat_pump_brine_water_2020**: 1500 (According to dea_hp_bw)
         m. **heat_pump_brine_water_2030**: 1400 (According to dea_hp_bw)
         n. **heat_pump_brine_water_2050**: 1200 (According to dea_hp_bw)
+        o. **natural_gas_boiler_2015**: 320 (According to `Danish energy agency's technology data of a natural gas boiler [dea_ngb] <https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_individual_heating_installations.pdf>`_ on page 36.)
+        p. **natural_gas_boiler_2020**: 310 (According to dea_ngb)
+        q. **natural_gas_boiler_2030**: 300 (According to dea_ngb)
+        r. **natural_gas_boiler_2050**: 270 (According to dea_ngb)
     4. **efficiency**: factor
         a. **storage_charge_controller_in** and **storage_charge_controller_out**: 1
         b. **solar_inverter_01**: 0.95 (European efficiency is around 0.95, per several sources. `Fronius <https://www.fronius.com/en/photovoltaics/products>`_, for example.)
         c. **heat_pump**: "{'file_name': 'None', 'header': 'no_unit', 'unit': ''}"
+        d. **natural_gas_boiler_2015**: 0.97 (According to dea_ngb)
+        e. **natural_gas_boiler_2020**: 0.97 (According to dea_ngb)
+        f. **natural_gas_boiler_2030**: 0.98 (According to dea_ngb)
+        g. **natural_gas_boiler_2050**: 0.99 (According to dea_ngb)
     5. **inflow_direction**: str
         a. **storage_charge_controller_in**: Electricity
         b. **storage_charge_controller_out**: ESS Li-Ion
         c. **solar_inverter_01**: PV bus1 (if there are more inverters such as **solar_inverter_02**, then the buses from which the electricity flows into the inverter happens, will be named accordingly. E.g.: PV bus2.)
         d. **heat_pump**: Electricity bus
+        e. **natural_gas_boiler**: Gas bus
     6. **installedCap**: kW, 0 (for all components)
     7. **label**: str
         a. **storage_charge_controller_in** and **storage_charge_controller_out**: Charge Contoller ESS Li-Ion (charge)
@@ -110,6 +119,7 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
         c. **heat_pump_air_air**: 12 (According to dea_hp_aa)
         d. **heat_pump_air_water**: 18 (According to dea_hp_aw)
         e. **heat_pump_brine_water**: 20 (According to dea_hp_bw)
+        f. **natural_gas_boiler**: 20 (According to dea_ngb)
     9. **specific_costs_om**: currency/kW
         a. **storage_charge_controller_in** and **storage_charge_controller_out**: 0 (According to `AM Solar <https://amsolar.com/diy-rv-solar-instructions/edmaintenance>`_, maintainence work on charge controllers is minimal. So we can consider the costs to be covered by specific_cost_om in fixcost.csv, which is just the system O&M cost.)
         b. **solar_inverter_01**: 6 (From page 11 in this 2015 Sandia `document <https://prod-ng.sandia.gov/techlib-noauth/access-control.cgi/2016/160649r.pdf>`_, assuming one maintainence activity per year, we can take 7 USD/kW or 6 €/kW.)
@@ -125,6 +135,10 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
         l. **heat_pump_brine_water_2020**: 27.8 (According to dea_hp_bw)
         m. **heat_pump_brine_water_2030**: 25.5 (According to dea_hp_bw)
         n. **heat_pump_brine_water_2050**: 23.9 (According to dea_hp_bw)
+        o. **natural_gas_boiler_2015**: 20.9 (According to dea_ngb)
+        p. **natural_gas_boiler_2020**: 20.5 (According to dea_ngb)
+        q. **natural_gas_boiler_2030**: 19.9 (According to dea_ngb)
+        r. **natural_gas_boiler_2050**: 18.1 (According to dea_ngb)
     10. **dispatch_price**: currency/kWh, 0 (for all components)
     11. **optimizeCap**: bool, True (for all components)
     12. **outflow_direction**: str
@@ -132,11 +146,13 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
          b. **storage_charge_controller_out**: Electricity
          c. **solar_inverter_01**: Electricity (if there are more solar inverters, this value applies for them as well)
          d. **heat_pump**: Heat bus
+         e. **natural_gas_boiler**: Heat bus
     13. **energyVector**: str
          a. **storage_charge_controller_in**: Electricity
          b. **storage_charge_controller_out**: Electricity
          c. **solar_inverter_01**: Electricity
          d. **heat_pump**: Heat
+         e. **natural_gas_boiler**: eHeat (Because of convention to define energyVector based on output flow for an energy conversion asset. See `mvs documentation on parameters <https://multi-vector-simulator.readthedocs.io/en/stable/MVS_parameters.html#list-of-parameters>`_)
     14. **type_oemof**: str, transformer (same for all the components)
     15. **unit**: str, kW (applies to all the components)
 
@@ -166,16 +182,29 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     14. **unit**: str, kWp (for all of the components)
     15. **energyVector**: str, Electricity (for all of the components)
 * energyProviders.csv:
-    1. **energy_price**: currency/kWh, 0.24  * *auto_calc* (0.24 €/kWh is the average household electricity price of Spain for 2019S1. Obtained from `Eurostat <https://ec.europa.eu/eurostat/statistics-explained/images/d/d9/Electricity_prices%2C_first_semester_of_2017-2019_%28EUR_per_kWh%29.png>`_.)
-    2. **feedin_tariff**: currency/kWh, (0.10 €/kWh is for Germany. We do not have data for Spain yet.)
-    3. **inflow_direction**: str, Electricity
+    1. **energy_price**: currency/kWh,
+        a. **Electricity grid**: 0.24  * *auto_calc* (0.24 €/kWh is the average household electricity price of Spain for 2019S1. Obtained from `Eurostat <https://ec.europa.eu/eurostat/statistics-explained/images/d/d9/Electricity_prices%2C_first_semester_of_2017-2019_%28EUR_per_kWh%29.png>`_.)
+        b. **Gas plant**: 0.0598 * *auto_calc* (0,0598 €/kWh for Germany and 0.071 €/kWh for Spain (2019 / 2020) - Values read in depending on location obtained from `Eurostat's statistic of gas prices <https://ec.europa.eu/eurostat/databrowser/view/ten00118/default/table?lang=en>`_)
+    2. **feedin_tariff**: currency/kWh,
+        a. **Electricity grid**: (0.10 €/kWh is for Germany. We do not have data for Spain yet.)
+        b. **Gas plant**: 0
+    3. **inflow_direction**: str,
+        a. **Electricity grid**: Electricity
+        b. **Gas plant**: Gas bus
     4. **label**: str, Electricity grid feedin
-    5. **optimizeCap**: bool, True
-    6. **outflow_direction**: str, Electricity
-    7. **peak_demand_pricing**: currency/kW, 0
-    8. **peak_demand_pricing_period**: 	times per year (1,2,3,4,6,12), 1
-    9. **type_oemof**: str, source
-    10. **energyVector**: str, Electricity
+    5. **optimizeCap**: bool, True (for all of the components)
+    6. **outflow_direction**: str,
+        a. **Electricity grid**: Electricity
+        b. **Gas plant**: Heat bus
+    7. **peak_demand_pricing**: currency/kW, 0 (for all of the components)
+    8. **peak_demand_pricing_period**: 	times per year (1,2,3,4,6,12), 1 (for all of the components)
+    9. **type_oemof**: str, source (for all of the components)
+    10. **energyVector**: str,
+        a. **Electricity grid**: Electricity
+        b. **Gas plant**: Heat
+    11. **emission factor**: kgCO2eq/kWh
+        a. **Electricity grid**: 0.338
+        b. **Gas plant**: 1.9 (Obtained from `mvs documentation of emission factors <https://multi-vector-simulator.readthedocs.io/en/stable/Model_Assumptions.html#emission-factors>`_.)
 * energyStorage.csv:
     1. **inflow_direction**: str, ESS Li-Ion
     2. **label**: str, ESS Li-Ion

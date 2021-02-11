@@ -1,0 +1,13 @@
+,unit,Electricity grid,Gas plant
+unit,str,kW,kW
+optimizeCap,bool,True,True
+energy_price,currency/kWh,0.3,0.0598429602888087
+feedin_tariff,currency/kWh,0.1,0
+peak_demand_pricing,currency/kW,0,0
+peak_demand_pricing_period,"times per year (1,2,3,4,6,12)",1,1
+renewable_share,factor,0.1,0
+inflow_direction,str,Electricity bus,Gas bus
+outflow_direction,str,Electricity bus,Gas bus
+energyVector,str,Electricity,Heat
+type_oemof,str,source,source
+emission_factor,kgCO2eq/kWh,0.338,1.9
