@@ -501,7 +501,7 @@ class TestCalcStratTesParam:
         assert math.isnan(height) == True
         assert nominal_storage_capacity == 0
 
-    def test_calculate_losses_saved_file(self):
+    def test_add_strat_tes_calculate_losses_saved_file(self):
         sts.add_strat_tes(
             weather=self.weather,
             lat=self.lat,
