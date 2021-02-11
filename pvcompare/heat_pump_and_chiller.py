@@ -94,7 +94,7 @@ def calculate_cops_and_eers(
 
         Parameters
         ----------
-        temperature : float
+        temperature : float, int, np.nan, pd.Series 
         Passed temperature which was written from input data
 
         level : str

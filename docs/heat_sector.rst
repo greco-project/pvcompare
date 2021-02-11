@@ -10,12 +10,12 @@ Different types of heat pumps and chillers can be modelled by adjusting their pa
 
 Parameters which can be adjusted and passed are:
 
-  * **mode**: Plant type which can be either heat_pump or chiller
+  * **mode**: Plant type which can be either ``heat_pump`` or ``chiller``
   * **quality_grade**: Plant-specific scale-down factor to carnot efficiency
   * **temp_high**: Outlet temperature / High temperature of heat reservoir
   * **temp_low** Inlet temperature / Low temperature of heat reservoir
-  * **factor_icing**: COP reduction caused by icing
-  * **temp_threshold_icing**: Temperature below which icing occurs
+  * **factor_icing**: COP reduction caused by icing (only for heat pumps)
+  * **temp_threshold_icing**: Temperature below which icing occurs (only for heat pumps)
 
 Please see the `documentation on compression heat pumps and chillers <https://oemof-thermal.readthedocs.io/en/stable/compression_heat_pumps_and_chillers.html>`_
 of `oemof.thermal <https://github.com/oemof/oemof-thermal>`_ for further information.
@@ -29,7 +29,7 @@ In case of a heat pump **mode**, **quality_grade** and **temp_high** are require
 
 To model an air source heat pump the parameter **temp_low** is passed empty or with *NaN*.
 In this case the *COP* will be calculated from the weather data, to be more exact from the ambient temperature.
-You can also provide your own time series of temperatures in a separate file as shown in this example:
+You can also provide your own time series of temperatures in a separate file as shown in this example of a ``heat_pumps_and_chillers.csv`` file:
 
 .. code-block:: python
 
@@ -70,7 +70,7 @@ while passing **temp_high**, **factor_icing** and **temp_threshold_icing** are o
 
 To model an air source chiller the parameter **temp_high** is passed empty or with *NaN*.
 In this case the *EER* will be calculated from the weather data, to be more exact from the ambient temperature.
-You can also provide your own time series of temperatures in a separate file:
+You can also provide your own time series of temperatures in a separate file as in this example of a ``heat_pumps_and_chillers.csv`` file:
 
 .. code-block:: python
 
