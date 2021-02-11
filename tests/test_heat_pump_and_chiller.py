@@ -173,7 +173,7 @@ class TestCalculateCopsAndEers:
                 os.path.join(
                     self.mvs_inputs_directory,
                     "time_series",
-                    "cops_heat_pump_2018_53.2_13.2_35.0.csv",
+                    "cops_heat_pump_2017_53.2_13.2_35.0.csv",
                 )
             )
             == True
@@ -218,7 +218,7 @@ class TestCalculateCopsAndEers:
                 os.path.join(
                     self.mvs_inputs_directory,
                     "time_series",
-                    "cops_heat_pump_2018_53.2_13.2.csv",
+                    "cops_heat_pump_2017_53.2_13.2.csv",
                 )
             )
             == True
@@ -245,8 +245,8 @@ class TestCalculateCopsAndEers:
         original_data.to_csv(filename)
 
         # Delete files
-        filename_1 = "cops_heat_pump_2018_53.2_13.2.csv"
-        filename_2 = "cops_heat_pump_2018_53.2_13.2_35.0.csv"
+        filename_1 = "cops_heat_pump_2017_53.2_13.2.csv"
+        filename_2 = "cops_heat_pump_2017_53.2_13.2_35.0.csv"
 
         files = [filename_1, filename_2]
         for file in files:
@@ -321,7 +321,7 @@ class TestCalculateCopsAndEers:
                 os.path.join(
                     self.mvs_inputs_directory,
                     "time_series",
-                    "cops_heat_pump_2018_53.2_13.2_35.0.csv",
+                    "cops_heat_pump_2017_53.2_13.2_35.0.csv",
                 )
             )
             == True
@@ -355,7 +355,7 @@ class TestCalculateCopsAndEers:
                 os.path.join(
                     self.mvs_inputs_directory,
                     "time_series",
-                    "cops_heat_pump_2018_53.2_13.2_35.0.csv",
+                    "cops_heat_pump_2017_53.2_13.2_35.0.csv",
                 )
             )
             == True
@@ -364,8 +364,8 @@ class TestCalculateCopsAndEers:
         original_data.to_csv(filename)
 
         # Delete files
-        filename_1 = "cops_heat_pump_2018_53.2_13.2.csv"
-        filename_2 = "cops_heat_pump_2018_53.2_13.2_35.0.csv"
+        filename_1 = "cops_heat_pump_2017_53.2_13.2.csv"
+        filename_2 = "cops_heat_pump_2017_53.2_13.2_35.0.csv"
 
         files = [filename_1, filename_2]
         for file in files:
@@ -434,7 +434,7 @@ class TestCalculateCopsAndEers:
                 os.path.join(
                     self.mvs_inputs_directory,
                     "time_series",
-                    "eers_chiller_2018_53.2_13.2_15.0.csv",
+                    "eers_chiller_2017_53.2_13.2_15.0.csv",
                 )
             )
             == True
@@ -478,7 +478,7 @@ class TestCalculateCopsAndEers:
                 os.path.join(
                     self.mvs_inputs_directory,
                     "time_series",
-                    "eers_chiller_2018_53.2_13.2.csv",
+                    "eers_chiller_2017_53.2_13.2.csv",
                 )
             )
             == True
@@ -505,8 +505,8 @@ class TestCalculateCopsAndEers:
         original_data.to_csv(filename)
 
         # Delete files
-        filename_1 = "eers_chiller_2018_53.2_13.2.csv"
-        filename_2 = "eers_chiller_2018_53.2_13.2_15.0.csv"
+        filename_1 = "eers_chiller_2017_53.2_13.2.csv"
+        filename_2 = "eers_chiller_2017_53.2_13.2_15.0.csv"
 
         files = [filename_1, filename_2]
         for file in files:
@@ -586,7 +586,7 @@ class TestCalculateCopsAndEers:
                 os.path.join(
                     self.mvs_inputs_directory,
                     "time_series",
-                    "eers_chiller_2018_53.2_13.2_15.0.csv",
+                    "eers_chiller_2017_53.2_13.2_15.0.csv",
                 )
             )
             == True
@@ -620,7 +620,7 @@ class TestCalculateCopsAndEers:
                 os.path.join(
                     self.mvs_inputs_directory,
                     "time_series",
-                    "eers_chiller_2018_53.2_13.2_15.0.csv",
+                    "eers_chiller_2017_53.2_13.2_15.0.csv",
                 )
             )
             == True
@@ -632,7 +632,7 @@ class TestCalculateCopsAndEers:
         filename = os.path.join(
             self.mvs_inputs_directory,
             "time_series",
-            "eers_chiller_2018_53.2_13.2_15.0.csv",
+            "eers_chiller_2017_53.2_13.2_15.0.csv",
         )
         if os.path.exists(filename):
             os.remove(filename)
