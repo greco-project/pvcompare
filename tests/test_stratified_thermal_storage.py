@@ -456,7 +456,7 @@ class TestCalcStratTesParam:
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
             user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
         )
-        results_rel_losses = [
+        expected_rel_losses = [
             0.00085445,
             0.001039,
             0.00121801,
@@ -464,7 +464,7 @@ class TestCalcStratTesParam:
             0.00140255,
             0.00029527,
         ]
-        results_abs_losses = [
+        expected_abs_losses = [
             1.41958595e-05,
             1.61868636e-05,
             1.81181376e-05,
@@ -475,9 +475,9 @@ class TestCalcStratTesParam:
 
         assert loss_rate == 0.00092273109671008
         for item, value in enumerate(fixed_losses_relative):
-            assert np.round(value, 7) == np.round(results_rel_losses[item], 7)
+            assert np.round(value, 7) == np.round(expected_rel_losses[item], 7)
         for item, value in enumerate(fixed_losses_absolute):
-            assert np.round(value, 7) == np.round(results_abs_losses[item], 7)
+            assert np.round(value, 7) == np.round(expected_abs_losses[item], 7)
 
     def test_calc_strat_tes_param_nominal_storage_capacity_nan_to_zero(self):
         (
@@ -500,29 +500,6 @@ class TestCalcStratTesParam:
         height = strat_tes.at["height", "var_value"]
         assert math.isnan(height) == True
         assert nominal_storage_capacity == 0
-
-    def test_calculate_losses_saved_file(self):
-        sts.add_strat_tes(
-            weather=self.weather,
-            lat=self.lat,
-            lon=self.lon,
-            user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
-            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
-        )
-        assert os.path.exists(
-            os.path.join(
-                TEST_USER_INPUTS_MVS,
-                "time_series",
-                "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv",
-            )
-        )
-        assert os.path.exists(
-            os.path.join(
-                TEST_USER_INPUTS_MVS,
-                "time_series",
-                "fixed_thermal_losses_relative_2017_53.2_13.2_60.0.csv",
-            )
-        )
 
     def test_calculate_losses_saved_file(self):
         sts.add_strat_tes(
@@ -636,32 +613,6 @@ class TestAddStratTes:
             os.remove(filename_1)
         if os.path.exists(filename_2):
             os.remove(filename_2)
-
-
-class TestAddStratTes_file_non_existent:
-    @classmethod
-    def setup_class(self):
-        self.date_range = pd.date_range("2017", periods=6, freq="H")
-        self.weather = pd.DataFrame(
-            [11.85, 6.85, 2.0, 0.0, -3.0, 27.0],
-            columns=["temp_air"],
-            index=self.date_range,
-        )
-        self.lat = 53.2
-        self.lon = 13.2
-        self.filename_storage_xx = os.path.join(
-            TEST_USER_INPUTS_MVS, "csv_elements", "storage_TES.csv"
-        )
-
-    @pytest.fixture(scope="class", autouse=True)
-    def select_conv_tech(self):
-        def _select_columns(columns):
-            data = pd.DataFrame(original_data[columns])
-            data.to_csv(self.filename_storage_xx, na_rep="NaN")
-
-        original_data = pd.read_csv(self.filename_storage_xx, header=0, index_col=0)
-        yield _select_columns
-        original_data.to_csv(self.filename_storage_xx, na_rep="NaN")
 
     def test_add_sector_coupling_strat_tes_file_non_existent(self, select_conv_tech):
         select_conv_tech(columns="storage capacity")
