@@ -109,18 +109,8 @@ def calculate_cops_and_eers(
         temperature : list
         Temperature adjusted to use case of plant
         """
-        try:
-            # Numerics and NaNs pass
-            temperature = float(temperature)
-            try:
-                # Numerics pass
-                int(temperature)
-                temperature = [temperature]
-                logging.info(
-                    f"The {mode} is modeled with the constant {level} temperature of {temperature} °C"
-                )
-                return temperature
-            except ValueError:
+        if isinstance(temperature, float):
+            if pd.isna(temperature):
                 # In case of NaN
                 if (level == "low" and mode == "heat_pump") or (
                     level == "high" and mode == "chiller"
@@ -136,7 +126,14 @@ def calculate_cops_and_eers(
                     raise ValueError(
                         f"Missing required value of {mode}: Please provide a numeric as {mode}'s {level} temperature in heat_pumps_and_chillers.csv."
                     )
-        except ValueError:
+            elif isinstance(temperature, (float, int)):
+                # Numerics pass
+                temperature = [temperature]
+                logging.info(
+                    f"The {mode} is modeled with the constant {level} temperature of {temperature} °C"
+                )
+                return temperature
+        elif isinstance(temperature, str):
             # In case temperatures are provided as time series in separate file
             try:
                 temp_string = temperature.split("'")
@@ -156,6 +153,11 @@ def calculate_cops_and_eers(
                 raise ValueError(
                     f"Wrong value: Please check the {level} temperature of the {mode}. See the documentation on passing the {mode}'s temperatures for further information"
                 )
+        else:
+            # Required parameter is missing in case of None or else
+            raise ValueError(
+                f"Missing required value of {mode}: Please provide a numeric as {mode}'s {level} temperature in heat_pumps_and_chillers.csv."
+            )
 
     low_temperature = process_temperatures(parameters.temp_low, "low", mode)
     high_temperature = process_temperatures(parameters.temp_high, "high", mode)
