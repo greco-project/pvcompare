@@ -65,7 +65,7 @@ class TestMain:
             collections_mvs_inputs_directory=self.user_inputs_collection_mvs,
             plot=False,
             pv_setup=None,
-            overwrite_grid_costs=True,
+            overwrite_grid_parameters=True,
             overwrite_pv_parameters=True,
         )
 
@@ -100,7 +100,7 @@ class TestMain:
             collections_mvs_inputs_directory=self.user_inputs_collection_mvs,
             plot=False,
             pv_setup=None,
-            overwrite_grid_costs=True,
+            overwrite_grid_parameters=True,
             overwrite_pv_parameters=True,
         )
 

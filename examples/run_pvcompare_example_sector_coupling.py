@@ -34,7 +34,7 @@ main.apply_pvcompare(
     user_inputs_mvs_directory=user_inputs_mvs_directory,
     plot=False,
     pv_setup=pv_setup,
-    overwrite_grid_costs=True,
+    overwrite_grid_parameters=True,
     overwrite_pv_parameters=True,
 )
 
