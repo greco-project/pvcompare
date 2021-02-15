@@ -283,12 +283,12 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
         b. **input power** and **output power**: NA
     11. **soc_max**: factor
 
-        a. **storage capacity**: 0.925 (15% of a total unused volume see `European Commission study large-scale heating and cooling in EU [EUC_heat] <https://op.europa.eu/en/publication-detail/-/publication/312f0f62-dfbd-11e7-9749-01aa75ed71a1/language-en>`_ p.168 - This applies for large scale TES but could be validated for a small scale storage too.)
+        a. **storage capacity**: 0.925 (7.5% unused volume see `European Commission study large-scale heating and cooling in EU [EUC_heat] <https://op.europa.eu/en/publication-detail/-/publication/312f0f62-dfbd-11e7-9749-01aa75ed71a1/language-en>`_ p.168 - This applies for large scale TES but could be validated for a small scale storage too.)
 
         b. **input power** and **output power**: NA
     12. **soc_min**: factor
 
-        a. **storage capacity**: 0.075 (15% of a total unused volume see [EUC_heat] p.168 - This applies for large scale TES but could be validated for a small scale storage too.)
+        a. **storage capacity**: 0.075 (7.5% unused volume see [EUC_heat] p.168 - This applies for large scale TES but could be validated for a small scale storage too.)
 
         b. **input power** and **output power**: NA
     13. **unit**: str
