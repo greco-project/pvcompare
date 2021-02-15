@@ -552,11 +552,17 @@ class TestCalcStratTesParam:
 class TestAddStratTes:
     @classmethod
     def setup_class(self):
-        self.date_range = pd.date_range("2017", periods=6, freq="H")
-        self.weather = pd.DataFrame(
+        self.date_range_2017 = pd.date_range("2017", periods=6, freq="H")
+        self.date_range_2019 = pd.date_range("2019", periods=6, freq="H")
+        self.weather_2017 = pd.DataFrame(
             [11.85, 6.85, 2.0, 0.0, -3.0, 27.0],
             columns=["temp_air"],
-            index=self.date_range,
+            index=self.date_range_2017,
+        )
+        self.weather_2019 = pd.DataFrame(
+            [11.85, 6.85, 2.0, 0.0, -3.0, 27.0],
+            columns=["temp_air"],
+            index=self.date_range_2019,
         )
         self.lat = 53.2
         self.lon = 13.2
@@ -577,7 +583,7 @@ class TestAddStratTes:
     def test_add_sector_coupling_strat_tes_file_already_exists(self, select_conv_tech):
         select_conv_tech(columns="storage capacity")
         sts.add_strat_tes(
-            weather=self.weather,
+            weather=self.weather_2017,
             lat=self.lat,
             lon=self.lon,
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
@@ -591,6 +597,19 @@ class TestAddStratTes:
         )
         assert os.path.exists(filename) == True
         # filename in storage_TES.csv does not change
+        df = pd.read_csv(self.filename_storage_xx, header=0, index_col=0)
+        assert (
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv"
+            in df.loc["fixed_thermal_losses_absolute"].item()
+        ) == True
+
+        sts.add_strat_tes(
+            weather=self.weather_2019,
+            lat=self.lat,
+            lon=self.lon,
+            user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
+            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+        )
         df = pd.read_csv(self.filename_storage_xx, header=0, index_col=0)
         assert (
             "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv"
@@ -617,7 +636,7 @@ class TestAddStratTes:
     def test_add_sector_coupling_strat_tes_file_non_existent(self, select_conv_tech):
         select_conv_tech(columns="storage capacity")
         sts.add_strat_tes(
-            weather=self.weather,
+            weather=self.weather_2017,
             lat=self.lat,
             lon=self.lon,
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
