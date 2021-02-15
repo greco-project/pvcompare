@@ -440,7 +440,6 @@ def loop_mvs(
     csv_filename = os.path.join(
         user_inputs_mvs_directory, "csv_elements", csv_file_variable
     )
-    csv_file = pd.read_csv(csv_filename, index_col=0)
 
     # loop over years
     for year in years:
@@ -457,6 +456,7 @@ def loop_mvs(
         i = start
         while i <= stop:
             # change variable value and save this value to csv
+            csv_file = pd.read_csv(csv_filename, index_col=0)
             csv_file.loc[[variable_name], [variable_column]] = i
             csv_file.to_csv(csv_filename)
 
