@@ -192,7 +192,7 @@ def add_strat_tes(
 
     The precalculations are done if `inflow_direction` and `outflow_direction` give a hint
     that the respective asset is a heat storage (inflow_direction: "Heat",
-    outflow_direction: "Heat").
+    outflow_direction: "Heat"; check second option in the "Notes" section below).
 
     Parameters
     ----------
