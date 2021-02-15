@@ -6,7 +6,7 @@ functions this module contains:
 - add_scenario_name_to_project_data
 - add_location_and_year_to_project_data
 - check_for_valid_country_year
-- add_electricity_price
+- add_local_grid_parameters
 - overwrite_mvs_energy_production_file
 - add_parameters_to_energy_production_file
 - add_file_name_to_energy_consumption_file
@@ -219,15 +219,18 @@ def check_for_valid_country_year(country, year, static_inputs_directory):
         )
 
 
-def add_electricity_price(static_inputs_directory, user_inputs_mvs_directory):
+def add_local_grid_parameters(static_inputs_directory, user_inputs_mvs_directory):
     """
-    Adds the electricity price from 'electricity_prices.csv' to 'energyProviders.csv'.
+    Adds grid parameters.
 
-    This function adds the cost of electricity for the country and the latest
-     year (2019) from the csv
-    file 'electricity_prices.csv' to 'energyProviders.csv'.
+    This function adds the grid parameters (electricity price, feed-in tariff, CO2 emissions,
+    renewable share, gas price) from local_grid_parameters.xlsx to energyProviders.csv.
+    The gas_price is only inserted if a column that starts with "Gas plant" exists in energProviders.csv.
+
     If the value is already provided in the 'energyProviders.csv' and this value
-    differs from the one in 'electricity_prices.csv' a warning is returned.
+    differs from the one in 'electricity_prices.csv' a warning is returned. If
+    no value is available for the specific country, a default value is inserted
+    instead and a warning is returned.
 
     Parameters
     -----------
@@ -242,9 +245,9 @@ def add_electricity_price(static_inputs_directory, user_inputs_mvs_directory):
     --------
     None
     """
-    # load electricity prices
-    prices_file_path = os.path.join(static_inputs_directory, "electricity_prices.csv")
-    electricity_prices_eu = pd.read_csv(prices_file_path, index_col=0)
+    # load grid_parameters
+    grid_file_path = os.path.join(static_inputs_directory, "local_grid_parameters.xlsx")
+    grid_parameters = pd.read_excel(grid_file_path, index_col=0, header=0)
 
     # load project data to select country
     project_data_filename = os.path.join(
@@ -253,17 +256,64 @@ def add_electricity_price(static_inputs_directory, user_inputs_mvs_directory):
     project_data = pd.read_csv(project_data_filename, index_col=0)
     country = project_data.at["country", "project_data"]
 
-    # load latest electricity_price
-    electricity_price = electricity_prices_eu.at[country, "2019"]
-
-    add_parameter_to_mvs_file(
-        user_inputs_mvs_directory=user_inputs_mvs_directory,
-        mvs_filename="energyProviders.csv",
-        mvs_row="energy_price",
-        mvs_column="Electricity grid",
-        pvcompare_parameter=electricity_price,
-        warning=True,
+    energy_providers_filename = os.path.join(
+        user_inputs_mvs_directory, "csv_elements/" "energyProviders.csv"
     )
+    energy_providers = pd.read_csv(energy_providers_filename, index_col=0)
+
+    list_parameters = [
+        "electricity_price",
+        "gas_price",
+        "feedin_tariff",
+        "emission_factor",
+        "renewable_share",
+    ]
+    if not energy_providers.columns.str.contains("Gas plant").any():
+        list_parameters.remove("gas_price")
+
+    for parameter in list_parameters:
+        value = grid_parameters.at[country, parameter]
+
+        # check if parameter value is available
+        if pd.isna(value) is True:
+            value = grid_parameters.at["default", parameter]
+            logging.warning(
+                f"The parameter {parameter} for country {country} "
+                f"is not available. Instead a default value of "
+                f"{value} is inserted into the mvs csv."
+            )
+        if parameter == "gas_price":
+            for column in energy_providers.columns:
+                if column.startswith("Gas plant"):
+
+                    add_parameter_to_mvs_file(
+                        user_inputs_mvs_directory=user_inputs_mvs_directory,
+                        mvs_filename="energyProviders.csv",
+                        mvs_row="energy_price",
+                        mvs_column=column,
+                        pvcompare_parameter=value,
+                        warning=True,
+                    )
+
+        elif parameter == "electricity_price":
+
+            add_parameter_to_mvs_file(
+                user_inputs_mvs_directory=user_inputs_mvs_directory,
+                mvs_filename="energyProviders.csv",
+                mvs_row="energy_price",
+                mvs_column="Electricity grid",
+                pvcompare_parameter=value,
+                warning=True,
+            )
+        else:
+            add_parameter_to_mvs_file(
+                user_inputs_mvs_directory=user_inputs_mvs_directory,
+                mvs_filename="energyProviders.csv",
+                mvs_row=parameter,
+                mvs_column="Electricity grid",
+                pvcompare_parameter=value,
+                warning=True,
+            )
 
 
 def overwrite_mvs_energy_production_file(
@@ -510,7 +560,7 @@ def add_parameter_to_mvs_file(
     if warning is True:
         if mvs_file.at[mvs_row, mvs_column] != pvcompare_parameter:
             logging.warning(
-                f"The parameter {pvcompare_parameter} differs from"
+                f"The parameter {pvcompare_parameter} differs from "
                 f"the parameter {mvs_row} in {mvs_filename} and thus will "
                 f"be overwritten."
             )

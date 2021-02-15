@@ -33,7 +33,7 @@ def apply_pvcompare(
     collections_mvs_inputs_directory=None,
     plot=False,
     pv_setup=None,
-    overwrite_grid_costs=True,
+    overwrite_grid_parameters=True,
     overwrite_pv_parameters=True,
 ):
     """
@@ -78,9 +78,10 @@ def apply_pvcompare(
         A tilt of 0 resembles a vertical orientation.
         If `pv_setup` is None, it is loaded from the `user_inputs_pvcompare_directory/pv_setup.cvs`.
         Default: None.
-    overwrite_grid_costs: bool
-        Default: True. If True, the energy-price is changed according to the
-        country.
+    overwrite_grid_parameters: bool
+        Default: True. If True, the following grid parameters are inserted into the
+        mvs input csv'S automatically: electricity price, feed-in tariff,
+        CO2 emissions, renewable share, gas price
     overwrite_pv_parameters: bool
         Default: True. If true, the pv components in energyProduction.csv are
         overwritten with default values from 'data/user_inputs_collection/'
@@ -116,9 +117,9 @@ def apply_pvcompare(
         country,
         year,
     )
-    # add electroicity price specified by country
-    if overwrite_grid_costs == True:
-        check_inputs.add_electricity_price(
+    # add grid parameters specified by country
+    if overwrite_grid_parameters == True:
+        check_inputs.add_local_grid_parameters(
             static_inputs_directory=static_inputs_directory,
             user_inputs_mvs_directory=user_inputs_mvs_directory,
         )
@@ -259,12 +260,14 @@ def apply_mvs(
 
 if __name__ == "__main__":
 
-    latitude = 52.5243700  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
+    latitude = 40.416775  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
 
-    longitude = 13.4105300  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
-    year = 2017
+    longitude = (
+        -3.703790
+    )  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
+    year = 2018
     storeys = 5
-    country = "Germany"
+    country = "Spain"
     scenario_name = "Scenario_B2"
 
     apply_pvcompare(
@@ -275,8 +278,8 @@ if __name__ == "__main__":
         country=country,
     )
 
-    apply_mvs(
-        scenario_name=scenario_name,
-        outputs_directory=None,
-        user_inputs_mvs_directory=None,
-    )
+    # apply_mvs(
+    #     scenario_name=scenario_name,
+    #     outputs_directory=None,
+    #     user_inputs_mvs_directory=None,
+    # )
