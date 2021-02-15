@@ -661,7 +661,7 @@ def plot_kpi_loop(
     kpi: list of str
         List of KPI's to be plotted.
         Possible entries:
-            "costs total PV",
+            "Costs total PV",
             "installed capacity PV",
             "Total renewable energy use",
             "Renewable share",
@@ -1025,19 +1025,19 @@ if __name__ == "__main__":
     elif loop_type == "year":
         loop_dict = {"start": 2010, "stop": 2017, "step": 1}
 
-    loop_pvcompare(
-        scenario_name=scenario_name,
-        latitude=latitude,
-        longitude=longitude,
-        years=years,
-        storeys=storeys,
-        country=country,
-        loop_type=loop_type,
-        loop_dict=loop_dict,
-        user_inputs_mvs_directory=None,
-        outputs_directory=None,
-        user_inputs_pvcompare_directory=None,
-    )
+    # loop_pvcompare(
+    #     scenario_name=scenario_name,
+    #     latitude=latitude,
+    #     longitude=longitude,
+    #     years=years,
+    #     storeys=storeys,
+    #     country=country,
+    #     loop_type=loop_type,
+    #     loop_dict=loop_dict,
+    #     user_inputs_mvs_directory=None,
+    #     outputs_directory=None,
+    #     user_inputs_pvcompare_directory=None,
+    # )
     # loop_mvs(
     #     latitude=latitude,
     #     longitude=longitude,
@@ -1067,18 +1067,18 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    # scenario_dict = {"Scenario_A1": "psi"}
-    # plot_kpi_loop(
-    #     scenario_dict=scenario_dict,
-    #     variable_name="lifetime",
-    #     kpi=[
-    #         "Installed capacity PV",
-    #         "Total renewable energy",
-    #         "Self consumption",
-    #         "Total emissions",
-    #         "Degree of autonomy",
-    #     ],
-    # )
+    scenario_dict = {"Scenario_A1": "psi", "Scenario_A01": "si"}
+    plot_kpi_loop(
+        scenario_dict=scenario_dict,
+        variable_name="lifetime",
+        kpi=[
+            "Installed capacity PV",
+            "LCOE PV",
+            "Total emissions",
+            "Self consumption",
+            "Degree of autonomy",
+        ],
+    )
     #
     # compare_weather_years(
     #     latitude=latitude,
