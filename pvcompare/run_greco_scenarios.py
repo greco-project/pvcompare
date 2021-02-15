@@ -32,6 +32,61 @@ class Scenarios:
             constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
         )
 
+    def run_scenario_a01(self):
+        """
+
+        :return:
+        """
+
+        scenario_name = "Scenario_A01"
+        data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
+        # load input parameters from pv_setup.csv
+        pv_setup = pd.read_csv(data_path)
+        pv_setup.at[0, "technology"] = str("si")
+        pv_setup.to_csv(data_path, index=False)
+
+        main.apply_pvcompare(
+            latitude=self.latitude_germany,
+            longitude=self.longitude_germany,
+            year=2016,
+            storeys=self.storeys,
+            country=self.country_germany,
+        )
+
+        main.apply_mvs(
+            scenario_name=scenario_name,
+            outputs_directory=None,
+            user_inputs_mvs_directory=None,
+        )
+
+    def run_scenario_a02(self):
+        """
+
+        :return:
+        """
+
+        scenario_name = "Scenario_A02"
+        data_path = os.path.join(self.user_inputs_pvcompare_directory,
+                                 "pv_setup.csv")
+        # load input parameters from pv_setup.csv
+        pv_setup = pd.read_csv(data_path)
+        pv_setup.at[0, "technology"] = str("si")
+        pv_setup.to_csv(data_path, index=False)
+
+        main.apply_pvcompare(
+            latitude=self.latitude_spain,
+            longitude=self.longitude_spain,
+            year=2015,
+            storeys=self.storeys,
+            country=self.country_spain,
+        )
+
+        main.apply_mvs(
+            scenario_name=scenario_name,
+            outputs_directory=None,
+            user_inputs_mvs_directory=None,
+        )
+
     def run_scenario_a1(self):
         """
 
@@ -42,7 +97,7 @@ class Scenarios:
         data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
         # load input parameters from pv_setup.csv
         pv_setup = pd.read_csv(data_path)
-        pv_setup.at[0, "technology"] = "psi"
+        pv_setup.at[0, "technology"] = str("psi")
         pv_setup.to_csv(data_path, index=False)
 
         outputs.loop_mvs(
@@ -55,7 +110,7 @@ class Scenarios:
             variable_column="PV psi",
             csv_file_variable="energyProduction.csv",
             start=5,
-            stop=20,
+            stop=6,
             step=1,
             outputs_directory=None,
             user_inputs_mvs_directory=None,
@@ -72,7 +127,7 @@ class Scenarios:
         data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
         # load input parameters from pv_setup.csv
         pv_setup = pd.read_csv(data_path)
-        pv_setup.at[0, "technology"] = "psi"
+        pv_setup.at[0, "technology"] = str("psi")
         pv_setup.to_csv(data_path, index=False)
 
         outputs.loop_mvs(
@@ -85,7 +140,7 @@ class Scenarios:
             variable_column="PV psi",
             csv_file_variable="energyProduction.csv",
             start=5,
-            stop=20,
+            stop=25,
             step=1,
             outputs_directory=None,
             user_inputs_mvs_directory=None,
@@ -272,3 +327,5 @@ if __name__ == "__main__":
     scenarios = Scenarios()
     scenarios.setup_class()
     scenarios.run_scenario_a1()
+#    scenarios.run_scenario_a01()
+#    scenarios.run_scenario_a02()
