@@ -84,20 +84,94 @@ def calculate_cops_and_eers(
             f"Parameter `mode` should be 'heat_pump' or 'chiller' but is {mode}"
         )
     # prepare parameters for calc_cops
-    low_temperature = float(parameters.temp_low)
-    high_temp = float(parameters.temp_high)
-    high_temperature = [float(parameters.temp_high)]
-    quality_grade = float(parameters.quality_grade)
 
-    # prepare ambient temperature for calc_cops (list)
-    ambient_temperature = weather[temperature_col].values.tolist()
+    def process_temperatures(temperature, level, mode):
+        """
+        Temperature can be passed in the following way:
+        1. As NaN - The lower/higher temperature of the heat pump/chiller equals the ambient temperature time series
+        2. As single value (float or int) - The temperature is constant
+        3. As time series - The temperature is not constant or differs from ambient temperature (eg. ground source)
+
+        Parameters
+        ----------
+        temperature : float, int, np.nan, pd.Series 
+        Passed temperature which was written from input data
+
+        level : str
+        Defines whether high or low temperature has been passed.
+
+        mode : str
+        Defines whether COPs of heat pump ("heat_pump") or EERs of chiller
+        ("chiller") are calculated.
+
+        Returns
+        -------
+        temperature : list
+        Temperature adjusted to use case of plant
+        """
+        if isinstance(temperature, float):
+            if pd.isna(temperature):
+                # In case of NaN
+                if (level == "low" and mode == "heat_pump") or (
+                    level == "high" and mode == "chiller"
+                ):
+                    # Prepare ambient temperature for calc_cops (list)
+                    temperature = weather[temperature_col].values.tolist()
+                    logging.info(
+                        f"The {mode} is modeled with the ambient temperature from weather data as {level} temperature."
+                    )
+                    return temperature
+                else:
+                    # Required parameter is missing
+                    raise ValueError(
+                        f"Missing required value of {mode}: Please provide a numeric as {mode}'s {level} temperature in heat_pumps_and_chillers.csv."
+                    )
+            elif isinstance(temperature, (float, int)):
+                # Numerics pass
+                temperature = [temperature]
+                logging.info(
+                    f"The {mode} is modeled with the constant {level} temperature of {temperature} °C"
+                )
+                return temperature
+        elif isinstance(temperature, str):
+            # In case temperatures are provided as time series in separate file
+            try:
+                temp_string = temperature.split("'")
+                temp_filename = temp_string[3]
+                temp_header = temp_string[7]
+                temperature_df = pd.read_csv(
+                    os.path.join(user_inputs_pvcompare_directory, temp_filename)
+                )
+                temperature_df = temperature_df.set_index(temp_header)
+                temperature = temperature_df.index.tolist()
+                logging.info(
+                    f"The {mode} is modeled with passed time series as {level} temperature."
+                )
+                return temperature
+
+            except AttributeError:
+                raise ValueError(
+                    f"Wrong value: Please check the {level} temperature of the {mode}. See the documentation on passing the {mode}'s temperatures for further information"
+                )
+        else:
+            # Required parameter is missing in case of None or else
+            raise ValueError(
+                f"Missing required value of {mode}: Please provide a numeric as {mode}'s {level} temperature in heat_pumps_and_chillers.csv."
+            )
+
+    low_temperature = process_temperatures(parameters.temp_low, "low", mode)
+    high_temperature = process_temperatures(parameters.temp_high, "high", mode)
+    quality_grade = float(parameters.quality_grade)
 
     # create add on to filename (year, lat, lon)
     year = maya.parse(weather.index[int(len(weather) / 2)]).datetime().year
-    add_on = f"_{year}_{lat}_{lon}_{high_temp}"
 
     # calculate COPs or EERs with oemof thermal
     if mode == "heat_pump":
+        if len(high_temperature) > 1:
+            add_on = f"_{year}_{lat}_{lon}"
+        elif len(high_temperature) == 1:
+            add_on = f"_{year}_{lat}_{lon}_{high_temperature[0]}"
         # additional parameters for heat_pump mode
         factor_icing = (
             None
@@ -112,7 +186,7 @@ def calculate_cops_and_eers(
 
         efficiency = cmpr_hp_chiller.calc_cops(
             temp_high=high_temperature,
-            temp_low=ambient_temperature,
+            temp_low=low_temperature,
             quality_grade=quality_grade,
             mode=mode,
             temp_threshold_icing=temp_threshold_icing,
@@ -124,8 +198,12 @@ def calculate_cops_and_eers(
         filename = f"cops_heat_pump{add_on}.csv"
 
     elif mode == "chiller":
+        if len(low_temperature) > 1:
+            add_on = f"_{year}_{lat}_{lon}"
+        elif len(low_temperature) == 1:
+            add_on = f"_{year}_{lat}_{lon}_{low_temperature[0]}"
         efficiency = cmpr_hp_chiller.calc_cops(
-            temp_high=ambient_temperature,
+            temp_high=high_temperature,
             temp_low=low_temperature,
             quality_grade=quality_grade,
             mode=mode,
@@ -135,7 +213,11 @@ def calculate_cops_and_eers(
 
     # add list of cops/eers to data frame
     df = pd.DataFrame(weather[temperature_col])
-    df[column_name] = efficiency
+
+    try:
+        df[column_name] = efficiency
+    except ValueError:
+        df[column_name] = np.multiply(efficiency, np.ones(len(df)))
 
     # set negative COPs/EERs to np.inf
     # COP/EER below zero results from temp_low > temp_high
