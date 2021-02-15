@@ -110,7 +110,7 @@ class Scenarios:
             variable_column="PV psi",
             csv_file_variable="energyProduction.csv",
             start=5,
-            stop=6,
+            stop=25,
             step=1,
             outputs_directory=None,
             user_inputs_mvs_directory=None,
@@ -227,7 +227,7 @@ class Scenarios:
             storeys=self.storeys,
             country=self.country_germany,
             variable_name="specific_costs",
-            variable_column="PV psi",
+            variable_column="PV cpv",
             csv_file_variable="energyProduction.csv",
             start=700,
             stop=1500,
@@ -326,6 +326,7 @@ if __name__ == "__main__":
 
     scenarios = Scenarios()
     scenarios.setup_class()
-    scenarios.run_scenario_a1()
+    scenarios.run_scenario_a3()
+    scenarios.run_scenario_a5()
 #    scenarios.run_scenario_a01()
 #    scenarios.run_scenario_a02()
