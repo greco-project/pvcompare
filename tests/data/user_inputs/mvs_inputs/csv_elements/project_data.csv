@@ -1,9 +1,9 @@
 ,unit,project_data
-country,str,Spain
-latitude,str,
-longitude,str,5.2
+country,str,Germany
+latitude,str,48.1351
+longitude,str,11.582
 project_id,str,1
-project_name,str,net zero energy community
+project_name,str,Template Sector-coupling
 scenario_id,str,1
-scenario_name,str,Test_scenario_check_inputs
-scenario_description,str,Simulation of Test_scenario_check_inputs
+scenario_name,str,Scenario 1
+scenario_description,str,Simulation of Scenario_example_sector_coupling
