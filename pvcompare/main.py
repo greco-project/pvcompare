@@ -12,6 +12,7 @@ from pvcompare import demand
 from pvcompare import pv_feedin
 from pvcompare import constants
 from pvcompare import heat_pump_and_chiller
+from pvcompare import stratified_thermal_storage
 from pvcompare import check_inputs
 
 
@@ -177,6 +178,14 @@ def apply_pvcompare(
         user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
         user_inputs_mvs_directory=user_inputs_mvs_directory,
         weather=weather,
+    )
+
+    stratified_thermal_storage.add_strat_tes(
+        weather=weather,
+        lat=latitude,
+        lon=longitude,
+        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+        user_inputs_mvs_directory=user_inputs_mvs_directory,
     )
 
 

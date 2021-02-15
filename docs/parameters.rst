@@ -254,6 +254,60 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
 
         b. **input power** and **output power**: kW
 
+* storage_02.csv:
+    1. **age_installed**: year, 0 (for all components of the stratified thermal storage)
+    2. **development_costs**: currency, 0 (for all components of the stratified thermal storage)
+    3. **specific_costs**: currency/unit
+        a. **storage capacity**: 410, See `Danish energy agency's technology data of small-scale hot water tanks [dea_swt] <https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_energy_storage.pdf>`_ on p.66 - However investment costs of stratified TES could be higher.
+        b. **input power** and **output power**: 0
+    4. **c_rate**: factor of total capacity (kWh)
+        a. **storage capacity**: NA (does not apply)
+        b. **input power** and **output power**: 1 (this just means that the whole capacity of the stratified thermal storage would be used during charging and discharging cycles)
+    5. **efficiency**: factor
+        a. **storage capacity**: 1, or "NA" if calculated
+        b. **input power** and **output power**: 1
+    6. **installedCap**: unit 0, or "NA" if calculated
+        a. **storage capacity**: 0, or "NA" if calculated
+        b. **input power** and **output power**: 0
+    7. **lifetime**: year, 30 (applies for all the parameters of the stratified thermal energy storage)
+    8. **specific_costs_om**: currency/unit/year
+        a. **storage capacity**: 16.67, [dea_swt] p.66 - however fix om costs of stratified TES could differ
+        b. **input power** and **output power**: 0
+    9. **dispatch_price**: currency/kWh
+        a. **storage capacity**: NA (does not apply)
+        b. **input power** and **output power**: 0
+    10. **soc_initial**: None or factor
+
+        a. **storage capacity**: None
+
+        b. **input power** and **output power**: NA
+    11. **soc_max**: factor
+
+        a. **storage capacity**: 0.925 (7.5% unused volume see `European Commission study large-scale heating and cooling in EU [EUC_heat] <https://op.europa.eu/en/publication-detail/-/publication/312f0f62-dfbd-11e7-9749-01aa75ed71a1/language-en>`_ p.168 - This applies for large scale TES but could be validated for a small scale storage too.)
+
+        b. **input power** and **output power**: NA
+    12. **soc_min**: factor
+
+        a. **storage capacity**: 0.075 (7.5% unused volume see [EUC_heat] p.168 - This applies for large scale TES but could be validated for a small scale storage too.)
+
+        b. **input power** and **output power**: NA
+    13. **unit**: str
+
+        a. **storage capacity**: kWh
+
+        b. **input power** and **output power**: kW
+    14. **fixed_thermal_losses_relative**: factor
+
+        a. **storage capacity**: "{'file_name': 'None', 'header': 'no_unit', 'unit': ''}", is calculated in pvcompare
+
+        b. **input power** and **output power**: NA (does not apply)
+    15. **fixed_thermal_losses_absolute**: kWh
+
+        a. **storage capacity**: "{'file_name': 'None', 'header': 'no_unit', 'unit': ''}", is calculated in pvcompare
+
+        b. **input power** and **output power**: NA (does not apply)
+
+
 
 2. pvcompare-specific parameters
 ================================
