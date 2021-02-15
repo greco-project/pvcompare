@@ -1,14 +1,11 @@
 """
-This module contains the precalculations of the stratified thermal storage
+This module contains the processing of the stratified thermal storage
+in case it exists in `energyStorage.csv` within pvcompare.
 
-It calculates:
-
-    - The nominal storage capacity
-    - The loss rate
-    - Fixed losses relative and
-    - Fixed losses absolute
-
-using functions implemented in oemof.thermal (github.com/oemof/oemof-thermal)
+Storage specific parameters (nominal_storage_capacity, loss_rate
+fixed_losses_relative and fixed_losses_absolute) are precalculated and saved
+in 'data/mvs_inputs/time_series' depending on whether they are provided as sequence or
+scalar numeric.
 """
 
 import pandas as pd
@@ -30,6 +27,17 @@ def calc_strat_tes_param(
     user_inputs_mvs_directory=None,
 ):
     """
+    This function does the precalculations of the stratified thermal storage.
+
+    It calculates the following parameters:
+
+    1. nominal_storage_capacity
+    2. loss_rate
+    3. fixed_losses_relative
+    4. fixed_losses_absolute
+
+    from the storage's input data provided in `stratified_thermal_storage.csv`
+    and using functions implemented in oemof.thermal (github.com/oemof/oemof-thermal).
 
     Parameters
     ----------
@@ -134,6 +142,27 @@ def calc_strat_tes_param(
 def save_time_dependent_values(
     losses, value_name, unit, filename, time_series_directory
 ):
+    """
+    This function saves time dependent values to 'data/mvs_inputs/time_series'.
+
+    Parameters
+    ----------
+    losses : numeric (sequence)
+    Parameter passed to be saved
+
+    value_name : str
+    Name of the parameter
+
+    unit : str
+    Unit of the parameter
+
+    filename : str
+    Name of the file containing time dependent values
+
+    time_series_directory : str
+    Path to time_series: 'data/mvs_inputs/time_series'
+
+    """
     # Make dictionary before saving data with unit as label
     losses_dict = {unit: losses}
 
@@ -159,8 +188,7 @@ def add_strat_tes(
     user_inputs_mvs_directory=None,
 ):
     """
-    Adds stratified thermal storage if it exists either in 'energyStorage.csv' or in
-    'energyConversion.csv'.
+    Adds stratified thermal storage if it exists either in 'energyStorage.csv'.
 
     The precalculations are done if `inflow_direction` and `outflow_direction` give a hint
     that the respective asset is a heat storage (inflow_direction: "Heat",
