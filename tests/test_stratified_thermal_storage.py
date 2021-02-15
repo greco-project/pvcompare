@@ -116,7 +116,7 @@ class TestTES:
             user_inputs_mvs_directory=self.user_inputs_mvs_directory,
             plot=False,
             pv_setup=self.pv_setup,
-            overwrite_grid_costs=True,
+            overwrite_grid_parameters=True,
             overwrite_pv_parameters=True,
         )
 
@@ -221,7 +221,7 @@ class TestTES:
             user_inputs_mvs_directory=self.user_inputs_mvs_directory,
             plot=False,
             pv_setup=self.pv_setup,
-            overwrite_grid_costs=True,
+            overwrite_grid_parameters=True,
             overwrite_pv_parameters=True,
         )
 
@@ -295,6 +295,11 @@ class TestTES:
         A further test checks whether there is no ValueError raised, in case TES's high temperature
         is lower but a further heat provider (eg. gas plant) exist
         """
+        energy_providers = self.energy_providers_original.copy()
+        energy_providers.pop("Gas plant 01")
+        energy_providers.to_csv(
+            os.path.join(self.mvs_csv_inputs_path, "energyProviders.csv"), na_rep="NaN"
+        )
         strat_tes_file_path = os.path.join(
             TEST_USER_INPUTS_PVCOMPARE, "stratified_thermal_storage.csv"
         )
@@ -315,7 +320,7 @@ class TestTES:
                 user_inputs_mvs_directory=self.user_inputs_mvs_directory,
                 plot=False,
                 pv_setup=self.pv_setup,
-                overwrite_grid_costs=True,
+                overwrite_grid_parameters=True,
                 overwrite_pv_parameters=True,
             )
 
@@ -394,7 +399,7 @@ class TestTES:
                 user_inputs_mvs_directory=self.user_inputs_mvs_directory,
                 plot=False,
                 pv_setup=self.pv_setup,
-                overwrite_grid_costs=True,
+                overwrite_grid_parameters=True,
                 overwrite_pv_parameters=True,
             )
             result = 0
@@ -417,6 +422,9 @@ class TestTES:
         )
         self.energy_storage_original.to_csv(
             os.path.join(self.mvs_csv_inputs_path, "energyStorage.csv"), na_rep="NaN"
+        )
+        self.energy_providers_original.to_csv(
+            os.path.join(self.mvs_csv_inputs_path, "energyProviders.csv"), na_rep="NaN"
         )
 
         time_series_path = os.path.join(self.user_inputs_mvs_directory, "time_series")
