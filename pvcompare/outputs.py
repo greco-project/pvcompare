@@ -802,22 +802,35 @@ def plot_kpi_loop(
         ax = fig.add_subplot(num)
         num = num + 1
         for key in output_dict.keys():
+            if key is not "si":
+                print("si")
+                x_min = min(output_dict[key]["step"].values())
+                x_max = max(output_dict[key]["step"].values())
+        for key in output_dict.keys():
             df = pd.DataFrame()
             df = df.from_dict(output_dict[key])
-            df.plot(
-                x="step",
-                y=i,
-                style=".",
-                ax=ax,
-                label=key,
-                legend=False,
-                sharex=True,
-                xticks=df.step,
-            )
-            ax.set_ylabel(y_title[i])
-            ax.set_xlabel(variable_name)
-            ax.get_yaxis().set_label_coords(-0.13, 0.5)
-            ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
+            if key == "si" and len(df) ==1:
+                base=pd.Series(data=float(df[i].values), index=list(range(int(x_min), int(x_max))))
+                base.plot(color="orange", style='--', label = "si", ax=ax,
+                    legend=False,
+                    sharex=True,
+                    xticks=df.step,)
+            else:
+                df.plot(
+                    x="step",
+                    y=i,
+                    style=".",
+                    ax=ax,
+                    label=key,
+                    legend=False,
+                    sharex=True,
+                    xticks=df.step,
+                )
+                ax.set_ylabel(y_title[i])
+                ax.set_xlabel(variable_name)
+                ax.get_yaxis().set_label_coords(-0.13, 0.5)
+                ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
+
 
     handles, labels = ax.get_legend_handles_labels()
     fig.legend(
@@ -1067,7 +1080,7 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    scenario_dict = {"Scenario_A1": "psi", "Scenario_A01": "si"}
+    scenario_dict = {"Scenario_A01": "si", "Scenario_A1": "psi"}
     plot_kpi_loop(
         scenario_dict=scenario_dict,
         variable_name="lifetime",
