@@ -4,7 +4,7 @@ optimizeCap,bool,True,True,True
 maximumCap,None or float,None,None,None
 installedCap,kW,0.0,0.0,0.0
 age_installed,year,0.0,0.0,0
-lifetime,year,10,10,15
+lifetime,year,10,10,10
 development_costs,currency,0.0,0.0,0.0
 specific_costs,currency/kW,44,0.0,100
 specific_costs_om,currency/kW/year,0.0,0.0,4.0
