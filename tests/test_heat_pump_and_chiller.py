@@ -651,6 +651,11 @@ class TestAddSectorCoupling:
             columns=["temp_air"],
             index=pd.date_range("2017", periods=5, freq="H"),
         )
+        self.weather_2019 = pd.DataFrame(
+            [12.0, 9.0, 0.0, -5.0, 28.0],
+            columns=["temp_air"],
+            index=pd.date_range("2019", periods=5, freq="H"),
+        )
         self.lat = 53.2
         self.lon = 13.2
         self.mvs_inputs_directory = constants.TEST_USER_INPUTS_MVS
@@ -672,11 +677,12 @@ class TestAddSectorCoupling:
     def test_add_sector_coupling_heat_pump_file_already_exists(self, select_conv_tech):
         select_conv_tech(columns="heat_pump_file_exists")
         hc.add_sector_coupling(
-            weather=self.weather,
+            weather=self.weather_2019,
             lat=self.lat,
             lon=self.lon,
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
             user_inputs_mvs_directory=self.mvs_inputs_directory,
+            overwrite_hp_parameters=False,
         )
         # no file created
         filename = os.path.join(
@@ -689,6 +695,32 @@ class TestAddSectorCoupling:
         df = pd.read_csv(self.filename_conversion, header=0, index_col=0)
         assert ("file_exists.csv" in df.loc["efficiency"].heat_pump_file_exists) == True
 
+    def test_add_sector_coupling_heat_pump_file_already_exists_overwrite_True(
+        self, select_conv_tech
+    ):
+        select_conv_tech(columns="heat_pump_file_exists")
+        hc.add_sector_coupling(
+            weather=self.weather_2019,
+            lat=self.lat,
+            lon=self.lon,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            user_inputs_mvs_directory=self.mvs_inputs_directory,
+            overwrite_hp_parameters=True,
+        )
+        # no file created
+        filename = os.path.join(
+            self.mvs_inputs_directory,
+            "time_series",
+            "cops_heat_pump_2019_53.2_13.2_60.0.csv",
+        )
+        assert os.path.exists(filename) == True
+        # filename in energyConversion.csv does not change
+        df = pd.read_csv(self.filename_conversion, header=0, index_col=0)
+        assert (
+            "cops_heat_pump_2019_53.2_13.2_60.0.csv"
+            in df.loc["efficiency"].heat_pump_file_exists
+        ) == True
+
     def test_add_sector_coupling_heat_pump_file_created(self, select_conv_tech):
         select_conv_tech(columns="heat_pump_file_non_existent")
         hc.add_sector_coupling(
@@ -697,6 +729,7 @@ class TestAddSectorCoupling:
             lon=self.lon,
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
             user_inputs_mvs_directory=self.mvs_inputs_directory,
+            overwrite_hp_parameters=False,
         )
         # file created
         filename = os.path.join(
@@ -720,6 +753,7 @@ class TestAddSectorCoupling:
             lon=self.lon,
             user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
             user_inputs_mvs_directory=self.mvs_inputs_directory,
+            overwrite_hp_parameters=False,
         )
         # no file created
         filename = os.path.join(
@@ -748,10 +782,19 @@ class TestAddSectorCoupling:
 
     def teardown_method(self):
         # delete file
-        filename = os.path.join(
+        filename_1 = os.path.join(
             self.mvs_inputs_directory,
             "time_series",
             "cops_heat_pump_2017_53.2_13.2_60.0.csv",
         )
-        if os.path.exists(filename):
-            os.remove(filename)
+        filename_2 = os.path.join(
+            self.mvs_inputs_directory,
+            "time_series",
+            "cops_heat_pump_2019_53.2_13.2_60.0.csv",
+        )
+
+        files = [filename_1, filename_2]
+
+        for file in files:
+            if os.path.exists(file):
+                os.remove(file)

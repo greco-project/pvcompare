@@ -516,6 +516,7 @@ class TestCalcStratTesParam:
             lon=self.lon,
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
             user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+            overwrite_tes_parameters=False,
         )
         assert os.path.exists(
             os.path.join(
@@ -596,6 +597,7 @@ class TestAddStratTes:
             lon=self.lon,
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
             user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+            overwrite_tes_parameters=False,
         )
         # no file created
         filename = os.path.join(
@@ -617,10 +619,37 @@ class TestAddStratTes:
             lon=self.lon,
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
             user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+            overwrite_tes_parameters=False,
         )
         df = pd.read_csv(self.filename_storage_xx, header=0, index_col=0)
         assert (
             "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv"
+            in df.loc["fixed_thermal_losses_absolute"].item()
+        ) == True
+
+    def test_add_sector_coupling_strat_tes_file_already_exists_overwrite_true(
+        self, select_conv_tech
+    ):
+        select_conv_tech(columns="storage capacity")
+        sts.add_strat_tes(
+            weather=self.weather_2019,
+            lat=self.lat,
+            lon=self.lon,
+            user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
+            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+            overwrite_tes_parameters=True,
+        )
+        # File overwritten
+        filename = os.path.join(
+            TEST_USER_INPUTS_MVS,
+            "time_series",
+            "fixed_thermal_losses_absolute_2019_53.2_13.2_60.0.csv",
+        )
+        assert os.path.exists(filename) == True
+        # filename in storage_TES.csv overwritten
+        df = pd.read_csv(self.filename_storage_xx, header=0, index_col=0)
+        assert (
+            "fixed_thermal_losses_absolute_2019_53.2_13.2_60.0.csv"
             in df.loc["fixed_thermal_losses_absolute"].item()
         ) == True
 
@@ -636,10 +665,24 @@ class TestAddStratTes:
             "time_series",
             "fixed_thermal_losses_relative_2017_53.2_13.2_60.0.csv",
         )
-        if os.path.exists(filename_1):
-            os.remove(filename_1)
-        if os.path.exists(filename_2):
-            os.remove(filename_2)
+
+        filename_3 = os.path.join(
+            TEST_USER_INPUTS_MVS,
+            "time_series",
+            "fixed_thermal_losses_relative_2019_53.2_13.2_60.0.csv",
+        )
+
+        filename_4 = os.path.join(
+            TEST_USER_INPUTS_MVS,
+            "time_series",
+            "fixed_thermal_losses_absolute_2019_53.2_13.2_60.0.csv",
+        )
+
+        files = [filename_1, filename_2, filename_3, filename_4]
+
+        for file in files:
+            if os.path.exists(file):
+                os.remove(file)
 
     def test_add_sector_coupling_strat_tes_file_non_existent(self, select_conv_tech):
         select_conv_tech(columns="storage capacity")
@@ -649,6 +692,7 @@ class TestAddStratTes:
             lon=self.lon,
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
             user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+            overwrite_tes_parameters=False,
         )
         # no file created
         filename = os.path.join(
@@ -726,6 +770,7 @@ class TestAddStratTes_file_constant_losses:
             lon=self.lon,
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
             user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+            overwrite_tes_parameters=False,
         )
         # no file created
         filename = os.path.join(
@@ -742,3 +787,34 @@ class TestAddStratTes_file_constant_losses:
         assert float(df.loc["fixed_thermal_losses_absolute"].item()) == 0.0003
 
         energy_storage_original.to_csv(energy_storage_file_path, na_rep="NaN")
+
+    def teardown_method(self):
+        # delete file
+        filename_1 = os.path.join(
+            TEST_USER_INPUTS_MVS,
+            "time_series",
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv",
+        )
+        filename_2 = os.path.join(
+            TEST_USER_INPUTS_MVS,
+            "time_series",
+            "fixed_thermal_losses_relative_2017_53.2_13.2_60.0.csv",
+        )
+
+        filename_3 = os.path.join(
+            TEST_USER_INPUTS_MVS,
+            "time_series",
+            "fixed_thermal_losses_relative_2019_53.2_13.2_60.0.csv",
+        )
+
+        filename_4 = os.path.join(
+            TEST_USER_INPUTS_MVS,
+            "time_series",
+            "fixed_thermal_losses_absolute_2019_53.2_13.2_60.0.csv",
+        )
+
+        files = [filename_1, filename_2, filename_3, filename_4]
+
+        for file in files:
+            if os.path.exists(file):
+                os.remove(file)
