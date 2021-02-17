@@ -1077,16 +1077,20 @@ def postprocessing_kpi(scenario_name, outputs_directory=None):
                     else:
                         electricity_demand = timeseries["Electricity demand"]
             file_sheet1 = scalars["cost_matrix"]
-            file_sheet2 = scalars["scalar_matrix"].set_index("label")
+            file_sheet2 = scalars["scalar_matrix"]
+            file_sheet2.index = file_sheet2["label"]
             file_sheet3 = scalars["scalars"]
             file_sheet3.index = file_sheet3.iloc[:, 0]
             file_sheet4 = scalars["KPI individual sectors"]
+
+            # recalculate KPI
             file_sheet2.at["Electricity demand", "total_flow"] = sum(electricity_demand)*(-1)
             file_sheet3.at["Total_demandElectricity",0] = sum(electricity_demand)*(-1)
             file_sheet3.at["Degree of NZE", 0] = (file_sheet3.at["Total internal renewable generation",0] - file_sheet3.at["Total_excessElectricity",0]) / file_sheet3.at["Total_demandElectricity",0]
             file_sheet3.at["Degree of autonomy",0] = (file_sheet3.at["Total_demandElectricity",0] - file_sheet3.at["Total_consumption_from_energy_providerElectricity",0]) / file_sheet3.at["Total_demandElectricity",0]
             file_sheet3.at["Onsite energy fraction",0] = (file_sheet3.at["Total_demandElectricity",0] - file_sheet3.at["Total_feedinElectricity",0]) / file_sheet3.at["Total_demandElectricity",0]
 
+            #save excel sheets
             with pd.ExcelWriter(filepath_s, mode='a') as writer:
                 file_sheet1.to_excel(writer, sheet_name="cost_matrix", index=None)
                 file_sheet2.to_excel(writer, sheet_name="scalar_matrix", index=None)
