@@ -338,7 +338,7 @@ def add_strat_tes(
             if temp_high > hp_high_temperature:
                 raise ValueError(
                     f"High temperature of the thermal energy storage (T_TES_high = {temp_high}) "
-                    f"is lower than the outlet temperature of the heat pump "
+                    f"is higher than the outlet temperature of the heat pump "
                     f"T_HP_high = {hp_high_temperature}. Please add a further provider of heat or "
                     f"adjust T_TES_high"
                 )
