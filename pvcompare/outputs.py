@@ -816,19 +816,21 @@ def plot_kpi_loop(
         ax = fig.add_subplot(num)
         num = num + 1
         for key in output_dict.keys():
-            if key is not "si":
-                print("si")
+            if "Basis" not in key:
                 x_min = min(output_dict[key]["step"].values())
                 x_max = max(output_dict[key]["step"].values())
         for key in output_dict.keys():
             df = pd.DataFrame()
             df = df.from_dict(output_dict[key])
-            if key == "si" and len(df) ==1:
-                base=pd.Series(data=float(df[i].values), index=list(range(int(x_min), int(x_max))))
-                base.plot(color="orange", style='--', label = "si", ax=ax,
-                    legend=False,
-                    sharex=True,
-                    xticks=df.step,)
+            if "Basis" in key and len(df) <=3:
+                for index in df.index:
+                    data=float(df.at[index, i])
+                    base=pd.Series(data=data, index=list(range(int(x_min), int(x_max))))
+ #                   ax.hlines(y=float(row[i]), xmin=x_min, xmax=x_max, label = key, linestyle='--', color = "orange")
+                    base.plot(color="orange", style='--', ax=ax,
+                            legend=False,
+                            sharex=True,
+                            xticks=df.step)
             else:
                 df.plot(
                     x="step",
@@ -1297,19 +1299,19 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    # scenario_dict = {"Scenario_A01": "si", "Scenario_A1": "psi"}
-    # plot_kpi_loop(
-    #     scenario_dict=scenario_dict,
-    #     variable_name="lifetime",
-    #     kpi=[
-    #         "Installed capacity PV",
-    #         "LCOE PV",
-    #         "Total emissions",
-    #         "Self consumption",
-    #         "Total emissions",
-    #         "Degree of autonomy",
-    #     ],
-    # )
+    scenario_dict = {"Scenario_A2": "psi", "Scenario_A8": "Basis_si"}
+    plot_kpi_loop(
+        scenario_dict=scenario_dict,
+        variable_name="lifetime",
+        kpi=[
+            "Installed capacity PV",
+            "LCOE PV",
+            "Total emissions",
+            "Self consumption",
+            "Total emissions",
+            "Degree of autonomy",
+        ],
+    )
     #
     # compare_weather_years(
     #     latitude=latitude,
@@ -1318,7 +1320,7 @@ if __name__ == "__main__":
     #     static_inputs_directory=None,
     # )
 
-    # postprocessing_kpi(scenario_name="Scenario_A9", outputs_directory=None)
+    #postprocessing_kpi(scenario_name="Scenario_A2", outputs_directory=None)
 
-scenario_dict = {"Scenario_B_500": "500", "Scenario_B_600": "600", "Scenario_B_700": "700", "Scenario_B_800": "800", "Scenario_B_900": "900", "Scenario_B_1000": "1000", "Scenario_B_1100": "1100"}
-    plot_lifetime_specificosts_psi(scenario_dict, variable_name="lifetime", outputs_directory=None)
+    #scenario_dict = {"Scenario_B_500": "500", "Scenario_B_600": "600", "Scenario_B_700": "700", "Scenario_B_800": "800", "Scenario_B_900": "900", "Scenario_B_1000": "1000", "Scenario_B_1100": "1100"}
+    #plot_lifetime_specificosts_psi(scenario_dict, variable_name="lifetime", outputs_directory=None)
