@@ -1204,4 +1204,4 @@ if __name__ == "__main__":
     #     static_inputs_directory=None,
     # )
 
-postprocessing_kpi(scenario_name="Scenario_A9", outputs_directory=None)
+    #postprocessing_kpi(scenario_name="Scenario_A9", outputs_directory=None)
