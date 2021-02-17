@@ -662,14 +662,16 @@ def plot_kpi_loop(
     kpi: list of str
         List of KPI's to be plotted.
         Possible entries:
-            "costs total PV",
-            "installed capacity PV",
+            "Degree of NZE"
+            "Costs total PV",
+            "Installed capacity PV",
             "Total renewable energy use",
             "Renewable share",
             "LCOE PV",
             "self consumption",
             "self sufficiency",
-            "Degree of autonomy"
+            "Degree of autonomy",
+            "Total non-renewable energy use"
     scenario_dict: dictionary
         dictionary with the scenario names that should be compared as keys and
         a label for the scenario as value. e.g.: {"Scenario_A1" : "si", "Scenario_A2": "cpv"}
@@ -712,13 +714,13 @@ def plot_kpi_loop(
         ):
 
             file_sheet1 = pd.read_excel(
-                filepath, header=0, index_col=1, sheet_name="cost_matrix"
+                filepath, header=0, index_col=1, sheet_name="cost_matrix1"
             )
             file_sheet2 = pd.read_excel(
-                filepath, header=0, index_col=1, sheet_name="scalar_matrix"
+                filepath, header=0, index_col=1, sheet_name="scalar_matrix1"
             )
             file_sheet3 = pd.read_excel(
-                filepath, header=0, index_col=0, sheet_name="scalars"
+                filepath, header=0, index_col=0, sheet_name="scalars1"
             )
 
             # get variable value from filepath
@@ -773,6 +775,12 @@ def plot_kpi_loop(
                 output.loc[index, "Total emissions"] = file_sheet3.at[
                     "Total emissions", 0
                 ]
+                output.loc[index, "Total non-renewable energy"] = file_sheet3.at[
+                    "Total non-renewable energy use", 0
+                ]
+                output.loc[index, "Degree of NZE"] = file_sheet3.at[
+                    "Degree of NZE", 0
+                ]
 
             output_dict_column = output.to_dict()
             output_dict[scenario_dict[scenario_name]] = output_dict_column
@@ -788,6 +796,8 @@ def plot_kpi_loop(
         "Self sufficiency": "Self sufficiency \nin %",
         "Degree of autonomy": "Degree of \nautonomy in %",
         "Total emissions": "Total emissions \nin kgCO2eq/kWh",
+        "Total non-renewable energy": "Total non-renewable \n energy in kWh",
+        "Degree of NZE": "Degree of NZE \n in %",
     }
 
     output.sort_index(inplace=True)
