@@ -1080,26 +1080,34 @@ def plot_lifetime_specificosts_psi(scenario_dict, variable_name, outputs_directo
         "LCOE PV": "LCOE PV \nin EUR/kWh",
     }
 
-    LCOE.sort_index(inplace=True)
+    LCOE.sort_index(ascending =False, inplace=True)
     INSTCAP.sort_index(inplace=True)
 
-    # plot
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
+    # plot LCOE
+    fig = plt.figure(figsize=(13, 5))
+    ax1 = plt.subplot(121)
+    ax1 = sns.heatmap(LCOE, cmap="YlGnBu",cbar_kws={'label': 'LCOE in EUR/kWh'})
+    ax1.set_ylabel("lifetime in years")
+    ax1.set_xlabel("specific_costs in EUR")
 
-    pd.plotting.scatter_matrix(LCOE)
- #   cb = plt.colorbar(s)
- #   cb.set_label('desired_label')
+    # fig.savefig(
+    #     os.path.join(
+    #         outputs_directory,
+    #         "plot_LCOE_lifetime_specific_costs_PSI_Germany.png",
+    #     )
+    # )
+    # plot LCOE
+    ax2 =plt.subplot(122)
+    ax2 = sns.heatmap(INSTCAP, cmap="YlGnBu", cbar_kws={'label': 'Installed capacity in kWp'})
+    ax2.set_ylabel("lifetime in years")
+    ax2.set_xlabel("specific costs in EUR")
 
-    ax.set_xlim([-0.5, 9.5])
-    ax.set_ylim([-0.5, 9.5])
-
-    plt.show()
+    plt.tight_layout()
 
     fig.savefig(
         os.path.join(
             outputs_directory,
-            "plot_lifetime_specific_costs_PSI_Germany.png",
+            "plot_INSTCAP_LCOE_PSI_Germany.png",
         )
     )
 
