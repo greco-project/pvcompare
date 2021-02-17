@@ -270,6 +270,7 @@ def loop_pvcompare(
                 )
                 temp_high = temp_high + loop_dict["step"]
 
+    logging.info("starting postprocessing KPI")
     postprocessing_kpi(scenario_name=scenario_name,
                        outputs_directory=outputs_directory)
 
@@ -514,7 +515,7 @@ def loop_mvs(
 
             # add another step
             i = i + step
-
+    logging.info("starting postprocessing KPI")
     postprocessing_kpi(scenario_name=scenario_name, outputs_directory=outputs_directory)
 
 
@@ -1022,7 +1023,7 @@ def compare_weather_years(
 
 def postprocessing_kpi(scenario_name, outputs_directory=None):
     """
-    Overwrites all output excel sheets "timeseries_all_flows.xlsx" and "scalars.xlsx"
+    Overwrites all output excel files "timeseries_all_flows.xlsx" and "scalars.xlsx"
     in loop output directory of a scenario with modified KPI's.
 
     1) Creates new sheet "Electricity bus1" with the column
@@ -1090,6 +1091,7 @@ def postprocessing_kpi(scenario_name, outputs_directory=None):
                         )
                     else:
                         electricity_demand = timeseries["Electricity demand"]
+            # read sheets of scalars
             file_sheet1 = scalars["cost_matrix"]
             file_sheet2 = scalars["scalar_matrix"]
             file_sheet2.index = file_sheet2["label"]
