@@ -1116,7 +1116,7 @@ def postprocessing_kpi(scenario_name, outputs_directory=None):
             file_sheet3.at["Onsite energy fraction", 0] = (
                 file_sheet3.at["Total_demandElectricity", 0]
                 - file_sheet3.at["Total_feedinElectricity", 0]
-            ) / file_sheet3.at["Total_demandElectricity", 0]
+            ) / file_sheet3.at["Total internal renewable generation", 0]
 
             # save excel sheets
             with pd.ExcelWriter(filepath_s, mode="a") as writer:
