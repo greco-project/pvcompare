@@ -270,6 +270,9 @@ def loop_pvcompare(
                 )
                 temp_high = temp_high + loop_dict["step"]
 
+    postprocessing_kpi(scenario_name=scenario_name,
+                       outputs_directory=outputs_directory)
+
 
 def single_loop_pvcompare(
     scenario_name,
@@ -511,6 +514,8 @@ def loop_mvs(
 
             # add another step
             i = i + step
+
+    postprocessing_kpi(scenario_name=scenario_name, outputs_directory=outputs_directory)
 
 
 def plot_all_flows(
