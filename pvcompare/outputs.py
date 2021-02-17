@@ -271,8 +271,7 @@ def loop_pvcompare(
                 temp_high = temp_high + loop_dict["step"]
 
     logging.info("starting postprocessing KPI")
-    postprocessing_kpi(scenario_name=scenario_name,
-                       outputs_directory=outputs_directory)
+    postprocessing_kpi(scenario_name=scenario_name, outputs_directory=outputs_directory)
 
 
 def single_loop_pvcompare(
