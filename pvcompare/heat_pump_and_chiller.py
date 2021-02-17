@@ -249,6 +249,7 @@ def add_sector_coupling(
     lon,
     user_inputs_pvcompare_directory=None,
     user_inputs_mvs_directory=None,
+    overwrite_hp_parameters=None,
 ):
     """
     Add heat sector if heat pump or chiller in 'energyConversion.csv'.
@@ -274,6 +275,9 @@ def add_sector_coupling(
         Path to input directory containing files that describe the energy
         system and that are an input to MVS. Default:
         DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`).
+    overwrite_hp_parameters: bool
+        Default: True. If true, existing COP time series of the heat pump will be
+        overwritten with calculated time series of COP.
 
     Notes
     -----
@@ -333,7 +337,7 @@ def add_sector_coupling(
                 user_inputs_mvs_directory, "time_series", cops_filename_csv_excl_path
             )
 
-            if not os.path.isfile(cops_filename_csv):
+            if not os.path.isfile(cops_filename_csv) or overwrite_hp_parameters == True:
                 high_temperature = heat_pump_and_chillers.at["heat_pump", "temp_high"]
                 year = weather.index[int(len(weather) / 2)].year
                 cops_filename = os.path.join(
@@ -341,9 +345,11 @@ def add_sector_coupling(
                     "time_series",
                     f"cops_heat_pump_{year}_{lat}_{lon}_{high_temperature}.csv",
                 )
-                logging.info(
-                    f"File containing COPs is missing: {cops_filename_csv} \nCalculated COPs are used instead."
-                )
+
+                if not overwrite_hp_parameters:
+                    logging.info(
+                        f"File containing COPs is missing: {cops_filename_csv} \nCalculated COPs are used instead."
+                    )
                 file_exists = False
                 # write new filename into energy_conversion
                 energy_conversion[heat_pump]["efficiency"] = energy_conversion[

@@ -36,6 +36,7 @@ main.apply_pvcompare(
     pv_setup=pv_setup,
     overwrite_grid_parameters=True,
     overwrite_pv_parameters=True,
+    overwrite_heat_parameters=False,
 )
 
 # RUN MVS OEMOF SIMULATTION
