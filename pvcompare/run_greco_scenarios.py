@@ -391,12 +391,55 @@ class Scenarios:
                 scenario_name=scenario_name,
             )
 
-        # #enter default value again
-        # epfile = pd.read_csv(os.path.join(user_inputs_mvs_directory, filename))
-        # # default: 816.2
-        # epfile.at["specific_costs", "psi"] = 816.2
-        # epfile.to_csv(os.path.join(user_inputs_mvs_directory, filename))
+        #enter default value again
+        epfile = pd.read_csv(os.path.join(user_inputs_mvs_directory,"csv_elements", filename))
+        # default: 816.2
+        epfile.at["specific_costs", "PV psi"] = 816.2
+        epfile.to_csv(os.path.join(user_inputs_mvs_directory,"csv_elements", filename))
 
+    def run_scenario_C(self):
+        """
+
+        :return:
+        """
+        data_path = os.path.join(self.user_inputs_pvcompare_directory,
+                                 "pv_setup.csv")
+        # load input parameters from pv_setup.csv
+        pv_setup = pd.read_csv(data_path)
+        pv_setup.at[0, "technology"] = str("psi")
+        pv_setup.to_csv(data_path, index=False)
+        list = [500, 600, 700, 800, 900, 1000, 1100]
+        for costs in list:
+            scenario_name = "Scenario_C_"+ str(costs)
+            user_inputs_mvs_directory = constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY
+            filename = "energyProduction.csv"
+            epfile = pd.read_csv(os.path.join(user_inputs_mvs_directory,"csv_elements", filename), index_col=0)
+            #default: 816.2
+            epfile.at["specific_costs","PV psi"]=costs
+            epfile.to_csv(os.path.join(user_inputs_mvs_directory,"csv_elements", filename))
+
+            outputs.loop_mvs(
+                latitude=self.latitude_spain,
+                longitude=self.longitude_spain,
+                years=[2015],
+                storeys=self.storeys,
+                country=self.country_spain,
+                variable_name="lifetime",
+                variable_column="PV psi",
+                csv_file_variable="energyProduction.csv",
+                start=5,
+                stop=25,
+                step=1,
+                outputs_directory=None,
+                user_inputs_mvs_directory=None,
+                scenario_name=scenario_name,
+            )
+
+        #enter default value again
+        epfile = pd.read_csv(os.path.join(user_inputs_mvs_directory,"csv_elements", filename))
+        # default: 816.2
+        epfile.at["specific_costs", "PV psi"] = 816.2
+        epfile.to_csv(os.path.join(user_inputs_mvs_directory,"csv_elements", filename))
 
 
 if __name__ == "__main__":
