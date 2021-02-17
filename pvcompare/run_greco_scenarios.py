@@ -364,8 +364,8 @@ class Scenarios:
         pv_setup = pd.read_csv(data_path)
         pv_setup.at[0, "technology"] = str("psi")
         pv_setup.to_csv(data_path, index=False)
-
-        for costs in range(500, 1200, 100):
+        list = [600, 800, 900, 1000]
+        for costs in list:
             scenario_name = "Scenario_B_"+ str(costs)
             user_inputs_mvs_directory = constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY
             filename = "energyProduction.csv"
