@@ -184,7 +184,7 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
 * energyProviders.csv:
     1. **energy_price**: currency/kWh,
         a. **Electricity grid**: 0.24  * *auto_calc* (0.24 €/kWh is the average household electricity price of Spain for 2019S1. Obtained from `Eurostat <https://ec.europa.eu/eurostat/statistics-explained/images/d/d9/Electricity_prices%2C_first_semester_of_2017-2019_%28EUR_per_kWh%29.png>`_.)
-        b. **Gas plant**: 0.0598 * *auto_calc* (0,0598 €/kWh for Germany and 0.071 €/kWh for Spain (2019 / 2020) - Values read in depending on location obtained from `Eurostat's statistic of gas prices <https://ec.europa.eu/eurostat/databrowser/view/ten00118/default/table?lang=en>`_)
+        b. **Gas plant**: 0.0598 * *auto_calc* (0,0598 €/kWh for Germany and 0.072 €/kWh for Spain (2019 / 2020) - Values read in depending on location obtained from `Eurostat's statistic of gas prices <https://ec.europa.eu/eurostat/databrowser/view/ten00118/default/table?lang=en>`_)
     2. **feedin_tariff**: currency/kWh,
         a. **Electricity grid**: (0.10 €/kWh is for Germany. We do not have data for Spain yet.)
         b. **Gas plant**: 0
