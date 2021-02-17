@@ -450,7 +450,7 @@ def loop_mvs(
             year=year,
             storeys=storeys,
             country=country,
-            user_inputs_mvs_directory=user_inputs_mvs_directory
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
         )
 
         # loop over the variable
@@ -778,9 +778,7 @@ def plot_kpi_loop(
                 output.loc[index, "Total non-renewable energy"] = file_sheet3.at[
                     "Total non-renewable energy use", 0
                 ]
-                output.loc[index, "Degree of NZE"] = file_sheet3.at[
-                    "Degree of NZE", 0
-                ]
+                output.loc[index, "Degree of NZE"] = file_sheet3.at["Degree of NZE", 0]
 
             output_dict_column = output.to_dict()
             output_dict[scenario_dict[scenario_name]] = output_dict_column
@@ -1016,6 +1014,7 @@ def compare_weather_years(
         bbox_inches="tight",
     )
 
+
 def postprocessing_kpi(scenario_name, outputs_directory=None):
     """
     Overwrites all output excel sheets "timeseries_all_flows.xlsx" and "scalars.xlsx"
@@ -1037,17 +1036,16 @@ def postprocessing_kpi(scenario_name, outputs_directory=None):
     else:
         scenario_folder = os.path.join(outputs_directory, scenario_name)
         if not os.path.isdir(scenario_folder):
-            logging.warning(
-                f"The scenario folder {scenario_name} does not exist.")
+            logging.warning(f"The scenario folder {scenario_name} does not exist.")
     # get all variable names in scenario folder
-    list_var_name=[]
+    list_var_name = []
     for fname in list(glob.glob(os.path.join(scenario_folder, "*"))):
         folder_name = fname.split("/")[::-1][0]
         if folder_name.startswith("loop"):
             split_path = folder_name.split("_")
             get_var_name = split_path[::-1][0]
             list_var_name.append(get_var_name)
-    #loop over all loop output folders with variable name
+    # loop over all loop output folders with variable name
     for variable_name in list_var_name:
         loop_output_directory = os.path.join(
             scenario_folder, "loop_outputs_" + str(variable_name)
@@ -1059,8 +1057,7 @@ def postprocessing_kpi(scenario_name, outputs_directory=None):
             )
         # parse through scalars folder and read in all excel sheets
         for filepath_s in list(
-                glob.glob(
-                    os.path.join(loop_output_directory, "scalars", "*.xlsx"))
+            glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
         ):
             scalars = pd.read_excel(filepath_s, sheet_name=None)
 
@@ -1068,22 +1065,24 @@ def postprocessing_kpi(scenario_name, outputs_directory=None):
             split_path = filepath_s.split("_")
             get_year = split_path[::-1][1]
             get_step = split_path[::-1][0]
-            ending = str(get_year)+"_"+str(get_step)
+            ending = str(get_year) + "_" + str(get_step)
 
             # load timeseries_all_busses
             for filepath_t in list(
-                    glob.glob(
-                        os.path.join(loop_output_directory, "timeseries",
-                                     "*.xlsx"))
+                glob.glob(os.path.join(loop_output_directory, "timeseries", "*.xlsx"))
             ):
                 if filepath_t.endswith(ending) is True:
                     timeseries = pd.read_excel(filepath_t, sheet_name="Electricity bus")
-                    if 'Heat pump' in timeseries.columns:
-                        electricity_demand = timeseries["Electricity demand"] + timeseries["Heat pump"]
+                    if "Heat pump" in timeseries.columns:
+                        electricity_demand = (
+                            timeseries["Electricity demand"] + timeseries["Heat pump"]
+                        )
                         timeseries["Electricity demand"] = electricity_demand
-                        with pd.ExcelWriter(filepath_t, mode='a') as writer:
-                             timeseries.to_excel(writer, sheet_name="Electricity bus")
-                        logging.info(f"The timeseries_all_flows file {filepath_t} has been overwritten with the new electricity demand.")
+                        with pd.ExcelWriter(filepath_t, mode="a") as writer:
+                            timeseries.to_excel(writer, sheet_name="Electricity bus")
+                        logging.info(
+                            f"The timeseries_all_flows file {filepath_t} has been overwritten with the new electricity demand."
+                        )
                     else:
                         electricity_demand = timeseries["Electricity demand"]
             file_sheet1 = scalars["cost_matrix"]
@@ -1094,19 +1093,37 @@ def postprocessing_kpi(scenario_name, outputs_directory=None):
             file_sheet4 = scalars["KPI individual sectors"]
 
             # recalculate KPI
-            file_sheet2.at["Electricity demand", "total_flow"] = sum(electricity_demand)*(-1)
-            file_sheet3.at["Total_demandElectricity",0] = sum(electricity_demand)*(-1)
-            file_sheet3.at["Degree of NZE", 0] = (file_sheet3.at["Total internal renewable generation",0] - file_sheet3.at["Total_excessElectricity",0]) / file_sheet3.at["Total_demandElectricity",0]
-            file_sheet3.at["Degree of autonomy",0] = (file_sheet3.at["Total_demandElectricity",0] - file_sheet3.at["Total_consumption_from_energy_providerElectricity",0]) / file_sheet3.at["Total_demandElectricity",0]
-            file_sheet3.at["Onsite energy fraction",0] = (file_sheet3.at["Total_demandElectricity",0] - file_sheet3.at["Total_feedinElectricity",0]) / file_sheet3.at["Total_demandElectricity",0]
+            file_sheet2.at["Electricity demand", "total_flow"] = sum(
+                electricity_demand
+            ) * (-1)
+            file_sheet3.at["Total_demandElectricity", 0] = sum(electricity_demand) * (
+                -1
+            )
+            file_sheet3.at["Degree of NZE", 0] = (
+                file_sheet3.at["Total internal renewable generation", 0]
+                - file_sheet3.at["Total_excessElectricity", 0]
+            ) / file_sheet3.at["Total_demandElectricity", 0]
+            file_sheet3.at["Degree of autonomy", 0] = (
+                file_sheet3.at["Total_demandElectricity", 0]
+                - file_sheet3.at["Total_consumption_from_energy_providerElectricity", 0]
+            ) / file_sheet3.at["Total_demandElectricity", 0]
+            file_sheet3.at["Onsite energy fraction", 0] = (
+                file_sheet3.at["Total_demandElectricity", 0]
+                - file_sheet3.at["Total_feedinElectricity", 0]
+            ) / file_sheet3.at["Total_demandElectricity", 0]
 
-            #save excel sheets
-            with pd.ExcelWriter(filepath_s, mode='a') as writer:
+            # save excel sheets
+            with pd.ExcelWriter(filepath_s, mode="a") as writer:
                 file_sheet1.to_excel(writer, sheet_name="cost_matrix", index=None)
                 file_sheet2.to_excel(writer, sheet_name="scalar_matrix", index=None)
                 file_sheet3.to_excel(writer, sheet_name="scalars", index=None)
-                file_sheet4.to_excel(writer, sheet_name="KPI individual sectors", index=None)
-            logging.info(f"Scalars file sheet {filepath_s} has been overwritten with new KPI's")
+                file_sheet4.to_excel(
+                    writer, sheet_name="KPI individual sectors", index=None
+                )
+            logging.info(
+                f"Scalars file sheet {filepath_s} has been overwritten with new KPI's"
+            )
+
 
 if __name__ == "__main__":
     latitude = 52.5243700
