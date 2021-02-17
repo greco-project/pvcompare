@@ -1018,6 +1018,161 @@ def compare_weather_years(
         bbox_inches="tight",
     )
 
+def plot_lifetime_specificosts_psi(scenario_dict, variable_name, outputs_directory):
+    """
+
+    :param scenario_dict:
+    :return:
+    """
+    LCOE = pd.DataFrame()
+    INSTCAP = pd.DataFrame()
+    for scenario_name in scenario_dict.keys():
+        sc_step = scenario_name.split("_")[::-1][0]
+        if outputs_directory == None:
+            outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
+            scenario_folder = os.path.join(outputs_directory, scenario_name)
+        else:
+            scenario_folder = os.path.join(outputs_directory, scenario_name)
+            if not os.path.isdir(scenario_folder):
+                logging.warning(f"The scenario folder {scenario_name} does not exist.")
+        loop_output_directory = os.path.join(
+            scenario_folder, "loop_outputs_" + str(variable_name)
+        )
+        if not os.path.isdir(loop_output_directory):
+            logging.warning(
+                f"The loop output folder {loop_output_directory} does not exist. "
+                f"Please check the variable_name"
+            )
+        # parse through scalars folder and read in all excel sheets
+        for filepath in list(
+            glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
+        ):
+
+            file_sheet1 = pd.read_excel(
+                filepath, header=0, index_col=1, sheet_name="cost_matrix"
+            )
+            file_sheet2 = pd.read_excel(
+                filepath, header=0, index_col=1, sheet_name="scalar_matrix"
+            )
+            file_sheet3 = pd.read_excel(
+                filepath, header=0, index_col=0, sheet_name="scalars"
+            )
+
+            # get variable value from filepath
+            split_path = filepath.split("_")
+            get_step = split_path[::-1][0]
+            lt_step = int(get_step.split(".")[0])
+
+
+            # get LCOE pv and installed capacity
+            index = lt_step
+            column = str(sc_step)
+#            LCOE.loc[index, "step"] = int(step)
+            INSTCAP.loc[index, column] = file_sheet2.at[
+                "PV psi", "optimizedAddCap"]
+            LCOE.loc[index, column] = file_sheet1.at[
+                "PV psi", "levelized_cost_of_energy_of_asset"
+            ]
+
+    # define y labels
+    y_title = {
+        "Installed capacity PV": "Installed capacity \nPV in kWp",
+        "LCOE PV": "LCOE PV \nin EUR/kWh",
+    }
+
+    LCOE.sort_index(inplace=True)
+    INSTCAP.sort_index(inplace=True)
+
+    # plot
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+
+    pd.plotting.scatter_matrix(LCOE)
+ #   cb = plt.colorbar(s)
+ #   cb.set_label('desired_label')
+
+    ax.set_xlim([-0.5, 9.5])
+    ax.set_ylim([-0.5, 9.5])
+
+    plt.show()
+
+    fig.savefig(
+        os.path.join(
+            outputs_directory,
+            "plot_lifetime_specific_costs_PSI_Germany.png",
+        )
+    )
+
+
+
+
+
+
+    #
+    #
+    # hight = len(kpi) * 2
+    # fig = plt.figure(figsize=(7, hight))
+    # rows = len(kpi)
+    # num = (
+    #     rows * 100 + 11
+    # )  # the setting for number of rows | number of columns | row number
+    # for i in kpi:
+    #     ax = fig.add_subplot(num)
+    #     num = num + 1
+    #     for key in output_dict.keys():
+    #         if key is not "si":
+    #             print("si")
+    #             x_min = min(output_dict[key]["step"].values())
+    #             x_max = max(output_dict[key]["step"].values())
+    #     for key in output_dict.keys():
+    #         df = pd.DataFrame()
+    #         df = df.from_dict(output_dict[key])
+    #         if key == "si" and len(df) ==1:
+    #             base=pd.Series(data=float(df[i].values), index=list(range(int(x_min), int(x_max))))
+    #             base.plot(color="orange", style='--', label = "si", ax=ax,
+    #                 legend=False,
+    #                 sharex=True,
+    #                 xticks=df.step,)
+    #         else:
+    #             df.plot(
+    #                 x="step",
+    #                 y=i,
+    #                 style=".",
+    #                 ax=ax,
+    #                 label=key,
+    #                 legend=False,
+    #                 sharex=True,
+    #                 xticks=df.step,
+    #             )
+    #             ax.set_ylabel(y_title[i])
+    #             ax.set_xlabel(variable_name)
+    #             ax.get_yaxis().set_label_coords(-0.13, 0.5)
+    #             ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
+    #
+    #
+    # handles, labels = ax.get_legend_handles_labels()
+    # fig.legend(
+    #     handles,
+    #     labels,
+    #     bbox_to_anchor=(0.96, 0.96),
+    #     loc="upper right",
+    #     borderaxespad=0.0,
+    # )
+    #
+    # plt.tight_layout()
+    #
+    # name = ""
+    # for scenario_name in scenario_dict.keys():
+    #     name = name + "_" + str(scenario_name)
+    #
+    # fig.savefig(
+    #     os.path.join(
+    #         outputs_directory,
+    #         "plot_scalars" + str(name) + "_" + str(variable_name) + ".png",
+    #     )
+#    )
+
+
 
 if __name__ == "__main__":
     latitude = 52.5243700
@@ -1080,18 +1235,18 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    scenario_dict = {"Scenario_A01": "si", "Scenario_A1": "psi"}
-    plot_kpi_loop(
-        scenario_dict=scenario_dict,
-        variable_name="lifetime",
-        kpi=[
-            "Installed capacity PV",
-            "LCOE PV",
-            "Total emissions",
-            "Self consumption",
-            "Degree of autonomy",
-        ],
-    )
+    # scenario_dict = {"Scenario_A01": "si", "Scenario_A1": "psi"}
+    # plot_kpi_loop(
+    #     scenario_dict=scenario_dict,
+    #     variable_name="lifetime",
+    #     kpi=[
+    #         "Installed capacity PV",
+    #         "LCOE PV",
+    #         "Total emissions",
+    #         "Self consumption",
+    #         "Degree of autonomy",
+    #     ],
+    # )
     #
     # compare_weather_years(
     #     latitude=latitude,
@@ -1099,3 +1254,6 @@ if __name__ == "__main__":
     #     country=country,
     #     static_inputs_directory=None,
     # )
+
+    scenario_dict = {"Scenario_B_500": "500", "Scenario_B_600": "600", "Scenario_B_700": "700", "Scenario_B_800": "800", "Scenario_B_900": "900", "Scenario_B_1000": "1000", "Scenario_B_1100": "1100"}
+    plot_lifetime_specificosts_psi(scenario_dict, variable_name="lifetime", outputs_directory=None)
