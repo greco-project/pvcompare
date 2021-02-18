@@ -35,6 +35,7 @@ def apply_pvcompare(
     pv_setup=None,
     overwrite_grid_parameters=True,
     overwrite_pv_parameters=True,
+    overwrite_heat_parameters=True,
 ):
     """
     Runs the main functionalities of pvcompare.
@@ -86,6 +87,11 @@ def apply_pvcompare(
         Default: True. If true, the pv components in energyProduction.csv are
         overwritten with default values from 'data/user_inputs_collection/'
         according to the pv plants defined in 'pv_setup'.
+    overwrite_heat_parameters: bool
+        Default: True. If true, existing COP time series of the heat pump will be
+        overwritten with calculated time series of COP and existing fixed thermal losses
+        absolute and relative will be overwritten with calculated time series of fixed thermal
+        losses relative and absolute.
 
     Returns
     -------
@@ -166,6 +172,7 @@ def apply_pvcompare(
         weather=weather,
         lat=latitude,
         lon=longitude,
+        overwrite_hp_parameters=overwrite_heat_parameters,
     )
 
     demand.calculate_load_profiles(
@@ -186,6 +193,7 @@ def apply_pvcompare(
         lon=longitude,
         user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
         user_inputs_mvs_directory=user_inputs_mvs_directory,
+        overwrite_tes_parameters=overwrite_heat_parameters,
     )
 
 

@@ -186,6 +186,7 @@ def add_strat_tes(
     lon,
     user_inputs_pvcompare_directory=None,
     user_inputs_mvs_directory=None,
+    overwrite_tes_parameters=None,
 ):
     """
     Adds stratified thermal storage if it exists either in 'energyStorage.csv'.
@@ -210,6 +211,9 @@ def add_strat_tes(
         Path to input directory containing files that describe the energy
         system and that are an input to MVS. Default:
         DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`.
+    overwrite_tes_parameters: bool
+        Default: True. If true, existing fixed thermal losses absolute and relative will be
+        overwritten with calculated time series of fixed thermal losses relative and absolute.
 
     Notes
     -----
@@ -410,16 +414,17 @@ def add_strat_tes(
                         user_inputs_mvs_directory, "time_series", filename_csv_excl_path
                     )
 
-                    if not os.path.isfile(filename_csv):
+                    if not os.path.isfile(filename_csv) or overwrite_tes_parameters:
                         year = weather.index[int(len(weather) / 2)].year
                         result_filename = os.path.join(
                             user_inputs_mvs_directory,
                             "time_series",
                             f"{value_name_underscore}_{year}_{lat}_{lon}_{temp_high}.csv",
                         )
-                        logging.info(
-                            f"File containing {value_name} is missing: {filename_csv} \nCalculated times series of {value_name} are used instead."
-                        )
+                        if not overwrite_tes_parameters:
+                            logging.info(
+                                f"File containing {value_name} is missing: {filename_csv} \nCalculated times series of {value_name} are used instead."
+                            )
                         file_exists = False
                         # write new filename into storage_xx
                         storage_xx["storage capacity"][time_value] = storage_xx[
