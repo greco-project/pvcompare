@@ -271,7 +271,7 @@ def loop_pvcompare(
                 temp_high = temp_high + loop_dict["step"]
 
     logging.info("starting postprocessing KPI")
-    postprocessing_kpi(scenario_name=scenario_name, outputs_directory=outputs_directory)
+    postprocessing_kpi(scenario_name=scenario_name, outputs_directory=outputs_directory, variable_name=loop_type)
 
 
 def single_loop_pvcompare(
@@ -515,7 +515,7 @@ def loop_mvs(
             # add another step
             i = i + step
     logging.info("starting postprocessing KPI")
-    postprocessing_kpi(scenario_name=scenario_name, outputs_directory=outputs_directory)
+    postprocessing_kpi(scenario_name=scenario_name, outputs_directory=outputs_directory, variable_name=variable_name)
 
 
 def plot_all_flows(
@@ -825,12 +825,12 @@ def plot_kpi_loop(
             if "Basis" in key and len(df) <=3:
                 for index in df.index:
                     data=float(df.at[index, i])
-                    base=pd.Series(data=data, index=list(range(int(x_min), int(x_max))))
+                    base=pd.Series(data=data, index=list(range(int(x_min), int(x_max)+1)))
  #                   ax.hlines(y=float(row[i]), xmin=x_min, xmax=x_max, label = key, linestyle='--', color = "orange")
                     base.plot(color="orange", style='--', ax=ax,
-                            legend=False,
-                            sharex=True,
-                            xticks=df.step)
+                              label ='_nolegend_',
+                              legend=False,
+                            sharex=True)
             else:
                 df.plot(
                     x="step",
@@ -845,14 +845,15 @@ def plot_kpi_loop(
                 ax.set_ylabel(y_title[i])
                 ax.set_xlabel(variable_name)
                 ax.get_yaxis().set_label_coords(-0.13, 0.5)
+                ax.set_xticks(df.step)
                 ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
-
+    plt.xticks(rotation=45)
 
     handles, labels = ax.get_legend_handles_labels()
     fig.legend(
         handles,
         labels,
-        bbox_to_anchor=(0.96, 0.96),
+        bbox_to_anchor=(0.96, 0.88),
         loc="upper right",
         borderaxespad=0.0,
     )
@@ -1035,7 +1036,7 @@ def compare_weather_years(
     )
 
 
-def postprocessing_kpi(scenario_name, outputs_directory=None):
+def postprocessing_kpi(scenario_name, variable_name, outputs_directory=None):
     """
     Overwrites all output excel files "timeseries_all_flows.xlsx" and "scalars.xlsx"
     in loop output directory of a scenario with modified KPI's.
@@ -1058,94 +1059,93 @@ def postprocessing_kpi(scenario_name, outputs_directory=None):
         if not os.path.isdir(scenario_folder):
             logging.warning(f"The scenario folder {scenario_name} does not exist.")
     # get all variable names in scenario folder
-    list_var_name = []
-    for fname in list(glob.glob(os.path.join(scenario_folder, "*"))):
-        folder_name = fname.split("/")[::-1][0]
-        if folder_name.startswith("loop"):
-            split_path = folder_name.split("_")
-            get_var_name = split_path[::-1][0]
-            list_var_name.append(get_var_name)
-    # loop over all loop output folders with variable name
-    for variable_name in list_var_name:
-        loop_output_directory = os.path.join(
-            scenario_folder, "loop_outputs_" + str(variable_name)
+    # list_var_name = []
+    # for fname in list(glob.glob(os.path.join(scenario_folder, "*"))):
+    #     folder_name = fname.split("/")[::-1][0]
+    #     if folder_name.startswith("loop"):
+    #         split_path = folder_name.split("_")
+    #         get_var_name = split_path[::-1][0]
+    #         list_var_name.append(get_var_name)
+    # # loop over all loop output folders with variable name
+    loop_output_directory = os.path.join(
+        scenario_folder, "loop_outputs_" + str(variable_name)
+    )
+    if not os.path.isdir(loop_output_directory):
+        logging.warning(
+            f"The loop output folder {loop_output_directory} does not exist. "
+            f"Please check the variable_name"
         )
-        if not os.path.isdir(loop_output_directory):
-            logging.warning(
-                f"The loop output folder {loop_output_directory} does not exist. "
-                f"Please check the variable_name"
-            )
-        # parse through scalars folder and read in all excel sheets
-        for filepath_s in list(
-            glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
+    # parse through scalars folder and read in all excel sheets
+    for filepath_s in list(
+        glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
+    ):
+        scalars = pd.read_excel(filepath_s, sheet_name=None)
+
+        # get variable value from filepath
+        split_path = filepath_s.split("_")
+        get_year = split_path[::-1][1]
+        get_step = split_path[::-1][0]
+        ending = str(get_year) + "_" + str(get_step)
+
+        # load timeseries_all_busses
+        for filepath_t in list(
+            glob.glob(os.path.join(loop_output_directory, "timeseries", "*.xlsx"))
         ):
-            scalars = pd.read_excel(filepath_s, sheet_name=None)
+            if filepath_t.endswith(ending) is True:
+                timeseries = pd.read_excel(filepath_t, sheet_name="Electricity bus")
+                if "Heat pump" in timeseries.columns:
+                    electricity_demand = (
+                        timeseries["Electricity demand"] + timeseries["Heat pump"]
+                    )
+                    timeseries["Electricity demand"] = electricity_demand
+                    with pd.ExcelWriter(filepath_t, mode="a") as writer:
+                        timeseries.to_excel(writer, sheet_name="Electricity bus")
+                    logging.info(
+                        f"The timeseries_all_flows file {filepath_t} has been overwritten with the new electricity demand."
+                    )
+                else:
+                    electricity_demand = timeseries["Electricity demand"]
+        # read sheets of scalars
+        file_sheet1 = scalars["cost_matrix"]
+        file_sheet2 = scalars["scalar_matrix"]
+        file_sheet2.index = file_sheet2["label"]
+        file_sheet3 = scalars["scalars"]
+        file_sheet3.index = file_sheet3.iloc[:, 0]
+        file_sheet4 = scalars["KPI individual sectors"]
 
-            # get variable value from filepath
-            split_path = filepath_s.split("_")
-            get_year = split_path[::-1][1]
-            get_step = split_path[::-1][0]
-            ending = str(get_year) + "_" + str(get_step)
+        # recalculate KPI
+        file_sheet2.at["Electricity demand", "total_flow"] = sum(
+            electricity_demand
+        ) * (-1)
+        file_sheet3.at["Total_demandElectricity", 0] = sum(electricity_demand) * (
+            -1
+        )
+        file_sheet3.at["Degree of NZE", 0] = (
+            file_sheet3.at["Total internal renewable generation", 0]
+            - file_sheet3.at["Total_excessElectricity", 0]
+        ) / file_sheet3.at["Total_demandElectricity", 0]
+        file_sheet3.at["Degree of autonomy", 0] = (
+            file_sheet3.at["Total_demandElectricity", 0]
+            - file_sheet3.at["Total_consumption_from_energy_providerElectricity", 0]
+        ) / file_sheet3.at["Total_demandElectricity", 0]
+        file_sheet3.at["Onsite energy fraction", 0] = (
+            file_sheet3.at["Total_demandElectricity", 0]
+            - file_sheet3.at["Total_feedinElectricity", 0]
+        ) / file_sheet3.at["Total internal renewable generation", 0]
 
-            # load timeseries_all_busses
-            for filepath_t in list(
-                glob.glob(os.path.join(loop_output_directory, "timeseries", "*.xlsx"))
-            ):
-                if filepath_t.endswith(ending) is True:
-                    timeseries = pd.read_excel(filepath_t, sheet_name="Electricity bus")
-                    if "Heat pump" in timeseries.columns:
-                        electricity_demand = (
-                            timeseries["Electricity demand"] + timeseries["Heat pump"]
-                        )
-                        timeseries["Electricity demand"] = electricity_demand
-                        with pd.ExcelWriter(filepath_t, mode="a") as writer:
-                            timeseries.to_excel(writer, sheet_name="Electricity bus")
-                        logging.info(
-                            f"The timeseries_all_flows file {filepath_t} has been overwritten with the new electricity demand."
-                        )
-                    else:
-                        electricity_demand = timeseries["Electricity demand"]
-            # read sheets of scalars
-            file_sheet1 = scalars["cost_matrix"]
-            file_sheet2 = scalars["scalar_matrix"]
-            file_sheet2.index = file_sheet2["label"]
-            file_sheet3 = scalars["scalars"]
-            file_sheet3.index = file_sheet3.iloc[:, 0]
-            file_sheet4 = scalars["KPI individual sectors"]
-
-            # recalculate KPI
-            file_sheet2.at["Electricity demand", "total_flow"] = sum(
-                electricity_demand
-            ) * (-1)
-            file_sheet3.at["Total_demandElectricity", 0] = sum(electricity_demand) * (
-                -1
+        # save excel sheets
+        with pd.ExcelWriter(filepath_s, mode="a") as writer:
+            file_sheet1.to_excel(writer, sheet_name="cost_matrix", index=None)
+            file_sheet2.to_excel(writer, sheet_name="scalar_matrix", index=None)
+            file_sheet3.to_excel(writer, sheet_name="scalars", index=None)
+            file_sheet4.to_excel(
+                writer, sheet_name="KPI individual sectors", index=None
             )
-            file_sheet3.at["Degree of NZE", 0] = (
-                file_sheet3.at["Total internal renewable generation", 0]
-                - file_sheet3.at["Total_excessElectricity", 0]
-            ) / file_sheet3.at["Total_demandElectricity", 0]
-            file_sheet3.at["Degree of autonomy", 0] = (
-                file_sheet3.at["Total_demandElectricity", 0]
-                - file_sheet3.at["Total_consumption_from_energy_providerElectricity", 0]
-            ) / file_sheet3.at["Total_demandElectricity", 0]
-            file_sheet3.at["Onsite energy fraction", 0] = (
-                file_sheet3.at["Total_demandElectricity", 0]
-                - file_sheet3.at["Total_feedinElectricity", 0]
-            ) / file_sheet3.at["Total internal renewable generation", 0]
+        logging.info(
+            f"Scalars file sheet {filepath_s} has been overwritten with new KPI's"
+        )
 
-            # save excel sheets
-            with pd.ExcelWriter(filepath_s, mode="a") as writer:
-                file_sheet1.to_excel(writer, sheet_name="cost_matrix", index=None)
-                file_sheet2.to_excel(writer, sheet_name="scalar_matrix", index=None)
-                file_sheet3.to_excel(writer, sheet_name="scalars", index=None)
-                file_sheet4.to_excel(
-                    writer, sheet_name="KPI individual sectors", index=None
-                )
-            logging.info(
-                f"Scalars file sheet {filepath_s} has been overwritten with new KPI's"
-            )
-
-def plot_lifetime_specificosts_psi(scenario_dict, variable_name, outputs_directory):
+def plot_lifetime_specificosts_psi(scenario_dict, variable_name, outputs_directory, basis_value):
     """
 
     :param scenario_dict:
@@ -1207,36 +1207,51 @@ def plot_lifetime_specificosts_psi(scenario_dict, variable_name, outputs_directo
         "LCOE PV": "LCOE PV \nin EUR/kWh",
     }
 
-    LCOE.sort_index(ascending =False, inplace=True)
-    INSTCAP.sort_index(inplace=True)
+    LCOE.sort_index(ascending=False, inplace=True)
+    INSTCAP.sort_index(ascending=False, inplace=True)
+
+    # select values close to basis value
+    basis = pd.DataFrame()
+    for column in LCOE.columns:
+        value = LCOE[column].iloc[(LCOE[column]-basis_value).abs().argsort()[:1]]
+        if value.index[0] is not None:
+            basis.loc[column, "lifetime"] = int(value.index[0])
 
     # plot LCOE
-    fig = plt.figure(figsize=(13, 5))
+    f, (ax1, ax3) = plt.subplots(1, 2, figsize=(20, 9))
+    plt.tick_params(bottom='on')
+    sns.set_style("whitegrid", {'axes.grid': False})
     ax1 = plt.subplot(121)
     ax1 = sns.heatmap(LCOE, cmap="YlGnBu",cbar_kws={'label': 'LCOE in EUR/kWh'})
     ax1.set_ylabel("lifetime in years")
     ax1.set_xlabel("specific_costs in EUR")
+#    sns.lineplot(basis.columns, basis[0], ax = ax1)
+    ax2=ax1.twinx()
+    ax2.plot(basis.index, basis["lifetime"],color='darkorange', label = "SI")
+#    line = ax1.lines[0] # get the line
+#    line.set_xdata(line.get_xdata() + 0.5)
+#    ax1.axis('tight')
+#    ax1.set_xticks()
+    ax2.set_ylim(5, 25.5)
+    ax2.axis('off')
 
-    # fig.savefig(
-    #     os.path.join(
-    #         outputs_directory,
-    #         "plot_LCOE_lifetime_specific_costs_PSI_Germany.png",
-    #     )
-    # )
-    # plot LCOE
-    ax2 =plt.subplot(122)
-    ax2 = sns.heatmap(INSTCAP, cmap="YlGnBu", cbar_kws={'label': 'Installed capacity in kWp'})
-    ax2.set_ylabel("lifetime in years")
-    ax2.set_xlabel("specific costs in EUR")
+
+
+    ax3 =plt.subplot(122)
+    ax3 = sns.heatmap(INSTCAP, cmap="YlGnBu", cbar_kws={'label': 'Installed capacity in kWp'})
+    ax3.set_ylabel("lifetime in years")
+    ax3.set_xlabel("specific costs in EUR")
 
     plt.tight_layout()
 
-    fig.savefig(
+    f.savefig(
         os.path.join(
             outputs_directory,
-            "plot_INSTCAP_LCOE_PSI_Germany.png",
+            "plot_INSTCAP_LCOE_PSI_Spain_2015.png",
         )
     )
+
+
 
 if __name__ == "__main__":
     latitude = 52.5243700
@@ -1299,17 +1314,16 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    scenario_dict = {"Scenario_A2": "psi", "Scenario_A8": "Basis_si"}
+    scenario_dict = {"Scenario_A2": "psi", "Scenario_A9":"psi with sector coupling", "Scenario_A8": "Basis"} # Basis scenarios need to be called "Basis"
     plot_kpi_loop(
         scenario_dict=scenario_dict,
         variable_name="lifetime",
         kpi=[
             "Installed capacity PV",
             "LCOE PV",
-            "Total emissions",
             "Self consumption",
             "Total emissions",
-            "Degree of autonomy",
+            "Degree of NZE",
         ],
     )
     #
@@ -1320,7 +1334,9 @@ if __name__ == "__main__":
     #     static_inputs_directory=None,
     # )
 
-    #postprocessing_kpi(scenario_name="Scenario_A2", outputs_directory=None)
+#    postprocessing_kpi(scenario_name="Scenario_A6", variable_name="specific_costs", outputs_directory=None)
 
-    #scenario_dict = {"Scenario_B_500": "500", "Scenario_B_600": "600", "Scenario_B_700": "700", "Scenario_B_800": "800", "Scenario_B_900": "900", "Scenario_B_1000": "1000", "Scenario_B_1100": "1100"}
-    #plot_lifetime_specificosts_psi(scenario_dict, variable_name="lifetime", outputs_directory=None)
+    # scenario_dict = {"Scenario_C_500": "500", "Scenario_C_600": "600", "Scenario_C_700": "700", "Scenario_C_800": "800", "Scenario_C_900": "900", "Scenario_C_1000": "1000", "Scenario_C_1100": "1100"}
+    # plot_lifetime_specificosts_psi(scenario_dict, variable_name="lifetime",
+    #                                basis_value= 0.083,# basis_value Germany, 2016, SI = 0.124, basis_value_spain_2015 =  0,083
+    #                                outputs_directory=None)
