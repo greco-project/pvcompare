@@ -213,7 +213,7 @@ class Scenarios:
         :return:
         """
 
-        scenario_name = "Scenario_A5"
+        scenario_name = "Scenario_A5_1"
         data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
         # load input parameters from pv_setup.csv
         pv_setup = pd.read_csv(data_path)
@@ -229,8 +229,8 @@ class Scenarios:
             variable_name="specific_costs",
             variable_column="PV cpv",
             csv_file_variable="energyProduction.csv",
-            start=700,
-            stop=1500,
+            start=500,
+            stop=700,
             step=50,
             outputs_directory=None,
             user_inputs_mvs_directory=None,
@@ -243,7 +243,7 @@ class Scenarios:
         :return:
         """
 
-        scenario_name = "Scenario_A6"
+        scenario_name = "Scenario_A6_1"
         data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
         # load input parameters from pv_setup.csv
         pv_setup = pd.read_csv(data_path)
@@ -259,8 +259,8 @@ class Scenarios:
             variable_name="specific_costs",
             variable_column="PV cpv",
             csv_file_variable="energyProduction.csv",
-            start=700,
-            stop=1500,
+            start=500,
+            stop=700,
             step=50,
             outputs_directory=None,
             user_inputs_mvs_directory=None,
@@ -441,14 +441,41 @@ class Scenarios:
         epfile.at["specific_costs", "PV psi"] = 816.2
         epfile.to_csv(os.path.join(user_inputs_mvs_directory,"csv_elements", filename))
 
+    def run_scenario_D1(self):
+        """
+
+        :return:
+        """
+
+        scenario_name = "Scenario_D1"
+        outputs.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_germany,
+            longitude=self.longitude_germany,
+            years=self.years_germany,
+            storeys=self.storeys,
+            country=self.country_germany,
+            loop_type="technology",
+            loop_dict={"step1": "si", "step2": "cpv", "step3": "psi"},
+            user_inputs_mvs_directory=None,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+
+
+
 
 if __name__ == "__main__":
 
     scenarios = Scenarios()
     scenarios.setup_class()
+#    scenarios.run_scenario_a3()
+#    scenarios.run_scenario_a4()
 #    scenarios.run_scenario_a5()
-    scenarios.run_scenario_a6()
-    scenarios.run_scenario_a7()
+#    scenarios.run_scenario_a6()
+#    scenarios.run_scenario_a7()
 #    scenarios.run_scenario_a01()
 #    scenarios.run_scenario_a02()
-    scenarios.run_scenario_C()
+#    scenarios.run_scenario_C()
+    scenarios.run_scenario_D1()

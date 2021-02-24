@@ -385,9 +385,9 @@ def overwrite_mvs_energy_production_file(
                 )
     else:
         # drop all columns except of index and unit
-        user_input_ep.drop(
-            user_input_ep.columns.difference(["index", "unit"]), 1, inplace=True
-        )
+        #user_input_ep.drop(
+        #    user_input_ep.columns.difference(["index", "unit"]), 1, inplace=True
+        #)
         # get pv parameters from collection_mvs_inputs
         if collections_mvs_inputs_directory is None:
             collections_mvs_inputs_directory = (
@@ -397,8 +397,8 @@ def overwrite_mvs_energy_production_file(
             collections_mvs_inputs_directory, "csv_elements", "energyProduction.csv"
         )
         collection_ep = pd.read_csv(collection_filename, index_col=0)
+        i = 1
         for t in technologies:
-            i = 1
             label = "PV " + t
             if label in user_input_ep.columns:
                 user_input_ep[label + str(i)] = collection_ep[label]
