@@ -364,7 +364,7 @@ def overwrite_mvs_energy_production_file(
     user_input_ep = pd.read_csv(filename, index_col=0)
 
     if not overwrite_pv_parameters:
-        if len(technologies) < len(user_input_ep.columns):
+        if len(technologies) < len(user_input_ep.columns)-1:
             raise ValueError(
                 "The number of pv plants in pv_setup.csv is lower "
                 "than the number of columns in energyProduction.csv. "

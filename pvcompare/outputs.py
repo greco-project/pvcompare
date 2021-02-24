@@ -668,7 +668,7 @@ def plot_kpi_loop(
         List of KPI's to be plotted.
         Possible entries:
             "Degree of NZE"
-            "Costs total PV",
+            "Total costs PV",
             "Installed capacity PV",
             "Total renewable energy use",
             "Renewable share",
@@ -676,7 +676,9 @@ def plot_kpi_loop(
             "self consumption",
             "self sufficiency",
             "Degree of autonomy",
-            "Total non-renewable energy use"
+            "Total non-renewable energy use",
+            "Total costs",
+            "Total annual production"
     scenario_dict: dictionary
         dictionary with the scenario names that should be compared as keys and
         a label for the scenario as value. e.g.: {"Scenario_A1" : "si", "Scenario_A2": "cpv"}
@@ -755,7 +757,7 @@ def plot_kpi_loop(
             output.loc[index, "step"] = int(step)
             output.loc[index, "year"] = int(year)
             for pv in pv_labels:
-                output.loc[index, "Costs total PV"] = file_sheet1.at[pv, "costs_total"]
+                output.loc[index, "Total costs PV"] = file_sheet1.at[pv, "costs_total"]
                 output.loc[index, "Installed capacity PV"] = file_sheet2.at[
                     pv, "optimizedAddCap"
                 ]
@@ -784,13 +786,21 @@ def plot_kpi_loop(
                     "Total non-renewable energy use", 0
                 ]
                 output.loc[index, "Degree of NZE"] = file_sheet3.at["Degree of NZE", 0]
+                output.loc[index, "Total costs"] = file_sheet3.at[
+                    "costs_total", 0]
+                output.loc[index, "Total annual production"] = file_sheet2.at[
+                    pv, "annual_total_flow"]
+
+
+
 
             output_dict_column = output.to_dict()
             output_dict[scenario_dict[scenario_name]] = output_dict_column
 
     # define y labels
     y_title = {
-        "Costs total PV": "Costs total PV \n in EUR",
+        "Total costs": "Total costs \n in EUR",
+        "Total costs PV": "Costs total PV \n in EUR",
         "Installed capacity PV": "Installed capacity \nPV in kWp",
         "Total renewable energy": "Total renewable \nenergy in kWh",
         "Renewable factor": "Renewable factor \nin %",
@@ -801,6 +811,7 @@ def plot_kpi_loop(
         "Total emissions": "Total emissions \nin kgCO2eq/kWh",
         "Total non-renewable energy": "Total non-renewable \n energy in kWh",
         "Degree of NZE": "Degree of NZE \n in %",
+        "Total annual production" : "Total annual \n production in kWh"
     }
 
     output.sort_index(inplace=True)
@@ -1153,6 +1164,7 @@ def plot_lifetime_specificosts_psi(scenario_dict, variable_name, outputs_directo
     """
     LCOE = pd.DataFrame()
     INSTCAP = pd.DataFrame()
+    TOTALCOSTS = pd.DataFrame()
     for scenario_name in scenario_dict.keys():
         sc_step = scenario_name.split("_")[::-1][0]
         if outputs_directory == None:
@@ -1200,16 +1212,14 @@ def plot_lifetime_specificosts_psi(scenario_dict, variable_name, outputs_directo
             LCOE.loc[index, column] = file_sheet1.at[
                 "PV psi", "levelized_cost_of_energy_of_asset"
             ]
+            TOTALCOSTS.loc[index, column] = file_sheet1.at[
+                "PV psi", "costs_total"
+            ]
 
-    # define y labels
-    y_title = {
-        "Installed capacity PV": "Installed capacity \nPV in kWp",
-        "LCOE PV": "LCOE PV \nin EUR/kWh",
-    }
 
     LCOE.sort_index(ascending=False, inplace=True)
     INSTCAP.sort_index(ascending=False, inplace=True)
-
+    TOTALCOSTS.sort_index(ascending=False, inplace=True)
     # select values close to basis value
     basis = pd.DataFrame()
     for column in LCOE.columns:
@@ -1238,7 +1248,7 @@ def plot_lifetime_specificosts_psi(scenario_dict, variable_name, outputs_directo
 
 
     ax3 =plt.subplot(122)
-    ax3 = sns.heatmap(INSTCAP, cmap="YlGnBu", cbar_kws={'label': 'Installed capacity in kWp'})
+    ax3 = sns.heatmap(TOTALCOSTS, cmap="YlGnBu", cbar_kws={'label': 'Total costs PV in EUR'})
     ax3.set_ylabel("lifetime in years")
     ax3.set_xlabel("specific costs in EUR")
 
@@ -1247,7 +1257,7 @@ def plot_lifetime_specificosts_psi(scenario_dict, variable_name, outputs_directo
     f.savefig(
         os.path.join(
             outputs_directory,
-            "plot_INSTCAP_LCOE_PSI_Spain_2015.png",
+            "plot_PV_COSTS_LCOE_PSI_Spain_2015.png",
         )
     )
 
@@ -1314,18 +1324,18 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    scenario_dict = {"Scenario_A2": "psi", "Scenario_A9":"psi with sector coupling", "Scenario_A8": "Basis"} # Basis scenarios need to be called "Basis"
-    plot_kpi_loop(
-        scenario_dict=scenario_dict,
-        variable_name="lifetime",
-        kpi=[
-            "Installed capacity PV",
-            "LCOE PV",
-            "Self consumption",
-            "Total emissions",
-            "Degree of NZE",
-        ],
-    )
+    # scenario_dict = {"Scenario_A3": "psi", "Scenario_A5": "cpv", "Scenario_A7": "Basis"} # Basis scenarios need to be called "Basis"
+    # plot_kpi_loop(
+    #     scenario_dict=scenario_dict,
+    #     variable_name="specific_costs", #specific_costs
+    #     kpi=[
+    #         "Installed capacity PV",
+    #         "LCOE PV",
+    #         "Total costs PV",
+    #         "Total annual production",
+    #         "Degree of NZE",
+    #     ],
+    # )
     #
     # compare_weather_years(
     #     latitude=latitude,
@@ -1336,7 +1346,7 @@ if __name__ == "__main__":
 
 #    postprocessing_kpi(scenario_name="Scenario_A6", variable_name="specific_costs", outputs_directory=None)
 
-    # scenario_dict = {"Scenario_C_500": "500", "Scenario_C_600": "600", "Scenario_C_700": "700", "Scenario_C_800": "800", "Scenario_C_900": "900", "Scenario_C_1000": "1000", "Scenario_C_1100": "1100"}
-    # plot_lifetime_specificosts_psi(scenario_dict, variable_name="lifetime",
-    #                                basis_value= 0.083,# basis_value Germany, 2016, SI = 0.124, basis_value_spain_2015 =  0,083
-    #                                outputs_directory=None)
+    scenario_dict = {"Scenario_C_500": "500", "Scenario_C_600": "600", "Scenario_C_700": "700", "Scenario_C_800": "800", "Scenario_C_900": "900", "Scenario_C_1000": "1000", "Scenario_C_1100": "1100"}
+    plot_lifetime_specificosts_psi(scenario_dict, variable_name="lifetime",
+                                   basis_value= 0.083,# basis_value Germany, 2016, SI = 0.124, basis_value_spain_2015 =  0,083
+                                   outputs_directory=None)
