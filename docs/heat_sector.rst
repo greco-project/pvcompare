@@ -11,7 +11,7 @@ Different types of heat pumps and chillers can be modelled by adjusting their pa
 Parameters which can be adjusted and passed are:
 
   * **mode**: Plant type which can be either ``heat_pump`` or ``chiller``
-  * **technology**: Specific technology of the plant type which can  be 'air-air', 'air-water' or 'brine-water'
+  * **technology**: Specific technology of the plant type which can  be ``air-air``, ``air-water`` or ``brine-water``
   * **quality_grade**: Plant-specific scale-down factor to carnot efficiency
   * **temp_high**: Outlet temperature / High temperature of heat reservoir
   * **temp_low** Inlet temperature / Low temperature of heat reservoir
@@ -31,8 +31,8 @@ The quality grade depends on the technology hence you need to provide a specific
 Default values are implemented for the following technologies: air-to-air, air-to-water and brine-to-water.
 If you provide your own quality grade, passing **technology** is optional and will be set to an air source technology if passed empty or *NaN*.
 
-To model an air source heat pump, **technology** is set to either **air-air** or **air-water** and the parameter **temp_low** is passed empty or with *NaN*.
-In case you provide your own quality grade you do not need to specify the technology, since it will be set to the default: air source technology (**air-air** or **air-water**).
+To model an air source heat pump, **technology** is to be set to either **air-air** or **air-water** and the parameter **temp_low** is passed empty or with *NaN*.
+In case you provide your own quality grade, you do not need to specify the technology, since it will be set to the default: air source technology (**air-air** or **air-water**).
 In this case the *COP* will be calculated from the weather data, to be more exact from the ambient temperature.
 You can also provide your own time series of temperatures in a separate file as shown in this example of a ``heat_pumps_and_chillers.csv`` file:
 
@@ -65,7 +65,7 @@ To model a water or brine source heat pump, you can either
 
     (In this example with constant inlet temperature **temp_low**)
 
-To model a brine source heat pump from ground temperature calculated in ``heat_pump_and_chiller.py``, **technology** is set to **brine-water** and the parameter **temp_low** is passed empty or with *NaN*:
+To model a brine source heat pump from an automatically calculated ground temperature, **technology** is to be set to **brine-water** and the parameter **temp_low** is passed empty or with *NaN*:
 
     .. code-block:: python
 
@@ -74,7 +74,7 @@ To model a brine source heat pump from ground temperature calculated in ``heat_p
 
     (In this example without passed inlet temperature **temp_low**)
 
-In this case the *COP* will be calculated from the mean yearly ambient temperature, as an as simplifying assumption of the ground temperature according to `brandl_energy_2006 <https://www.icevirtuallibrary.com/doi/full/10.1680/geot.2006.56.2.81>`_
+In this case the *COP* will be calculated from the mean yearly ambient temperature, as an simplifying assumption of the ground temperature according to `brandl_energy_2006 <https://www.icevirtuallibrary.com/doi/full/10.1680/geot.2006.56.2.81>`_
 
 1.2 Chillers
 ************
@@ -88,8 +88,8 @@ The quality grade depends on the technology hence you need to provide a specific
 So far there is only one default value implemented for an air-to-air chiller's quality grade. It has been obtained from `monitored data <https://oemof-thermal.readthedocs.io/en/latest/validation_compression_heat_pumps_and_chillers.html>`_ of the GRECO project.
 If you provide your own quality grade, passing **technology** is optional and will be set to an air source technology if passed empty or *NaN*.
 
-To model an air source chiller, **technology** is set to **air-air** and the parameter **temp_high** is passed empty or with *NaN*.
-In case you provide your own quality grade you do not need to specify the technology, since it will be set to the default: air source technology (**air-air**).
+To model an air source chiller, **technology** is to be set to **air-air** and the parameter **temp_high** is passed empty or with *NaN*.
+In case you provide your own quality grade, you do not need to specify the technology, since it will be set to the default: air source technology (**air-air**).
 In this case the *EER* will be calculated from the weather data, to be more exact from the ambient temperature.
 You can also provide your own time series of temperatures in a separate file as in this example of a ``heat_pumps_and_chillers.csv`` file:
 

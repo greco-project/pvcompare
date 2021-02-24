@@ -345,9 +345,9 @@ The following list will give a brief introduction into the description of the cs
 
 * heat_pumps_and_chillers:
     *Parameters that describe characteristics of the heat pumps and chillers in the simulated energy system.*
-    *Values below assumed for each heat pump technology from research and comparison of three models, each of a different manufacturer.
-    *For each technology the quality grade has been calculated from the mean quality grade of the three models.
-    *Maximal and minimal operation ranges had been considered in order to make a reasonable assumption regarding **temp_high** and **temp_low**.
+    *Values below assumed for each heat pump technology from research and comparison of three models, each of a different manufacturer.*
+    *For each technology the quality grade has been calculated from the mean quality grade of the three models.*
+    *Maximal and minimal operation ranges had been considered in order to make a reasonable assumption regarding* **temp_high** *and* **temp_low** *.*
 
     1. **mode**: str, options: 'heat_pump' or 'chiller'
     2. **technology**: str, options: 'air-air', 'air-water' or 'brine-water' (These three technologies can be processed so far. Default: If missing or different the plant will be modeled as air source)
