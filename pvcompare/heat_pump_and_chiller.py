@@ -182,7 +182,10 @@ def calculate_cops_and_eers(
 
     if pd.isna(parameters.quality_grade):
         if parameters.technology == "air-air":
-            quality_grade = 0.1852
+            if mode == "heat_pump":
+                quality_grade = 0.1852
+            elif mode == "chiller":
+                quality_grade = 0.3
         elif parameters.technology == "air-water":
             if mode == "heat_pump":
                 quality_grade = 0.403
