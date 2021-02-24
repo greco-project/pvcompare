@@ -815,7 +815,7 @@ class TestCalculateCopsAndEers:
         temp_low = data["temp_low"]["chiller"]
 
         technologies = ["air-air", "air-water", "brine-water", np.nan]
-        quality_grades_of_technologies = [0.1852, np.nan, np.nan, np.nan]
+        quality_grades_of_technologies = [0.3, np.nan, np.nan, np.nan]
 
         for item, technology in enumerate(technologies):
             data["quality_grade"]["chiller"] = np.nan
