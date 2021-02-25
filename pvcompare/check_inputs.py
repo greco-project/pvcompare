@@ -363,8 +363,9 @@ def overwrite_mvs_energy_production_file(
     )
     user_input_ep = pd.read_csv(filename, index_col=0)
 
+    counter = 1
     if not overwrite_pv_parameters:
-        if len(technologies) < len(user_input_ep.columns):
+        if len(technologies) < len(user_input_ep.columns) - 1:
             raise ValueError(
                 "The number of pv plants in pv_setup.csv is lower "
                 "than the number of columns in energyProduction.csv. "
@@ -384,10 +385,11 @@ def overwrite_mvs_energy_production_file(
                     "adapt the technology or set 'overwrite_pv_parameters == True'."
                 )
     else:
-        # drop all columns except of index and unit
-        user_input_ep.drop(
-            user_input_ep.columns.difference(["index", "unit"]), 1, inplace=True
-        )
+        if counter == 1:
+            user_input_ep.drop(
+                user_input_ep.columns.difference(["index", "unit"]), 1, inplace=True
+            )
+            counter += 1
         # get pv parameters from collection_mvs_inputs
         if collections_mvs_inputs_directory is None:
             collections_mvs_inputs_directory = (
@@ -397,19 +399,23 @@ def overwrite_mvs_energy_production_file(
             collections_mvs_inputs_directory, "csv_elements", "energyProduction.csv"
         )
         collection_ep = pd.read_csv(collection_filename, index_col=0)
+        i = 1
+        count_duplicates = (
+            pv_setup.groupby(["technology"]).size().reset_index(name="count")
+        )
         for t in technologies:
-            i = 1
             label = "PV " + t
-            if label in user_input_ep.columns:
-                user_input_ep[label + str(i)] = collection_ep[label]
-                i += 1
-            else:
-                # insert column from collection_mvs_inputs
-                user_input_ep[label] = collection_ep[label]
-            logging.info(
-                f"The column {t} has been successfully added to "
-                f"user_inputs/mvs_inputs/csv_elements/energyProduction.csv."
-            )
+            for index, r in count_duplicates.iterrows():
+                if str(r["technology"]) == t and r["count"] > 1:
+                    new_label = "PV " + t + str(i)
+                    i += 1
+                else:
+                    new_label = label
+                user_input_ep[new_label] = collection_ep[label]
+                logging.info(
+                    f"The column {t} has been successfully added to "
+                    f"user_inputs/mvs_inputs/csv_elements/energyProduction.csv."
+                )
 
         user_input_ep.to_csv(filename)
 

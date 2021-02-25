@@ -266,9 +266,9 @@ class TestDemandProfiles:
             user_inputs_mvs_directory=self.user_inputs_mvs_directory,
         )
         file2 = pd.read_csv(filename, index_col=0, header=0,)
-        maxcap = int(file2.at["maximumCap", "PV " + technology])
+        maxcap = float(file2.at["maximumCap", "PV " + technology])
 
-        assert maxcap == 1000
+        assert int(maxcap) == 1000
         assert file2.at["file_name", "PV " + technology] == test_filename
 
     def test_add_file_name_to_energy_consumption_file(self):
