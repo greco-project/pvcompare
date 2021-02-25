@@ -365,7 +365,7 @@ def overwrite_mvs_energy_production_file(
 
     counter = 1
     if not overwrite_pv_parameters:
-        if len(technologies) < len(user_input_ep.columns)-1:
+        if len(technologies) < len(user_input_ep.columns) - 1:
             raise ValueError(
                 "The number of pv plants in pv_setup.csv is lower "
                 "than the number of columns in energyProduction.csv. "
@@ -387,9 +387,9 @@ def overwrite_mvs_energy_production_file(
     else:
         if counter == 1:
             user_input_ep.drop(
-               user_input_ep.columns.difference(["index", "unit"]), 1, inplace=True
+                user_input_ep.columns.difference(["index", "unit"]), 1, inplace=True
             )
-            counter +=1
+            counter += 1
         # get pv parameters from collection_mvs_inputs
         if collections_mvs_inputs_directory is None:
             collections_mvs_inputs_directory = (
@@ -400,8 +400,9 @@ def overwrite_mvs_energy_production_file(
         )
         collection_ep = pd.read_csv(collection_filename, index_col=0)
         i = 1
-        count_duplicates = pv_setup.groupby(
-            ['technology']).size().reset_index(name='count')
+        count_duplicates = (
+            pv_setup.groupby(["technology"]).size().reset_index(name="count")
+        )
         for t in technologies:
             label = "PV " + t
             for index, r in count_duplicates.iterrows():
