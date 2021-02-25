@@ -246,6 +246,41 @@ class TestDemandProfiles:
 
         assert set(["PV si", "PV cpv", "PV psi"]).issubset(file.columns)
 
+    def test_overwrite_mvs_energy_production_file_same_technology(self):
+        """ """
+        # load energyProduction.csv
+        filename = os.path.join(
+            self.user_inputs_mvs_directory, "csv_elements/energyProduction.csv"
+        )
+        file = pd.read_csv(filename, index_col=0, header=0,)
+        # delete all columns
+        file.drop(file.columns.difference(["index", "unit"]), 1, inplace=True)
+        file.to_csv(filename)
+
+        # load pv_setup.py
+        pv_setup_filename = os.path.join(
+            self.user_inputs_pvcompare_directory, "pv_setup.csv"
+        )
+        pv_setup = pd.read_csv(pv_setup_filename)
+
+        pv_setup.at[0, "technology"] = "si"
+        pv_setup.at[1, "technology"] = "si"
+        pv_setup.at[2, "technology"] = "si"
+        pv_setup.to_csv(pv_setup_filename, index=None)
+
+        # overwrite energyProduction.csv
+        overwrite_mvs_energy_production_file(
+            pv_setup=None,
+            user_inputs_mvs_directory=self.user_inputs_mvs_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            collections_mvs_inputs_directory=self.collections_mvs_inputs_directory,
+            overwrite_pv_parameters=True,
+        )
+        # load energyProduction.csv
+        file = pd.read_csv(filename, index_col=0, header=0,)
+
+        assert set(["PV si1", "PV si2", "PV si3"]).issubset(file.columns)
+
     def test_add_parameters_to_energy_production_file(self):
         """ """
 
