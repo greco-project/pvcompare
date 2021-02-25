@@ -261,12 +261,12 @@ def create_pv_components(
                 counter += 1
                 column_name = str(column_name) + str(counter)
 
-                check_inputs.add_parameters_to_energy_production_file(
-                    technology=column_name,
-                    ts_filename=ts_csv,
-                    nominal_value=nominal_value,
-                    user_inputs_mvs_directory=user_inputs_mvs_directory,
-                )
+            check_inputs.add_parameters_to_energy_production_file(
+                technology=column_name,
+                ts_filename=ts_csv,
+                nominal_value=nominal_value,
+                user_inputs_mvs_directory=user_inputs_mvs_directory,
+            )
     if plot == True:
         plt.show()
 
