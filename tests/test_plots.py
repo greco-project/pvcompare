@@ -9,7 +9,7 @@ https://docs.python.org/3/library/unittest.html are also good support.
 """
 
 import os
-from pvcompare.outputs import plot_all_flows, plot_kpi_loop, loop_mvs
+from pvcompare.plots import plot_all_flows, plot_kpi_loop
 from pvcompare import constants
 import glob
 import shutil
