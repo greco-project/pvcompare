@@ -139,7 +139,7 @@ def create_pv_components(
     time_series_directory = os.path.join(user_inputs_mvs_directory, "time_series")
 
     # parse through pv_setup file and create time series for each technology
-    counter=1
+    counter = 0
     for i, row in pv_setup.iterrows():
         j = row["surface_azimuth"]
         k = row["surface_tilt"]
@@ -253,11 +253,13 @@ def create_pv_components(
         # mvs_inputs/elements/csv/energyProduction.csv
         column_name = row["technology"]
         # check if the technology appears multiple times
-        count_duplicates = pv_setup.groupby(['technology']).size().reset_index(name='count')
+        count_duplicates = (
+            pv_setup.groupby(["technology"]).size().reset_index(name="count")
+        )
         for index, r in count_duplicates.iterrows():
             if str(r["technology"]) == column_name and r["count"] > 1:
-                column_name = str(column_name) + str(counter)
                 counter += 1
+                column_name = str(column_name) + str(counter)
 
             check_inputs.add_parameters_to_energy_production_file(
                 technology=column_name,
