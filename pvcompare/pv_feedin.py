@@ -686,7 +686,7 @@ def get_peak(technology, module_parameters_1, module_parameters_2):
         peak = module_parameters_1["I_mp_ref"] * module_parameters_1["V_mp_ref"]
         return peak
     elif technology == "cpv":
-        peak = (module_parameters_1["p_mp"] + module_parameters_2["p_mp"])
+        peak = module_parameters_1["p_mp"] + module_parameters_2["p_mp"]
         return peak
     elif technology == "psi":
         # calculate peak power with 10 % CTM losses
