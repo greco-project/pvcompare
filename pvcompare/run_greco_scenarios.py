@@ -212,7 +212,7 @@ class Scenarios:
         :return:
         """
 
-        scenario_name = "Scenario_A5_1"
+        scenario_name = "Scenario_A5"
         data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
         # load input parameters from pv_setup.csv
         pv_setup = pd.read_csv(data_path)
@@ -229,7 +229,7 @@ class Scenarios:
             variable_column="PV cpv",
             csv_file_variable="energyProduction.csv",
             start=500,
-            stop=700,
+            stop=1200,
             step=50,
             outputs_directory=None,
             user_inputs_mvs_directory=None,
@@ -242,7 +242,7 @@ class Scenarios:
         :return:
         """
 
-        scenario_name = "Scenario_A6_1"
+        scenario_name = "Scenario_A6"
         data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
         # load input parameters from pv_setup.csv
         pv_setup = pd.read_csv(data_path)
@@ -259,7 +259,7 @@ class Scenarios:
             variable_column="PV cpv",
             csv_file_variable="energyProduction.csv",
             start=500,
-            stop=700,
+            stop=1200,
             step=50,
             outputs_directory=None,
             user_inputs_mvs_directory=None,
@@ -484,10 +484,10 @@ if __name__ == "__main__":
     scenarios.setup_class()
     #    scenarios.run_scenario_a3()
     #    scenarios.run_scenario_a4()
-    #    scenarios.run_scenario_a5()
-    #    scenarios.run_scenario_a6()
-    scenarios.run_scenario_a7()
+    scenarios.run_scenario_a5()
+    scenarios.run_scenario_a6()
+    #scenarios.run_scenario_a7()
     #    scenarios.run_scenario_a01()
     #    scenarios.run_scenario_a02()
     #    scenarios.run_scenario_C()
-    scenarios.run_scenario_D1()
+    #scenarios.run_scenario_D1()
