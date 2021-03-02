@@ -96,7 +96,7 @@ class TestPvtime_series:
             normalization=True,
         )
         output = ts.sum()
-        assert round(output, 2) == 0.64
+        assert round(output, 2) == 0.69
 
     def test_create_absolute_psi_time_series(self):
         ts = create_psi_time_series(
@@ -196,7 +196,7 @@ class TestPvtime_series:
             psi_type="Chen",
         )
 
-        assert nominal_value == 343.381
+        assert nominal_value == 320.0
 
     def test_nominal_values_psi(self):
 
