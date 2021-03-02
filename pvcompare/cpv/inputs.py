@@ -30,6 +30,7 @@ mod_params_cpv = {
     "Area": 0.1,
     "v_mp": 33.5,
     "i_mp": 0.893,
+    "p_mp": 28.0,
     "u_c": 29.0,  # default value from https://pvlib-python.readthedocs.io/en/latest/generated/pvlib.temperature.pvsyst_cell.html#pvlib.temperature.pvsyst_cell
     "u_v": 0.00,
     "alpha": 0.11,  # temperature coefficient for the whole module see INS datasheet not used
@@ -69,7 +70,7 @@ mod_params_flatplate = {
     "alpha_absorption": 0.97,  # pvsyst_celltemp() default value
     "i_mp": 3.51,
     "v_mp": 1.26,
-    "p_mp": 4.44,
+    "p_mp": 4.0,
     "aoi_limit": 60,
 }
 
