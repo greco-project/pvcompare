@@ -682,8 +682,8 @@ def plot_facades(
             f"Please check the variable_name"
         )
     # parse through scalars folder and read in all excel sheets
-    d={}
-    i=0
+    d = {}
+    i = 0
     for filepath in list(
         glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
     ):
@@ -721,59 +721,64 @@ def plot_facades(
         energyProduction = energyProduction.drop(["unit"], axis=1)
         pv_labels = energyProduction.columns
         # get total costs pv and installed capacity
-        index = str(year)                   #+ "_" + str(step)
-#            output.loc[index, "step"] = int(step)
-#            output.loc[index, "year"] = int(year)
-#            costs_total=0
-#            LCOE_total=0
-#            installed_capa_total = 0
+        index = str(year)  # + "_" + str(step)
+        #            output.loc[index, "step"] = int(step)
+        #            output.loc[index, "year"] = int(year)
+        #            costs_total=0
+        #            LCOE_total=0
+        #            installed_capa_total = 0
         for pv in pv_labels:
             if i == 0:
-                d["costs_total"]=pd.DataFrame()
-                d["LCOE"]=pd.DataFrame()
-                d["installedCap"]=pd.DataFrame()
-                d["production"]=pd.DataFrame()
+                d["costs_total"] = pd.DataFrame()
+                d["LCOE"] = pd.DataFrame()
+                d["installedCap"] = pd.DataFrame()
+                d["production"] = pd.DataFrame()
 
             d["costs_total"].loc[index, pv] = int(year)
             d["costs_total"].loc[index, pv] = file_sheet1.at[pv, "costs_total"]
             d["LCOE"].loc[index, pv] = file_sheet1.at[
                 pv, "levelized_cost_of_energy_of_asset"
             ]
-            d["installedCap"].loc[index, pv] = file_sheet2.at[
-                pv, "optimizedAddCap"
-            ]
-            d["production"].loc[index, pv] = file_sheet2.at[
-                    pv, "annual_total_flow"]
+            d["installedCap"].loc[index, pv] = file_sheet2.at[pv, "optimizedAddCap"]
+            d["production"].loc[index, pv] = file_sheet2.at[pv, "annual_total_flow"]
 
-        i +=1
+        i += 1
 
     # restucture dataframes for facades
-    output={}
+    output = {}
     for key in d.keys():
-        output[key]=pd.DataFrame()
+        output[key] = pd.DataFrame()
         for c in d[key].columns:
             if c.endswith("1"):
-                output[key].loc["rooftop", str(c)[:-1]]=d[key][c].mean()
-                output[key].loc["rooftop", "diff_" + str(c)[:-1]]=(d[key][c].max() - d[key][c].min())/2
+                output[key].loc["rooftop", str(c)[:-1]] = d[key][c].mean()
+                output[key].loc["rooftop", "diff_" + str(c)[:-1]] = (
+                    d[key][c].max() - d[key][c].min()
+                ) / 2
             elif c.endswith("2"):
-                output[key].loc["south_facade", str(c)[:-1]]=d[key][c].mean()
-                output[key].loc["south_facade", "diff_" + str(c)[:-1]]=(d[key][c].max() - d[key][c].min())/2
+                output[key].loc["south_facade", str(c)[:-1]] = d[key][c].mean()
+                output[key].loc["south_facade", "diff_" + str(c)[:-1]] = (
+                    d[key][c].max() - d[key][c].min()
+                ) / 2
             elif c.endswith("3"):
-                output[key].loc["east_facade", str(c)[:-1]]=d[key][c].mean()
-                output[key].loc["east_facade", "diff_" + str(c)[:-1]]=(d[key][c].max() - d[key][c].min())/2
+                output[key].loc["east_facade", str(c)[:-1]] = d[key][c].mean()
+                output[key].loc["east_facade", "diff_" + str(c)[:-1]] = (
+                    d[key][c].max() - d[key][c].min()
+                ) / 2
             elif c.endswith("4"):
-                output[key].loc["west_facade", str(c)[:-1]]=d[key][c].mean()
-                output[key].loc["west_facade", "diff_" + str(c)[:-1]]=(d[key][c].max() - d[key][c].min())/2
+                output[key].loc["west_facade", str(c)[:-1]] = d[key][c].mean()
+                output[key].loc["west_facade", "diff_" + str(c)[:-1]] = (
+                    d[key][c].max() - d[key][c].min()
+                ) / 2
 
     # define y labels
     y_title = {
         "Costs total PV": "Costs total PV \n in EUR",
         "Installed capacity PV": "Installed capacity \nPV in kWp",
         "LCOE PV": "LCOE PV \nin EUR/kWh",
-        "Total annual production": "Total annual \n production in kWh"
+        "Total annual production": "Total annual \n production in kWh",
     }
 
-#    output.sort_index(inplace=True)
+    #    output.sort_index(inplace=True)
     # plot
     hight = len(d.keys()) * 2
     fig = plt.figure(figsize=(7, hight))
@@ -787,11 +792,8 @@ def plot_facades(
         df = pd.DataFrame()
         df = df.from_dict(output[key])
 
-        df.plot(kind="bar",
-            ax=ax,
-            label=key,
-            legend=False,
-            sharex=True,
+        df.plot(
+            kind="bar", ax=ax, label=key, legend=False, sharex=True,
         )
 
         ax.set_ylabel(str(key))
@@ -811,13 +813,13 @@ def plot_facades(
 
     plt.tight_layout()
 
-
     fig.savefig(
         os.path.join(
             outputs_directory,
             "plot_facades" + str(scenario_name) + "_" + str(variable_name) + ".png",
         )
     )
+
 
 if __name__ == "__main__":
     scenario_name = "Scenario_A2"
@@ -851,9 +853,9 @@ if __name__ == "__main__":
     #     static_inputs_directory=None,
     # )
 
-    plot_facades(variable_name = "technology",
-                 kpi = ["LCOE PV",
-                        "Costs total PV",
-                        "Installed capacity PV",],
-                 scenario_name="Scenario_E2",
-                 outputs_directory=None)
+    plot_facades(
+        variable_name="technology",
+        kpi=["LCOE PV", "Costs total PV", "Installed capacity PV",],
+        scenario_name="Scenario_E2",
+        outputs_directory=None,
+    )

@@ -267,7 +267,11 @@ def loop_pvcompare(
                 temp_high = temp_high + loop_dict["step"]
 
     logging.info("starting postprocessing KPI")
-    postprocessing_kpi(scenario_name=scenario_name, variable_name = loop_type, outputs_directory=outputs_directory)
+    postprocessing_kpi(
+        scenario_name=scenario_name,
+        variable_name=loop_type,
+        outputs_directory=outputs_directory,
+    )
 
 
 def single_loop_pvcompare(
@@ -511,7 +515,11 @@ def loop_mvs(
             # add another step
             i = i + step
     logging.info("starting postprocessing KPI")
-    postprocessing_kpi(scenario_name=scenario_name, variable_name=variable_name, outputs_directory=outputs_directory)
+    postprocessing_kpi(
+        scenario_name=scenario_name,
+        variable_name=variable_name,
+        outputs_directory=outputs_directory,
+    )
 
 
 def postprocessing_kpi(scenario_name, variable_name, outputs_directory=None):
@@ -610,7 +618,6 @@ def postprocessing_kpi(scenario_name, variable_name, outputs_directory=None):
         logging.info(
             f"Scalars file sheet {filepath_s} has been overwritten with new KPI's"
         )
-
 
 
 if __name__ == "__main__":
