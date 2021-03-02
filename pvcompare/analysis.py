@@ -272,7 +272,11 @@ def loop_pvcompare(
                 temp_high = temp_high + loop_dict["step"]
 
     logging.info("starting postprocessing KPI")
-    postprocessing_kpi(scenario_name=scenario_name, outputs_directory=outputs_directory, variable_name = loop_type)
+    postprocessing_kpi(
+        scenario_name=scenario_name,
+        outputs_directory=outputs_directory,
+        variable_name=loop_type,
+    )
 
 
 def single_loop_pvcompare(
@@ -516,8 +520,11 @@ def loop_mvs(
             # add another step
             i = i + step
     logging.info("starting postprocessing KPI")
-    postprocessing_kpi(scenario_name=scenario_name, outputs_directory=outputs_directory, variable_name=variable_name)
-
+    postprocessing_kpi(
+        scenario_name=scenario_name,
+        outputs_directory=outputs_directory,
+        variable_name=variable_name,
+    )
 
 
 def postprocessing_kpi(scenario_name, variable_name, outputs_directory=None):
@@ -590,12 +597,10 @@ def postprocessing_kpi(scenario_name, variable_name, outputs_directory=None):
         file_sheet4 = scalars["KPI individual sectors"]
 
         # recalculate KPI
-        file_sheet2.at["Electricity demand", "total_flow"] = sum(
-            electricity_demand
-        ) * (-1)
-        file_sheet3.at["Total_demandElectricity", 0] = sum(electricity_demand) * (
+        file_sheet2.at["Electricity demand", "total_flow"] = sum(electricity_demand) * (
             -1
         )
+        file_sheet3.at["Total_demandElectricity", 0] = sum(electricity_demand) * (-1)
         file_sheet3.at["Degree of NZE", 0] = (
             file_sheet3.at["Total internal renewable generation", 0]
             - file_sheet3.at["Total_excessElectricity", 0]
@@ -620,8 +625,6 @@ def postprocessing_kpi(scenario_name, variable_name, outputs_directory=None):
         logging.info(
             f"Scalars file sheet {filepath_s} has been overwritten with new KPI's"
         )
-
-
 
 
 if __name__ == "__main__":
@@ -706,6 +709,8 @@ if __name__ == "__main__":
     #     static_inputs_directory=None,
     # )
 
-    postprocessing_kpi(scenario_name="Scenario_A7_test", variable_name="technology", outputs_directory=None)
-
-
+    postprocessing_kpi(
+        scenario_name="Scenario_A7_test",
+        variable_name="technology",
+        outputs_directory=None,
+    )

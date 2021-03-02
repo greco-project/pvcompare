@@ -1,4 +1,4 @@
-import pvcompare.outputs as outputs
+import pvcompare.analysis as outputs
 import pvcompare.constants as constants
 import pvcompare.main as main
 import os
@@ -66,8 +66,7 @@ class Scenarios:
         """
 
         scenario_name = "Scenario_A02"
-        data_path = os.path.join(self.user_inputs_pvcompare_directory,
-                                 "pv_setup.csv")
+        data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
         # load input parameters from pv_setup.csv
         pv_setup = pd.read_csv(data_path)
         pv_setup.at[0, "technology"] = str("si")
@@ -273,7 +272,7 @@ class Scenarios:
         :return:
         """
 
-        scenario_name = "Scenario_A7"
+        scenario_name = "Scenario_A7_test"
         data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
         # load input parameters from pv_setup.csv
         pv_setup = pd.read_csv(data_path)
@@ -348,7 +347,7 @@ class Scenarios:
             step=1,
             outputs_directory=None,
             user_inputs_mvs_directory=os.path.join(
-            os.path.dirname(__file__), "data/user_inputs/mvs_inputs_HP/"
+                os.path.dirname(__file__), "data/user_inputs/mvs_inputs_HP/"
             ),
             scenario_name=scenario_name,
         )
@@ -358,21 +357,27 @@ class Scenarios:
 
         :return:
         """
-        data_path = os.path.join(self.user_inputs_pvcompare_directory,
-                                 "pv_setup.csv")
+        data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
         # load input parameters from pv_setup.csv
         pv_setup = pd.read_csv(data_path)
         pv_setup.at[0, "technology"] = str("psi")
         pv_setup.to_csv(data_path, index=False)
         list = [600, 800, 900, 1000]
         for costs in list:
-            scenario_name = "Scenario_B_"+ str(costs)
-            user_inputs_mvs_directory = constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY
+            scenario_name = "Scenario_B_" + str(costs)
+            user_inputs_mvs_directory = (
+                constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY
+            )
             filename = "energyProduction.csv"
-            epfile = pd.read_csv(os.path.join(user_inputs_mvs_directory,"csv_elements", filename), index_col=0)
-            #default: 816.2
-            epfile.at["specific_costs","PV psi"]=costs
-            epfile.to_csv(os.path.join(user_inputs_mvs_directory,"csv_elements", filename))
+            epfile = pd.read_csv(
+                os.path.join(user_inputs_mvs_directory, "csv_elements", filename),
+                index_col=0,
+            )
+            # default: 816.2
+            epfile.at["specific_costs", "PV psi"] = costs
+            epfile.to_csv(
+                os.path.join(user_inputs_mvs_directory, "csv_elements", filename)
+            )
 
             outputs.loop_mvs(
                 latitude=self.latitude_germany,
@@ -391,32 +396,40 @@ class Scenarios:
                 scenario_name=scenario_name,
             )
 
-        #enter default value again
-        epfile = pd.read_csv(os.path.join(user_inputs_mvs_directory,"csv_elements", filename))
+        # enter default value again
+        epfile = pd.read_csv(
+            os.path.join(user_inputs_mvs_directory, "csv_elements", filename)
+        )
         # default: 816.2
         epfile.at["specific_costs", "PV psi"] = 816.2
-        epfile.to_csv(os.path.join(user_inputs_mvs_directory,"csv_elements", filename))
+        epfile.to_csv(os.path.join(user_inputs_mvs_directory, "csv_elements", filename))
 
     def run_scenario_C(self):
         """
 
         :return:
         """
-        data_path = os.path.join(self.user_inputs_pvcompare_directory,
-                                 "pv_setup.csv")
+        data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
         # load input parameters from pv_setup.csv
         pv_setup = pd.read_csv(data_path)
         pv_setup.at[0, "technology"] = str("psi")
         pv_setup.to_csv(data_path, index=False)
         list = [500, 600, 700, 800, 900, 1000, 1100]
         for costs in list:
-            scenario_name = "Scenario_C_"+ str(costs)
-            user_inputs_mvs_directory = constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY
+            scenario_name = "Scenario_C_" + str(costs)
+            user_inputs_mvs_directory = (
+                constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY
+            )
             filename = "energyProduction.csv"
-            epfile = pd.read_csv(os.path.join(user_inputs_mvs_directory,"csv_elements", filename), index_col=0)
-            #default: 816.2
-            epfile.at["specific_costs","PV psi"]=costs
-            epfile.to_csv(os.path.join(user_inputs_mvs_directory,"csv_elements", filename))
+            epfile = pd.read_csv(
+                os.path.join(user_inputs_mvs_directory, "csv_elements", filename),
+                index_col=0,
+            )
+            # default: 816.2
+            epfile.at["specific_costs", "PV psi"] = costs
+            epfile.to_csv(
+                os.path.join(user_inputs_mvs_directory, "csv_elements", filename)
+            )
 
             outputs.loop_mvs(
                 latitude=self.latitude_spain,
@@ -435,11 +448,13 @@ class Scenarios:
                 scenario_name=scenario_name,
             )
 
-        #enter default value again
-        epfile = pd.read_csv(os.path.join(user_inputs_mvs_directory,"csv_elements", filename))
+        # enter default value again
+        epfile = pd.read_csv(
+            os.path.join(user_inputs_mvs_directory, "csv_elements", filename)
+        )
         # default: 816.2
         epfile.at["specific_costs", "PV psi"] = 816.2
-        epfile.to_csv(os.path.join(user_inputs_mvs_directory,"csv_elements", filename))
+        epfile.to_csv(os.path.join(user_inputs_mvs_directory, "csv_elements", filename))
 
     def run_scenario_D1(self):
         """
@@ -463,19 +478,16 @@ class Scenarios:
         )
 
 
-
-
-
 if __name__ == "__main__":
 
     scenarios = Scenarios()
     scenarios.setup_class()
-#    scenarios.run_scenario_a3()
-#    scenarios.run_scenario_a4()
-#    scenarios.run_scenario_a5()
-#    scenarios.run_scenario_a6()
-#    scenarios.run_scenario_a7()
-#    scenarios.run_scenario_a01()
-#    scenarios.run_scenario_a02()
-#    scenarios.run_scenario_C()
+    #    scenarios.run_scenario_a3()
+    #    scenarios.run_scenario_a4()
+    #    scenarios.run_scenario_a5()
+    #    scenarios.run_scenario_a6()
+    scenarios.run_scenario_a7()
+    #    scenarios.run_scenario_a01()
+    #    scenarios.run_scenario_a02()
+    #    scenarios.run_scenario_C()
     scenarios.run_scenario_D1()

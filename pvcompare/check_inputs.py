@@ -386,7 +386,7 @@ def overwrite_mvs_energy_production_file(
                 )
     else:
         if counter == 1:
-        # drop all columns except of index and unit
+            # drop all columns except of index and unit
             user_input_ep.drop(
                 user_input_ep.columns.difference(["index", "unit"]), 1, inplace=True
             )

@@ -144,7 +144,9 @@ def plot_all_flows(
     )
 
 
-def plot_lifetime_specificosts_psi(scenario_dict, variable_name, outputs_directory, basis_value):
+def plot_lifetime_specificosts_psi(
+    scenario_dict, variable_name, outputs_directory, basis_value
+):
     """
 
     :param scenario_dict:
@@ -190,20 +192,15 @@ def plot_lifetime_specificosts_psi(scenario_dict, variable_name, outputs_directo
             get_step = split_path[::-1][0]
             lt_step = int(get_step.split(".")[0])
 
-
             # get LCOE pv and installed capacity
             index = lt_step
             column = str(sc_step)
-#            LCOE.loc[index, "step"] = int(step)
-            INSTCAP.loc[index, column] = file_sheet2.at[
-                "PV psi", "optimizedAddCap"]
+            #            LCOE.loc[index, "step"] = int(step)
+            INSTCAP.loc[index, column] = file_sheet2.at["PV psi", "optimizedAddCap"]
             LCOE.loc[index, column] = file_sheet1.at[
                 "PV psi", "levelized_cost_of_energy_of_asset"
             ]
-            TOTALCOSTS.loc[index, column] = file_sheet1.at[
-                "PV psi", "costs_total"
-            ]
-
+            TOTALCOSTS.loc[index, column] = file_sheet1.at["PV psi", "costs_total"]
 
     LCOE.sort_index(ascending=False, inplace=True)
     INSTCAP.sort_index(ascending=False, inplace=True)
@@ -211,43 +208,38 @@ def plot_lifetime_specificosts_psi(scenario_dict, variable_name, outputs_directo
     # select values close to basis value
     basis = pd.DataFrame()
     for column in LCOE.columns:
-        value = LCOE[column].iloc[(LCOE[column]-basis_value).abs().argsort()[:1]]
+        value = LCOE[column].iloc[(LCOE[column] - basis_value).abs().argsort()[:1]]
         if value.index[0] is not None:
             basis.loc[column, "lifetime"] = int(value.index[0])
 
     # plot LCOE
     f, (ax1, ax3) = plt.subplots(1, 2, figsize=(20, 9))
-    plt.tick_params(bottom='on')
-    sns.set_style("whitegrid", {'axes.grid': False})
+    plt.tick_params(bottom="on")
+    sns.set_style("whitegrid", {"axes.grid": False})
     ax1 = plt.subplot(121)
-    ax1 = sns.heatmap(LCOE, cmap="YlGnBu",cbar_kws={'label': 'LCOE in EUR/kWh'})
+    ax1 = sns.heatmap(LCOE, cmap="YlGnBu", cbar_kws={"label": "LCOE in EUR/kWh"})
     ax1.set_ylabel("lifetime in years")
     ax1.set_xlabel("specific_costs in EUR")
-#    sns.lineplot(basis.columns, basis[0], ax = ax1)
-    ax2=ax1.twinx()
-    ax2.plot(basis.index, basis["lifetime"],color='darkorange', label = "SI")
-#    line = ax1.lines[0] # get the line
-#    line.set_xdata(line.get_xdata() + 0.5)
-#    ax1.axis('tight')
-#    ax1.set_xticks()
+    #    sns.lineplot(basis.columns, basis[0], ax = ax1)
+    ax2 = ax1.twinx()
+    ax2.plot(basis.index, basis["lifetime"], color="darkorange", label="SI")
+    #    line = ax1.lines[0] # get the line
+    #    line.set_xdata(line.get_xdata() + 0.5)
+    #    ax1.axis('tight')
+    #    ax1.set_xticks()
     ax2.set_ylim(5, 25.5)
-    ax2.axis('off')
+    ax2.axis("off")
 
-
-
-    ax3 =plt.subplot(122)
-    ax3 = sns.heatmap(TOTALCOSTS, cmap="YlGnBu", cbar_kws={'label': 'Total costs PV in EUR'})
+    ax3 = plt.subplot(122)
+    ax3 = sns.heatmap(
+        TOTALCOSTS, cmap="YlGnBu", cbar_kws={"label": "Total costs PV in EUR"}
+    )
     ax3.set_ylabel("lifetime in years")
     ax3.set_xlabel("specific costs in EUR")
 
     plt.tight_layout()
 
-    f.savefig(
-        os.path.join(
-            outputs_directory,
-            "plot_PV_COSTS_LCOE_PSI_Spain_2015.png",
-        )
-    )
+    f.savefig(os.path.join(outputs_directory, "plot_PV_COSTS_LCOE_PSI_Spain_2015.png",))
 
 
 def compare_weather_years(
@@ -413,6 +405,7 @@ def compare_weather_years(
         bbox_inches="tight",
     )
 
+
 def plot_kpi_loop(
     variable_name, kpi, scenario_dict, outputs_directory=None,
 ):
@@ -550,13 +543,10 @@ def plot_kpi_loop(
                     "Total non-renewable energy use", 0
                 ]
                 output.loc[index, "Degree of NZE"] = file_sheet3.at["Degree of NZE", 0]
-                output.loc[index, "Total costs"] = file_sheet3.at[
-                    "costs_total", 0]
+                output.loc[index, "Total costs"] = file_sheet3.at["costs_total", 0]
                 output.loc[index, "Total annual production"] = file_sheet2.at[
-                    pv, "annual_total_flow"]
-
-
-
+                    pv, "annual_total_flow"
+                ]
 
             output_dict_column = output.to_dict()
             output_dict[scenario_dict[scenario_name]] = output_dict_column
@@ -575,7 +565,7 @@ def plot_kpi_loop(
         "Total emissions": "Total emissions \nin kgCO2eq/kWh",
         "Total non-renewable energy": "Total non-renewable \n energy in kWh",
         "Degree of NZE": "Degree of NZE \n in %",
-        "Total annual production" : "Total annual \n production in kWh"
+        "Total annual production": "Total annual \n production in kWh",
     }
 
     output.sort_index(inplace=True)
@@ -597,15 +587,21 @@ def plot_kpi_loop(
         for key in output_dict.keys():
             df = pd.DataFrame()
             df = df.from_dict(output_dict[key])
-            if "Basis" in key and len(df) <=3:
+            if "Basis" in key and len(df) <= 3:
                 for index in df.index:
-                    data=float(df.at[index, i])
-                    base=pd.Series(data=data, index=list(range(int(x_min), int(x_max)+1)))
- #                   ax.hlines(y=float(row[i]), xmin=x_min, xmax=x_max, label = key, linestyle='--', color = "orange")
-                    base.plot(color="orange", style='--', ax=ax,
-                              label ='_nolegend_',
-                              legend=False,
-                            sharex=True)
+                    data = float(df.at[index, i])
+                    base = pd.Series(
+                        data=data, index=list(range(int(x_min), int(x_max) + 1))
+                    )
+                    #                   ax.hlines(y=float(row[i]), xmin=x_min, xmax=x_max, label = key, linestyle='--', color = "orange")
+                    base.plot(
+                        color="orange",
+                        style="--",
+                        ax=ax,
+                        label="_nolegend_",
+                        legend=False,
+                        sharex=True,
+                    )
             else:
                 df.plot(
                     x="step",
