@@ -666,7 +666,6 @@ def plot_facades(
 
 
     """
-    output_dict = {}
     if outputs_directory == None:
         outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
         scenario_folder = os.path.join(outputs_directory, scenario_name)
@@ -683,10 +682,8 @@ def plot_facades(
             f"Please check the variable_name"
         )
     # parse through scalars folder and read in all excel sheets
-    costs_total = pd.DataFrame()
-    LCOE = pd.DataFrame()
-    installedCap=pd.DataFrame()
-    production=pd.DataFrame()
+    d={}
+    i=0
     for filepath in list(
         glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
     ):
@@ -731,17 +728,42 @@ def plot_facades(
 #            LCOE_total=0
 #            installed_capa_total = 0
         for pv in pv_labels:
-            costs_total.loc[index, pv] = int(year)
-            costs_total.loc[index, pv] = file_sheet1.at[pv, "costs_total"]
-            LCOE.loc[index, pv] = file_sheet1.at[
+            if i == 0:
+                d["costs_total"]=pd.DataFrame()
+                d["LCOE"]=pd.DataFrame()
+                d["installedCap"]=pd.DataFrame()
+                d["production"]=pd.DataFrame()
+
+            d["costs_total"].loc[index, pv] = int(year)
+            d["costs_total"].loc[index, pv] = file_sheet1.at[pv, "costs_total"]
+            d["LCOE"].loc[index, pv] = file_sheet1.at[
                 pv, "levelized_cost_of_energy_of_asset"
             ]
-            installedCap.loc[index, pv] = file_sheet2.at[
+            d["installedCap"].loc[index, pv] = file_sheet2.at[
                 pv, "optimizedAddCap"
             ]
-            production.loc[index, pv] = file_sheet2.at[
+            d["production"].loc[index, pv] = file_sheet2.at[
                     pv, "annual_total_flow"]
 
+        i +=1
+
+    # restucture dataframes for facades
+    output={}
+    for key in d.keys():
+        output[key]=pd.DataFrame()
+        for c in d[key].columns:
+            if c.endswith("1"):
+                output[key].loc["rooftop", str(c)[:-1]]=d[key][c].mean()
+                output[key].loc["rooftop", "diff_" + str(c)[:-1]]=(d[key][c].max() - d[key][c].min())/2
+            elif c.endswith("2"):
+                output[key].loc["south_facade", str(c)[:-1]]=d[key][c].mean()
+                output[key].loc["south_facade", "diff_" + str(c)[:-1]]=(d[key][c].max() - d[key][c].min())/2
+            elif c.endswith("3"):
+                output[key].loc["east_facade", str(c)[:-1]]=d[key][c].mean()
+                output[key].loc["east_facade", "diff_" + str(c)[:-1]]=(d[key][c].max() - d[key][c].min())/2
+            elif c.endswith("4"):
+                output[key].loc["west_facade", str(c)[:-1]]=d[key][c].mean()
+                output[key].loc["west_facade", "diff_" + str(c)[:-1]]=(d[key][c].max() - d[key][c].min())/2
 
     # define y labels
     y_title = {
@@ -752,53 +774,40 @@ def plot_facades(
     }
 
 #    output.sort_index(inplace=True)
-
     # plot
-    fig = plt.figure(figsize=(15, 10))
-    ax1 = fig.add_subplot(411)
-    ax2 = fig.add_subplot(412)
-    ax3 = fig.add_subplot(413)
-    ax4 = fig.add_subplot(414)
+    hight = len(d.keys()) * 2
+    fig = plt.figure(figsize=(7, hight))
+    rows = len(d.keys())
+    num = (
+        rows * 100 + 11
+    )  # the setting for number of rows | number of columns | row number
+    for key in output.keys():
+        ax = fig.add_subplot(num)
+        num = num + 1
+        df = pd.DataFrame()
+        df = df.from_dict(output[key])
 
-    costs_total.plot(kind="bar",
-        ax=ax1,
-        legend=False,
-#        label=pv.columns,
-        sharex=True,
-#                    xticks=df.step,
+        df.plot(kind="bar",
+            ax=ax,
+            label=key,
+            legend=False,
+            sharex=True,
+        )
+
+        ax.set_ylabel(str(key))
+        ax.set_xlabel("facades")
+        ax.get_yaxis().set_label_coords(-0.13, 0.5)
+        ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
+    plt.xticks(rotation=45)
+
+    handles, labels = ax.get_legend_handles_labels()
+    fig.legend(
+        handles,
+        labels,
+        bbox_to_anchor=(0.96, 0.88),
+        loc="upper right",
+        borderaxespad=0.0,
     )
-    LCOE.plot(kind="bar",
-        ax=ax2,
-        legend=False,
-        sharex=True,
-        #                    xticks=df.step,
-    )
-    installedCap.plot(kind="bar",
-        ax=ax3,
-        legend=False,
-        sharex=True,
-        #                    xticks=df.step,
-    )
-    production.plot(kind="bar",
-        ax=ax4,
-        sharex=True,
-        #                    xticks=df.step,
-    )
-
-    ax1.set_ylabel("total_costs \n in EUR")
-    ax2.set_ylabel("LCOE \n in EUR")
-    ax3.set_ylabel("installed capacity \n in kWp")
-    ax4.set_ylabel("annual production \n in kWh")
-    ax4.set_xlabel("year")
-
-    ax1.get_yaxis().set_label_coords(-0.07, 0.5)
-    ax2.get_yaxis().set_label_coords(-0.07, 0.5)
-    ax3.get_yaxis().set_label_coords(-0.07, 0.5)
-    ax4.get_yaxis().set_label_coords(-0.07, 0.5)
-
-    ax4.set_xlim(ax3.get_xlim()[0] - 0.5, ax3.get_xlim()[1] + 0.5)
-
-    ax4.legend(loc="lower left", bbox_to_anchor=(1.05, 0))
 
     plt.tight_layout()
 
@@ -806,7 +815,7 @@ def plot_facades(
     fig.savefig(
         os.path.join(
             outputs_directory,
-            "plot_scalars" + str(scenario_name) + "_" + str(variable_name) + ".png",
+            "plot_facades" + str(scenario_name) + "_" + str(variable_name) + ".png",
         )
     )
 
