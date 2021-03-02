@@ -25,7 +25,6 @@ def plot_all_flows(
 
     """
     Plots all flows of the energy system for a given period of time.
-
     Parameters
     ----------
     scenario_name: str
@@ -52,14 +51,11 @@ def plot_all_flows(
     weekday: int
         The day of the caldendar_week (from 0-6 with 0 : Monday and 6: Sunday.
         If None: the next greater period is plotted. Default: None
-
     Returns
     -------
         None
         Saves figure into outputs_directory
     -------
-
-
     """
     # check if weekday is a valid day
     if weekday not in range(0, 6, 1):
@@ -140,6 +136,264 @@ def plot_all_flows(
     # save plot into output directory
     plt.savefig(
         os.path.join(timeseries_directory, f"plot_{timeseries_name[:-5]}_{period}.png"),
+        bbox_inches="tight",
+    )
+
+
+def plot_lifetime_specificosts_psi(
+    scenario_dict, variable_name, outputs_directory, basis_value
+):
+    """
+    :param scenario_dict:
+    :return:
+    """
+    LCOE = pd.DataFrame()
+    INSTCAP = pd.DataFrame()
+    TOTALCOSTS = pd.DataFrame()
+    for scenario_name in scenario_dict.keys():
+        sc_step = scenario_name.split("_")[::-1][0]
+        if outputs_directory == None:
+            outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
+            scenario_folder = os.path.join(outputs_directory, scenario_name)
+        else:
+            scenario_folder = os.path.join(outputs_directory, scenario_name)
+            if not os.path.isdir(scenario_folder):
+                logging.warning(f"The scenario folder {scenario_name} does not exist.")
+        loop_output_directory = os.path.join(
+            scenario_folder, "loop_outputs_" + str(variable_name)
+        )
+        if not os.path.isdir(loop_output_directory):
+            logging.warning(
+                f"The loop output folder {loop_output_directory} does not exist. "
+                f"Please check the variable_name"
+            )
+        # parse through scalars folder and read in all excel sheets
+        for filepath in list(
+            glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
+        ):
+
+            file_sheet1 = pd.read_excel(
+                filepath, header=0, index_col=1, sheet_name="cost_matrix"
+            )
+            file_sheet2 = pd.read_excel(
+                filepath, header=0, index_col=1, sheet_name="scalar_matrix"
+            )
+            file_sheet3 = pd.read_excel(
+                filepath, header=0, index_col=0, sheet_name="scalars"
+            )
+
+            # get variable value from filepath
+            split_path = filepath.split("_")
+            get_step = split_path[::-1][0]
+            lt_step = int(get_step.split(".")[0])
+
+            # get LCOE pv and installed capacity
+            index = lt_step
+            column = str(sc_step)
+            #            LCOE.loc[index, "step"] = int(step)
+            INSTCAP.loc[index, column] = file_sheet2.at["PV psi", "optimizedAddCap"]
+            LCOE.loc[index, column] = file_sheet1.at[
+                "PV psi", "levelized_cost_of_energy_of_asset"
+            ]
+            TOTALCOSTS.loc[index, column] = file_sheet1.at["PV psi", "costs_total"]
+
+    LCOE.sort_index(ascending=False, inplace=True)
+    INSTCAP.sort_index(ascending=False, inplace=True)
+    TOTALCOSTS.sort_index(ascending=False, inplace=True)
+    # select values close to basis value
+    basis = pd.DataFrame()
+    for column in LCOE.columns:
+        value = LCOE[column].iloc[(LCOE[column] - basis_value).abs().argsort()[:1]]
+        if value.index[0] is not None:
+            basis.loc[column, "lifetime"] = int(value.index[0])
+
+    # plot LCOE
+    f, (ax1, ax3) = plt.subplots(1, 2, figsize=(20, 9))
+    plt.tick_params(bottom="on")
+    sns.set_style("whitegrid", {"axes.grid": False})
+    ax1 = plt.subplot(121)
+    ax1 = sns.heatmap(LCOE, cmap="YlGnBu", cbar_kws={"label": "LCOE in EUR/kWh"})
+    ax1.set_ylabel("lifetime in years")
+    ax1.set_xlabel("specific_costs in EUR")
+    #    sns.lineplot(basis.columns, basis[0], ax = ax1)
+    ax2 = ax1.twinx()
+    ax2.plot(basis.index, basis["lifetime"], color="darkorange", label="SI")
+    #    line = ax1.lines[0] # get the line
+    #    line.set_xdata(line.get_xdata() + 0.5)
+    #    ax1.axis('tight')
+    #    ax1.set_xticks()
+    ax2.set_ylim(5, 25.5)
+    ax2.axis("off")
+
+    ax3 = plt.subplot(122)
+    ax3 = sns.heatmap(
+        TOTALCOSTS, cmap="YlGnBu", cbar_kws={"label": "Total costs PV in EUR"}
+    )
+    ax3.set_ylabel("lifetime in years")
+    ax3.set_xlabel("specific costs in EUR")
+
+    plt.tight_layout()
+
+    f.savefig(os.path.join(outputs_directory, "plot_PV_COSTS_LCOE_PSI_Spain_2015.png",))
+
+
+def compare_weather_years(
+    latitude,
+    longitude,
+    country,
+    static_inputs_directory=None,
+    outputs_directory=None,
+    user_inputs_mvs_directory=None,
+):
+    """
+    Barplot that shows yearly aggregated weather parameters: ghi, dni, dhi and
+    temperature.
+    Parameters
+    ----------
+    latitude: float
+        latitude of the location
+    longitude: float
+        longitude of the location
+    country: str
+        country of simulation
+    static_inputs_directory: str
+        if None: 'constants.DEFAULT_STATIC_INPUTS_DIRECTORY'
+    outputs_directory: str
+        if None: 'constants.DEFAULT_OUTPUTS_DIRECTORY
+    user_inputs_mvs_directory: str or None
+        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
+    Returns
+    -------
+        None
+        The plot is saved into the `output_directory`.
+    -------
+    """
+
+    if static_inputs_directory == None:
+        static_inputs_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
+    if user_inputs_mvs_directory == None:
+        user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
+    timeseries_directory = os.path.join(user_inputs_mvs_directory, "time_series")
+    if outputs_directory == None:
+        outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
+
+    ghi = pd.DataFrame()
+    temp = pd.DataFrame()
+    dni = pd.DataFrame()
+    dhi = pd.DataFrame()
+    electricity_demand = pd.DataFrame()
+    heat_demand = pd.DataFrame()
+
+    for file in os.listdir(static_inputs_directory):
+        if file.startswith("weatherdata_" + str(latitude) + "_" + str(longitude)):
+            year = file.split(".")[2].split("_")[1]
+            weatherdata = pd.read_csv(
+                os.path.join(static_inputs_directory, file), header=0
+            )
+            ghi[year] = weatherdata["ghi"]
+            temp[year] = weatherdata["temp_air"]
+            dni[year] = weatherdata["dni"]
+            dhi[year] = weatherdata["dhi"]
+
+    for file in os.listdir(timeseries_directory):
+        if file.startswith("electricity_load_"):
+            if file.endswith(str(country) + "_5.csv"):
+                year = int(file.split(".")[0].split("_")[2])
+                electricity_load = pd.read_csv(
+                    os.path.join(timeseries_directory, file), header=0
+                )
+                electricity_demand[year] = electricity_load["kWh"]
+        elif file.startswith("heat_load_"):
+            if file.endswith(str(country) + "_5.csv"):
+                year = int(file.split(".")[0].split("_")[2])
+                heat_load = pd.read_csv(
+                    os.path.join(timeseries_directory, file), header=0
+                )
+                heat_demand[year] = heat_load["kWh"]
+
+    ghi = ghi.reindex(sorted(ghi.columns), axis=1)
+    temp = temp.reindex(sorted(temp.columns), axis=1)
+    dni = dni.reindex(sorted(dni.columns), axis=1)
+    dhi = dhi.reindex(sorted(dhi.columns), axis=1)
+    electricity_demand = electricity_demand.reindex(
+        sorted(electricity_demand.columns), axis=1
+    )
+    heat_demand = heat_demand.reindex(sorted(electricity_demand.columns), axis=1)
+
+    ghi_sum = ghi.sum(axis=0)
+    temp_sum = temp.sum(axis=0)
+    dni_sum = dni.sum(axis=0)
+    dhi_sum = dhi.sum(axis=0)
+    el_sum = electricity_demand.sum(axis=0)
+    he_sum = heat_demand.sum(axis=0)
+
+    # data to plot
+    n_groups = len(ghi.columns)
+
+    # create plot
+    fig = plt.figure(figsize=(11, 7))  # Create matplotlib figure
+    ax = fig.add_subplot(111)  # Create matplotlib axes
+    bar_width = 0.15
+    opacity = 0.8
+
+    ax2 = ax.twinx()
+
+    ghi_sum.plot(
+        kind="bar",
+        color="tab:orange",
+        ax=ax,
+        alpha=opacity,
+        width=bar_width,
+        label="ghi",
+        position=3,
+    )
+    dni_sum.plot(
+        kind="bar",
+        color="gold",
+        ax=ax,
+        alpha=opacity,
+        width=bar_width,
+        label="dni",
+        position=2,
+    )
+    dhi_sum.plot(
+        kind="bar",
+        color="tab:green",
+        ax=ax,
+        alpha=opacity,
+        width=bar_width,
+        label="dhi",
+        position=1,
+    )
+    el_sum.plot(
+        kind="bar",
+        color="tab:blue",
+        ax=ax2,
+        alpha=opacity,
+        width=bar_width,
+        label="electricity load",
+        position=0,
+    )
+    #    he_sum.plot(kind='bar', color = "purple", ax=ax2, alpha = opacity,width=bar_width, label="heat load", position = 0)
+
+    plt.xlabel("year")
+    ax.set_ylabel("Irradiance in kW/year")
+    ax2.set_ylabel("Demand in kWh/year")
+    #    plt.title("yearly energy yield")
+    #    plt.xticks(index + bar_width, (ghi.columns))
+    ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.1)
+    # Put a legend to the right of the current axis
+    ax.legend(loc="lower right", bbox_to_anchor=(-0.05, 0))
+    ax2.legend(loc="lower left", bbox_to_anchor=(1.05, 0))
+    #    plt.tight_layout()
+
+    # save plot into output directory
+    plt.savefig(
+        os.path.join(
+            outputs_directory, f"plot_compare_weatherdata_{latitude}_{longitude}.png"
+        ),
         bbox_inches="tight",
     )
 
@@ -276,13 +530,10 @@ def plot_kpi_loop(
                     "Total non-renewable energy use", 0
                 ]
                 output.loc[index, "Degree of NZE"] = file_sheet3.at["Degree of NZE", 0]
-                output.loc[index, "Total costs"] = file_sheet3.at[
-                    "costs_total", 0]
+                output.loc[index, "Total costs"] = file_sheet3.at["costs_total", 0]
                 output.loc[index, "Total annual production"] = file_sheet2.at[
-                    pv, "annual_total_flow"]
-
-
-
+                    pv, "annual_total_flow"
+                ]
 
             output_dict_column = output.to_dict()
             output_dict[scenario_dict[scenario_name]] = output_dict_column
@@ -301,7 +552,7 @@ def plot_kpi_loop(
         "Total emissions": "Total emissions \nin kgCO2eq/kWh",
         "Total non-renewable energy": "Total non-renewable \n energy in kWh",
         "Degree of NZE": "Degree of NZE \n in %",
-        "Total annual production" : "Total annual \n production in kWh"
+        "Total annual production": "Total annual \n production in kWh",
     }
 
     output.sort_index(inplace=True)
@@ -323,15 +574,21 @@ def plot_kpi_loop(
         for key in output_dict.keys():
             df = pd.DataFrame()
             df = df.from_dict(output_dict[key])
-            if "Basis" in key and len(df) <=3:
+            if "Basis" in key and len(df) <= 3:
                 for index in df.index:
-                    data=float(df.at[index, i])
-                    base=pd.Series(data=data, index=list(range(int(x_min), int(x_max)+1)))
- #                   ax.hlines(y=float(row[i]), xmin=x_min, xmax=x_max, label = key, linestyle='--', color = "orange")
-                    base.plot(color="orange", style='--', ax=ax,
-                              label ='_nolegend_',
-                              legend=False,
-                            sharex=True)
+                    data = float(df.at[index, i])
+                    base = pd.Series(
+                        data=data, index=list(range(int(x_min), int(x_max) + 1))
+                    )
+                    #                   ax.hlines(y=float(row[i]), xmin=x_min, xmax=x_max, label = key, linestyle='--', color = "orange")
+                    base.plot(
+                        color="orange",
+                        style="--",
+                        ax=ax,
+                        label="_nolegend_",
+                        legend=False,
+                        sharex=True,
+                    )
             else:
                 df.plot(
                     x="step",
@@ -370,169 +627,6 @@ def plot_kpi_loop(
             outputs_directory,
             "plot_scalars" + str(name) + "_" + str(variable_name) + ".png",
         )
-    )
-
-def compare_weather_years(
-    latitude,
-    longitude,
-    country,
-    static_inputs_directory=None,
-    outputs_directory=None,
-    user_inputs_mvs_directory=None,
-):
-    """
-    Barplot that shows yearly aggregated weather parameters: ghi, dni, dhi and
-    temperature.
-
-
-    Parameters
-    ----------
-    latitude: float
-        latitude of the location
-    longitude: float
-        longitude of the location
-    country: str
-        country of simulation
-    static_inputs_directory: str
-        if None: 'constants.DEFAULT_STATIC_INPUTS_DIRECTORY'
-    outputs_directory: str
-        if None: 'constants.DEFAULT_OUTPUTS_DIRECTORY
-    user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
-        Default: None.
-    Returns
-    -------
-        None
-        The plot is saved into the `output_directory`.
-    -------
-
-    """
-
-    if static_inputs_directory == None:
-        static_inputs_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
-    if user_inputs_mvs_directory == None:
-        user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
-    timeseries_directory = os.path.join(user_inputs_mvs_directory, "time_series")
-    if outputs_directory == None:
-        outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
-
-    ghi = pd.DataFrame()
-    temp = pd.DataFrame()
-    dni = pd.DataFrame()
-    dhi = pd.DataFrame()
-    electricity_demand = pd.DataFrame()
-    heat_demand = pd.DataFrame()
-
-    for file in os.listdir(static_inputs_directory):
-        if file.startswith("weatherdata_" + str(latitude) + "_" + str(longitude)):
-            year = file.split(".")[2].split("_")[1]
-            weatherdata = pd.read_csv(
-                os.path.join(static_inputs_directory, file), header=0
-            )
-            ghi[year] = weatherdata["ghi"]
-            temp[year] = weatherdata["temp_air"]
-            dni[year] = weatherdata["dni"]
-            dhi[year] = weatherdata["dhi"]
-
-    for file in os.listdir(timeseries_directory):
-        if file.startswith("electricity_load_"):
-            if file.endswith(str(country) + "_5.csv"):
-                year = int(file.split(".")[0].split("_")[2])
-                electricity_load = pd.read_csv(
-                    os.path.join(timeseries_directory, file), header=0
-                )
-                electricity_demand[year] = electricity_load["kWh"]
-        elif file.startswith("heat_load_"):
-            if file.endswith(str(country) + "_5.csv"):
-                year = int(file.split(".")[0].split("_")[2])
-                heat_load = pd.read_csv(
-                    os.path.join(timeseries_directory, file), header=0
-                )
-                heat_demand[year] = heat_load["kWh"]
-
-    ghi = ghi.reindex(sorted(ghi.columns), axis=1)
-    temp = temp.reindex(sorted(temp.columns), axis=1)
-    dni = dni.reindex(sorted(dni.columns), axis=1)
-    dhi = dhi.reindex(sorted(dhi.columns), axis=1)
-    electricity_demand = electricity_demand.reindex(
-        sorted(electricity_demand.columns), axis=1
-    )
-    heat_demand = heat_demand.reindex(sorted(electricity_demand.columns), axis=1)
-
-    ghi_sum = ghi.sum(axis=0)
-    temp_sum = temp.sum(axis=0)
-    dni_sum = dni.sum(axis=0)
-    dhi_sum = dhi.sum(axis=0)
-    el_sum = electricity_demand.sum(axis=0)
-    he_sum = heat_demand.sum(axis=0)
-
-    # data to plot
-    n_groups = len(ghi.columns)
-
-    # create plot
-    fig = plt.figure(figsize=(11, 7))  # Create matplotlib figure
-    ax = fig.add_subplot(111)  # Create matplotlib axes
-    bar_width = 0.15
-    opacity = 0.8
-
-    ax2 = ax.twinx()
-
-    ghi_sum.plot(
-        kind="bar",
-        color="tab:orange",
-        ax=ax,
-        alpha=opacity,
-        width=bar_width,
-        label="ghi",
-        position=3,
-    )
-    dni_sum.plot(
-        kind="bar",
-        color="gold",
-        ax=ax,
-        alpha=opacity,
-        width=bar_width,
-        label="dni",
-        position=2,
-    )
-    dhi_sum.plot(
-        kind="bar",
-        color="tab:green",
-        ax=ax,
-        alpha=opacity,
-        width=bar_width,
-        label="dhi",
-        position=1,
-    )
-    el_sum.plot(
-        kind="bar",
-        color="tab:blue",
-        ax=ax2,
-        alpha=opacity,
-        width=bar_width,
-        label="electricity load",
-        position=0,
-    )
-    #    he_sum.plot(kind='bar', color = "purple", ax=ax2, alpha = opacity,width=bar_width, label="heat load", position = 0)
-
-    plt.xlabel("year")
-    ax.set_ylabel("Irradiance in kW/year")
-    ax2.set_ylabel("Demand in kWh/year")
-    #    plt.title("yearly energy yield")
-    #    plt.xticks(index + bar_width, (ghi.columns))
-    ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.1)
-    # Put a legend to the right of the current axis
-    ax.legend(loc="lower right", bbox_to_anchor=(-0.05, 0))
-    ax2.legend(loc="lower left", bbox_to_anchor=(1.05, 0))
-    #    plt.tight_layout()
-
-    # save plot into output directory
-    plt.savefig(
-        os.path.join(
-            outputs_directory, f"plot_compare_weatherdata_{latitude}_{longitude}.png"
-        ),
-        bbox_inches="tight",
     )
 
 
