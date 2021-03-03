@@ -21,6 +21,7 @@ Welcome to the documentation of pvcompare!
    demand
    heat_sector
    parameters
+   pv_validation
    simulation_outputs
    scope_limits
    scenarios_and_results
