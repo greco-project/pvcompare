@@ -32,6 +32,14 @@ All building parameters are contained in 'data/static_inputs/building_parameters
 The construction of the buidling, as well as the available facades for PV usage
 are based on the research of `Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_.
 
+The default building parameters are based on the following assumptions that have
+been adopted from `Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_:
+Each storey (with a total area of 1232 m²) is defided into 8 flats, each 120 m². The rest of the
+storey area is used for hallway and staircases etc. Each of the 8 flats is inhabited
+by 4 people, meaning in average 30m² per person (it is assumed that a NZE building
+is operated efficiently).
+
+
 Exploitation for PV Installation
 --------------------------------
 
@@ -48,7 +56,16 @@ an elevation of 45°, the gable roof area equals 70% of the total floor area.
 For a flat roof area available to PV installations is assumed to be 40% of the
 total floor area, due to shading between the modules (see `Energieatlas <https://energieatlas.berlin.de/Energieatlas_Be/Docs/Datendokumentation-Solarkataster_BLN.pdf>`_.
 
+Maximum Capacity
+----------------
+With the help of the calculated available area for PV exploitation, the maximum
+capacity can be calculated. The maximum capacity, given in
+the unit of kWp, depends on the size and the efficiency of the specific PV technology.
+It serves as a limit for the investment optimization with MVS.
+It is calculated as follows:
 
+.. math::
+    \text{maxCap} = ( \text{available area } / \text{module size } ) \cdot \text{module peak power}
 
 
 .. _pv-feedin:
