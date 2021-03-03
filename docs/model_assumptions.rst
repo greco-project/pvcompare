@@ -34,6 +34,7 @@ are based on the research of `Hachem, 2014 <https://www.sciencedirect.com/scienc
 
 The default building parameters are based on the following assumptions that have
 been adopted from `Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_:
+
 Each storey (with a total area of 1232 m²) is defided into 8 flats, each 120 m². The rest of the
 storey area is used for hallway and staircases etc. Each of the 8 flats is inhabited
 by 4 people, meaning in average 30m² per person (it is assumed that a NZE building
