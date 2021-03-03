@@ -17,11 +17,7 @@ Welcome to the documentation of pvcompare!
    getting_started
    basic_usage
    model_assumptions
-   pv_feedin
-   demand
-   heat_sector
    parameters
-   pv_validation
    simulation_outputs
    scope_limits
    scenarios_and_results
