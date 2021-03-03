@@ -657,16 +657,19 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    # scenario_dict = {"Scenario_A2": "psi", "Scenario_A9": "psi_HP"}
-    # plot_kpi_loop(
-    #     scenario_dict=scenario_dict,
-    #     variable_name="lifetime",
-    #     kpi=[
-    #         "Installed capacity PV",
-    #         "Total emissions",
-    #         "Degree of autonomy",
-    #     ],
-    # )
+    scenario_dict = {"Scenario_A6": "cpv", "Scenario_A8": "Basis"}
+    plot_kpi_loop(
+        scenario_dict=scenario_dict,
+        variable_name="specific_costs",
+        kpi=[
+            "Installed capacity PV",
+            "Total costs PV",
+            "LCOE PV",
+            "Total annual production",
+            "Total costs",
+            "Degree of NZE",
+        ],
+    )
     #
     # compare_weather_years(
     #     latitude=latitude,
