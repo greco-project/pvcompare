@@ -37,7 +37,7 @@ been adopted from `Hachem, 2014 <https://www.sciencedirect.com/science/article/a
 Each storey (with a total area of 1232 m²) is defided into 8 flats, each 120 m². The rest of the
 storey area is used for hallway and staircases etc. Each of the 8 flats is inhabited
 by 4 people, meaning in average 30m² per person (it is assumed that a NZE building
-is operated efficiently).
+is operated efficiently). Therefore the number of persons per storey is set to 32.
 
 
 Exploitation for PV Installation
