@@ -499,11 +499,9 @@ and Stratified thermal energy storage (STES).
 
 
 
-Validation
-==========
+Weather data
+============
 
-Validation of radiation data
-----------------------------
 The weather data used for simulation is the Copernicus ERA5 reanalysis weather data.
 It provides hourly data for atmospheric, land-surface and sea-state parameters with a
 latitude-longitude grid of 0.25 x 0.25 degrees resolution. For more information
@@ -542,8 +540,6 @@ The ERA5 data shows higher DHI for northern countries
 While the offset for Oslo is still in an accepted error margin, the offset for Berlin falls out.
 Nevertheless, this offset is accepted in our simulations, because the DHI plays a
 secondary role for PV performance.
-
-
 
 
 
