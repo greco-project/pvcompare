@@ -657,10 +657,10 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    scenario_dict = {"Scenario_A6": "cpv", "Scenario_A8": "Basis"}
+    scenario_dict = {"Scenario_D1": "si", "Scenario_D2": "psi", "Scenario_D3": "cpv"}
     plot_kpi_loop(
         scenario_dict=scenario_dict,
-        variable_name="specific_costs",
+        variable_name="storeys",
         kpi=[
             "Installed capacity PV",
             "Total costs PV",
