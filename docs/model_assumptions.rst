@@ -17,10 +17,10 @@ reather than a single *NZE building*. As a consequence all simulations are run o
 number of 400 identical buildings. In order to interpret the simulation results for
 a single building, the total demand / production can be devided by 400. (TODO: is this correct??)
 
-We assume an urban environment that allows high solar exposure without shading
+In general we assume an urban environment that allows high solar exposure without shading
 from surrounding buildings or trees.
 
-The stardard building is constructed with a defined building parameters, such as
+The stardard building is constructed with defined building parameters, such as
 
 * length south facade
 * length eastwest facade
@@ -28,7 +28,7 @@ The stardard building is constructed with a defined building parameters, such as
 * hight of storey
 * population per storey
 
-All building parameters are defined in 'data/static_inputs/building_parameters.csv'.
+All building parameters are contained in 'data/static_inputs/building_parameters.csv'.
 The construction of the buidling, as well as the available facades for PV usage
 are based on the research of `Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_.
 
@@ -618,3 +618,23 @@ about the modeling of Hybrid CPV see `pv-feedin`_.
     :align: center
 
     Yearly energy yield of the Hybrid CPV and its components per m² for Berlin and Madrid in 2014.
+
+
+Energy System Optimization
+==========================
+The energy system optimization is applied by the Multi Vector Simulation Tool (MVS).
+The MVS is based on the programming framework `oemof-solph <https://oemof.readthedocs.io/en/release-v0.1/oemof_solph.html>`_.
+MVS sets up an energy system with predefined components and finds the cost optimal
+investment solution, meaning that all components are scaled according to the cost
+optimal case. How the linear optimization works is documented in detail on
+`MVS - Model Equations <https://mvs-eland.readthedocs.io/en/latest/Model_Equations.html>`_
+
+Additionaly to the investment optimization, constraints can be applied to the
+optimizations. Constraints that are implemented in MVS are:
+
+* Minimal renewable factor constraint
+* Minimal degree of autonomy constraint
+* Maximum emission constraint
+* Net zero energy constraint
+
+For more information on the constraints see `MVS - constraints <https://mvs-eland.readthedocs.io/en/latest/Model_Assumptions.html#constraints>`_.
