@@ -9,7 +9,7 @@ Validation of radiation data
 The weather data used for simulation is the Copernicus ERA5 reanalysis weather data.
 It provides hourly data for atmospheric, land-surface and sea-state parameters with a
 latitude-longitude grid of 0.25 x 0.25 degrees resolution. For more information
-of the data set see `ERA5 <https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-pressure-levels?tab=overview>`_.
+about the data set see `ERA5 <https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-pressure-levels?tab=overview>`_.
 
 The calculation of diffuse horizontal irradiance (DHI), direct normal irradiance
 (DNI) and global horizontal irradiance (GHI) is based on the ERA5 parameter
@@ -18,10 +18,10 @@ and diffuse in a downward direction and thus is used as the GHI.
 Coming from the GHI, the DHI and DNI are calculated the following way:
 
 .. math::
-    DHI = GHI - DNI * cos(zenith)
+    \text{DHI = GHI - DNI * cos(zenith)}
 
 .. math::
-    DNI = pvlib.irradiance.dirint(GHI, ...)
+    \text{DNI} = \text{pvlib.irradiance.dirint(GHI, ...)}
 
 With the pvlib function: `pvlib.irradiance.dirint <https://pvlib-python.readthedocs.io/en/stable/generated/pvlib.irradiance.dirint.html#pvlib.irradiance.dirint>`_.
 
@@ -37,7 +37,13 @@ three locations.
     :alt: Validation of DHI .
     :align: center
 
-    Yearly energy yield of DHI for three locations and three weather data sets.
+    Yearly energy yield of DHI for three locations and three weather data sets for 2014.
+
+The ERA5 data shows higher DHI for northern countries
+(Berlin, Oslo), while it is in great accordance with the other data sets for Madrid.
+While the offset for Oslo is still in an accepted error margin, the offset for Berlin falls out.
+Nevertheless, this offset is accepted in our simulations, because the DHI plays a
+secondary role for PV performance.
 
 
 
@@ -48,20 +54,21 @@ PSI technologies are presented. This section will show some results of the
 calculated time series and discuss model assumptions.
 
 The generated hourly time series over one year are normalized by the peak power
-of each module. Figure `PV time series`_ shows the time series for all three technologies in year 2014.
+of each module. Figure `PV time series`_ shows an exemplary time series for all
+three technologies in year 2014 in Madrid.
 
 .. _PV time series:
 
-.. figure:: ./images/pv_timeseries_madrid_2015.png
-    :width: 50%
+.. figure:: ./images/pv_timeseries_madrid_2014.png
+    :width: 80%
     :alt: Normalized time series for Madrid, Spain in 2014.
     :align: center
 
     Normalized time series for Madrid, Spain in 2014.
 
 Energy yield
-============
-The size and efficiency of the three modules used, age given in table `table1`_
+------------
+The size and efficiency of the three modules used age given in `table1`_.
 
 .. _table1:
 
@@ -75,29 +82,29 @@ The size and efficiency of the three modules used, age given in table `table1`_
 | PSI        | 1.219           | 24.5          |
 +------------+-----------------+---------------+
 
-Figure `energy yield`_ shows the yearly energy yield per kWp on the lefthand side and the
-yearly energy yield per m² on the right hand side. The plot demonstrates that the production
-per kWp is the highest for SI. This is due to a high performance ratio of SI. The
-performance ratio of Hybrid CPV is lower, thus the overall production per kWp
-decreases. Nevertheless, when looking at the production per m², the Hybrid CPV technology as well
-as the PSI technology performs better than SI, as expected, due to it's higher
-efficiency.
-Overall, the yield in Berlin is lower than in Madrid but also the
+Figure `energy yield`_ shows the yearly energy yield per kWp on the left-hand side and the
+yearly energy yield per m² on the right-hand side. The plot shows that the production
+per kWp is the highest for SI. This is due to a high performance ratio of SI. The lower
+performance ratio of Hybrid CPV results in a lower production per kWp.
+Nevertheless, when looking at the production per m², the Hybrid CPV technology as well
+as the PSI technology perform better than SI, due to it's higher
+efficiency (Wp per m²).
+Overall, as expected, the yield in Berlin is lower than in Madrid but also the
 margin between the technologies
 decreases in Berlin. This outcome is due to a  lower direct normal irradiance (DNI) in
 Berlin which causes a decrease in the yield of the Hybrid CPV technology.
 
 .. _energy yield:
 
-.. figure:: ./images/PV_energy_yield_medium_years.png
-    :width: 50%
+.. figure:: ./images/PV_energy_yield_2014.png
+    :width: 100%
     :alt: Energy yield per kWp (left) and per m² (right) for Berlin and Madrid in 2014.
     :align: center
 
     Energy yield per kWp (left) and per m² (right) for Berlin and Madrid in 2014.
 
 Hybrid CPV
-==========
+----------
 
 Figure `Hybrid CPV`_ illustrates the energy yield for the different components of the
 Hybrid CPV technology. The Flatplate component collects diffuse horizontal irradiance (DHI)
