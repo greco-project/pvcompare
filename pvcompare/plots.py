@@ -963,8 +963,10 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
     output.sort_index(inplace=True)
 
     # plot
-    hight = len(kpi) * 2
-    fig = plt.figure(figsize=(7, hight))
+    height = len(kpi) * 2
+    fig = plt.figure(figsize=(9, height))
+    color_1 = sns.color_palette()
+    color_2 = sns.color_palette("pastel")
     rows = len(kpi)
     num = (
         rows * 100 + 11
@@ -989,41 +991,48 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
         scenario_name_ending = []
         for scenario_name in scenario_list:
             scenario_name_ending.append(scenario_name.split("_")[1])
+        # Plot bar with maximum value of all three years
         ax.bar(
             scenario_name_ending,
             max_value_year,
-            color="none",
-            edgecolor="black",
-            linewidth=0.8,
+            color=color_1[0],
+            edgecolor=color_1[0],
+            linewidth=0.5,
+            label="KPI minimum of weather years",
         )
-        bar = ax.bar(scenario_name_ending, diff_value_year, bottom=min_value_year)
+        # Plot span between minimum and maximum value of all three years
+        ax.bar(
+            scenario_name_ending,
+            diff_value_year,
+            bottom=min_value_year,
+            edgecolor=color_2[0],
+            linewidth=0.5,
+            color=color_2[0],
+            label="KPI maximum of weather years",
+        )
 
         ax.set_ylabel(y_title[i])
         ax.set_xlabel("Scenario")
         ax.get_yaxis().set_label_coords(-0.13, 0.5)
         ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
+        # Print minor and major grid lines for better readability
+        ax.get_xaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
+        ax.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
+        ax.grid(b=True, which="major", axis="both", color="w", linewidth=1.0)
+        ax.grid(b=True, which="minor", axis="both", color="w", linewidth=0.5)
 
-    # handles, labels = ax.get_legend_handles_labels()
-    # fig.legend(
-    #     handles,
-    #     labels,
-    #     bbox_to_anchor=(0.96, 0.96),
-    #     loc="upper right",
-    #     borderaxespad=0.0,
-    # )
+    plt.tight_layout(rect=(0.02, 0.03, 1, 1))
 
-    plt.tight_layout()
+    handles, labels = ax.get_legend_handles_labels()
+    fig.legend(
+        handles, labels, loc="lower left", mode="expand",
+    )
 
     name = ""
-    for scenario_name in scenario_list:
+    for scenario_name in scenario_name_ending:
         name = name + "_" + str(scenario_name)
 
-    fig.savefig(
-        os.path.join(
-            outputs_directory,
-            "plot_scalars" + str(name) + "_" + str(variable_name) + ".png",
-        )
-    )
+    fig.savefig(os.path.join(outputs_directory, "plot_scalars" + str(name) + ".png",))
 
 
 if __name__ == "__main__":
