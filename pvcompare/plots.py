@@ -986,28 +986,31 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
             min_value_year.append(min(df[i]))
             diff_value_year.append(max(df[i]) - min(df[i]))
 
+        scenario_name_ending = []
+        for scenario_name in scenario_list:
+            scenario_name_ending.append(scenario_name.split("_")[1])
         ax.bar(
-            scenario_list,
+            scenario_name_ending,
             max_value_year,
             color="none",
             edgecolor="black",
             linewidth=0.8,
-        )  # Das hier wäre für den Fall dass max_value_year = min_value_year. Es wird dann als Box dargestellt
-        bar = ax.bar(scenario_list, diff_value_year, bottom=min_value_year)
+        )
+        bar = ax.bar(scenario_name_ending, diff_value_year, bottom=min_value_year)
 
         ax.set_ylabel(y_title[i])
-        ax.set_xlabel(variable_name)
+        ax.set_xlabel("Scenario")
         ax.get_yaxis().set_label_coords(-0.13, 0.5)
         ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
 
-    handles, labels = ax.get_legend_handles_labels()
-    fig.legend(
-        handles,
-        labels,
-        bbox_to_anchor=(0.96, 0.96),
-        loc="upper right",
-        borderaxespad=0.0,
-    )
+    # handles, labels = ax.get_legend_handles_labels()
+    # fig.legend(
+    #     handles,
+    #     labels,
+    #     bbox_to_anchor=(0.96, 0.96),
+    #     loc="upper right",
+    #     borderaxespad=0.0,
+    # )
 
     plt.tight_layout()
 
@@ -1062,9 +1065,28 @@ if __name__ == "__main__":
     #     outputs_directory=None,
     # )
 
-    scenario_list = ["Scenario_E1", "Scenario_E2"]
+    scenario_list = [
+        "Scenario_E1",
+        "Scenario_E2",
+        "Scenario_E3",
+        "Scenario_E4",
+        "Scenario_E5",
+        "Scenario_E6",
+        "Scenario_D1",
+        "Scenario_D2",
+        "Scenario_D3",
+        "Scenario_D4",
+    ]
     plot_compare_scenarios(
         "storeys",
-        ["Degree of NZE", "Degree of autonomy", "Total emissions"],
+        [
+            "Total non-renewable energy",
+            "Self consumption",
+            "Total renewable energy",
+            "Installed capacity PV",
+            "Degree of NZE",
+            "Degree of autonomy",
+            "Total emissions",
+        ],
         scenario_list,
     )
