@@ -638,9 +638,7 @@ def plot_facades(
     """
     Plots KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs`
     for a loop over one variable.
-
     The plot is saved into the `loop_output_directory`.
-
     Parameters
     ----------
     variable_name: str
@@ -658,14 +656,11 @@ def plot_facades(
     outputs_directory: str
         Path to output directory.
         Default: constants.DEFAULT_OUTPUTS_DIRECTORY
-
     Returns
     -------
         None
         saves figure into `loop_output_directory`
     -------
-
-
     """
     if outputs_directory == None:
         outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
@@ -820,8 +815,7 @@ def plot_facades(
             "plot_facades" + str(scenario_name) + "_" + str(variable_name) + ".png",
         )
     )
-
-
+    
 def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=None):
     """
     kpi: list of str
@@ -845,7 +839,6 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
     outputs_directory: str
         Path to output directory.
         Default: constants.DEFAULT_OUTPUTS_DIRECTORY
-
     Returns
     -------
         None
@@ -1067,13 +1060,13 @@ if __name__ == "__main__":
     #     country=country,
     #     static_inputs_directory=None,
     # )
-    #
-    # plot_facades(
-    #     variable_name="technology",
-    #     kpi=["LCOE PV", "Costs total PV", "Installed capacity PV",],
-    #     scenario_name="Scenario_E2",
-    #     outputs_directory=None,
-    # )
+
+    plot_facades(
+        variable_name="technology",
+        kpi=["LCOE PV", "Costs total PV", "Installed capacity PV",],
+        scenario_name="Scenario_E2",
+        outputs_directory=None,
+    )
 
     scenario_list = [
         "Scenario_E1",
