@@ -120,7 +120,7 @@ def calculate_cops_and_eers(
                         # Prepare mean yearly ambient temperature for calc_cops (numeric)
                         temperature = np.average(weather[temperature_col].values)
                         temperature = [temperature]
-                    elif technology == "air-air" or "air-water":
+                    elif technology == "air-air" or technology == "air-water":
                         # Prepare ambient temperature for calc_cops (list)
                         temperature = weather[temperature_col].values.tolist()
                         logging.info(
@@ -129,10 +129,10 @@ def calculate_cops_and_eers(
                     else:
                         # Prepare ambient temperature for calc_cops (list)
                         temperature = weather[temperature_col].values.tolist()
-                        logging.info(
+                        logging.warning(
                             f"The technology of the {mode} should be either 'air-air', 'air-water' or 'brine-water'."
-                            f"'{technology}' is not a valid technology. The {mode} is therefore modeled as an air source {mode} by default"
-                            f"and with the ambient temperature from weather data as {level} temperature."
+                            f"'{technology}' is not a valid technology. The {mode} is modeled as an air source {mode} by default"
+                            f" and with the ambient temperature from weather data as {level} temperature."
                         )
                     return temperature
                 else:
