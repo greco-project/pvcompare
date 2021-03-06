@@ -815,7 +815,8 @@ def plot_facades(
             "plot_facades" + str(scenario_name) + "_" + str(variable_name) + ".png",
         )
     )
-    
+
+
 def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=None):
     """
     kpi: list of str
