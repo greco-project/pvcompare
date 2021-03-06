@@ -1,0 +1,5 @@
+,unit,economic_data
+currency,str,EUR
+project_duration,year,25
+discount_factor,factor,0.07
+tax,factor,0.0
