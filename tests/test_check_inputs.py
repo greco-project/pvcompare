@@ -34,6 +34,9 @@ class TestDemandProfiles:
         self.lat = 40.0
         self.lon = 5.2
         self.user_inputs_mvs_directory = constants.TEST_USER_INPUTS_MVS
+        self.user_inputs_mvs_directory_sector_coupling = (
+            constants.TEST_USER_INPUTS_MVS_SECTOR_COUPLING
+        )
         self.user_inputs_pvcompare_directory = constants.TEST_USER_INPUTS_PVCOMPARE
         self.static_inputs_directory = constants.TEST_STATIC_INPUTS
         self.collections_mvs_inputs_directory = (
@@ -331,14 +334,16 @@ class TestDemandProfiles:
         # 1. Test
         storage_xx_file = "storage_TES.csv"
         storage_xx_file_path = os.path.join(
-            self.user_inputs_mvs_directory, "csv_elements", storage_xx_file
+            self.user_inputs_mvs_directory_sector_coupling,
+            "csv_elements",
+            storage_xx_file,
         )
         storage_xx_original = pd.read_csv(storage_xx_file_path, index_col=0, header=0)
         add_parameters_to_storage_xx_file(
             nominal_storage_capacity,
             loss_rate,
             storage_xx_file,
-            user_inputs_mvs_directory=self.user_inputs_mvs_directory,
+            user_inputs_mvs_directory=self.user_inputs_mvs_directory_sector_coupling,
         )
         storage_xx = pd.read_csv(storage_xx_file_path, index_col=0, header=0)
         efficiency = float(storage_xx.at["efficiency", "storage capacity"])
@@ -352,7 +357,9 @@ class TestDemandProfiles:
         # 2. Test
         storage_xx_file = "storage_TES_const_losses.csv"
         storage_xx_file_path = os.path.join(
-            self.user_inputs_mvs_directory, "csv_elements", storage_xx_file
+            self.user_inputs_mvs_directory_sector_coupling,
+            "csv_elements",
+            storage_xx_file,
         )
         storage_xx_original = pd.read_csv(storage_xx_file_path, index_col=0, header=0)
         storage_xx = storage_xx_original.copy()
@@ -362,7 +369,7 @@ class TestDemandProfiles:
             nominal_storage_capacity,
             loss_rate,
             storage_xx_file,
-            user_inputs_mvs_directory=self.user_inputs_mvs_directory,
+            user_inputs_mvs_directory=self.user_inputs_mvs_directory_sector_coupling,
         )
         storage_xx = pd.read_csv(storage_xx_file_path, index_col=0, header=0)
         efficiency = float(storage_xx.at["efficiency", "storage capacity"])

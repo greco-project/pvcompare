@@ -9,7 +9,7 @@ import argparse
 import mock
 import shutil
 from pvcompare import stratified_thermal_storage as sts
-from pvcompare.constants import TEST_USER_INPUTS_MVS
+from pvcompare.constants import TEST_USER_INPUTS_MVS_SECTOR_COUPLING
 from pvcompare.constants import TEST_USER_INPUTS_PVCOMPARE
 
 EXECUTE_TESTS_ON = os.environ.get("EXECUTE_TESTS_ON", "skip")
@@ -24,7 +24,7 @@ class TestTES:
         self.lat = 53.2
         self.lon = 13.2
         self.storeys = 5
-        self.user_inputs_mvs_directory = constants.TEST_USER_INPUTS_MVS
+        self.user_inputs_mvs_directory = constants.TEST_USER_INPUTS_MVS_SECTOR_COUPLING
         self.user_inputs_pvcompare_directory = constants.TEST_USER_INPUTS_PVCOMPARE
         self.static_inputs_directory = constants.TEST_STATIC_INPUTS
         self.outputs_directory = constants.TEST_OUTPUTS_DIRECTORY
@@ -462,7 +462,7 @@ class TestCalcStratTesParam:
             weather=self.weather,
             temperature_col="temp_air",
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
-            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
         )
         expected_rel_losses = [
             0.00085445,
@@ -497,7 +497,7 @@ class TestCalcStratTesParam:
             weather=self.weather,
             temperature_col="temp_air",
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
-            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
         )
 
         strat_tes = pd.read_csv(
@@ -515,19 +515,19 @@ class TestCalcStratTesParam:
             lat=self.lat,
             lon=self.lon,
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
-            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             overwrite_tes_parameters=False,
         )
         assert os.path.exists(
             os.path.join(
-                TEST_USER_INPUTS_MVS,
+                TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
                 "time_series",
                 "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv",
             )
         )
         assert os.path.exists(
             os.path.join(
-                TEST_USER_INPUTS_MVS,
+                TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
                 "time_series",
                 "fixed_thermal_losses_relative_2017_53.2_13.2_60.0.csv",
             )
@@ -535,13 +535,15 @@ class TestCalcStratTesParam:
 
     def test_save_time_dependent_values(self):
         file_name = "fixed_thermal_losses_relative_test.csv"
-        file_path = os.path.join(TEST_USER_INPUTS_MVS, "time_series", file_name)
+        file_path = os.path.join(
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING, "time_series", file_name
+        )
         sts.save_time_dependent_values(
             self.losses,
             "fixed_thermal_losses_relative",
             "no_unit",
             file_name,
-            os.path.join(TEST_USER_INPUTS_MVS, "time_series"),
+            os.path.join(TEST_USER_INPUTS_MVS_SECTOR_COUPLING, "time_series"),
         )
 
         assert os.path.exists(file_path) == True
@@ -549,7 +551,7 @@ class TestCalcStratTesParam:
     def teardown_method(self):
         # delete file
         filename = os.path.join(
-            TEST_USER_INPUTS_MVS,
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
             "fixed_thermal_losses_relative_test.csv",
         )
@@ -576,7 +578,7 @@ class TestAddStratTes:
         self.lat = 53.2
         self.lon = 13.2
         self.filename_storage_xx = os.path.join(
-            TEST_USER_INPUTS_MVS, "csv_elements", "storage_TES.csv"
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING, "csv_elements", "storage_TES.csv"
         )
 
     @pytest.fixture(scope="class", autouse=True)
@@ -596,12 +598,12 @@ class TestAddStratTes:
             lat=self.lat,
             lon=self.lon,
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
-            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             overwrite_tes_parameters=False,
         )
         # no file created
         filename = os.path.join(
-            TEST_USER_INPUTS_MVS,
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
             "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv",
         )
@@ -618,7 +620,7 @@ class TestAddStratTes:
             lat=self.lat,
             lon=self.lon,
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
-            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             overwrite_tes_parameters=False,
         )
         df = pd.read_csv(self.filename_storage_xx, header=0, index_col=0)
@@ -636,12 +638,12 @@ class TestAddStratTes:
             lat=self.lat,
             lon=self.lon,
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
-            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             overwrite_tes_parameters=True,
         )
         # File overwritten
         filename = os.path.join(
-            TEST_USER_INPUTS_MVS,
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
             "fixed_thermal_losses_absolute_2019_53.2_13.2_60.0.csv",
         )
@@ -656,24 +658,24 @@ class TestAddStratTes:
     def teardown_method(self):
         # delete file
         filename_1 = os.path.join(
-            TEST_USER_INPUTS_MVS,
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
             "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv",
         )
         filename_2 = os.path.join(
-            TEST_USER_INPUTS_MVS,
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
             "fixed_thermal_losses_relative_2017_53.2_13.2_60.0.csv",
         )
 
         filename_3 = os.path.join(
-            TEST_USER_INPUTS_MVS,
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
             "fixed_thermal_losses_relative_2019_53.2_13.2_60.0.csv",
         )
 
         filename_4 = os.path.join(
-            TEST_USER_INPUTS_MVS,
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
             "fixed_thermal_losses_absolute_2019_53.2_13.2_60.0.csv",
         )
@@ -691,12 +693,12 @@ class TestAddStratTes:
             lat=self.lat,
             lon=self.lon,
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
-            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             overwrite_tes_parameters=False,
         )
         # no file created
         filename = os.path.join(
-            TEST_USER_INPUTS_MVS,
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
             "fixed_thermal_losses_absolute_2018_53.2_13.2_60.0.csv",
         )
@@ -711,12 +713,12 @@ class TestAddStratTes:
     def teardown_method(self):
         # delete file
         filename_1 = os.path.join(
-            TEST_USER_INPUTS_MVS,
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
             "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv",
         )
         filename_2 = os.path.join(
-            TEST_USER_INPUTS_MVS,
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
             "fixed_thermal_losses_relative_2017_53.2_13.2_60.0.csv",
         )
@@ -738,7 +740,9 @@ class TestAddStratTes_file_constant_losses:
         self.lat = 53.2
         self.lon = 13.2
         self.filename_storage_TES = os.path.join(
-            TEST_USER_INPUTS_MVS, "csv_elements", "storage_TES_const_losses.csv"
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
+            "csv_elements",
+            "storage_TES_const_losses.csv",
         )
 
     @pytest.fixture(scope="class", autouse=True)
@@ -753,7 +757,7 @@ class TestAddStratTes_file_constant_losses:
 
     def test_add_sector_coupling_strat_tes_file_const_losses(self, select_conv_tech):
         energy_storage_file_path = os.path.join(
-            TEST_USER_INPUTS_MVS, "csv_elements", "energyStorage.csv"
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING, "csv_elements", "energyStorage.csv"
         )
         energy_storage_original = pd.read_csv(
             energy_storage_file_path, header=0, index_col=0
@@ -769,12 +773,12 @@ class TestAddStratTes_file_constant_losses:
             lat=self.lat,
             lon=self.lon,
             user_inputs_pvcompare_directory=TEST_USER_INPUTS_PVCOMPARE,
-            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS,
+            user_inputs_mvs_directory=TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             overwrite_tes_parameters=False,
         )
         # no file created
         filename = os.path.join(
-            TEST_USER_INPUTS_MVS,
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
             "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv",
         )
@@ -791,24 +795,24 @@ class TestAddStratTes_file_constant_losses:
     def teardown_method(self):
         # delete file
         filename_1 = os.path.join(
-            TEST_USER_INPUTS_MVS,
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
             "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv",
         )
         filename_2 = os.path.join(
-            TEST_USER_INPUTS_MVS,
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
             "fixed_thermal_losses_relative_2017_53.2_13.2_60.0.csv",
         )
 
         filename_3 = os.path.join(
-            TEST_USER_INPUTS_MVS,
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
             "fixed_thermal_losses_relative_2019_53.2_13.2_60.0.csv",
         )
 
         filename_4 = os.path.join(
-            TEST_USER_INPUTS_MVS,
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
             "fixed_thermal_losses_absolute_2019_53.2_13.2_60.0.csv",
         )
