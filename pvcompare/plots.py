@@ -1076,10 +1076,10 @@ if __name__ == "__main__":
         "Scenario_E4",
         "Scenario_E5",
         "Scenario_E6",
-        "Scenario_D1",
-        "Scenario_D2",
-        "Scenario_D3",
-        "Scenario_D4",
+        "Scenario_F1",
+        "Scenario_F2",
+        "Scenario_F3",
+        "Scenario_F4",
     ]
     plot_compare_scenarios(
         "storeys",
