@@ -981,7 +981,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_D1(self):
+    def run_scenario_F1(self):
         """
         Scenario description:
             - Sector-coupled
@@ -993,7 +993,7 @@ class ScenariosSectorCoupling:
             - Heat demand for room heating and warm water
         """
 
-        scenario_name = "Scenario_D1"
+        scenario_name = "Scenario_F1"
 
         # Get data
         (
@@ -1045,7 +1045,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_D2(self):
+    def run_scenario_F2(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1057,7 +1057,7 @@ class ScenariosSectorCoupling:
             - Heat demand for room heating and warm water
         """
 
-        scenario_name = "Scenario_D2"
+        scenario_name = "Scenario_F2"
 
         # Get data
         (
@@ -1109,7 +1109,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_D3(self):
+    def run_scenario_F3(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1121,7 +1121,7 @@ class ScenariosSectorCoupling:
             - Heat demand for room heating and warm water
         """
 
-        scenario_name = "Scenario_D3"
+        scenario_name = "Scenario_F3"
 
         # Get data
         (
@@ -1173,7 +1173,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_D4(self):
+    def run_scenario_F4(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1185,7 +1185,7 @@ class ScenariosSectorCoupling:
             - Heat demand for room heating and warm water
         """
 
-        scenario_name = "Scenario_D4"
+        scenario_name = "Scenario_F4"
 
         # Get data
         (
@@ -1237,7 +1237,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_D5(self):
+    def run_scenario_F5(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1251,7 +1251,7 @@ class ScenariosSectorCoupling:
             - Loop over storeys: 1 - 5
         """
 
-        scenario_name = "Scenario_D5"
+        scenario_name = "Scenario_F5"
 
         # Get data
         (
@@ -1303,7 +1303,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_D6(self):
+    def run_scenario_F6(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1317,7 +1317,7 @@ class ScenariosSectorCoupling:
             - Loop over storeys: 1 - 5
         """
 
-        scenario_name = "Scenario_D6"
+        scenario_name = "Scenario_F6"
 
         # Get data
         (
@@ -1369,7 +1369,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_D7(self):
+    def run_scenario_F7(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1383,7 +1383,7 @@ class ScenariosSectorCoupling:
             - Loop over storeys: 1 - 5
         """
 
-        scenario_name = "Scenario_D7"
+        scenario_name = "Scenario_F7"
 
         # Get data
         (
@@ -1435,7 +1435,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_D8(self):
+    def run_scenario_F8(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1449,7 +1449,7 @@ class ScenariosSectorCoupling:
             - Loop over storeys: 1 - 5
         """
 
-        scenario_name = "Scenario_D8"
+        scenario_name = "Scenario_F8"
 
         # Get data
         (
@@ -1544,11 +1544,11 @@ if __name__ == "__main__":
     scenarios_sector_coupling.revert_inputs_changes()
     scenarios_sector_coupling.run_scenario_E6()
     scenarios_sector_coupling.revert_inputs_changes()
-    scenarios_sector_coupling.run_scenario_D1()
+    scenarios_sector_coupling.run_scenario_F1()
     scenarios_sector_coupling.revert_inputs_changes()
-    scenarios_sector_coupling.run_scenario_D2()
+    scenarios_sector_coupling.run_scenario_F2()
     scenarios_sector_coupling.revert_inputs_changes()
-    scenarios_sector_coupling.run_scenario_D3()
+    scenarios_sector_coupling.run_scenario_F3()
     scenarios_sector_coupling.revert_inputs_changes()
-    scenarios_sector_coupling.run_scenario_D4()
+    scenarios_sector_coupling.run_scenario_F4()
     scenarios_sector_coupling.revert_inputs_changes()
