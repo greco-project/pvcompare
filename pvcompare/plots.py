@@ -832,7 +832,7 @@ def plot_facades(
     fig.savefig(
         os.path.join(
             outputs_directory,
-            "plot_facades" + str(scenario_name) + "_" + str(variable_name) + ".png",
+            "plot_facades_" + str(scenario_name) + "_" + str(variable_name) + ".png",
         )
     )
 
