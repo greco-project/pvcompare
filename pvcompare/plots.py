@@ -606,18 +606,16 @@ def plot_kpi_loop(
                 ax.get_yaxis().set_label_coords(-0.13, 0.5)
                 ax.set_xticks(df.step)
                 ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
+
+
+    plt.tight_layout(rect=(0.02, 0.07, 1, 1))
+
     plt.xticks(rotation=45)
 
     handles, labels = ax.get_legend_handles_labels()
     fig.legend(
-        handles,
-        labels,
-        bbox_to_anchor=(0.96, 0.88),
-        loc="upper right",
-        borderaxespad=0.0,
+        handles, labels, loc="lower left", mode="expand",
     )
-
-    plt.tight_layout()
 
     name = ""
     for scenario_name in scenario_dict.keys():
@@ -799,27 +797,26 @@ def plot_facades(
         df_diff = df_diff.from_dict(output_diff[key])
         df_max = df_max.from_dict(output_max[key])
 
-        df_max.plot(kind="bar", ax=ax, legend=False,label=str(), sharex=True,color=color_2, alpha=0.6, linewidth=0.5)
+        df_max.plot(kind="bar", ax=ax, legend=False,label=str(), sharex=True,color=color_2, linewidth=0.5)
 
         df_min.plot(
-            kind="bar", ax=ax, label=key, legend=False, sharex=True, color=color_1, alpha=0.6, linewidth=0.5
+            kind="bar", ax=ax, label=key, legend=False, sharex=True, color=color_1, linewidth=0.5
         )
 
         ax.set_ylabel(str(key))
         ax.set_xlabel("facades")
         ax.get_yaxis().set_label_coords(-0.15, 0.5)
         ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
-        if counter == 1:
-            ax.legend(df_min.columns, loc='center left', bbox_to_anchor=(1., 0.5))
-        counter +=1
+        ax.grid(b=True, which="major", axis="both", color="w", linewidth=1.0)
+        ax.grid(b=True, which="minor", axis="both", color="w", linewidth=0.5)
+    plt.tight_layout(rect=(0.02, 0.03, 1, 1))
 
     plt.xticks(rotation=45)
-    #handles, labels = ax.get_legend_handles_labels()
-    #fig.legend(handles, labels, loc="bottom center", bbox_to_anchor=(0, 0.5), borderaxespad=0.)
-    # Put a legend to the right of the current axis
+    fig.legend(
+        df_min.columns, loc="lower left", mode="expand",
+    )
 
 
-    plt.tight_layout()
 
     fig.savefig(
         os.path.join(
@@ -1067,6 +1064,7 @@ if __name__ == "__main__":
     #         "Installed capacity PV",
     #         "Total emissions",
     #         "Degree of autonomy",
+    #         "Degree of NZE"
     #     ],
     # )
     #
@@ -1083,29 +1081,29 @@ if __name__ == "__main__":
         scenario_name="Scenario_E2",
         outputs_directory=None,
     )
-
-    # scenario_list = [
-    #     "Scenario_E1",
-    #     "Scenario_E2",
-    #     "Scenario_E3",
-    #     "Scenario_E4",
-    #     "Scenario_E5",
-    #     "Scenario_E6",
-    #     "Scenario_F1",
-    #     "Scenario_F2",
-    #     "Scenario_F3",
-    #     "Scenario_F4",
-    # ]
-    # plot_compare_scenarios(
-    #     "storeys",
-    #     [
-    #         "Total non-renewable energy",
-    #         "Self consumption",
-    #         "Total renewable energy",
-    #         "Installed capacity PV",
-    #         "Degree of NZE",
-    #         "Degree of autonomy",
-    #         "Total emissions",
-    #     ],
-    #     scenario_list,
-    # )
+#
+#     scenario_list = [
+#         "Scenario_A1",
+#         "Scenario_A2",
+# #        "Scenario_E3",
+# #        "Scenario_E4",
+#  #       "Scenario_E5",
+# #        "Scenario_E6",
+# #        "Scenario_F1",
+# #        "Scenario_F2",
+# #        "Scenario_F3",
+# #        "Scenario_F4",
+#     ]
+#     plot_compare_scenarios(
+#         "lifetime",
+#         [
+#             "Total non-renewable energy",
+#             "Self consumption",
+#             "Total renewable energy",
+#             "Installed capacity PV",
+#             "Degree of NZE",
+#             "Degree of autonomy",
+#             "Total emissions",
+#         ],
+#         scenario_list,
+#     )
