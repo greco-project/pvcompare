@@ -78,6 +78,7 @@ def calculate_cops_and_eers(
     )
 
     try:
+        parameters_complete = pd.read_csv(filename)
         parameters = pd.read_csv(filename, header=0, index_col=0).loc[mode]
     except KeyError:
         raise ValueError(
@@ -85,7 +86,7 @@ def calculate_cops_and_eers(
         )
     # prepare parameters for calc_cops
 
-    def process_temperatures(temperature, level, mode):
+    def process_temperatures(temperature, level, mode, technology):
         """
         Temperature can be passed in the following way:
         1. As NaN - The lower/higher temperature of the heat pump/chiller equals the ambient temperature time series
@@ -115,11 +116,24 @@ def calculate_cops_and_eers(
                 if (level == "low" and mode == "heat_pump") or (
                     level == "high" and mode == "chiller"
                 ):
-                    # Prepare ambient temperature for calc_cops (list)
-                    temperature = weather[temperature_col].values.tolist()
-                    logging.info(
-                        f"The {mode} is modeled with the ambient temperature from weather data as {level} temperature."
-                    )
+                    if technology == "brine-water":
+                        # Prepare mean yearly ambient temperature for calc_cops (numeric)
+                        temperature = np.average(weather[temperature_col].values)
+                        temperature = [temperature]
+                    elif technology == "air-air" or technology == "air-water":
+                        # Prepare ambient temperature for calc_cops (list)
+                        temperature = weather[temperature_col].values.tolist()
+                        logging.info(
+                            f"The {mode} is modeled with the ambient temperature from weather data as {level} temperature."
+                        )
+                    else:
+                        # Prepare ambient temperature for calc_cops (list)
+                        temperature = weather[temperature_col].values.tolist()
+                        logging.warning(
+                            f"The technology of the {mode} should be either 'air-air', 'air-water' or 'brine-water'."
+                            f"'{technology}' is not a valid technology. The {mode} is modeled as an air source {mode} by default"
+                            f" and with the ambient temperature from weather data as {level} temperature."
+                        )
                     return temperature
                 else:
                     # Required parameter is missing
@@ -159,9 +173,55 @@ def calculate_cops_and_eers(
                 f"Missing required value of {mode}: Please provide a numeric as {mode}'s {level} temperature in heat_pumps_and_chillers.csv."
             )
 
-    low_temperature = process_temperatures(parameters.temp_low, "low", mode)
-    high_temperature = process_temperatures(parameters.temp_high, "high", mode)
-    quality_grade = float(parameters.quality_grade)
+    low_temperature = process_temperatures(
+        parameters.temp_low, "low", mode, parameters.technology
+    )
+    high_temperature = process_temperatures(
+        parameters.temp_high, "high", mode, parameters.technology
+    )
+
+    if pd.isna(parameters.quality_grade):
+        if parameters.technology == "air-air":
+            if mode == "heat_pump":
+                quality_grade = 0.1852
+            elif mode == "chiller":
+                quality_grade = 0.3
+        elif parameters.technology == "air-water":
+            if mode == "heat_pump":
+                quality_grade = 0.403
+            elif mode == "chiller":
+                # Required parameter is missing in case of None or else
+                raise ValueError(
+                    f"Missing required value of {mode}: There is no default value of a quality grade provided for an {parameters.technology} {mode}"
+                    f"Please provide a valid value of the quality grade."
+                )
+        elif parameters.technology == "brine-water":
+            if mode == "heat_pump":
+                quality_grade = 0.53
+            elif mode == "chiller":
+                # Required parameter is missing in case of None or else
+                raise ValueError(
+                    f"Missing required value of {mode}: There is no default value of a quality grade provided for a {parameters.technology} {mode}. "
+                    f"Please provide a valid value of the quality grade."
+                )
+        else:
+            # Required parameter is missing in case of different technology
+            raise ValueError(
+                f"Missing required value of {mode}: '{parameters.quality_grade}' could not be processed as quality grade. "
+                f"Please provide a valid value or the technology of the {mode} in order to model with default quality grade."
+            )
+    elif isinstance(parameters.quality_grade, (float, int)):
+        quality_grade = float(parameters.quality_grade)
+    else:
+        # Required parameter is missing in case of None or else
+        raise ValueError(
+            f"Missing required value of {mode}: '{parameters.quality_grade}' could not be processed as quality grade."
+            f"Please provide a valid value or the technology of the {mode} in order to model from default quality grade."
+        )
+
+    # Save default quality grade to heat_pumps_and_chillers.csv
+    parameters_complete.quality_grade = quality_grade
+    parameters_complete.to_csv(filename, index=False, header=True, float_format="%g")
 
     # create add on to filename (year, lat, lon)
     year = maya.parse(weather.index[int(len(weather) / 2)]).datetime().year

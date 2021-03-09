@@ -1,3 +1,5 @@
-mode,quality_grade,temp_high,temp_low,factor_icing,temp_threshold_icing
-heat_pump,0.35,35,,None,None
-chiller,0.3,,15,,
+mode,technology,quality_grade,temp_high,temp_low,factor_icing,temp_threshold_icing
+heat_pump,air-air,0.1852,26,,None,None
+heat_pump,air-water,0.403,60,,None,None
+heat_pump,brine-water,0.53,65,,None,None
+chiller,air-air,0.3,,15,,

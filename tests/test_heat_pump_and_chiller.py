@@ -19,7 +19,7 @@ class TestCalculateCopsAndEers:
         )
         self.lat = 53.2
         self.lon = 13.2
-        self.mvs_inputs_directory = constants.TEST_USER_INPUTS_MVS
+        self.mvs_inputs_directory = constants.TEST_USER_INPUTS_MVS_SECTOR_COUPLING
         self.user_inputs_pvcompare_directory = constants.TEST_USER_INPUTS_PVCOMPARE
 
     def test_calculate_cops_and_eers_heat_pump_without_icing(self):
@@ -33,7 +33,14 @@ class TestCalculateCopsAndEers:
             user_inputs_mvs_directory=self.mvs_inputs_directory,
         )
         cops_exp = pd.Series(
-            [2.42165109, 2.19383819, 2.01038793, 1.943375, 1.85083333, 3.53340909,],
+            [
+                2.7883582554517132,
+                2.52604797742239,
+                2.314818103448276,
+                2.2376575,
+                2.131102380952381,
+                4.068468181818181,
+            ],
             index=self.date_range,
             name="no_unit",
         )
@@ -64,12 +71,12 @@ class TestCalculateCopsAndEers:
         )
         cops_exp = pd.Series(
             [
-                2.421651090342679,
-                2.193838193791157,
-                2.0103879310344825,
-                1.5546999999999997,
-                1.4806666666666666,
-                3.5334090909090903,
+                2.7883582554517132,
+                2.52604797742239,
+                2.314818103448276,
+                1.7901259999999999,
+                1.7048819047619048,
+                4.068468181818181,
             ],
             index=self.date_range,
             name="no_unit",
@@ -267,8 +274,10 @@ class TestCalculateCopsAndEers:
         For temp_low it is checked whether it can be passed as
         - numeric or (has been tested in test_calculate_cops_and_eers_process_temperatures_hp_temp_high() (1))
         - time series or (1)
-        - empty / NaN - In this case the ambient temperature should
-          be set as temp_low (2)
+        - empty / NaN - In this case
+            - the ambient temperature should be set as temp_low of an air-air or air-water heat pump (2)
+            - the mean yearly ambient temperature should be set as temp_low of a brine-water heat pump (3)
+
 
         In every test, where COPs are calculated, it is checked, whether they are stored in a file
         with temp_high as characteristic value only if temp_high is constant.
@@ -328,10 +337,11 @@ class TestCalculateCopsAndEers:
         )
         original_data.to_csv(filename)
 
-        # (2) temp_low is NaN and equals ambient temperature
+        # (2) technology is air-air or air-water: temp_low is NaN and equals ambient temperature
         temp_low = np.nan
         data["temp_high"]["heat_pump"] = temp_high
         data["temp_low"]["heat_pump"] = temp_low
+        data["technology"]["heat_pump"] = "air-water"
         data.to_csv(filename)
 
         cop_calc = hc.calculate_cops_and_eers(
@@ -350,6 +360,43 @@ class TestCalculateCopsAndEers:
         )
 
         assert_series_equal(cop_calc, cop_ref["temp_air"], check_names=False)
+        assert (
+            os.path.exists(
+                os.path.join(
+                    self.mvs_inputs_directory,
+                    "time_series",
+                    "cops_heat_pump_2017_53.2_13.2_35.0.csv",
+                )
+            )
+            == True
+        )
+
+        # (3) technology is brine-water: temp_low is NaN and equals mean yearly ambient temperature
+        temp_low = np.nan
+        data["temp_high"]["heat_pump"] = temp_high
+        data["temp_low"]["heat_pump"] = temp_low
+        data["technology"]["heat_pump"] = "brine-water"
+        data.to_csv(filename)
+
+        cop_calc = hc.calculate_cops_and_eers(
+            weather=self.weather,
+            lat=self.lat,
+            lon=self.lon,
+            temperature_col="temp_air",
+            mode="heat_pump",
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            user_inputs_mvs_directory=self.mvs_inputs_directory,
+        )
+
+        mean_temp = np.average(self.weather)
+        cop_ref = np.multiply(
+            quality_grade,
+            np.divide(np.add(temp_high, 273.15), np.subtract(temp_high, mean_temp)),
+        )
+        cop_ref = np.multiply(cop_ref, np.ones(len(self.weather)))
+        cop_ref = pd.Series(cop_ref, index=self.date_range)
+
+        assert_series_equal(cop_calc, cop_ref, check_names=False)
         assert (
             os.path.exists(
                 os.path.join(
@@ -527,8 +574,7 @@ class TestCalculateCopsAndEers:
         For temp_high it is checked whether it can be passed as
         - numeric or (has been tested in test_calculate_cops_and_eers_process_temperatures_chiller_temp_low() (1))
         - time series or (1)
-        - empty / NaN - In this case the ambient temperature should
-          be set as temp_high (2)
+        - empty / NaN - In this case the ambient temperature should be set as temp_high of an air-air chiller (2)
 
         In every test, where EERs are calculated, it is checked, whether they are stored in a file
         with temp_low as characteristic value only if temp_high is constant.
@@ -642,6 +688,197 @@ class TestCalculateCopsAndEers:
         if os.path.exists(filepath_3):
             os.remove(filepath_3)
 
+    def test_calculate_cops_and_eers_numeric_quality_grade_heat_pump(self):
+        """
+        This test checks whether the quality grade is processed as intended
+        if it is passed as numeric.
+        """
+        filename = os.path.join(
+            self.user_inputs_pvcompare_directory, "heat_pumps_and_chillers.csv"
+        )
+        original_data = pd.read_csv(filename, header=0, index_col=0)
+        data = original_data.copy()
+        quality_grade = 0.48
+        temp_high = data["temp_high"]["heat_pump"]
+        data["quality_grade"]["heat_pump"] = 0.48
+        data.to_csv(filename)
+
+        cop_calc = hc.calculate_cops_and_eers(
+            weather=self.weather,
+            lat=self.lat,
+            lon=self.lon,
+            temperature_col="temp_air",
+            mode="heat_pump",
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            user_inputs_mvs_directory=self.mvs_inputs_directory,
+        )
+
+        cop_exp = np.multiply(
+            quality_grade,
+            np.divide(np.add(temp_high, 273.15), np.subtract(temp_high, self.weather)),
+        )
+
+        assert_series_equal(cop_calc, cop_exp["temp_air"], check_names=False)
+
+        original_data.to_csv(filename)
+
+    def test_calculate_cops_and_eers_default_quality_grade_heat_pump(self):
+        """
+        With this test it is checked whether the quality grade is set to
+        its default value if the technology of the heat pump is passed.
+        An error is raised, if the technology and the quality grade are missing.
+        This is checked as well.
+        """
+        filename = os.path.join(
+            self.user_inputs_pvcompare_directory, "heat_pumps_and_chillers.csv"
+        )
+        original_data = pd.read_csv(filename, header=0, index_col=0)
+        data = original_data.copy()
+
+        temp_high = data["temp_high"]["heat_pump"]
+        mean_temp = np.average(self.weather)
+
+        technologies = ["air-air", "air-water", "brine-water", np.nan]
+        quality_grades_of_technologies = [0.1852, 0.403, 0.53, np.nan]
+
+        for item, technology in enumerate(technologies):
+            data["quality_grade"]["heat_pump"] = np.nan
+            data["technology"]["heat_pump"] = technology
+            data.to_csv(filename)
+
+            if not pd.isna(technology):
+                cop_calc = hc.calculate_cops_and_eers(
+                    weather=self.weather,
+                    lat=self.lat,
+                    lon=self.lon,
+                    temperature_col="temp_air",
+                    mode="heat_pump",
+                    user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+                    user_inputs_mvs_directory=self.mvs_inputs_directory,
+                )
+                if technology == "brine-water":
+                    cop_exp = np.multiply(
+                        quality_grades_of_technologies[item],
+                        np.divide(
+                            np.add(temp_high, 273.15), np.subtract(temp_high, mean_temp)
+                        ),
+                    )
+                    cop_exp = np.multiply(cop_exp, np.ones(len(self.weather)))
+                    cop_exp = pd.Series(cop_exp, index=self.date_range)
+                    assert_series_equal(cop_calc, cop_exp, check_names=False)
+
+                else:
+                    cop_exp = np.multiply(
+                        quality_grades_of_technologies[item],
+                        np.divide(
+                            np.add(temp_high, 273.15),
+                            np.subtract(temp_high, self.weather),
+                        ),
+                    )
+                    assert_series_equal(
+                        cop_calc, cop_exp["temp_air"], check_names=False
+                    )
+
+            else:
+                with pytest.raises(ValueError):
+                    hc.calculate_cops_and_eers(
+                        weather=self.weather,
+                        lat=self.lat,
+                        lon=self.lon,
+                        temperature_col="temp_air",
+                        mode="heat_pump",
+                        user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+                        user_inputs_mvs_directory=self.mvs_inputs_directory,
+                    )
+
+        original_data.to_csv(filename)
+
+    def test_calculate_cops_and_eers_default_quality_grade_chiller(self):
+        """
+        With this test it is checked whether the quality grade is set to
+        its default value if the technology 'air-air' of the chiller is passed.
+        An error is raised, if the technology and the quality grade are missing
+        or the quality grade is missing and the technology is either 'air-water'
+        or 'brine-water'. These technologies have not been implemented yet.
+        This is checked as well.
+        """
+        # Weather data for chiller
+        hot_weather = pd.DataFrame(
+            [32, 31.5, 30, 34, 32, 33], columns=["temp_air"], index=self.date_range,
+        )
+
+        filename = os.path.join(
+            self.user_inputs_pvcompare_directory, "heat_pumps_and_chillers.csv"
+        )
+        original_data = pd.read_csv(filename, header=0, index_col=0)
+        data = original_data.copy()
+        temp_low = data["temp_low"]["chiller"]
+
+        technologies = ["air-air", "air-water", "brine-water", np.nan]
+        quality_grades_of_technologies = [0.3, np.nan, np.nan, np.nan]
+
+        for item, technology in enumerate(technologies):
+            data["quality_grade"]["chiller"] = np.nan
+            data["technology"]["chiller"] = technology
+            data.to_csv(filename)
+
+            if not pd.isna(technology):
+                if technology == "air-air":
+                    eer_calc = hc.calculate_cops_and_eers(
+                        weather=hot_weather,
+                        lat=self.lat,
+                        lon=self.lon,
+                        temperature_col="temp_air",
+                        mode="chiller",
+                        user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+                        user_inputs_mvs_directory=self.mvs_inputs_directory,
+                    )
+
+                    eer_exp = np.multiply(
+                        quality_grades_of_technologies[item],
+                        np.divide(
+                            np.add(temp_low, 273.15), np.subtract(hot_weather, temp_low)
+                        ),
+                    )
+                    assert_series_equal(
+                        eer_calc, eer_exp["temp_air"], check_names=False
+                    )
+
+                elif technology == "air-water" or "brine-water":
+                    with pytest.raises(ValueError):
+                        eer_calc = hc.calculate_cops_and_eers(
+                            weather=hot_weather,
+                            lat=self.lat,
+                            lon=self.lon,
+                            temperature_col="temp_air",
+                            mode="chiller",
+                            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+                            user_inputs_mvs_directory=self.mvs_inputs_directory,
+                        )
+
+            else:
+                with pytest.raises(ValueError):
+                    eer_calc = hc.calculate_cops_and_eers(
+                        weather=hot_weather,
+                        lat=self.lat,
+                        lon=self.lon,
+                        temperature_col="temp_air",
+                        mode="chiller",
+                        user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+                        user_inputs_mvs_directory=self.mvs_inputs_directory,
+                    )
+
+        original_data.to_csv(filename)
+
+        # Delete file
+        filename = os.path.join(
+            self.mvs_inputs_directory,
+            "time_series",
+            "eers_chiller_2017_53.2_13.2_16.0.csv",
+        )
+        if os.path.exists(filename):
+            os.remove(filename)
+
 
 class TestAddSectorCoupling:
     @classmethod
@@ -658,7 +895,7 @@ class TestAddSectorCoupling:
         )
         self.lat = 53.2
         self.lon = 13.2
-        self.mvs_inputs_directory = constants.TEST_USER_INPUTS_MVS
+        self.mvs_inputs_directory = constants.TEST_USER_INPUTS_MVS_SECTOR_COUPLING
         self.filename_conversion = os.path.join(
             self.mvs_inputs_directory, "csv_elements", "energyConversion.csv"
         )
