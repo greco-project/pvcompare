@@ -1028,7 +1028,9 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
     for scenario_name in scenario_name_ending:
         name = name + "_" + str(scenario_name)
 
-    fig.savefig(os.path.join(outputs_directory, "plot_scalars" + str(name) + ".png",))
+    fig.savefig(
+        os.path.join(outputs_directory, "plot_compare_scenarios" + str(name) + ".png")
+    )
 
 
 if __name__ == "__main__":
