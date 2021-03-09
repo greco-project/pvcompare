@@ -52,7 +52,7 @@ shading.
 
 It is possible to simulate a gable roof as well as a flat roof. For the gable roof it
 is assumed that only the south facing area is used for PV installations. Assuming
-an elevation of 45°, the gable roof area equals 70% of the total floor area.
+an elevation of 45°, the gable roof area facing south equals 70% of the total floor area.
 
 For a flat roof area available to PV installations is assumed to be 40% of the
 total floor area, due to shading between the modules (see `Energieatlas <https://energieatlas.berlin.de/Energieatlas_Be/Docs/Datendokumentation-Solarkataster_BLN.pdf>`_.
