@@ -48,7 +48,7 @@ The size and efficiency of the three modules used age given in `table1`_.
 .. _table1:
 
 +------------+-----------------+---------------+
-| Technology | Module Size (m) | Efficiency (%)|
+| Technology | Module Size (m²) | Efficiency (%)|
 +============+=================+===============+
 | SI         | 1.6434          | 17            |
 +------------+-----------------+---------------+
