@@ -100,7 +100,7 @@ Figure `Hybrid CPV`_ illustrates the energy yield for the different components o
 Hybrid CPV technology. The Flatplate component collects diffuse horizontal irradiance (DHI)
 while the CPV components only collects direct normal irradiance (DNI). The Hybrid module
 adds up both power outputs of the Flatplate and the CPV part. For more information
-about the modeling of Hybrid CPV see `pv-feedin`_.
+about the modeling of Hybrid CPV see :ref:`pv-feedin`.
 
 .. _Hybrid CPV:
 
