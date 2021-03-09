@@ -326,9 +326,9 @@ demand of a certain population.
 Therefore the annual electricity demand is calculated by the following procedure:
 
 1)  the national residential electricity consumption for a country is calculated
-    with the following procedure. The data for the total electricity consumprion
+    with the following procedure. The data for the total electricity consumption
     as well as the fractions for space heating (SH), water heating (WH) and cooking
-    are requested from `EU Building Database <https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use>`_.
+    are taken from `EU Building Database <https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use>`_.
 
 .. math::
     \text{nec} &= \text{tec}(country, year) \\
@@ -503,9 +503,6 @@ To model a water or brine source chiller, you can either
 
     (In this example with constant outlet temperature **temp_high**)
 
-
-
-.. _pv-feedin:
 
 
 Storage modeling
