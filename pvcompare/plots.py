@@ -607,7 +607,6 @@ def plot_kpi_loop(
                 ax.set_xticks(df.step)
                 ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
 
-
     plt.tight_layout(rect=(0.02, 0.07, 1, 1))
 
     plt.xticks(rotation=45)
@@ -762,7 +761,7 @@ def plot_facades(
                 facade = "west facade"
             output_min[key].loc[facade, str(c)[:-1]] = d[key][c].min()
             output_diff[key].loc[facade, str(c)[:-1]] = (
-                    d[key][c].max() - d[key][c].min()
+                d[key][c].max() - d[key][c].min()
             )
             output_max[key].loc[facade, str(c)[:-1]] = d[key][c].max()
 
@@ -797,10 +796,24 @@ def plot_facades(
         df_diff = df_diff.from_dict(output_diff[key])
         df_max = df_max.from_dict(output_max[key])
 
-        df_max.plot(kind="bar", ax=ax, legend=False,label=str(), sharex=True,color=color_2, linewidth=0.5)
+        df_max.plot(
+            kind="bar",
+            ax=ax,
+            legend=False,
+            label=str(),
+            sharex=True,
+            color=color_2,
+            linewidth=0.5,
+        )
 
         df_min.plot(
-            kind="bar", ax=ax, label=key, legend=False, sharex=True, color=color_1, linewidth=0.5
+            kind="bar",
+            ax=ax,
+            label=key,
+            legend=False,
+            sharex=True,
+            color=color_1,
+            linewidth=0.5,
         )
 
         ax.set_ylabel(str(key))
@@ -815,8 +828,6 @@ def plot_facades(
     fig.legend(
         df_min.columns, loc="lower left", mode="expand",
     )
-
-
 
     fig.savefig(
         os.path.join(
