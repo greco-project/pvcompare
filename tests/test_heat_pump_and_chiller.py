@@ -19,7 +19,7 @@ class TestCalculateCopsAndEers:
         )
         self.lat = 53.2
         self.lon = 13.2
-        self.mvs_inputs_directory = constants.TEST_USER_INPUTS_MVS
+        self.mvs_inputs_directory = constants.TEST_USER_INPUTS_MVS_SECTOR_COUPLING
         self.user_inputs_pvcompare_directory = constants.TEST_USER_INPUTS_PVCOMPARE
 
     def test_calculate_cops_and_eers_heat_pump_without_icing(self):
@@ -895,7 +895,7 @@ class TestAddSectorCoupling:
         )
         self.lat = 53.2
         self.lon = 13.2
-        self.mvs_inputs_directory = constants.TEST_USER_INPUTS_MVS
+        self.mvs_inputs_directory = constants.TEST_USER_INPUTS_MVS_SECTOR_COUPLING
         self.filename_conversion = os.path.join(
             self.mvs_inputs_directory, "csv_elements", "energyConversion.csv"
         )
