@@ -8,7 +8,7 @@ Here we will publish selected scenarios that we simulated for the H2020 Project 
 
 Results of PV modeling
 -----------------------
-In `pv-feedin`_ the models used to generate feed-in time series for SI, CPV and
+In :ref:`pv-feedin` the models used to generate feed-in time series for SI, CPV and
 PSI technologies are presented. This section will show some results of the
 calculated time series and discuss model assumptions.
 
