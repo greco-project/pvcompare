@@ -599,7 +599,7 @@ class Scenarios:
         pv_setup.at[0, "technology"] = str("cpv")
         pv_setup.to_csv(data_path, index=False)
 
-        scenario_name = "Scenario_D3"
+        scenario_name = "Scenario_D6"
         outputs.loop_pvcompare(
             scenario_name=scenario_name,
             latitude=self.latitude_spain,
@@ -628,9 +628,9 @@ if __name__ == "__main__":
     #    scenarios.run_scenario_a01()
     #    scenarios.run_scenario_a02()
     #    scenarios.run_scenario_C()
-    scenarios.run_scenario_D1()
-    scenarios.run_scenario_D2()
-    scenarios.run_scenario_D3()
-    scenarios.run_scenario_D4()
-    scenarios.run_scenario_D5()
+    #scenarios.run_scenario_D1()
+    #scenarios.run_scenario_D2()
+    #scenarios.run_scenario_D3()
+    #scenarios.run_scenario_D4()
+    #scenarios.run_scenario_D5()
     scenarios.run_scenario_D6()
