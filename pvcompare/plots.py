@@ -741,30 +741,32 @@ def plot_facades(
         i += 1
 
     # restucture dataframes for facades
-    output = {}
+
+    min_value_year = []
+    max_value_year = []
+    diff_value_year = []
+
+    output_min = {}
+    output_diff = {}
+    output_max = {}
     for key in d.keys():
-        output[key] = pd.DataFrame()
+        output_min[key] = pd.DataFrame()
+        output_diff[key] = pd.DataFrame()
+        output_max[key] = pd.DataFrame()
         for c in d[key].columns:
             if c.endswith("1"):
-                output[key].loc["rooftop", str(c)[:-1]] = d[key][c].mean()
-                output[key].loc["rooftop", "diff_" + str(c)[:-1]] = (
-                    d[key][c].max() - d[key][c].min()
-                ) / 2
+                facade = "rooftop"
             elif c.endswith("2"):
-                output[key].loc["south_facade", str(c)[:-1]] = d[key][c].mean()
-                output[key].loc["south_facade", "diff_" + str(c)[:-1]] = (
-                    d[key][c].max() - d[key][c].min()
-                ) / 2
+                facade = "south facade"
             elif c.endswith("3"):
-                output[key].loc["east_facade", str(c)[:-1]] = d[key][c].mean()
-                output[key].loc["east_facade", "diff_" + str(c)[:-1]] = (
-                    d[key][c].max() - d[key][c].min()
-                ) / 2
+                facade = "east facade"
             elif c.endswith("4"):
-                output[key].loc["west_facade", str(c)[:-1]] = d[key][c].mean()
-                output[key].loc["west_facade", "diff_" + str(c)[:-1]] = (
+                facade = "west facade"
+            output_min[key].loc[facade, str(c)[:-1]] = d[key][c].min()
+            output_diff[key].loc[facade, str(c)[:-1]] = (
                     d[key][c].max() - d[key][c].min()
-                ) / 2
+            )
+            output_max[key].loc[facade, str(c)[:-1]] = d[key][c].max()
 
     # define y labels
     y_title = {
@@ -778,34 +780,44 @@ def plot_facades(
     # plot
     hight = len(d.keys()) * 2
     fig = plt.figure(figsize=(7, hight))
+    fig.subplots_adjust(bottom=0.2)
     rows = len(d.keys())
     num = (
         rows * 100 + 11
     )  # the setting for number of rows | number of columns | row number
-    for key in output.keys():
+
+    color_1 = sns.color_palette()
+    color_2 = sns.color_palette("pastel")
+    counter = 1
+    for key in output_min.keys():
         ax = fig.add_subplot(num)
         num = num + 1
-        df = pd.DataFrame()
-        df = df.from_dict(output[key])
+        df_min = pd.DataFrame()
+        df_diff = pd.DataFrame()
+        df_max = pd.DataFrame()
+        df_min = df_min.from_dict(output_min[key])
+        df_diff = df_diff.from_dict(output_diff[key])
+        df_max = df_max.from_dict(output_max[key])
 
-        df.plot(
-            kind="bar", ax=ax, label=key, legend=False, sharex=True,
+        df_max.plot(kind="bar", ax=ax, legend=False,label=str(), sharex=True,color=color_2, alpha=0.6, linewidth=0.5)
+
+        df_min.plot(
+            kind="bar", ax=ax, label=key, legend=False, sharex=True, color=color_1, alpha=0.6, linewidth=0.5
         )
 
         ax.set_ylabel(str(key))
         ax.set_xlabel("facades")
-        ax.get_yaxis().set_label_coords(-0.13, 0.5)
+        ax.get_yaxis().set_label_coords(-0.15, 0.5)
         ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
-    plt.xticks(rotation=45)
+        if counter == 1:
+            ax.legend(df_min.columns, loc='center left', bbox_to_anchor=(1., 0.5))
+        counter +=1
 
-    handles, labels = ax.get_legend_handles_labels()
-    fig.legend(
-        handles,
-        labels,
-        bbox_to_anchor=(0.96, 0.88),
-        loc="upper right",
-        borderaxespad=0.0,
-    )
+    plt.xticks(rotation=45)
+    #handles, labels = ax.get_legend_handles_labels()
+    #fig.legend(handles, labels, loc="bottom center", bbox_to_anchor=(0, 0.5), borderaxespad=0.)
+    # Put a legend to the right of the current axis
+
 
     plt.tight_layout()
 
@@ -1072,28 +1084,28 @@ if __name__ == "__main__":
         outputs_directory=None,
     )
 
-    scenario_list = [
-        "Scenario_E1",
-        "Scenario_E2",
-        "Scenario_E3",
-        "Scenario_E4",
-        "Scenario_E5",
-        "Scenario_E6",
-        "Scenario_F1",
-        "Scenario_F2",
-        "Scenario_F3",
-        "Scenario_F4",
-    ]
-    plot_compare_scenarios(
-        "storeys",
-        [
-            "Total non-renewable energy",
-            "Self consumption",
-            "Total renewable energy",
-            "Installed capacity PV",
-            "Degree of NZE",
-            "Degree of autonomy",
-            "Total emissions",
-        ],
-        scenario_list,
-    )
+    # scenario_list = [
+    #     "Scenario_E1",
+    #     "Scenario_E2",
+    #     "Scenario_E3",
+    #     "Scenario_E4",
+    #     "Scenario_E5",
+    #     "Scenario_E6",
+    #     "Scenario_F1",
+    #     "Scenario_F2",
+    #     "Scenario_F3",
+    #     "Scenario_F4",
+    # ]
+    # plot_compare_scenarios(
+    #     "storeys",
+    #     [
+    #         "Total non-renewable energy",
+    #         "Self consumption",
+    #         "Total renewable energy",
+    #         "Installed capacity PV",
+    #         "Degree of NZE",
+    #         "Degree of autonomy",
+    #         "Total emissions",
+    #     ],
+    #     scenario_list,
+    # )
