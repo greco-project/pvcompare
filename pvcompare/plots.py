@@ -201,7 +201,7 @@ def plot_lifetime_specificosts_psi(
                 "PV psi", "levelized_cost_of_energy_of_asset"
             ]
             TOTALCOSTS.loc[index, column] = file_sheet1.at["PV psi", "costs_total"]
-
+#    LCOE=LCOE.rename(columns={"500": "550", "600": "650", "700": "750", "800": "850", "900": "950", "1000": "1050", "1100": "1150"})
     LCOE.sort_index(ascending=False, inplace=True)
     INSTCAP.sort_index(ascending=False, inplace=True)
     TOTALCOSTS.sort_index(ascending=False, inplace=True)
@@ -215,24 +215,32 @@ def plot_lifetime_specificosts_psi(
     # plot LCOE
     f, (ax1, ax3) = plt.subplots(1, 2, figsize=(20, 9))
     plt.tick_params(bottom="on")
-    sns.set_style("whitegrid", {"axes.grid": False})
+    sns.set_style("whitegrid", {"axes.grid": True})
     ax1 = plt.subplot(121)
-    ax1 = sns.heatmap(LCOE, cmap="YlGnBu", cbar_kws={"label": "LCOE in EUR/kWh"})
+    ax1 = sns.heatmap(LCOE, cmap="YlGnBu", cbar_kws={"label": "LCOE in EUR/kWh"}, vmin = 0.07)
     ax1.set_ylabel("lifetime in years")
     ax1.set_xlabel("specific_costs in EUR")
     #    sns.lineplot(basis.columns, basis[0], ax = ax1)
     ax2 = ax1.twinx()
     ax2.plot(basis.index, basis["lifetime"], color="darkorange", label="SI")
-    #    line = ax1.lines[0] # get the line
-    #    line.set_xdata(line.get_xdata() + 0.5)
-    #    ax1.axis('tight')
-    #    ax1.set_xticks()
     ax2.set_ylim(5, 25.5)
     ax2.axis("off")
 
+    ax1.set_xticklabels([500, 600, 700, 800, 900, 1000, 1100], minor=False)
+    # Create offset transform by 5 points in x direction
+    dx = 40 / 72.;
+    dy = 0 / 72.
+    offset = mpl.transforms.ScaledTranslation(dx, dy, f.dpi_scale_trans)
+
+    # apply offset transform to all x ticklabels.
+    for label in ax1.xaxis.get_majorticklabels():
+        label.set_transform(label.get_transform() + offset)
+    for label in ax2.xaxis.get_majorticklabels():
+        label.set_transform(label.get_transform() + offset)
+
     ax3 = plt.subplot(122)
     ax3 = sns.heatmap(
-        TOTALCOSTS, cmap="YlGnBu", cbar_kws={"label": "Total costs PV in EUR"}
+        TOTALCOSTS, cmap="YlGnBu", cbar_kws={"label": "Total costs PV in EUR"}, vmin = 30000000
     )
     ax3.set_ylabel("lifetime in years")
     ax3.set_xlabel("specific costs in EUR")
@@ -505,9 +513,12 @@ def plot_kpi_loop(
             index = str(year) + "_" + str(step)
             output.loc[index, "step"] = int(step)
             output.loc[index, "year"] = int(year)
+            output.loc[index, "Total costs PV"] = 0
+            output.loc[index, "Total annual production"] = 0
+            output.loc[index, "Installed capacity PV"] = 0
             for pv in pv_labels:
-                output.loc[index, "Total costs PV"] = file_sheet1.at[pv, "costs_total"]
-                output.loc[index, "Installed capacity PV"] = file_sheet2.at[
+                output.loc[index, "Total costs PV"] = output.loc[index, "Total costs PV"] + file_sheet1.at[pv, "costs_total"]
+                output.loc[index, "Installed capacity PV"] = output.loc[index, "Installed capacity PV"] + file_sheet2.at[
                     pv, "optimizedAddCap"
                 ]
                 output.loc[index, "Total renewable energy"] = file_sheet3.at[
@@ -536,7 +547,7 @@ def plot_kpi_loop(
                 ]
                 output.loc[index, "Degree of NZE"] = file_sheet3.at["Degree of NZE", 0]
                 output.loc[index, "Total costs"] = file_sheet3.at["costs_total", 0]
-                output.loc[index, "Total annual production"] = file_sheet2.at[
+                output.loc[index, "Total annual production"] = output.loc[index, "Total annual production"] + file_sheet2.at[
                     pv, "annual_total_flow"
                 ]
 
@@ -1071,17 +1082,26 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    # scenario_dict = {"Scenario_A2": "psi", "Scenario_A9": "psi_HP"}
-    # plot_kpi_loop(
-    #     scenario_dict=scenario_dict,
-    #     variable_name="lifetime",
-    #     kpi=[
-    #         "Installed capacity PV",
-    #         "Total emissions",
-    #         "Degree of autonomy",
-    #         "Degree of NZE"
-    #     ],
-    # )
+    scenario_dict = {"Scenario_E4": "si", "Scenario_E5": "psi", "Scenario_E6": "cpv"}
+    plot_kpi_loop(
+        scenario_dict=scenario_dict,
+        variable_name="storeys",
+        kpi=[
+            "Total annual production",
+            "Degree of NZE",
+            "Total costs PV",
+            "Installed capacity PV",
+#            "Total renewable energy use",
+#            "Renewable share",
+#            "LCOE PV",
+            "Self consumption",
+#            "self sufficiency",
+            "Degree of autonomy",
+#            "Total non-renewable energy use",
+#            "Total costs",
+
+        ],
+    )
     #
     # compare_weather_years(
     #     latitude=latitude,
@@ -1090,12 +1110,12 @@ if __name__ == "__main__":
     #     static_inputs_directory=None,
     # )
 
-    plot_facades(
-        variable_name="technology",
-        kpi=["LCOE PV", "Costs total PV", "Installed capacity PV",],
-        scenario_name="Scenario_E2",
-        outputs_directory=None,
-    )
+    # plot_facades(
+    #     variable_name="technology",
+    #     kpi=["LCOE PV", "Costs total PV", "Installed capacity PV",],
+    #     scenario_name="Scenario_E2",
+    #     outputs_directory=None,
+    # )
 #
 #     scenario_list = [
 #         "Scenario_A1",
@@ -1122,3 +1142,8 @@ if __name__ == "__main__":
 #         ],
 #         scenario_list,
 #     )
+
+    # plot_lifetime_specificosts_psi(
+    #     scenario_dict={"Scenario_C_500": "500", "Scenario_C_600": "500", "Scenario_C_700": "500", "Scenario_C_800": "500", "Scenario_C_900": "500", "Scenario_C_1000": "500", "Scenario_C_1100": "500"},
+    #     variable_name="lifetime", outputs_directory=None, basis_value=0.083
+    # )
