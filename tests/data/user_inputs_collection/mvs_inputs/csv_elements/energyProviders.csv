@@ -1,12 +1,13 @@
-,unit,Electricity grid
-unit,str,kW
-optimizeCap,bool,True
-energy_price,currency/kWh,0.2165
-feedin_tariff,currency/kWh,0.1
-peak_demand_pricing,currency/kW,0
-peak_demand_pricing_period,"times per year (1,2,3,4,6,12)",1
-renewable_share,factor,0.1
-inflow_direction,str,Electricity bus
-outflow_direction,str,Electricity bus
-energyVector,str,Electricity
-type_oemof,str,source
+,unit,Electricity grid,Gas plant 2019/2020 Germany,Gas plant 2019/2020 Spain
+unit,str,kW,kW,kW
+optimizeCap,bool,True,True,True
+energy_price,currency/kWh,0.216,0.0598429602888087,0.07195270758122755
+feedin_tariff,currency/kWh,0.1,0,0
+peak_demand_pricing,currency/kW,0,0,0
+peak_demand_pricing_period,"times per year (1,2,3,4,6,12)",1,1,1
+renewable_share,factor,0.1,0,0
+inflow_direction,str,Electricity bus,Gas bus,Gas bus
+outflow_direction,str,Electricity bus,Gas bus,Gas bus
+energyVector,str,Electricity,Heat,Heat
+type_oemof,str,source,source,source
+emission_factor,kgCO2eq/kWh,0.338,0.2,0.2

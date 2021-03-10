@@ -349,7 +349,7 @@ class TestTES:
             "Gas bus",
             "Heat",
             "source",
-            1.9,
+            0.2,
         ]
         gas_provider = pd.DataFrame(data={"": providers_index, "Gas plant": gas_plant})
         gas_provider = gas_provider.set_index(providers_index)
