@@ -29,8 +29,8 @@ Figure `Daily Profiles`_ shows the daily profiles of all three technologies. It
 demonstrates how the CPV technology has a more narrow profile, because it highly depends
 on the DNI. Further, the profile of PSI exceeds the SI profile in the middle of the day.
 It can be seen nicely how the profiles are shifted on the east and west facade due
-to the solar position. The profiles are specific normalized, meaning that they are
-normalized with their maximum value in order to compare them conveniently.
+to the solar position. The profiles are normalized with their maximum value in
+order to compare them conveniently.
 
 .. _Daily Profiles:
 
@@ -39,7 +39,7 @@ normalized with their maximum value in order to compare them conveniently.
     :alt: Daily profiles of all three technologies, Spain 2014.
     :align: center
 
-    Daily profiles (specific normalized) of SI, PSI and CPV for south, east and west orientation, Spain in 2014.
+    Daily profiles (normalized with maximum value) of SI, PSI and CPV for south, east and west orientation, Spain in 2014.
 
 Energy yield
 ^^^^^^^^^^^^
