@@ -178,13 +178,13 @@ def plot_lifetime_specificosts_psi(
         ):
 
             file_sheet1 = pd.read_excel(
-                filepath, header=0, index_col=1, sheet_name="cost_matrix"
+                filepath, header=0, index_col=1, sheet_name="cost_matrix1"
             )
             file_sheet2 = pd.read_excel(
-                filepath, header=0, index_col=1, sheet_name="scalar_matrix"
+                filepath, header=0, index_col=1, sheet_name="scalar_matrix1"
             )
             file_sheet3 = pd.read_excel(
-                filepath, header=0, index_col=0, sheet_name="scalars"
+                filepath, header=0, index_col=0, sheet_name="scalars1"
             )
 
             # get variable value from filepath
@@ -200,7 +200,7 @@ def plot_lifetime_specificosts_psi(
             LCOE.loc[index, column] = file_sheet1.at[
                 "PV psi", "levelized_cost_of_energy_of_asset"
             ]
-            TOTALCOSTS.loc[index, column] = file_sheet1.at["PV psi", "costs_total"]
+            TOTALCOSTS.loc[index, column] = file_sheet3.at["costs_total", 0]
 #    LCOE=LCOE.rename(columns={"500": "550", "600": "650", "700": "750", "800": "850", "900": "950", "1000": "1050", "1100": "1150"})
     LCOE.sort_index(ascending=False, inplace=True)
     INSTCAP.sort_index(ascending=False, inplace=True)
@@ -240,14 +240,14 @@ def plot_lifetime_specificosts_psi(
 
     ax3 = plt.subplot(122)
     ax3 = sns.heatmap(
-        TOTALCOSTS, cmap="YlGnBu", cbar_kws={"label": "Total costs PV in EUR"}, vmin = 30000000
+        TOTALCOSTS, cmap="YlGnBu", cbar_kws={"label": "Total costs in EUR"}
     )
     ax3.set_ylabel("lifetime in years")
     ax3.set_xlabel("specific costs in EUR")
 
     plt.tight_layout()
 
-    f.savefig(os.path.join(outputs_directory, "plot_PV_COSTS_LCOE_PSI_Spain_2015.png",))
+    f.savefig(os.path.join(outputs_directory, f"plot_{scenario_name}_matrix.png",))
 
 
 def compare_weather_years(
@@ -516,6 +516,7 @@ def plot_kpi_loop(
             output.loc[index, "Total costs PV"] = 0
             output.loc[index, "Total annual production"] = 0
             output.loc[index, "Installed capacity PV"] = 0
+            counter = 1
             for pv in pv_labels:
                 output.loc[index, "Total costs PV"] = output.loc[index, "Total costs PV"] + file_sheet1.at[pv, "costs_total"]
                 output.loc[index, "Installed capacity PV"] = output.loc[index, "Installed capacity PV"] + file_sheet2.at[
@@ -527,9 +528,10 @@ def plot_kpi_loop(
                 output.loc[index, "Renewable factor"] = file_sheet3.at[
                     "Renewable factor", 0
                 ]
-                output.loc[index, "LCOE PV"] = file_sheet1.at[
-                    pv, "levelized_cost_of_energy_of_asset"
-                ]
+                if counter == 1:
+                    output.loc[index, "LCOE PV"] = file_sheet1.at[
+                        pv, "levelized_cost_of_energy_of_asset"
+                    ]
                 output.loc[index, "Self consumption"] = file_sheet3.at[
                     "Onsite energy fraction", 0
                 ]
@@ -550,6 +552,7 @@ def plot_kpi_loop(
                 output.loc[index, "Total annual production"] = output.loc[index, "Total annual production"] + file_sheet2.at[
                     pv, "annual_total_flow"
                 ]
+                counter +=1
 
             output_dict_column = output.to_dict()
             output_dict[scenario_dict[scenario_name]] = output_dict_column
@@ -1082,27 +1085,30 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    scenario_dict = {"Scenario_E4": "si", "Scenario_E5": "psi", "Scenario_E6": "cpv"}
-    plot_kpi_loop(
-        scenario_dict=scenario_dict,
-        variable_name="storeys",
-        kpi=[
-            "Total annual production",
-            "Degree of NZE",
-            "Total costs PV",
-            "Installed capacity PV",
-#            "Total renewable energy use",
-#            "Renewable share",
-#            "LCOE PV",
-            "Self consumption",
-#            "self sufficiency",
-            "Degree of autonomy",
-#            "Total non-renewable energy use",
-#            "Total costs",
-
-        ],
-    )
+#     scenario_dict = {"Scenario_E6": "cpv","Scenario_F6": "cpv_NZE"}
+#     plot_kpi_loop(
+#         scenario_dict=scenario_dict,
+#         variable_name="storeys",
+#         kpi=[
+#             "Total annual production",
+#             "Degree of NZE",
+#             "Total costs PV",
+#             "Installed capacity PV",
+# #            "Total renewable energy use",
+# #            "Renewable share",
+#             "LCOE PV",
+# #            "Self consumption",
+# #            "self sufficiency",
+#             "Degree of autonomy",
+# #            "Total non-renewable energy use",
+# #            "Total costs",
+#
+#         ],
+#     )
     #
+    # country="Germany"
+    # longitude= 13.4105300
+    # latitude = 52.5243700
     # compare_weather_years(
     #     latitude=latitude,
     #     longitude=longitude,
@@ -1111,9 +1117,9 @@ if __name__ == "__main__":
     # )
 
     # plot_facades(
-    #     variable_name="technology",
+    #     variable_name="storeys",
     #     kpi=["LCOE PV", "Costs total PV", "Installed capacity PV",],
-    #     scenario_name="Scenario_E2",
+    #     scenario_name="Scenario_F6",
     #     outputs_directory=None,
     # )
 #
@@ -1143,7 +1149,9 @@ if __name__ == "__main__":
 #         scenario_list,
 #     )
 
-    # plot_lifetime_specificosts_psi(
-    #     scenario_dict={"Scenario_C_500": "500", "Scenario_C_600": "500", "Scenario_C_700": "500", "Scenario_C_800": "500", "Scenario_C_900": "500", "Scenario_C_1000": "500", "Scenario_C_1100": "500"},
-    #     variable_name="lifetime", outputs_directory=None, basis_value=0.083
-    # )
+    plot_lifetime_specificosts_psi(
+        scenario_dict={"Scenario_C_500": "500", "Scenario_C_600": "500", "Scenario_C_700": "500", "Scenario_C_800": "500", "Scenario_C_900": "500", "Scenario_C_1000": "500", "Scenario_C_1100": "500"},
+        variable_name="lifetime", outputs_directory=None, basis_value=0.083
+    )
+    # basis_value SPAIN: 0.083
+    # basis_value GERMANY: 0.124
