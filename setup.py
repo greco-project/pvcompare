@@ -31,19 +31,22 @@ setup(
     long_description_content_type="text/x-rst",
     zip_safe=False,  # todo
     python_requires=">=3.5, <4",
-    # install_requires=[
-    #     "pvlib",
-    #     "demandlib",
-    #     "feedinlib == v0.1.0rc2",  # travis has problems with installment todo
-    #     "numpy >= 1.12.0,  < 1.17",
-    #     "pandas >= 0.18.1, < 0.25",
-    #     "oemof.thermal >= 0.0.3",
-    #     "scipy",
-    #     "workalendar < 7.0.0",  # todo check if needed. Problems with installing skyfield in travis tests (from workalendar 7.0.0)
-    #     "multi_vector_simulator",
-    #     # 'greco_technologies @ git+https://github.com/greco-project/greco_technologies.git@dev#egg=greco_technologies-0',
-    #     # 'cpvlib @ git+https://github.com/isi-ies-group/cpvlib.git@pvlib=0.8_fix#egg=cpvlib-0',
-    # ],
+    install_requires=[
+        "pvlib",
+        "demandlib",
+        "feedinlib == v0.1.0rc2",
+        "numpy >= 1.12.0,  < 1.17",
+        "pandas >= 0.18.1, < 0.25",
+        "oemof.thermal >= 0.0.3",
+        "scipy",
+        "maya~=0.6.1",
+        "workalendar < 7.0.0",
+        "multi_vector_simulator==0.5.5",
+        "greco_technologies @ git+https://github.com/greco-project/greco_technologies.git@dev#egg=greco_technologies-0",
+        "cpvlib @ git+https://github.com/isi-ies-group/cpvlib.git@2020-11#egg=cpvlib-0",
+        "mock>=3.0.5" "plotly==4.14.2",
+        "seaborn",
+    ],
     extras_require={
         "dev": [
             "pytest==5.3.5",
