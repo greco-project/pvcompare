@@ -204,7 +204,7 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
         b. **Gas plant**: Heat
     11. **emission factor**: kgCO2eq/kWh
         a. **Electricity grid**: 0.338
-        b. **Gas plant**: 1.9 (Obtained from `mvs documentation of emission factors <https://multi-vector-simulator.readthedocs.io/en/stable/Model_Assumptions.html#emission-factors>`_.)
+        b. **Gas plant**: 0.2 (Obtained from `Quaschning 06/2015 <https://www.volker-quaschning.de/datserv/CO2-spez/index_e.php>`_.)
 * energyStorage.csv:
     1. **inflow_direction**: str, ESS Li-Ion
     2. **label**: str, ESS Li-Ion
