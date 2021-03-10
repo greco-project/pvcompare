@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import logging
 import numpy as np
 import seaborn as sns
+import sys
 
 sns.set()
 
@@ -190,24 +191,26 @@ def loop_pvcompare(
 
             number_of_storeys = loop_dict["start"]
             while number_of_storeys <= loop_dict["stop"]:
-
-                single_loop_pvcompare(
-                    scenario_name=scenario_name,
-                    storeys=number_of_storeys,
-                    country=country,
-                    latitude=latitude,
-                    longitude=longitude,
-                    year=year,
-                    user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
-                    user_inputs_mvs_directory=user_inputs_mvs_directory,
-                    outputs_directory=outputs_directory,
-                    plot=False,
-                    pv_setup=pv_setup,
-                    loop_output_directory=loop_output_directory,
-                    step=number_of_storeys,
-                    loop_type=loop_type,
-                )
-
+                try:
+                    single_loop_pvcompare(
+                        scenario_name=scenario_name,
+                        storeys=number_of_storeys,
+                        country=country,
+                        latitude=latitude,
+                        longitude=longitude,
+                        year=year,
+                        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+                        user_inputs_mvs_directory=user_inputs_mvs_directory,
+                        outputs_directory=outputs_directory,
+                        plot=False,
+                        pv_setup=pv_setup,
+                        loop_output_directory=loop_output_directory,
+                        step=number_of_storeys,
+                        loop_type=loop_type,
+                    )
+                except:
+                    print("the system could not be optimized.")
+                    sys.exit(1)
                 number_of_storeys = number_of_storeys + loop_dict["step"]
 
         elif loop_type is "technology":
