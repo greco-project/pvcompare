@@ -10,4 +10,4 @@ inflow_direction,str,Electricity bus,Heat bus
 outflow_direction,str,Electricity bus,Heat bus
 energyVector,str,Electricity,Heat
 type_oemof,str,source,source
-emission_factor,kgCO2eq/kWh,207,500
+emission_factor,kgCO2eq/kWh,0.338,0.2
