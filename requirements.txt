@@ -7,7 +7,7 @@ oemof.thermal>=0.0.3
 scipy
 maya~=0.6.1
 workalendar<7.0.0
-multi_vector_simulator==0.5.4
+multi_vector_simulator==0.5.5
 git+https://github.com/greco-project/greco_technologies.git@dev
 git+https://github.com/isi-ies-group/cpvlib.git@2020-11
 mock>=3.0.5
