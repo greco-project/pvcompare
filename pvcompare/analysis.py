@@ -522,8 +522,8 @@ def loop_mvs(
     logging.info("starting postprocessing KPI")
     postprocessing_kpi(
         scenario_name=scenario_name,
-        outputs_directory=outputs_directory,
         variable_name=variable_name,
+        outputs_directory=outputs_directory,
     )
 
 
@@ -531,11 +531,9 @@ def postprocessing_kpi(scenario_name, variable_name, outputs_directory=None):
     """
     Overwrites all output excel files "timeseries_all_flows.xlsx" and "scalars.xlsx"
     in loop output directory of a scenario with modified KPI's.
-
     1) Creates new sheet "Electricity bus1" with the column
     Electricity demand = Electricity demand + Heat pump.
     2) Creates new sheets in scalars.xlsx with KPI's adjusted to the new demand.
-
     :param scenario_name: str
         scenario name
     :param outputs_directory: str
@@ -630,7 +628,7 @@ def postprocessing_kpi(scenario_name, variable_name, outputs_directory=None):
 if __name__ == "__main__":
     latitude = 52.5243700
     longitude = 13.4105300
-    years = [2011, 2015]  # a year between 2011-2013!!!
+    years = [2011]  # a year between 2011-2013!!!
     storeys = 5
     country = "Germany"
     scenario_name = "Scenario_A2"
@@ -676,41 +674,5 @@ if __name__ == "__main__":
     #     user_inputs_mvs_directory=None,
     #     scenario_name=scenario_name,
     # )
-
-    # plot_all_flows(
-    #     scenario_name=scenario_name,
-    #     month=None,
-    #     calendar_week=None,
-    #     weekday=5,
-    #     timeseries_directory=os.path.join(
-    #         constants.DEFAULT_OUTPUTS_DIRECTORY,
-    #         scenario_name,
-    #         "mvs_outputs_loop_hp_temp_15",
-    #     ),
-    # )
-
-    # scenario_dict = {"Scenario_A3": "psi", "Scenario_A5": "cpv", "Scenario_A7": "Basis"} # Basis scenarios need to be called "Basis"
-    # plot_kpi_loop(
-    #     scenario_dict=scenario_dict,
-    #     variable_name="specific_costs", #specific_costs
-    #     kpi=[
-    #         "Installed capacity PV",
-    #         "LCOE PV",
-    #         "Total costs PV",
-    #         "Total annual production",
-    #         "Degree of NZE",
-    #     ],
-    # )
     #
-    # compare_weather_years(
-    #     latitude=latitude,
-    #     longitude=longitude,
-    #     country=country,
-    #     static_inputs_directory=None,
-    # )
-
-    postprocessing_kpi(
-        scenario_name="Scenario_A7_test",
-        variable_name="technology",
-        outputs_directory=None,
-    )
+    # postprocessing_kpi(scenario_name="Scenario_A9", outputs_directory=None)

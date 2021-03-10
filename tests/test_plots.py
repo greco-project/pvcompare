@@ -134,7 +134,7 @@ class TestPlotProfiles:
         plot_kpi_loop(
             scenario_dict=scenario_dict,
             variable_name=variable_name,
-            kpi=["Costs total PV", "Degree of autonomy"],
+            kpi=["Total costs PV", "Degree of autonomy"],
             outputs_directory=self.outputs_directory,
         )
 
