@@ -55,8 +55,8 @@ To install *pvcompare* follow these steps:
 
 Examples and basic usage
 ========================
-The basic usage of *pvcompare* is explained in section `Basic usage of pvcompare <https://github.com/greco-project/pvcompare/blob/dev/CONTRIBUTING.md>`_. TODO adapt link
-You can look into the section `Selected scenarios and results <https://github.com/greco-project/pvcompare/blob/dev/CONTRIBUTING.md>`_ for examples of simulations with *pvcompare*. TODO adapt link
+The basic usage of *pvcompare* is explained in the documentation in section `Basic usage of pvcompare <https://pvcompare.readthedocs.io/en/latest/basic_usage.html>`_.
+
 
 Contributing
 ============
