@@ -22,6 +22,7 @@ Welcome to the documentation of pvcompare!
    scope_limits
    scenarios_and_results
    code
+   troubleshooting
 
 
 Indices and tables
