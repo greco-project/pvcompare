@@ -40,6 +40,9 @@ TEST_USER_INPUTS_PVCOMPARE = os.path.join(
     REPO_PATH, "tests/data/user_inputs/pvcompare_inputs"
 )
 TEST_USER_INPUTS_MVS = os.path.join(REPO_PATH, "tests/data/user_inputs/mvs_inputs")
+TEST_USER_INPUTS_MVS_SECTOR_COUPLING = os.path.join(
+    REPO_PATH, "tests/data/user_inputs/mvs_inputs_sector_coupling"
+)
 TEST_STATIC_INPUTS = os.path.join(REPO_PATH, "tests/data/static_inputs")
 TEST_COLLECTION_MVS_INPUTS_DIRECTORY = os.path.join(
     REPO_PATH, "tests/data/user_inputs_collection/mvs_inputs"
