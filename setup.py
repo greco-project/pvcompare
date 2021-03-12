@@ -46,6 +46,7 @@ setup(
         "cpvlib @ git+https://github.com/isi-ies-group/cpvlib.git@2020-11#egg=cpvlib-0",
         "mock>=3.0.5" "plotly==4.14.2",
         "seaborn",
+        "Pyomo==5.7.2",
     ],
     extras_require={
         "dev": [
