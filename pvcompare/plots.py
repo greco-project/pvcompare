@@ -750,12 +750,6 @@ def plot_facades(
 
         i += 1
 
-    # restucture dataframes for facades
-
-    min_value_year = []
-    max_value_year = []
-    diff_value_year = []
-
     output_min = {}
     output_diff = {}
     output_max = {}
@@ -1124,9 +1118,20 @@ def plot_compare_technologies(variable_name, kpi, scenario_list, outputs_directo
                 f"Please check the variable_name"
             )
         # parse through scalars folder and read in all excel sheets
-        si = pd.DataFrame()
-        psi = pd.DataFrame()
-        cpv = pd.DataFrame()
+        output_dict[scenario_name] = {}
+        output_dict[scenario_name]["costs_total"] = pd.DataFrame()
+        output_dict[scenario_name]["LCOE"] = pd.DataFrame()
+        output_dict[scenario_name]["Installed capacity PV"] = pd.DataFrame()
+        output_dict[scenario_name]["Total annual production"] = pd.DataFrame()
+        output_dict[scenario_name]["Total renewable energy"]= pd.DataFrame()
+        output_dict[scenario_name]["Renewable factor"]= pd.DataFrame()
+        output_dict[scenario_name]["LCOE PV"]= pd.DataFrame()
+        output_dict[scenario_name]["Self consumption"]= pd.DataFrame()
+        output_dict[scenario_name]["Self sufficiency"]= pd.DataFrame()
+        output_dict[scenario_name]["Degree of autonomy"]= pd.DataFrame()
+        output_dict[scenario_name]["Total emissions"]= pd.DataFrame()
+        output_dict[scenario_name]["Total non-renewable energy"]= pd.DataFrame()
+        output_dict[scenario_name]["Degree of NZE"]= pd.DataFrame()
 
         for filepath in list(
             glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
@@ -1164,42 +1169,69 @@ def plot_compare_technologies(variable_name, kpi, scenario_list, outputs_directo
             energyProduction = energyProduction.drop(["unit"], axis=1)
             pv_labels = energyProduction.columns
             # get total costs pv and installed capacity
-            index = str(year) + "_" + str(step)
-            output.loc[index, "step"] = step
-            output.loc[index, "year"] = int(year)
+
+            index = str(year)  # + "_" + str(step)
+
             for pv in pv_labels:
-                output.loc[index, "Costs total PV"] = file_sheet1.at[pv, "costs_total"]
-                output.loc[index, "Installed capacity PV"] = file_sheet2.at[
-                    pv, "optimizedAddCap"
-                ]
-                output.loc[index, "Total renewable energy"] = file_sheet3.at[
-                    "Total renewable energy use", 0
-                ]
-                output.loc[index, "Renewable factor"] = file_sheet3.at[
-                    "Renewable factor", 0
-                ]
-                output.loc[index, "LCOE PV"] = file_sheet1.at[
+                output_dict[scenario_name]["costs_total"].loc[index, pv] = int(year)
+                output_dict[scenario_name]["costs_total"].loc[index, pv] = file_sheet1.at[pv, "costs_total"]
+                output_dict[scenario_name]["LCOE"].loc[index, pv] = file_sheet1.at[
                     pv, "levelized_cost_of_energy_of_asset"
                 ]
-                output.loc[index, "Self consumption"] = file_sheet3.at[
+                output_dict[scenario_name]["Installed capacity PV"].loc[index, pv] = file_sheet2.at[pv, "optimizedAddCap"]
+                output_dict[scenario_name]["Total annual production"].loc[index, pv] = file_sheet2.at[pv, "annual_total_flow"]
+                output_dict[scenario_name]["Total renewable energy"].loc[index, pv] = file_sheet3.at[
+                    "Total renewable energy use", 0
+                ]
+                output_dict[scenario_name]["Renewable factor"].loc[index, pv] = file_sheet3.at[
+                    "Renewable factor", 0
+                ]
+                output_dict[scenario_name]["LCOE PV"].loc[index, pv] = file_sheet1.at[
+                    pv, "levelized_cost_of_energy_of_asset"
+                ]
+                output_dict[scenario_name]["Self consumption"].loc[index, pv] = file_sheet3.at[
                     "Onsite energy fraction", 0
                 ]
-                output.loc[index, "Self sufficiency"] = file_sheet3.at[
+                output_dict[scenario_name]["Self sufficiency"].loc[index, pv] = file_sheet3.at[
                     "Onsite energy matching", 0
                 ]
-                output.loc[index, "Degree of autonomy"] = file_sheet3.at[
+                output_dict[scenario_name]["Degree of autonomy"].loc[index, pv] = file_sheet3.at[
                     "Degree of autonomy", 0
                 ]
-                output.loc[index, "Total emissions"] = file_sheet3.at[
+                output_dict[scenario_name]["Total emissions"].loc[index, pv] = file_sheet3.at[
                     "Total emissions", 0
                 ]
-                output.loc[index, "Total non-renewable energy"] = file_sheet3.at[
+                output_dict[scenario_name]["Total non-renewable energy"].loc[index, pv] = \
+                file_sheet3.at[
                     "Total non-renewable energy use", 0
                 ]
-                output.loc[index, "Degree of NZE"] = file_sheet3.at["Degree of NZE", 0]
+                output_dict[scenario_name]["Degree of NZE"].loc[index, pv] = file_sheet3.at[
+                    "Degree of NZE", 0]
+    output_min = {}
+    output_diff = {}
+    output_max = {}
+    for scenario_name in output_dict.keys():
+        output_min[scenario_name]= {}
+        output_diff[scenario_name]= {}
+        output_max[scenario_name]= {}
 
-            output_dict_column = output.to_dict()
-            output_dict[scenario_name] = output_dict_column
+        for key in output_dict[scenario_name].keys():
+            output_min[scenario_name][key] = pd.DataFrame()
+            output_diff[scenario_name][key] = pd.DataFrame()
+            output_max[scenario_name][key] = pd.DataFrame()
+            for c in output_dict[scenario_name][key].columns:
+                if c.endswith("si"):
+                    technology = "SI"
+                elif c.endswith("cpv"):
+                    technology = "CPV"
+                elif c.endswith("psi"):
+                    technology = "PSI"
+                output_min[scenario_name][key].loc[technology, str(c)[:-1]] = output_dict[scenario_name][key][c].min()
+                output_diff[scenario_name][key].loc[technology, str(c)[:-1]] = (
+                    output_dict[scenario_name][key][c].max() - output_dict[scenario_name][key][c].min()
+                )
+                output_max[scenario_name][key].loc[technology, str(c)[:-1]] = output_dict[scenario_name][key][c].max()
+
     # define y labels
     y_title = {
         "Costs total PV": "Costs total PV \n in EUR",
@@ -1215,81 +1247,72 @@ def plot_compare_technologies(variable_name, kpi, scenario_list, outputs_directo
         "Degree of NZE": "Degree of NZE \n in %",
     }
 
-    output.sort_index(inplace=True)
-
+    #    output.sort_index(inplace=True)
     # plot
-    height = len(kpi) * 2
-    fig = plt.figure(figsize=(9, height))
-    color_1 = sns.color_palette()
-    color_2 = sns.color_palette("pastel")
+    hight = len(kpi) * 4
+    fig = plt.figure(figsize=(15, hight))
+    fig.subplots_adjust(bottom=0.2)
     rows = len(kpi)
     num = (
         rows * 100 + 11
     )  # the setting for number of rows | number of columns | row number
 
+    color_1 = sns.color_palette()
+    color_2 = sns.color_palette("pastel")
+
     for i in kpi:
         ax = fig.add_subplot(num)
         num = num + 1
 
-        min_value_year = []
-        max_value_year = []
-        diff_value_year = []
+        df_min = pd.DataFrame()
+        df_max = pd.DataFrame()
 
-        for key in output_dict.keys():
+        for scenario_name in output_dict.keys():
             df = pd.DataFrame()
-            df = df.from_dict(output_dict[key])
+            df = df.from_dict(output_dict[scenario_name][i])
+            for pv in df.columns:
 
-            max_value_year.append(max(df[i]))
-            min_value_year.append(min(df[i]))
-            diff_value_year.append(max(df[i]) - min(df[i]))
+                df_min.loc[scenario_name, pv] = df[pv].min()
+                df_max.loc[scenario_name, pv] = df[pv].max()
 
-        scenario_name_ending = []
-        for scenario_name in scenario_list:
-            scenario_name_ending.append(scenario_name.split("_")[1])
-        # Plot bar with maximum value of all three years
-        ax.bar(
-            scenario_name_ending,
-            max_value_year,
-            color=color_1[0],
-            edgecolor=color_1[0],
+        df_max.plot(
+            kind="bar",
+            ax=ax,
+            legend=False,
+            label=str(),
+            sharex=True,
+            color=color_2,
             linewidth=0.5,
-            label="KPI minimum of weather years",
-        )
-        # Plot span between minimum and maximum value of all three years
-        ax.bar(
-            scenario_name_ending,
-            diff_value_year,
-            bottom=min_value_year,
-            edgecolor=color_2[0],
-            linewidth=0.5,
-            color=color_2[0],
-            label="KPI maximum of weather years",
         )
 
-        ax.set_ylabel(y_title[i])
-        ax.set_xlabel("Scenario")
-        ax.get_yaxis().set_label_coords(-0.13, 0.5)
+        df_min.plot(
+            kind="bar",
+            ax=ax,
+            label=i,
+            legend=False,
+            sharex=True,
+            color=color_1,
+            linewidth=0.5,
+        )
+
+        ax.set_ylabel(str(i))
+        ax.set_xlabel("technology")
+        ax.get_yaxis().set_label_coords(-0.15, 0.5)
         ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
-        # Print minor and major grid lines for better readability
-        ax.get_xaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
-        ax.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
-        ax.set_ylim(ax.get_ylim()[0], ax.get_ylim()[1] + ax.get_ylim()[1] * 0.1)
         ax.grid(b=True, which="major", axis="both", color="w", linewidth=1.0)
         ax.grid(b=True, which="minor", axis="both", color="w", linewidth=0.5)
-
     plt.tight_layout(rect=(0.02, 0.03, 1, 1))
 
-    handles, labels = ax.get_legend_handles_labels()
+    plt.xticks(rotation=45)
     fig.legend(
-        handles, labels, loc="lower left", mode="expand",
+        df_min.columns, loc="lower left", mode="expand",
     )
 
-    name = ""
-    for scenario_name in scenario_name_ending:
-        name = name + "_" + str(scenario_name)
-
     fig.savefig(
-        os.path.join(outputs_directory, "plot_compare_technologies" + str(name) + ".png")
+        os.path.join(
+            outputs_directory,
+            "plot_technologies_" + str(scenario_name) + "_" + str(variable_name) + ".png",
+        )
     )
 
 
@@ -1365,10 +1388,12 @@ if __name__ == "__main__":
        "Scenario_H4",
        "Scenario_H5",
        "Scenario_H6",
-       "Scenario_H1",
-       "Scenario_H2",
-       "Scenario_H3",
-       "Scenario_H4",
+       "Scenario_H7",
+       "Scenario_H8",
+       "Scenario_H9",
+       "Scenario_H10",
+        "Scenario_H11",
+        "Scenario_H12",
     ]
-    plot_compare_technologies(variable_name="technology", kpi= ["Installed capacity PV", "Degree of NZE"], scenario_list=scenario_list,
+    plot_compare_technologies(variable_name="technology", kpi= ["Total annual production", "Degree of NZE"], scenario_list=scenario_list,
                               outputs_directory=None)
