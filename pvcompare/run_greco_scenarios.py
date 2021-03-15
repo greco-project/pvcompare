@@ -1124,9 +1124,9 @@ class Scenarios:
         pv_setup.to_csv(data_path, index=False)
 
         years=[2014, 2017]
-        latitude=59.911491
-        longitude=10.757933
-        country="Norway"
+        latitude=60.192059
+        longitude=24.945831
+        country="Finland"
 
 
         outputs.loop_pvcompare(
