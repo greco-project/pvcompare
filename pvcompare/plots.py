@@ -174,13 +174,13 @@ def plot_lifetime_specificosts_psi(
         ):
 
             file_sheet1 = pd.read_excel(
-                filepath, header=0, index_col=1, sheet_name="cost_matrix"
+                filepath, header=0, index_col=1, sheet_name="cost_matrix1"
             )
             file_sheet2 = pd.read_excel(
-                filepath, header=0, index_col=1, sheet_name="scalar_matrix"
+                filepath, header=0, index_col=1, sheet_name="scalar_matrix1"
             )
             file_sheet3 = pd.read_excel(
-                filepath, header=0, index_col=0, sheet_name="scalars"
+                filepath, header=0, index_col=0, sheet_name="scalars1"
             )
 
             # get variable value from filepath
@@ -196,8 +196,8 @@ def plot_lifetime_specificosts_psi(
             LCOE.loc[index, column] = file_sheet1.at[
                 "PV psi", "levelized_cost_of_energy_of_asset"
             ]
-            TOTALCOSTS.loc[index, column] = file_sheet1.at["PV psi", "costs_total"]
-
+            TOTALCOSTS.loc[index, column] = file_sheet3.at["costs_total", 0]
+#    LCOE=LCOE.rename(columns={"500": "550", "600": "650", "700": "750", "800": "850", "900": "950", "1000": "1050", "1100": "1150"})
     LCOE.sort_index(ascending=False, inplace=True)
     INSTCAP.sort_index(ascending=False, inplace=True)
     TOTALCOSTS.sort_index(ascending=False, inplace=True)
@@ -211,31 +211,39 @@ def plot_lifetime_specificosts_psi(
     # plot LCOE
     f, (ax1, ax3) = plt.subplots(1, 2, figsize=(20, 9))
     plt.tick_params(bottom="on")
-    sns.set_style("whitegrid", {"axes.grid": False})
+    sns.set_style("whitegrid", {"axes.grid": True})
     ax1 = plt.subplot(121)
-    ax1 = sns.heatmap(LCOE, cmap="YlGnBu", cbar_kws={"label": "LCOE in EUR/kWh"})
+    ax1 = sns.heatmap(LCOE, cmap="YlGnBu", cbar_kws={"label": "LCOE in EUR/kWh"}, vmin = 0.07)
     ax1.set_ylabel("lifetime in years")
     ax1.set_xlabel("specific_costs in EUR")
     #    sns.lineplot(basis.columns, basis[0], ax = ax1)
     ax2 = ax1.twinx()
     ax2.plot(basis.index, basis["lifetime"], color="darkorange", label="SI")
-    #    line = ax1.lines[0] # get the line
-    #    line.set_xdata(line.get_xdata() + 0.5)
-    #    ax1.axis('tight')
-    #    ax1.set_xticks()
     ax2.set_ylim(5, 25.5)
     ax2.axis("off")
 
+    ax1.set_xticklabels([500, 600, 700, 800, 900, 1000, 1100], minor=False)
+    # Create offset transform by 5 points in x direction
+    dx = 40 / 72.;
+    dy = 0 / 72.
+    offset = mpl.transforms.ScaledTranslation(dx, dy, f.dpi_scale_trans)
+
+    # apply offset transform to all x ticklabels.
+    for label in ax1.xaxis.get_majorticklabels():
+        label.set_transform(label.get_transform() + offset)
+    for label in ax2.xaxis.get_majorticklabels():
+        label.set_transform(label.get_transform() + offset)
+
     ax3 = plt.subplot(122)
     ax3 = sns.heatmap(
-        TOTALCOSTS, cmap="YlGnBu", cbar_kws={"label": "Total costs PV in EUR"}
+        TOTALCOSTS, cmap="YlGnBu", cbar_kws={"label": "Total costs in EUR"}
     )
     ax3.set_ylabel("lifetime in years")
     ax3.set_xlabel("specific costs in EUR")
 
     plt.tight_layout()
 
-    f.savefig(os.path.join(outputs_directory, "plot_PV_COSTS_LCOE_PSI_Spain_2015.png",))
+    f.savefig(os.path.join(outputs_directory, f"plot_{scenario_name}_matrix.png",))
 
 
 def compare_weather_years(
