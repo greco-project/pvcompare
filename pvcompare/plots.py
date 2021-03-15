@@ -1124,7 +1124,10 @@ def plot_compare_technologies(variable_name, kpi, scenario_list, outputs_directo
                 f"Please check the variable_name"
             )
         # parse through scalars folder and read in all excel sheets
-        output = pd.DataFrame()
+        si = pd.DataFrame()
+        psi = pd.DataFrame()
+        cpv = pd.DataFrame()
+
         for filepath in list(
             glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
         ):
@@ -1141,7 +1144,7 @@ def plot_compare_technologies(variable_name, kpi, scenario_list, outputs_directo
             # get variable value from filepath
             split_path = filepath.split("_")
             get_step = split_path[::-1][0]
-            step = int(get_step.split(".")[0])
+            step = get_step.split(".")[0]
             year = int(split_path[::-1][1])
             # get all different pv assets
             csv_directory = os.path.join(
@@ -1162,14 +1165,11 @@ def plot_compare_technologies(variable_name, kpi, scenario_list, outputs_directo
             pv_labels = energyProduction.columns
             # get total costs pv and installed capacity
             index = str(year) + "_" + str(step)
-            output.loc[index, "step"] = int(step)
+            output.loc[index, "step"] = step
             output.loc[index, "year"] = int(year)
-            output.loc[index, "Total annual production"] = 0
-            output.loc[index, "Installed capacity PV"] = 0
-            counter = 1
             for pv in pv_labels:
-                output.loc[index, "Total costs PV"] = output.loc[index, "Total costs PV"] + file_sheet1.at[pv, "costs_total"]
-                output.loc[index, "Installed capacity PV"] = output.loc[index, "Installed capacity PV"] + file_sheet2.at[
+                output.loc[index, "Costs total PV"] = file_sheet1.at[pv, "costs_total"]
+                output.loc[index, "Installed capacity PV"] = file_sheet2.at[
                     pv, "optimizedAddCap"
                 ]
                 output.loc[index, "Total renewable energy"] = file_sheet3.at[
@@ -1178,10 +1178,9 @@ def plot_compare_technologies(variable_name, kpi, scenario_list, outputs_directo
                 output.loc[index, "Renewable factor"] = file_sheet3.at[
                     "Renewable factor", 0
                 ]
-                if counter == 1:
-                    output.loc[index, "LCOE PV"] = file_sheet1.at[
-                        pv, "levelized_cost_of_energy_of_asset"
-                    ]
+                output.loc[index, "LCOE PV"] = file_sheet1.at[
+                    pv, "levelized_cost_of_energy_of_asset"
+                ]
                 output.loc[index, "Self consumption"] = file_sheet3.at[
                     "Onsite energy fraction", 0
                 ]
@@ -1198,11 +1197,6 @@ def plot_compare_technologies(variable_name, kpi, scenario_list, outputs_directo
                     "Total non-renewable energy use", 0
                 ]
                 output.loc[index, "Degree of NZE"] = file_sheet3.at["Degree of NZE", 0]
-                output.loc[index, "Total costs"] = file_sheet3.at["costs_total", 0]
-                output.loc[index, "Total annual production"] = output.loc[index, "Total annual production"] + file_sheet2.at[
-                    pv, "annual_total_flow"
-                ]
-                counter +=1
 
             output_dict_column = output.to_dict()
             output_dict[scenario_name] = output_dict_column
@@ -1295,7 +1289,7 @@ def plot_compare_technologies(variable_name, kpi, scenario_list, outputs_directo
         name = name + "_" + str(scenario_name)
 
     fig.savefig(
-        os.path.join(outputs_directory, "plot_compare_scenarios" + str(name) + ".png")
+        os.path.join(outputs_directory, "plot_compare_technologies" + str(name) + ".png")
     )
 
 
@@ -1332,12 +1326,12 @@ if __name__ == "__main__":
     #     static_inputs_directory=None,
     # )
 
-    plot_facades(
-        variable_name="technology",
-        kpi=["LCOE PV", "Costs total PV", "Installed capacity PV",],
-        scenario_name="Scenario_E2",
-        outputs_directory=None,
-    )
+    # plot_facades(
+    #     variable_name="technology",
+    #     kpi=["LCOE PV", "Costs total PV", "Installed capacity PV",],
+    #     scenario_name="Scenario_E2",
+    #     outputs_directory=None,
+    # )
 #
 #     scenario_list = [
 #         "Scenario_A1",
@@ -1364,3 +1358,17 @@ if __name__ == "__main__":
 #         ],
 #         scenario_list,
 #     )
+    scenario_list = [
+        "Scenario_H1",
+        "Scenario_H2",
+       "Scenario_H3",
+       "Scenario_H4",
+       "Scenario_H5",
+       "Scenario_H6",
+       "Scenario_H1",
+       "Scenario_H2",
+       "Scenario_H3",
+       "Scenario_H4",
+    ]
+    plot_compare_technologies(variable_name="technology", kpi= ["Installed capacity PV", "Degree of NZE"], scenario_list=scenario_list,
+                              outputs_directory=None)
