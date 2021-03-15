@@ -1245,6 +1245,7 @@ def plot_compare_technologies(variable_name, kpi, scenario_list, outputs_directo
         "Total emissions": "Total emissions \nin kgCO2eq/kWh",
         "Total non-renewable energy": "Total non-renewable \n energy in kWh",
         "Degree of NZE": "Degree of NZE \n in %",
+        "Total annual production": "Total annual production \n in kWh"
     }
 
     #    output.sort_index(inplace=True)
@@ -1295,9 +1296,9 @@ def plot_compare_technologies(variable_name, kpi, scenario_list, outputs_directo
             linewidth=0.5,
         )
 
-        ax.set_ylabel(str(i))
+        ax.set_ylabel(y_title[i])
         ax.set_xlabel("technology")
-        ax.get_yaxis().set_label_coords(-0.15, 0.5)
+        ax.get_yaxis().set_label_coords(-0.04, 0.5)
         ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
         ax.grid(b=True, which="major", axis="both", color="w", linewidth=1.0)
         ax.grid(b=True, which="minor", axis="both", color="w", linewidth=0.5)
