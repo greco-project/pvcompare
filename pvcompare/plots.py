@@ -509,9 +509,12 @@ def plot_kpi_loop(
             index = str(year) + "_" + str(step)
             output.loc[index, "step"] = int(step)
             output.loc[index, "year"] = int(year)
+            output.loc[index, "Total annual production"] = 0
+            output.loc[index, "Installed capacity PV"] = 0
+            counter = 1
             for pv in pv_labels:
-                output.loc[index, "Total costs PV"] = file_sheet1.at[pv, "costs_total"]
-                output.loc[index, "Installed capacity PV"] = file_sheet2.at[
+                output.loc[index, "Total costs PV"] = output.loc[index, "Total costs PV"] + file_sheet1.at[pv, "costs_total"]
+                output.loc[index, "Installed capacity PV"] = output.loc[index, "Installed capacity PV"] + file_sheet2.at[
                     pv, "optimizedAddCap"
                 ]
                 output.loc[index, "Total renewable energy"] = file_sheet3.at[
@@ -520,9 +523,10 @@ def plot_kpi_loop(
                 output.loc[index, "Renewable factor"] = file_sheet3.at[
                     "Renewable factor", 0
                 ]
-                output.loc[index, "LCOE PV"] = file_sheet1.at[
-                    pv, "levelized_cost_of_energy_of_asset"
-                ]
+                if counter == 1:
+                    output.loc[index, "LCOE PV"] = file_sheet1.at[
+                        pv, "levelized_cost_of_energy_of_asset"
+                    ]
                 output.loc[index, "Self consumption"] = file_sheet3.at[
                     "Onsite energy fraction", 0
                 ]
@@ -540,9 +544,10 @@ def plot_kpi_loop(
                 ]
                 output.loc[index, "Degree of NZE"] = file_sheet3.at["Degree of NZE", 0]
                 output.loc[index, "Total costs"] = file_sheet3.at["costs_total", 0]
-                output.loc[index, "Total annual production"] = file_sheet2.at[
+                output.loc[index, "Total annual production"] = output.loc[index, "Total annual production"] + file_sheet2.at[
                     pv, "annual_total_flow"
                 ]
+                counter +=1
 
             output_dict_column = output.to_dict()
             output_dict[scenario_dict[scenario_name]] = output_dict_column
@@ -935,9 +940,12 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
             index = str(year) + "_" + str(step)
             output.loc[index, "step"] = int(step)
             output.loc[index, "year"] = int(year)
+            output.loc[index, "Total annual production"] = 0
+            output.loc[index, "Installed capacity PV"] = 0
+            counter = 1
             for pv in pv_labels:
-                output.loc[index, "Costs total PV"] = file_sheet1.at[pv, "costs_total"]
-                output.loc[index, "Installed capacity PV"] = file_sheet2.at[
+                output.loc[index, "Total costs PV"] = output.loc[index, "Total costs PV"] + file_sheet1.at[pv, "costs_total"]
+                output.loc[index, "Installed capacity PV"] = output.loc[index, "Installed capacity PV"] + file_sheet2.at[
                     pv, "optimizedAddCap"
                 ]
                 output.loc[index, "Total renewable energy"] = file_sheet3.at[
@@ -946,9 +954,10 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
                 output.loc[index, "Renewable factor"] = file_sheet3.at[
                     "Renewable factor", 0
                 ]
-                output.loc[index, "LCOE PV"] = file_sheet1.at[
-                    pv, "levelized_cost_of_energy_of_asset"
-                ]
+                if counter == 1:
+                    output.loc[index, "LCOE PV"] = file_sheet1.at[
+                        pv, "levelized_cost_of_energy_of_asset"
+                    ]
                 output.loc[index, "Self consumption"] = file_sheet3.at[
                     "Onsite energy fraction", 0
                 ]
@@ -965,6 +974,11 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
                     "Total non-renewable energy use", 0
                 ]
                 output.loc[index, "Degree of NZE"] = file_sheet3.at["Degree of NZE", 0]
+                output.loc[index, "Total costs"] = file_sheet3.at["costs_total", 0]
+                output.loc[index, "Total annual production"] = output.loc[index, "Total annual production"] + file_sheet2.at[
+                    pv, "annual_total_flow"
+                ]
+                counter +=1
 
             output_dict_column = output.to_dict()
             output_dict[scenario_name] = output_dict_column
@@ -1150,9 +1164,12 @@ def plot_compare_technologies(variable_name, kpi, scenario_list, outputs_directo
             index = str(year) + "_" + str(step)
             output.loc[index, "step"] = int(step)
             output.loc[index, "year"] = int(year)
+            output.loc[index, "Total annual production"] = 0
+            output.loc[index, "Installed capacity PV"] = 0
+            counter = 1
             for pv in pv_labels:
-                output.loc[index, "Costs total PV"] = file_sheet1.at[pv, "costs_total"]
-                output.loc[index, "Installed capacity PV"] = file_sheet2.at[
+                output.loc[index, "Total costs PV"] = output.loc[index, "Total costs PV"] + file_sheet1.at[pv, "costs_total"]
+                output.loc[index, "Installed capacity PV"] = output.loc[index, "Installed capacity PV"] + file_sheet2.at[
                     pv, "optimizedAddCap"
                 ]
                 output.loc[index, "Total renewable energy"] = file_sheet3.at[
@@ -1161,9 +1178,10 @@ def plot_compare_technologies(variable_name, kpi, scenario_list, outputs_directo
                 output.loc[index, "Renewable factor"] = file_sheet3.at[
                     "Renewable factor", 0
                 ]
-                output.loc[index, "LCOE PV"] = file_sheet1.at[
-                    pv, "levelized_cost_of_energy_of_asset"
-                ]
+                if counter == 1:
+                    output.loc[index, "LCOE PV"] = file_sheet1.at[
+                        pv, "levelized_cost_of_energy_of_asset"
+                    ]
                 output.loc[index, "Self consumption"] = file_sheet3.at[
                     "Onsite energy fraction", 0
                 ]
@@ -1180,6 +1198,11 @@ def plot_compare_technologies(variable_name, kpi, scenario_list, outputs_directo
                     "Total non-renewable energy use", 0
                 ]
                 output.loc[index, "Degree of NZE"] = file_sheet3.at["Degree of NZE", 0]
+                output.loc[index, "Total costs"] = file_sheet3.at["costs_total", 0]
+                output.loc[index, "Total annual production"] = output.loc[index, "Total annual production"] + file_sheet2.at[
+                    pv, "annual_total_flow"
+                ]
+                counter +=1
 
             output_dict_column = output.to_dict()
             output_dict[scenario_name] = output_dict_column
