@@ -1060,6 +1060,221 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
         os.path.join(outputs_directory, "plot_compare_scenarios" + str(name) + ".png")
     )
 
+def plot_compare_technologies(variable_name, kpi, scenario_list, outputs_directory=None):
+    """
+    kpi: list of str
+        List of KPI's to be plotted.
+        Possible entries:
+            "Degree of NZE"
+            "Costs total PV",
+            "Installed capacity PV",
+            "Total renewable energy use",
+            "Renewable share",
+            "LCOE PV",
+            "self consumption",
+            "self sufficiency",
+            "Degree of autonomy",
+            "Total non-renewable energy use"
+    scenario_list: list
+        List with the scenario names that should be compared
+         Notice: all scenarios you want to compare, need to include the
+         loop-outputs for the same variable / steps. The scenario names
+         should follow the scheme: "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+    outputs_directory: str
+        Path to output directory.
+        Default: constants.DEFAULT_OUTPUTS_DIRECTORY
+    Returns
+    -------
+        None
+        saves figure into `loop_output_directory`
+    -------
+    """
+    # height = len(kpi) * 2
+    # fig = plt.figure(figsize=(7, height))
+
+    output_dict = {}
+    for scenario_name in scenario_list:
+        if outputs_directory == None:
+            outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
+            scenario_folder = os.path.join(outputs_directory, scenario_name)
+        else:
+            scenario_folder = os.path.join(outputs_directory, scenario_name)
+            if not os.path.isdir(scenario_folder):
+                logging.warning(f"The scenario folder {scenario_name} does not exist.")
+        loop_output_directory = os.path.join(
+            scenario_folder, "loop_outputs_" + str(variable_name)
+        )
+        if not os.path.isdir(loop_output_directory):
+            logging.warning(
+                f"The loop output folder {loop_output_directory} does not exist. "
+                f"Please check the variable_name"
+            )
+        # parse through scalars folder and read in all excel sheets
+        output = pd.DataFrame()
+        for filepath in list(
+            glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
+        ):
+            file_sheet1 = pd.read_excel(
+                filepath, header=0, index_col=1, sheet_name="cost_matrix1"
+            )
+            file_sheet2 = pd.read_excel(
+                filepath, header=0, index_col=1, sheet_name="scalar_matrix1"
+            )
+            file_sheet3 = pd.read_excel(
+                filepath, header=0, index_col=0, sheet_name="scalars1"
+            )
+
+            # get variable value from filepath
+            split_path = filepath.split("_")
+            get_step = split_path[::-1][0]
+            step = int(get_step.split(".")[0])
+            year = int(split_path[::-1][1])
+            # get all different pv assets
+            csv_directory = os.path.join(
+                scenario_folder,
+                "mvs_outputs_loop_"
+                + str(variable_name)
+                + "_"
+                + str(year)
+                + "_"
+                + str(step),
+                "inputs",
+                "csv_elements",
+            )
+            energyProduction = pd.read_csv(
+                os.path.join(csv_directory, "energyProduction.csv"), index_col=0
+            )
+            energyProduction = energyProduction.drop(["unit"], axis=1)
+            pv_labels = energyProduction.columns
+            # get total costs pv and installed capacity
+            index = str(year) + "_" + str(step)
+            output.loc[index, "step"] = int(step)
+            output.loc[index, "year"] = int(year)
+            for pv in pv_labels:
+                output.loc[index, "Costs total PV"] = file_sheet1.at[pv, "costs_total"]
+                output.loc[index, "Installed capacity PV"] = file_sheet2.at[
+                    pv, "optimizedAddCap"
+                ]
+                output.loc[index, "Total renewable energy"] = file_sheet3.at[
+                    "Total renewable energy use", 0
+                ]
+                output.loc[index, "Renewable factor"] = file_sheet3.at[
+                    "Renewable factor", 0
+                ]
+                output.loc[index, "LCOE PV"] = file_sheet1.at[
+                    pv, "levelized_cost_of_energy_of_asset"
+                ]
+                output.loc[index, "Self consumption"] = file_sheet3.at[
+                    "Onsite energy fraction", 0
+                ]
+                output.loc[index, "Self sufficiency"] = file_sheet3.at[
+                    "Onsite energy matching", 0
+                ]
+                output.loc[index, "Degree of autonomy"] = file_sheet3.at[
+                    "Degree of autonomy", 0
+                ]
+                output.loc[index, "Total emissions"] = file_sheet3.at[
+                    "Total emissions", 0
+                ]
+                output.loc[index, "Total non-renewable energy"] = file_sheet3.at[
+                    "Total non-renewable energy use", 0
+                ]
+                output.loc[index, "Degree of NZE"] = file_sheet3.at["Degree of NZE", 0]
+
+            output_dict_column = output.to_dict()
+            output_dict[scenario_name] = output_dict_column
+    # define y labels
+    y_title = {
+        "Costs total PV": "Costs total PV \n in EUR",
+        "Installed capacity PV": "Installed capacity \nPV in kWp",
+        "Total renewable energy": "Total renewable \nenergy in kWh",
+        "Renewable factor": "Renewable factor \nin %",
+        "LCOE PV": "LCOE PV \nin EUR/kWh",
+        "Self consumption": "Self consumption \nin %",
+        "Self sufficiency": "Self sufficiency \nin %",
+        "Degree of autonomy": "Degree of \nautonomy in %",
+        "Total emissions": "Total emissions \nin kgCO2eq/kWh",
+        "Total non-renewable energy": "Total non-renewable \n energy in kWh",
+        "Degree of NZE": "Degree of NZE \n in %",
+    }
+
+    output.sort_index(inplace=True)
+
+    # plot
+    height = len(kpi) * 2
+    fig = plt.figure(figsize=(9, height))
+    color_1 = sns.color_palette()
+    color_2 = sns.color_palette("pastel")
+    rows = len(kpi)
+    num = (
+        rows * 100 + 11
+    )  # the setting for number of rows | number of columns | row number
+
+    for i in kpi:
+        ax = fig.add_subplot(num)
+        num = num + 1
+
+        min_value_year = []
+        max_value_year = []
+        diff_value_year = []
+
+        for key in output_dict.keys():
+            df = pd.DataFrame()
+            df = df.from_dict(output_dict[key])
+
+            max_value_year.append(max(df[i]))
+            min_value_year.append(min(df[i]))
+            diff_value_year.append(max(df[i]) - min(df[i]))
+
+        scenario_name_ending = []
+        for scenario_name in scenario_list:
+            scenario_name_ending.append(scenario_name.split("_")[1])
+        # Plot bar with maximum value of all three years
+        ax.bar(
+            scenario_name_ending,
+            max_value_year,
+            color=color_1[0],
+            edgecolor=color_1[0],
+            linewidth=0.5,
+            label="KPI minimum of weather years",
+        )
+        # Plot span between minimum and maximum value of all three years
+        ax.bar(
+            scenario_name_ending,
+            diff_value_year,
+            bottom=min_value_year,
+            edgecolor=color_2[0],
+            linewidth=0.5,
+            color=color_2[0],
+            label="KPI maximum of weather years",
+        )
+
+        ax.set_ylabel(y_title[i])
+        ax.set_xlabel("Scenario")
+        ax.get_yaxis().set_label_coords(-0.13, 0.5)
+        ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
+        # Print minor and major grid lines for better readability
+        ax.get_xaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
+        ax.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
+        ax.set_ylim(ax.get_ylim()[0], ax.get_ylim()[1] + ax.get_ylim()[1] * 0.1)
+        ax.grid(b=True, which="major", axis="both", color="w", linewidth=1.0)
+        ax.grid(b=True, which="minor", axis="both", color="w", linewidth=0.5)
+
+    plt.tight_layout(rect=(0.02, 0.03, 1, 1))
+
+    handles, labels = ax.get_legend_handles_labels()
+    fig.legend(
+        handles, labels, loc="lower left", mode="expand",
+    )
+
+    name = ""
+    for scenario_name in scenario_name_ending:
+        name = name + "_" + str(scenario_name)
+
+    fig.savefig(
+        os.path.join(outputs_directory, "plot_compare_scenarios" + str(name) + ".png")
+    )
+
 
 if __name__ == "__main__":
     scenario_name = "Scenario_A2"
