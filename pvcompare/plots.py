@@ -511,6 +511,7 @@ def plot_kpi_loop(
             output.loc[index, "year"] = int(year)
             output.loc[index, "Total annual production"] = 0
             output.loc[index, "Installed capacity PV"] = 0
+            output.loc[index, "Total costs PV"] = 0
             counter = 1
             for pv in pv_labels:
                 output.loc[index, "Total costs PV"] = (
@@ -941,6 +942,7 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
             output.loc[index, "year"] = int(year)
             output.loc[index, "Total annual production"] = 0
             output.loc[index, "Installed capacity PV"] = 0
+            output.loc[index, "Total costs PV"] = 0
             counter = 1
             for pv in pv_labels:
                 output.loc[index, "Total costs PV"] = (
