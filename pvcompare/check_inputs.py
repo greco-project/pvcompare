@@ -457,14 +457,14 @@ def add_parameters_to_energy_production_file(
     ## THIS IS A HACK TO APPLY MAX INSTALLED CAPACITY TO ALL PV PLANTS
     #---------------------------------------------------------
     #
-    # add_parameter_to_mvs_file(
-    #     user_inputs_mvs_directory=user_inputs_mvs_directory,
-    #     mvs_filename="energyProduction.csv",
-    #     mvs_row="installedCap",
-    #     mvs_column=label,
-    #     pvcompare_parameter=nominal_value - 1000,
-    #     warning=False,
-    # )
+    add_parameter_to_mvs_file(
+        user_inputs_mvs_directory=user_inputs_mvs_directory,
+        mvs_filename="energyProduction.csv",
+        mvs_row="installedCap",
+        mvs_column=label,
+        pvcompare_parameter=nominal_value,
+        warning=False,
+    )
     # ---------------------------------------------------------
     # add file name
     add_parameter_to_mvs_file(
