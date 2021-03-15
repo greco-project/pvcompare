@@ -141,7 +141,7 @@ def plot_all_flows(
     )
 
 
-def plot_lifetime_specificosts_psi(
+def plot_psi_matrix(
     scenario_dict, variable_name, outputs_directory, basis_value
 ):
     """
