@@ -523,15 +523,15 @@ def loop_mvs(
     )
 
 
-def postprocessing_kpi(scenario_name, pvcompare_inputs=None, outputs_directory=None):
+def postprocessing_kpi(
+    scenario_name, variable_name, pvcompare_inputs=None, outputs_directory=None
+):
     """
     Overwrites all output excel files "timeseries_all_flows.xlsx" and "scalars.xlsx"
     in loop output directory of a scenario with modified KPI's.
-
     1) Creates new sheet "Electricity bus1" with the column
     Electricity demand = Electricity demand + Heat pump.
     2) Creates new sheets in scalars.xlsx with KPI's adjusted to the new demand.
-
     :param scenario_name: str
         scenario name
     :param pvcompare_inputs: str
@@ -570,137 +570,127 @@ def postprocessing_kpi(scenario_name, pvcompare_inputs=None, outputs_directory=N
         * float(building_params.at["number of storeys", "value"])
         * (float(building_params.at["population per storey", "value"]) / 4)
     )
-    # get all variable names in scenario folder
-    list_var_name = []
-    for fname in list(glob.glob(os.path.join(scenario_folder, "*"))):
-        folder_name = fname.split("/")[::-1][0]
-        if folder_name.startswith("loop"):
-            split_path = folder_name.split("_")
-            get_var_name = split_path[::-1][0]
-            list_var_name.append(get_var_name)
-    # loop over all loop output folders with variable name
-    for variable_name in list_var_name:
-        loop_output_directory = os.path.join(
-            scenario_folder, "loop_outputs_" + str(variable_name)
+
+    # # loop over all loop output folders with variable name
+    loop_output_directory = os.path.join(
+        scenario_folder, "loop_outputs_" + str(variable_name)
+    )
+    if not os.path.isdir(loop_output_directory):
+        logging.warning(
+            f"The loop output folder {loop_output_directory} does not exist. "
+            f"Please check the variable_name"
         )
-        if not os.path.isdir(loop_output_directory):
-            logging.warning(
-                f"The loop output folder {loop_output_directory} does not exist. "
-                f"Please check the variable_name"
-            )
-        # parse through scalars folder and read in all excel sheets
-        for filepath_s in list(
-            glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
+    # parse through scalars folder and read in all excel sheets
+    for filepath_s in list(
+        glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
+    ):
+        # read sheets of scalars
+        scalars = pd.read_excel(filepath_s, sheet_name=None)
+
+        file_sheet1 = scalars["cost_matrix"]
+        file_sheet2 = scalars["scalar_matrix"]
+        file_sheet2.index = file_sheet2["label"]
+        file_sheet3 = scalars["scalars"]
+        file_sheet3.index = file_sheet3.iloc[:, 0]
+        file_sheet4 = scalars["KPI individual sectors"]
+
+        # get variable value from filepath
+        split_path = filepath_s.split("_")
+        get_year = split_path[::-1][1]
+        get_step = split_path[::-1][0]
+        ending = str(get_year) + "_" + str(get_step)
+
+        # load timeseries_all_busses
+        for filepath_t in list(
+            glob.glob(os.path.join(loop_output_directory, "timeseries", "*.xlsx"))
         ):
-            # read sheets of scalars
-            scalars = pd.read_excel(filepath_s, sheet_name=None)
-
-            file_sheet1 = scalars["cost_matrix"]
-            file_sheet2 = scalars["scalar_matrix"]
-            file_sheet2.index = file_sheet2["label"]
-            file_sheet3 = scalars["scalars"]
-            file_sheet3.index = file_sheet3.iloc[:, 0]
-            file_sheet4 = scalars["KPI individual sectors"]
-
-            # get variable value from filepath
-            split_path = filepath_s.split("_")
-            get_year = split_path[::-1][1]
-            get_step = split_path[::-1][0]
-            ending = str(get_year) + "_" + str(get_step)
-
-            # load timeseries_all_busses
-            for filepath_t in list(
-                glob.glob(os.path.join(loop_output_directory, "timeseries", "*.xlsx"))
-            ):
-                if filepath_t.endswith(ending) is True:
-                    timeseries_heat = pd.read_excel(filepath_t, sheet_name="Heat bus")
-                    if "TES output power" in timeseries_heat:
-                        # Calculate maximum capacity, nominal capacity and height
-                        # of one heat pump unit and write to scalars
-                        maximal_tes_capacity = file_sheet2.at[
-                            "TES storage capacity", "optimizedAddCap"
-                        ]
-                        nominal_storage_capacity = maximal_tes_capacity * 1.075
-                        volume = (
-                            maximal_tes_capacity
-                            * 1000
-                            / (heat_capacity * density * (temp_h - temp_c) * (1 / 3600))
-                        )
-                        height = volume / (0.25 * np.pi * diameter ** 2)
-                        file_sheet3.at[
-                            "Installed capacity per TES", "Unnamed: 0"
-                        ] = "Installed capacity per TES"
-                        file_sheet3.at["Installed capacity per TES", 0] = (
-                            maximal_tes_capacity / number_plants_per_household
-                        )
-                        file_sheet3.at[
-                            "Installed nominal capacity per TES", "Unnamed: 0"
-                        ] = "Installed nominal capacity per TES"
-                        file_sheet3.at["Installed nominal capacity per TES", 0] = (
-                            nominal_storage_capacity / number_plants_per_household
-                        )
-                        file_sheet3.at[
-                            "Height of each TES", "Unnamed: 0"
-                        ] = "Height of each TES"
-                        file_sheet3.at["Height of each TES", 0] = (
-                            height / number_plants_per_household
-                        )
-
-                    if "Heat pump" in timeseries_heat.columns:
-                        # Calculate maximum capacity of one heat pump unit and write to scalars
-                        maximal_hp_capacity = max(timeseries_heat["Heat pump"])
-                        file_sheet3.at[
-                            "Installed capacity per heat pump", "Unnamed: 0"
-                        ] = "Installed capacity per heat pump"
-                        file_sheet3.at["Installed capacity per heat pump", 0] = (
-                            maximal_hp_capacity / number_plants_per_household
-                        )
-
-                    timeseries = pd.read_excel(filepath_t, sheet_name="Electricity bus")
-                    if "Heat pump" in timeseries.columns:
-                        electricity_demand = (
-                            timeseries["Electricity demand"] + timeseries["Heat pump"]
-                        )
-                        timeseries["Electricity demand"] = electricity_demand
-                        with pd.ExcelWriter(filepath_t, mode="a") as writer:
-                            timeseries.to_excel(writer, sheet_name="Electricity bus")
-                            logging.info(
-                                f"The timeseries_all_flows file {filepath_t} has been overwritten with the new electricity demand."
-                            )
-                    else:
-                        electricity_demand = timeseries["Electricity demand"]
-
-            # recalculate KPI
-            file_sheet2.at["Electricity demand", "total_flow"] = sum(
-                electricity_demand
-            ) * (-1)
-            file_sheet3.at["Total_demandElectricity", 0] = sum(electricity_demand) * (
-                -1
-            )
-            file_sheet3.at["Degree of NZE", 0] = (
-                file_sheet3.at["Total internal renewable generation", 0]
-                - file_sheet3.at["Total_excessElectricity", 0]
-            ) / file_sheet3.at["Total_demandElectricity", 0]
-            file_sheet3.at["Degree of autonomy", 0] = (
-                file_sheet3.at["Total_demandElectricity", 0]
-                - file_sheet3.at["Total_consumption_from_energy_providerElectricity", 0]
-            ) / file_sheet3.at["Total_demandElectricity", 0]
-            file_sheet3.at["Onsite energy fraction", 0] = (
-                file_sheet3.at["Total_demandElectricity", 0]
-                - file_sheet3.at["Total_feedinElectricity", 0]
-            ) / file_sheet3.at["Total internal renewable generation", 0]
-
-            # save excel sheets
-            with pd.ExcelWriter(filepath_s, mode="a") as writer:
-                file_sheet1.to_excel(writer, sheet_name="cost_matrix", index=None)
-                file_sheet2.to_excel(writer, sheet_name="scalar_matrix", index=None)
-                file_sheet3.to_excel(writer, sheet_name="scalars", index=None)
-                file_sheet4.to_excel(
-                    writer, sheet_name="KPI individual sectors", index=None
+            if filepath_t.endswith(ending) is True:
+                timeseries_heat = pd.read_excel(filepath_t, sheet_name="Heat bus")
+                if "TES output power" in timeseries_heat:
+                    # Calculate maximum capacity, nominal capacity and height
+                    # of one heat pump unit and write to scalars
+                    maximal_tes_capacity = file_sheet2.at[
+                        "TES storage capacity", "optimizedAddCap"
+                    ]
+                    nominal_storage_capacity = maximal_tes_capacity * 1.075
+                    volume = (
+                        maximal_tes_capacity
+                        * 1000
+                        / (heat_capacity * density * (temp_h - temp_c) * (1 / 3600))
+                    )
+                    height = volume / (0.25 * np.pi * diameter ** 2)
+                    file_sheet3.at[
+                        "Installed capacity per TES", "Unnamed: 0"
+                    ] = "Installed capacity per TES"
+                    file_sheet3.at["Installed capacity per TES", 0] = (
+                        maximal_tes_capacity / number_plants_per_household
+                    )
+                    file_sheet3.at[
+                        "Installed nominal capacity per TES", "Unnamed: 0"
+                    ] = "Installed nominal capacity per TES"
+                    file_sheet3.at["Installed nominal capacity per TES", 0] = (
+                        nominal_storage_capacity / number_plants_per_household
+                    )
+                    file_sheet3.at[
+                        "Height of each TES", "Unnamed: 0"
+                    ] = "Height of each TES"
+                    file_sheet3.at["Height of each TES", 0] = (
+                        height / number_plants_per_household
+                    )
+            if "Heat pump" in timeseries_heat.columns:
+                # Calculate maximum capacity of one heat pump unit and write to scalars
+                maximal_hp_capacity = max(timeseries_heat["Heat pump"])
+                file_sheet3.at[
+                    "Installed capacity per heat pump", "Unnamed: 0"
+                ] = "Installed capacity per heat pump"
+                file_sheet3.at["Installed capacity per heat pump", 0] = (
+                    maximal_hp_capacity / number_plants_per_household
                 )
-            logging.info(
-                f"Scalars file sheet {filepath_s} has been overwritten with new KPI's"
+
+            if filepath_t.endswith(ending) is True:
+                timeseries = pd.read_excel(filepath_t, sheet_name="Electricity bus")
+                if "Heat pump" in timeseries.columns:
+                    electricity_demand = (
+                        timeseries["Electricity demand"] + timeseries["Heat pump"]
+                    )
+                    timeseries["Electricity demand"] = electricity_demand
+                    with pd.ExcelWriter(filepath_t, mode="a") as writer:
+                        timeseries.to_excel(writer, sheet_name="Electricity bus")
+                    logging.info(
+                        f"The timeseries_all_flows file {filepath_t} has been overwritten with the new electricity demand."
+                    )
+                else:
+                    electricity_demand = timeseries["Electricity demand"]
+
+        # recalculate KPI
+        file_sheet2.at["Electricity demand", "total_flow"] = sum(electricity_demand) * (
+            -1
+        )
+        file_sheet3.at["Total_demandElectricity", 0] = sum(electricity_demand) * (-1)
+        file_sheet3.at["Degree of NZE", 0] = (
+            file_sheet3.at["Total internal renewable generation", 0]
+            - file_sheet3.at["Total_excessElectricity", 0]
+        ) / file_sheet3.at["Total_demandElectricity", 0]
+        file_sheet3.at["Degree of autonomy", 0] = (
+            file_sheet3.at["Total_demandElectricity", 0]
+            - file_sheet3.at["Total_consumption_from_energy_providerElectricity", 0]
+        ) / file_sheet3.at["Total_demandElectricity", 0]
+        file_sheet3.at["Onsite energy fraction", 0] = (
+            file_sheet3.at["Total_demandElectricity", 0]
+            - file_sheet3.at["Total_feedinElectricity", 0]
+        ) / file_sheet3.at["Total internal renewable generation", 0]
+
+        # save excel sheets
+        with pd.ExcelWriter(filepath_s, mode="a") as writer:
+            file_sheet1.to_excel(writer, sheet_name="cost_matrix", index=None)
+            file_sheet2.to_excel(writer, sheet_name="scalar_matrix", index=None)
+            file_sheet3.to_excel(writer, sheet_name="scalars", index=None)
+            file_sheet4.to_excel(
+                writer, sheet_name="KPI individual sectors", index=None
             )
+        logging.info(
+            f"Scalars file sheet {filepath_s} has been overwritten with new KPI's"
+        )
 
 
 if __name__ == "__main__":
