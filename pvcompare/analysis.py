@@ -573,6 +573,9 @@ def postprocessing_kpi(
         index_col=0,
     )
 
+    # Calculate the number of households
+    # and hence obtain number of plants in simulation by assuming
+    # that every household has one plant
     number_plants_per_household = (
         float(building_params.at["number of houses", "value"])
         * float(building_params.at["number of storeys", "value"])
@@ -620,12 +623,19 @@ def postprocessing_kpi(
                     maximal_tes_capacity = file_sheet2.at[
                         "TES storage capacity", "optimizedAddCap"
                     ]
-                    nominal_storage_capacity = maximal_tes_capacity * 1.075
+                    # There is 15 % of unused storage volume according to
+                    # https://op.europa.eu/en/publication-detail/-/publication/312f0f62-dfbd-11e7-9749-01aa75ed71a1/language-en
+                    # The nominal storage capacity is hence the maximum storage capacity multiplied by 1.15
+                    nominal_storage_capacity = maximal_tes_capacity * 1.15
+                    # Calculate volume of TES using oemof-thermal's equations
+                    # in stratified_thermal_storage.py
                     volume = (
                         maximal_tes_capacity
                         * 1000
                         / (heat_capacity * density * (temp_h - temp_c) * (1 / 3600))
                     )
+                    # Calculate height of TES using oemof-thermal's equations
+                    # in stratified_thermal_storage.py
                     height = volume / (0.25 * np.pi * diameter ** 2)
                     file_sheet3.at[
                         "Installed capacity per TES", "Unnamed: 0"
