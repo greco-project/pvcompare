@@ -35,13 +35,13 @@ class Scenarios:
         )
         self.user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
 
-    def run_scenario_a1(self):
+    def run_scenario_ABCD_Ref1(self):
         """
 
         :return:
         """
 
-        scenario_name = "Scenario_A1"
+        scenario_name = "Scenario_ABCD_Ref1"
         data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
         # load input parameters from pv_setup.csv
         pv_setup = pd.read_csv(data_path)
@@ -65,13 +65,13 @@ class Scenarios:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_a2(self):
+    def run_scenario_ABCD_Ref2(self):
         """
 
         :return:
         """
 
-        scenario_name = "Scenario_A2"
+        scenario_name = "Scenario_ABCD_Ref2"
         data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
         # load input parameters from pv_setup.csv
         pv_setup = pd.read_csv(data_path)
@@ -351,7 +351,11 @@ class ScenariosSectorCoupling:
                 os.path.join(self.user_inputs_pvcompare_directory, name), na_rep="NaN"
             )
 
-    def run_scenario_E1(self):
+    ###################################################################################
+    ###################################  Scenario A ###################################
+    ###################################################################################
+
+    def run_scenario_A1(self):
         """
         Scenario description:
             - Sector-coupled
@@ -362,7 +366,7 @@ class ScenariosSectorCoupling:
             - Heat demand for room heating only
         """
 
-        scenario_name = "Scenario_E1"
+        scenario_name = "Scenario_A1"
 
         # Get data
         (
@@ -431,7 +435,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_E2(self):
+    def run_scenario_A2(self):
         """
         Scenario description:
             - Sector-coupled
@@ -442,7 +446,7 @@ class ScenariosSectorCoupling:
             - Heat demand for room heating only
         """
 
-        scenario_name = "Scenario_E2"
+        scenario_name = "Scenario_A2"
 
         # Get data
         (
@@ -510,7 +514,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_E3(self):
+    def run_scenario_A3(self):
         """
         Scenario description:
             - Sector-coupled
@@ -521,7 +525,7 @@ class ScenariosSectorCoupling:
             - Heat demand for room heating only
         """
 
-        scenario_name = "Scenario_E3"
+        scenario_name = "Scenario_A3"
 
         # Get data
         (
@@ -565,7 +569,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_E4(self):
+    def run_scenario_A4(self):
         """
         Scenario description:
             - Sector-coupled
@@ -576,7 +580,7 @@ class ScenariosSectorCoupling:
             - Heat demand for room heating only
         """
 
-        scenario_name = "Scenario_E4"
+        scenario_name = "Scenario_A4"
 
         # Get data
         (
@@ -620,7 +624,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_E5(self):
+    def run_scenario_A5(self):
         """
         Scenario description:
             - Sector-coupled
@@ -631,7 +635,7 @@ class ScenariosSectorCoupling:
             - Heat demand for room heating only
         """
 
-        scenario_name = "Scenario_E5"
+        scenario_name = "Scenario_A5"
 
         # Get data
         (
@@ -675,7 +679,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_E6(self):
+    def run_scenario_A6(self):
         """
         Scenario description:
             - Sector-coupled
@@ -686,7 +690,7 @@ class ScenariosSectorCoupling:
             - Heat demand for room heating only
         """
 
-        scenario_name = "Scenario_E6"
+        scenario_name = "Scenario_A6"
 
         # Get data
         (
@@ -730,7 +734,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_E7(self):
+    def run_scenario_A7(self):
         """
         Scenario description:
             - Sector-coupled
@@ -743,7 +747,7 @@ class ScenariosSectorCoupling:
             - Loop over storeys: 1 - 5
         """
 
-        scenario_name = "Scenario_E7"
+        scenario_name = "Scenario_A7"
 
         # Get data
         (
@@ -787,7 +791,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_E8(self):
+    def run_scenario_A8(self):
         """
         Scenario description:
             - Sector-coupled
@@ -800,7 +804,7 @@ class ScenariosSectorCoupling:
             - Loop over storeys: 1 - 5
         """
 
-        scenario_name = "Scenario_E8"
+        scenario_name = "Scenario_A8"
 
         # Get data
         (
@@ -844,7 +848,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_E9(self):
+    def run_scenario_A9(self):
         """
         Scenario description:
             - Sector-coupled
@@ -857,7 +861,7 @@ class ScenariosSectorCoupling:
             - Loop over storeys: 1 - 5
         """
 
-        scenario_name = "Scenario_E9"
+        scenario_name = "Scenario_A9"
 
         # Get data
         (
@@ -901,7 +905,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_E10(self):
+    def run_scenario_A10(self):
         """
         Scenario description:
             - Sector-coupled
@@ -914,7 +918,7 @@ class ScenariosSectorCoupling:
             - Loop over storeys: 1 - 5
         """
 
-        scenario_name = "Scenario_E10"
+        scenario_name = "Scenario_A10"
 
         # Get data
         (
@@ -958,7 +962,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_E11(self):
+    def run_scenario_A11(self):
         """
         Scenario description:
             - Sector-coupled
@@ -971,7 +975,7 @@ class ScenariosSectorCoupling:
             - Loop over storeys: 1 - 5
         """
 
-        scenario_name = "Scenario_E11"
+        scenario_name = "Scenario_A11"
 
         # Get data
         (
@@ -1015,7 +1019,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_E12(self):
+    def run_scenario_A12(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1028,7 +1032,7 @@ class ScenariosSectorCoupling:
             - Loop over storeys: 1 - 5
         """
 
-        scenario_name = "Scenario_E12"
+        scenario_name = "Scenario_A12"
 
         # Get data
         (
@@ -1072,7 +1076,795 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_F1(self):
+    ###################################################################################
+    ###################################  Scenario B ###################################
+    ###################################################################################
+
+    def run_scenario_B1(self):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Germany
+            - Rooftop
+            - Standard Si - PV
+            - Air-to-water heat pump
+            - Stratified thermal storage
+            - Heat demand for room heating
+        """
+
+        scenario_name = "Scenario_B1"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        awhp_mvs_values = dict(zip(self.hp_mvs_param, self.awhp_mvs_values))
+        for key, value in awhp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        energyStorage = mvs_files_modified_list[4]
+        strat_tes_data = pd.DataFrame(
+            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
+        )
+        strat_tes_data = strat_tes_data.set_index("")
+        energyStorage = energyStorage.join(strat_tes_data)
+        mvs_files_modified_list[4] = energyStorage
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        awhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.awhp_pvcompare_values))
+        for key, value in awhp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 5, "stop": 5, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_germany,
+            longitude=self.longitude_germany,
+            years=self.years_germany,
+            storeys=self.storeys,
+            country=self.country_germany,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_B2(self):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Spain
+            - Rooftop
+            - Standard Si - PV
+            - Air-to-water heat pump
+            - Stratified thermal storage
+            - Heat demand for room heating
+        """
+
+        scenario_name = "Scenario_B2"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        awhp_mvs_values = dict(zip(self.hp_mvs_param, self.awhp_mvs_values))
+        for key, value in awhp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        energyStorage = mvs_files_modified_list[4]
+        strat_tes_data = pd.DataFrame(
+            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
+        )
+        strat_tes_data = strat_tes_data.set_index("")
+        energyStorage = energyStorage.join(strat_tes_data)
+        mvs_files_modified_list[4] = energyStorage
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        awhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.awhp_pvcompare_values))
+        for key, value in awhp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 5, "stop": 5, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_spain,
+            longitude=self.longitude_spain,
+            years=self.years_spain,
+            storeys=self.storeys,
+            country=self.country_spain,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_B3(self):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Germany
+            - Rooftop
+            - Standard Si - PV
+            - Brine-to-water heat pump
+            - Stratified thermal storage
+            - Heat demand for room heating
+        """
+
+        scenario_name = "Scenario_B3"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        bwhp_mvs_values = dict(zip(self.hp_mvs_param, self.bwhp_mvs_values))
+        for key, value in bwhp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        energyStorage = mvs_files_modified_list[4]
+        strat_tes_data = pd.DataFrame(
+            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
+        )
+        strat_tes_data = strat_tes_data.set_index("")
+        energyStorage = energyStorage.join(strat_tes_data)
+        mvs_files_modified_list[4] = energyStorage
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        bwhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.bwhp_pvcompare_values))
+        for key, value in bwhp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 5, "stop": 5, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_germany,
+            longitude=self.longitude_germany,
+            years=self.years_germany,
+            storeys=self.storeys,
+            country=self.country_germany,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_B4(self):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Spain
+            - Rooftop
+            - Standard Si - PV
+            - Brine-to-water heat pump
+            - Stratified thermal storage
+            - Heat demand for room heating
+        """
+
+        scenario_name = "Scenario_B4"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        bwhp_mvs_values = dict(zip(self.hp_mvs_param, self.bwhp_mvs_values))
+        for key, value in bwhp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        energyStorage = mvs_files_modified_list[4]
+        strat_tes_data = pd.DataFrame(
+            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
+        )
+        strat_tes_data = strat_tes_data.set_index("")
+        energyStorage = energyStorage.join(strat_tes_data)
+        mvs_files_modified_list[4] = energyStorage
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        bwhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.bwhp_pvcompare_values))
+        for key, value in bwhp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 5, "stop": 5, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_spain,
+            longitude=self.longitude_spain,
+            years=self.years_spain,
+            storeys=self.storeys,
+            country=self.country_spain,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_B5(self):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Germany
+            - Rooftop
+            - Standard Si - PV
+            - Air-to-water heat pump
+            - Stratified thermal storage
+            - Heat demand for room heating
+
+            - Loop over storeys: 1 - 5
+        """
+
+        scenario_name = "Scenario_B5"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        awhp_mvs_values = dict(zip(self.hp_mvs_param, self.awhp_mvs_values))
+        for key, value in awhp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        energyStorage = mvs_files_modified_list[4]
+        strat_tes_data = pd.DataFrame(
+            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
+        )
+        strat_tes_data = strat_tes_data.set_index("")
+        energyStorage = energyStorage.join(strat_tes_data)
+        mvs_files_modified_list[4] = energyStorage
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        awhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.awhp_pvcompare_values))
+        for key, value in awhp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 1, "stop": 5, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_germany,
+            longitude=self.longitude_germany,
+            years=self.years_germany,
+            storeys=self.storeys,
+            country=self.country_germany,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_B6(self):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Spain
+            - Rooftop
+            - Standard Si - PV
+            - Air-to-water heat pump
+            - Stratified thermal storage
+            - Heat demand for room heating
+
+            - Loop over storeys: 1 - 5
+        """
+
+        scenario_name = "Scenario_B6"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        awhp_mvs_values = dict(zip(self.hp_mvs_param, self.awhp_mvs_values))
+        for key, value in awhp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        energyStorage = mvs_files_modified_list[4]
+        strat_tes_data = pd.DataFrame(
+            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
+        )
+        strat_tes_data = strat_tes_data.set_index("")
+        energyStorage = energyStorage.join(strat_tes_data)
+        mvs_files_modified_list[4] = energyStorage
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        awhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.awhp_pvcompare_values))
+        for key, value in awhp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 1, "stop": 5, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_spain,
+            longitude=self.longitude_spain,
+            years=self.years_spain,
+            storeys=self.storeys,
+            country=self.country_spain,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_B7(self):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Germany
+            - Rooftop
+            - Standard Si - PV
+            - Brine-to-water heat pump
+            - Stratified thermal storage
+            - Heat demand for room heating
+
+            - Loop over storeys: 1 - 5
+        """
+
+        scenario_name = "Scenario_B7"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        bwhp_mvs_values = dict(zip(self.hp_mvs_param, self.bwhp_mvs_values))
+        for key, value in bwhp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        energyStorage = mvs_files_modified_list[4]
+        strat_tes_data = pd.DataFrame(
+            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
+        )
+        strat_tes_data = strat_tes_data.set_index("")
+        energyStorage = energyStorage.join(strat_tes_data)
+        mvs_files_modified_list[4] = energyStorage
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        bwhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.bwhp_pvcompare_values))
+        for key, value in bwhp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 1, "stop": 5, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_germany,
+            longitude=self.longitude_germany,
+            years=self.years_germany,
+            storeys=self.storeys,
+            country=self.country_germany,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_B8(self):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Spain
+            - Rooftop
+            - Standard Si - PV
+            - Brine-to-water heat pump
+            - Stratified thermal storage
+            - Heat demand for room heating
+
+            - Loop over storeys: 1 - 5
+        """
+
+        scenario_name = "Scenario_B8"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        bwhp_mvs_values = dict(zip(self.hp_mvs_param, self.bwhp_mvs_values))
+        for key, value in bwhp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        energyStorage = mvs_files_modified_list[4]
+        strat_tes_data = pd.DataFrame(
+            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
+        )
+        strat_tes_data = strat_tes_data.set_index("")
+        energyStorage = energyStorage.join(strat_tes_data)
+        mvs_files_modified_list[4] = energyStorage
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        bwhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.bwhp_pvcompare_values))
+        for key, value in bwhp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 1, "stop": 5, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_spain,
+            longitude=self.longitude_spain,
+            years=self.years_spain,
+            storeys=self.storeys,
+            country=self.country_spain,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    ###################################################################################
+    ###################################  Scenario C ###################################
+    ###################################################################################
+
+    def run_scenario_C1(self):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Germany
+            - Rooftop
+            - PeroSi - PV
+            - Air-to-water heat pump
+            - Stratified thermal storage
+            - Heat demand for room heating
+        """
+
+        scenario_name = "Scenario_C1"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        awhp_mvs_values = dict(zip(self.hp_mvs_param, self.awhp_mvs_values))
+        for key, value in awhp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        energyStorage = mvs_files_modified_list[4]
+        strat_tes_data = pd.DataFrame(
+            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
+        )
+        strat_tes_data = strat_tes_data.set_index("")
+        energyStorage = energyStorage.join(strat_tes_data)
+        mvs_files_modified_list[4] = energyStorage
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        awhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.awhp_pvcompare_values))
+        for key, value in awhp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("psi")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 5, "stop": 5, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_germany,
+            longitude=self.longitude_germany,
+            years=self.years_germany,
+            storeys=self.storeys,
+            country=self.country_germany,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_C2(self):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Spain
+            - Rooftop
+            - PeroSi - PV
+            - Air-to-water heat pump
+            - Stratified thermal storage
+            - Heat demand for room heating
+        """
+
+        scenario_name = "Scenario_C2"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        awhp_mvs_values = dict(zip(self.hp_mvs_param, self.awhp_mvs_values))
+        for key, value in awhp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        energyStorage = mvs_files_modified_list[4]
+        strat_tes_data = pd.DataFrame(
+            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
+        )
+        strat_tes_data = strat_tes_data.set_index("")
+        energyStorage = energyStorage.join(strat_tes_data)
+        mvs_files_modified_list[4] = energyStorage
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        awhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.awhp_pvcompare_values))
+        for key, value in awhp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("psi")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 5, "stop": 5, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_spain,
+            longitude=self.longitude_spain,
+            years=self.years_spain,
+            storeys=self.storeys,
+            country=self.country_spain,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_C3(self):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Germany
+            - Rooftop
+            - CPV - PV
+            - Brine-to-water heat pump
+            - Stratified thermal storage
+            - Heat demand for room heating
+        """
+
+        scenario_name = "Scenario_C3"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        bwhp_mvs_values = dict(zip(self.hp_mvs_param, self.bwhp_mvs_values))
+        for key, value in bwhp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        energyStorage = mvs_files_modified_list[4]
+        strat_tes_data = pd.DataFrame(
+            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
+        )
+        strat_tes_data = strat_tes_data.set_index("")
+        energyStorage = energyStorage.join(strat_tes_data)
+        mvs_files_modified_list[4] = energyStorage
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        bwhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.bwhp_pvcompare_values))
+        for key, value in bwhp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("cpv")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 5, "stop": 5, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_germany,
+            longitude=self.longitude_germany,
+            years=self.years_germany,
+            storeys=self.storeys,
+            country=self.country_germany,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_C4(self):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Spain
+            - Rooftop
+            - CPV - PV
+            - Brine-to-water heat pump
+            - Stratified thermal storage
+            - Heat demand for room heating
+        """
+
+        scenario_name = "Scenario_C4"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        bwhp_mvs_values = dict(zip(self.hp_mvs_param, self.bwhp_mvs_values))
+        for key, value in bwhp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        energyStorage = mvs_files_modified_list[4]
+        strat_tes_data = pd.DataFrame(
+            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
+        )
+        strat_tes_data = strat_tes_data.set_index("")
+        energyStorage = energyStorage.join(strat_tes_data)
+        mvs_files_modified_list[4] = energyStorage
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        bwhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.bwhp_pvcompare_values))
+        for key, value in bwhp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("cpv")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 5, "stop": 5, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_spain,
+            longitude=self.longitude_spain,
+            years=self.years_spain,
+            storeys=self.storeys,
+            country=self.country_spain,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    ###################################################################################
+    ###################################  Scenario D ###################################
+    ###################################################################################
+
+    def run_scenario_D1(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1084,7 +1876,7 @@ class ScenariosSectorCoupling:
             - Heat demand for room heating and warm water
         """
 
-        scenario_name = "Scenario_F1"
+        scenario_name = "Scenario_D1"
 
         # Get data
         (
@@ -1136,7 +1928,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_F2(self):
+    def run_scenario_D2(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1148,7 +1940,7 @@ class ScenariosSectorCoupling:
             - Heat demand for room heating and warm water
         """
 
-        scenario_name = "Scenario_F2"
+        scenario_name = "Scenario_D2"
 
         # Get data
         (
@@ -1200,7 +1992,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_F3(self):
+    def run_scenario_D3(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1212,7 +2004,7 @@ class ScenariosSectorCoupling:
             - Heat demand for room heating and warm water
         """
 
-        scenario_name = "Scenario_F3"
+        scenario_name = "Scenario_D3"
 
         # Get data
         (
@@ -1264,7 +2056,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_F4(self):
+    def run_scenario_D4(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1276,7 +2068,7 @@ class ScenariosSectorCoupling:
             - Heat demand for room heating and warm water
         """
 
-        scenario_name = "Scenario_F4"
+        scenario_name = "Scenario_D4"
 
         # Get data
         (
@@ -1328,7 +2120,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_F5(self):
+    def run_scenario_D5(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1342,7 +2134,7 @@ class ScenariosSectorCoupling:
             - Loop over storeys: 1 - 5
         """
 
-        scenario_name = "Scenario_F5"
+        scenario_name = "Scenario_D5"
 
         # Get data
         (
@@ -1394,7 +2186,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_F6(self):
+    def run_scenario_D6(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1408,7 +2200,7 @@ class ScenariosSectorCoupling:
             - Loop over storeys: 1 - 5
         """
 
-        scenario_name = "Scenario_F6"
+        scenario_name = "Scenario_D6"
 
         # Get data
         (
@@ -1460,7 +2252,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_F7(self):
+    def run_scenario_D7(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1474,7 +2266,7 @@ class ScenariosSectorCoupling:
             - Loop over storeys: 1 - 5
         """
 
-        scenario_name = "Scenario_F7"
+        scenario_name = "Scenario_D7"
 
         # Get data
         (
@@ -1526,7 +2318,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_F8(self):
+    def run_scenario_D8(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1540,7 +2332,7 @@ class ScenariosSectorCoupling:
             - Loop over storeys: 1 - 5
         """
 
-        scenario_name = "Scenario_F8"
+        scenario_name = "Scenario_D8"
 
         # Get data
         (
@@ -1746,7 +2538,7 @@ class ScenariosGas:
                 os.path.join(self.user_inputs_pvcompare_directory, name), na_rep="NaN"
             )
 
-    def run_scenario_G1(self):
+    def run_scenario_ABC_Ref1(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1757,7 +2549,7 @@ class ScenariosGas:
             - Heat demand for room heating only
         """
 
-        scenario_name = "Scenario_G1"
+        scenario_name = "Scenario_ABC_Ref1"
 
         # Get data
         (
@@ -1790,7 +2582,7 @@ class ScenariosGas:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_G2(self):
+    def run_scenario_ABC_Ref2(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1801,7 +2593,7 @@ class ScenariosGas:
             - Heat demand for room heating only
         """
 
-        scenario_name = "Scenario_G2"
+        scenario_name = "Scenario_ABC_Ref2"
 
         # Get data
         (
@@ -1834,7 +2626,7 @@ class ScenariosGas:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_G3(self):
+    def run_scenario_D_Ref1(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1845,7 +2637,7 @@ class ScenariosGas:
             - Heat demand for room heating and warm water
         """
 
-        scenario_name = "Scenario_G3"
+        scenario_name = "Scenario_D_Ref1"
 
         # Get data
         (
@@ -1878,7 +2670,7 @@ class ScenariosGas:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_G4(self):
+    def run_scenario_D_Ref2(self):
         """
         Scenario description:
             - Sector-coupled
@@ -1889,7 +2681,7 @@ class ScenariosGas:
             - Heat demand for room heating and warm water
         """
 
-        scenario_name = "Scenario_G4"
+        scenario_name = "Scenario_D_Ref2"
 
         # Get data
         (
@@ -1947,40 +2739,76 @@ if __name__ == "__main__":
     scenarios = Scenarios()
     scenarios.setup_class()
 
-    # scenarios.run_scenario_a1()
-    # scenarios.run_scenario_a2()
+    scenarios.run_scenario_ABCD_Ref1()
+    scenarios.run_scenario_ABCD_Ref2()
 
     scenarios_sector_coupling = ScenariosSectorCoupling()
     scenarios_sector_coupling.setup_class()
     #
-    # scenarios_sector_coupling.run_scenario_E1()
+    # scenarios_sector_coupling.run_scenario_A1()
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_E2()
+    # scenarios_sector_coupling.run_scenario_A2()
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_E3()
+    # scenarios_sector_coupling.run_scenario_A3()
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_E4()
+    # scenarios_sector_coupling.run_scenario_A4()
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_E5()
+    # scenarios_sector_coupling.run_scenario_A5()
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_E6()
+    # scenarios_sector_coupling.run_scenario_A6()
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_F1()
+    # scenarios_sector_coupling.run_scenario_A7()
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_F2()
+    # scenarios_sector_coupling.run_scenario_A8()
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_F3()
+    # scenarios_sector_coupling.run_scenario_A9()
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_F4()
+    # scenarios_sector_coupling.run_scenario_A10()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_A11()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_A12()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_B1()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_B2()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_B3()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_B4()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_B5()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_B6()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_B7()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_B8()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_C1()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_C2()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_C3()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_C4()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_D1()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_D2()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_D3()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_D4()
     # scenarios_sector_coupling.revert_inputs_changes()
 
     scenarios_gas = ScenariosGas()
     scenarios_gas.setup_class()
-    # scenarios_gas.run_scenario_G1()
-    # scenarios_gas.revert_inputs_changes()
-    # scenarios_gas.run_scenario_G2()
-    # scenarios_gas.revert_inputs_changes()
-    scenarios_gas.run_scenario_G3()
+    scenarios_gas.run_scenario_ABC_Ref1()
     scenarios_gas.revert_inputs_changes()
-    scenarios_gas.run_scenario_G4()
+    scenarios_gas.run_scenario_ABC_Ref2()
+    scenarios_gas.revert_inputs_changes()
+    scenarios_gas.run_scenario_D_Ref1()
+    scenarios_gas.revert_inputs_changes()
+    scenarios_gas.run_scenario_D_Ref2()
     scenarios_gas.revert_inputs_changes()
