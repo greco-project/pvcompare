@@ -637,17 +637,16 @@ def postprocessing_kpi(
                     file_sheet3.at["Height of each TES", 0] = (
                         height / number_plants_per_household
                     )
-            if "Heat pump" in timeseries_heat.columns:
-                # Calculate maximum capacity of one heat pump unit and write to scalars
-                maximal_hp_capacity = max(timeseries_heat["Heat pump"])
-                file_sheet3.at[
-                    "Installed capacity per heat pump", "Unnamed: 0"
-                ] = "Installed capacity per heat pump"
-                file_sheet3.at["Installed capacity per heat pump", 0] = (
-                    maximal_hp_capacity / number_plants_per_household
-                )
+                if "Heat pump" in timeseries_heat.columns:
+                    # Calculate maximum capacity of one heat pump unit and write to scalars
+                    maximal_hp_capacity = max(timeseries_heat["Heat pump"])
+                    file_sheet3.at[
+                        "Installed capacity per heat pump", "Unnamed: 0"
+                    ] = "Installed capacity per heat pump"
+                    file_sheet3.at["Installed capacity per heat pump", 0] = (
+                        maximal_hp_capacity / number_plants_per_household
+                    )
 
-            if filepath_t.endswith(ending) is True:
                 timeseries = pd.read_excel(filepath_t, sheet_name="Electricity bus")
                 if "Heat pump" in timeseries.columns:
                     electricity_demand = (
