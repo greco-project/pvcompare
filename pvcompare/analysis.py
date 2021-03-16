@@ -743,4 +743,4 @@ if __name__ == "__main__":
     #     scenario_name=scenario_name,
     # )
     #
-    # postprocessing_kpi(scenario_name="Scenario_E3", pvcompare_inputs=None, outputs_directory=None)
+    # postprocessing_kpi(scenario_name="Scenario_E3", variable_name="storeys", pvcompare_inputs=None, outputs_directory=None)
