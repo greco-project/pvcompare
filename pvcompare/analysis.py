@@ -754,4 +754,3 @@ if __name__ == "__main__":
     # )
     #
     # postprocessing_kpi(scenario_name="Scenario_E3", pvcompare_inputs=None, outputs_directory=None)
-
