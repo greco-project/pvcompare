@@ -524,7 +524,10 @@ def loop_mvs(
 
 
 def postprocessing_kpi(
-    scenario_name, variable_name, pvcompare_inputs=None, outputs_directory=None
+    scenario_name,
+    variable_name,
+    user_inputs_pvcompare_directory=None,
+    outputs_directory=None,
 ):
     """
     Overwrites all output excel files "timeseries_all_flows.xlsx" and "scalars.xlsx"
@@ -534,7 +537,7 @@ def postprocessing_kpi(
     2) Creates new sheets in scalars.xlsx with KPI's adjusted to the new demand.
     :param scenario_name: str
         scenario name
-    :param pvcompare_inputs: str
+    :param user_inputs_pvcompare_directory: str
         pvcompare inputs directory
     :param outputs_directory: str
         output directory
@@ -547,11 +550,15 @@ def postprocessing_kpi(
         scenario_folder = os.path.join(outputs_directory, scenario_name)
         if not os.path.isdir(scenario_folder):
             logging.warning(f"The scenario folder {scenario_name} does not exist.")
-    if pvcompare_inputs == None:
-        pvcompare_inputs = constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+    if user_inputs_pvcompare_directory == None:
+        user_inputs_pvcompare_directory = (
+            constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        )
 
     # Get stratified TES inputs
-    strat_tes_inputs = os.path.join(pvcompare_inputs, "stratified_thermal_storage.csv")
+    strat_tes_inputs = os.path.join(
+        user_inputs_pvcompare_directory, "stratified_thermal_storage.csv"
+    )
     if os.path.exists(strat_tes_inputs):
         strat_tes = pd.read_csv(strat_tes_inputs, index_col=0)
         heat_capacity = 4195.52
@@ -562,7 +569,8 @@ def postprocessing_kpi(
 
     # Get number of households in simulation
     building_params = pd.read_csv(
-        os.path.join(pvcompare_inputs, "building_parameters.csv"), index_col=0
+        os.path.join(user_inputs_pvcompare_directory, "building_parameters.csv"),
+        index_col=0,
     )
 
     number_plants_per_household = (
@@ -742,4 +750,4 @@ if __name__ == "__main__":
     #     scenario_name=scenario_name,
     # )
     #
-    # postprocessing_kpi(scenario_name="Scenario_E3", variable_name="storeys", pvcompare_inputs=None, outputs_directory=None)
+    # postprocessing_kpi(scenario_name="Scenario_E3", variable_name="storeys", user_inputs_pvcompare_directory=None, outputs_directory=None)
