@@ -901,24 +901,39 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
             )
         # parse through scalars folder and read in all excel sheets
         output = pd.DataFrame()
-        for filepath in list(
+        for filepath_s in list(
             glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
         ):
             file_sheet1 = pd.read_excel(
-                filepath, header=0, index_col=1, sheet_name="cost_matrix1"
+                filepath_s, header=0, index_col=1, sheet_name="cost_matrix1"
             )
             file_sheet2 = pd.read_excel(
-                filepath, header=0, index_col=1, sheet_name="scalar_matrix1"
+                filepath_s, header=0, index_col=1, sheet_name="scalar_matrix1"
             )
             file_sheet3 = pd.read_excel(
-                filepath, header=0, index_col=0, sheet_name="scalars1"
+                filepath_s, header=0, index_col=0, sheet_name="scalars1"
             )
 
             # get variable value from filepath
-            split_path = filepath.split("_")
+            split_path = filepath_s.split("_")
             get_step = split_path[::-1][0]
+            get_year = split_path[::-1][1]
             step = int(get_step.split(".")[0])
             year = int(split_path[::-1][1])
+
+            # get variable value from filepath
+            ending = str(get_year) + "_" + str(get_step)
+
+            for filepath_t in list(
+                glob.glob(os.path.join(loop_output_directory, "timeseries", "*.xlsx"))
+            ):
+                if filepath_t.endswith(ending) is True:
+                    timeseries = pd.read_excel(filepath_t, sheet_name="Electricity bus")
+                    if "Heat pump" in timeseries.columns:
+                        total_hp_electricity_demand = abs(sum(timeseries["Heat pump"]))
+                    else:
+                        total_hp_electricity_demand = 0
+
             # get all different pv assets
             csv_directory = os.path.join(
                 scenario_folder,
@@ -949,6 +964,9 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
                     output.loc[index, "Total costs PV"]
                     + file_sheet1.at[pv, "costs_total"]
                 )
+                output.loc[index, "Total costs"] = file_sheet3.at[
+                    "costs_total", 0
+                ]
                 output.loc[index, "Installed capacity PV"] = (
                     output.loc[index, "Installed capacity PV"]
                     + file_sheet2.at[pv, "optimizedAddCap"]
@@ -959,15 +977,33 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
                 output.loc[index, "Total_excessElectricity"] = file_sheet3.at[
                     "Total_excessElectricity", 0
                 ]
-                try:
+                output.loc[index, "Total_feedinElectricity"] = file_sheet3.at[
+                    "Total_feedinElectricity", 0
+                ]
+                output.loc[index, "Total_consumption_from_grid"] = file_sheet3.at[
+                    "Total_consumption_from_energy_providerElectricity", 0
+                ]
+                if "Installed capacity per heat pump" in file_sheet3.index:
                     output.loc[
                         index, "Installed capacity per heat pump"
                     ] = file_sheet3.at["Installed capacity per heat pump", 0]
-                except (KeyError):
-                    file_sheet3.at["Installed capacity per heat pump", 0] = 0
-                    output.loc[
-                        index, "Installed capacity per heat pump"
-                    ] = file_sheet3.at["Installed capacity per heat pump", 0]
+                else:
+                    output.loc[index, "Installed capacity per heat pump"] = 0
+                output.loc[
+                    index, "Total electricity demand heat pump"
+                ] = total_hp_electricity_demand
+                if "Heat pump" in file_sheet2.index:
+                    output.loc[index, "Installed heat pump capacity"] = file_sheet2.at[
+                        "Heat pump", "optimizedAddCap"
+                    ]
+                else:
+                    output.loc[index, "Installed heat pump capacity"] = 0
+                if "TES storage capacity" in file_sheet2.index:
+                    output.loc[index, "Installed TES capacity"] = file_sheet2.at[
+                        "TES storage capacity", "optimizedAddCap"
+                    ]
+                else:
+                    output.loc[index, "Installed TES capacity"] = 0
                 output.loc[index, "Renewable factor"] = file_sheet3.at[
                     "Renewable factor", 0
                 ]
@@ -1002,8 +1038,9 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
             output_dict[scenario_name] = output_dict_column
     # define y labels
     y_title = {
+        "Total costs": "Total costs \nin EUR",
         "Total costs PV": "Total costs PV \n in EUR",
-        "Installed capacity PV": "Installed capacity \nPV in kWp",
+        "Installed capacity PV": "Installed \ncapacity PV \nin kWp",
         "Total renewable energy": "Total renewable \nenergy in kWh",
         "Renewable factor": "Renewable factor \nin %",
         "LCOE PV": "LCOE PV \nin EUR/kWh",
@@ -1011,11 +1048,16 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
         "Self sufficiency": "Self sufficiency \nin %",
         "Degree of autonomy": "Degree of \nautonomy in %",
         "Total emissions": "Total emissions \nin kgCO2eq/kWh",
-        "Total non-renewable energy": "Total non-renewable \n energy in kWh",
+        "Total non-renewable energy": "Total \nnon-renewable \n energy in kWh",
         "Degree of NZE": "Degree of NZE \n in %",
-        "Total annual production": "Total annual production \n in kWh",
-        "Total_excessElectricity": "Total excess electricity \n in kWh",
-        "Installed capacity per heat pump": "Installed capacity per heat pump \n in kWh",
+        "Total annual production": "Total electricity \nproduction PV \nin kWh",
+        "Total_excessElectricity": "Total excess \nelectricity \n in kW",
+        "Total_feedinElectricity": "Total grid \nfeed-in in kW",
+        "Total_consumption_from_grid": "Total \nconsumption from \ngrid in kW",
+        "Installed TES capacity": "Installed TES \ncapacity in kWh",
+        "Installed heat pump capacity": "Installed HP \ncapacity in kW",
+        "Total electricity demand heat pump": "Total electricity \ndemand HP in kW",
+        "Installed capacity per heat pump": "Installed \ncapacity per HP \nin kW",
     }
 
     output.sort_index(inplace=True)
@@ -1080,7 +1122,7 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
         ax.grid(b=True, which="major", axis="both", color="w", linewidth=1.0)
         ax.grid(b=True, which="minor", axis="both", color="w", linewidth=0.5)
 
-    plt.tight_layout(rect=(0.02, 0.03, 1, 1))
+    plt.tight_layout(rect=(0.02, 0.06, 1, 1))
 
     handles, labels = ax.get_legend_handles_labels()
     fig.legend(
@@ -1417,20 +1459,28 @@ if __name__ == "__main__":
     #     "Scenario_A6",
     #     "Scenario_B2",
     #     "Scenario_B4",
-    #     "Scenario_RefE2",
-    #     "Scenario_RefG2"
+        # "Scenario_RefE2",
+        # "Scenario_RefG2"
     # ]
     # plot_compare_scenarios(
     #     "storeys",
     #     [
-    #         "Total non-renewable energy",
-    #         "Total renewable energy",
-    #         "Total costs PV",
-    #         "Installed capacity PV",
-    #         "Total annual production",
-    #         "Total_excessElectricity",
-    #         "Self consumption",
-    #         "Installed capacity per heat pump",
+            # "Total costs",
+            # "Installed capacity PV",
+            # "Total annual production",
+            # "Total_excessElectricity",
+            # "Total_feedinElectricity",
+            # "Total_consumption_from_grid",
+            # "Self consumption",
+            #
+            # "Total electricity demand heat pump",
+            # "Installed heat pump capacity",
+            # "Installed capacity per heat pump",
+            # "Installed TES capacity"
+            #
+            # "Total costs",
+            # "Total emissions",
+            # "Self consumption"
     #     ],
     #     scenario_list,
     # )
