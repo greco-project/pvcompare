@@ -1000,8 +1000,12 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
                     output.loc[
                         index, "Installed capacity per heat pump"
                     ] = file_sheet3.at["Installed capacity per heat pump", 0]
+                    output.loc[index, "Total costs heat pump"] = file_sheet1.at[
+                        "Heat pump", "costs_total"
+                    ]
                 else:
                     output.loc[index, "Installed capacity per heat pump"] = 0
+                    output.loc[index, "Total costs heat pump"] = 0
                 output.loc[
                     index, "Total electricity demand heat pump"
                 ] = total_hp_electricity_demand
@@ -1015,8 +1019,12 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
                     output.loc[index, "Installed TES capacity"] = file_sheet2.at[
                         "TES storage capacity", "optimizedAddCap"
                     ]
+                    output.loc[index, "Total costs TES"] = file_sheet1.at[
+                        "TES storage capacity", "costs_total"
+                    ]
                 else:
                     output.loc[index, "Installed TES capacity"] = 0
+                    output.loc[index, "Total costs TES"] = 0
                 output.loc[index, "Renewable factor"] = file_sheet3.at[
                     "Renewable factor", 0
                 ]
@@ -1071,6 +1079,8 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
         "Installed heat pump capacity": "Installed HP \ncapacity in kW",
         "Total electricity demand heat pump": "Total electricity \ndemand HP in kW",
         "Installed capacity per heat pump": "Installed \ncapacity per HP \nin kW",
+        "Total costs heat pump": "Total costs HP \nin EUR",
+        "Total costs TES": "Total costs TES \nin EUR",
     }
 
     output.sort_index(inplace=True)
@@ -1450,19 +1460,19 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    scenario_dict = {"Scenario_E1": "si", "Scenario_E2": "psi", "Scenario_E3": "cpv"}
-    plot_kpi_loop(
-        scenario_dict=scenario_dict,
-        variable_name="storeys",
-        kpi=[
-            "Total annual production",
-            "Degree of NZE",
-            "Total costs PV",
-            "Installed capacity PV",
-            "Self consumption",
-            "Degree of autonomy",
-        ],
-    )
+    # scenario_dict = {"Scenario_E1": "si", "Scenario_E2": "psi", "Scenario_E3": "cpv"}
+    # plot_kpi_loop(
+    #     scenario_dict=scenario_dict,
+    #     variable_name="storeys",
+    #     kpi=[
+    #         "Total annual production",
+    #         "Degree of NZE",
+    #         "Total costs PV",
+    #         "Installed capacity PV",
+    #         "Self consumption",
+    #         "Degree of autonomy",
+    #     ],
+    # )
     #
     # compare_weather_years(
     #     latitude=latitude,
@@ -1493,28 +1503,29 @@ if __name__ == "__main__":
     #     "Scenario_A6",
     #     "Scenario_B2",
     #     "Scenario_B4",
-    # "Scenario_RefE2",
-    # "Scenario_RefG2"
+    #     "Scenario_RefE2",
+    #     "Scenario_RefG2"
     # ]
     # plot_compare_scenarios(
     #     "storeys",
     #     [
-    # "Total costs",
-    # "Installed capacity PV",
-    # "Total annual production",
-    # "Total_excessElectricity",
-    # "Total_feedinElectricity",
-    # "Total_consumption_from_grid",
-    # "Self consumption",
+    #         "Total costs",
+    #         "Installed capacity PV",
+    #         "Total annual production",
+    #         "Total_excessElectricity",
+    #         "Total_feedinElectricity",
+    #         "Total_consumption_from_grid",
+    #         "Self consumption",
     #
-    # "Total electricity demand heat pump",
-    # "Installed heat pump capacity",
-    # "Installed capacity per heat pump",
-    # "Installed TES capacity"
+    #         "Total costs heat pump",
+    #         "Total electricity demand heat pump",
+    #         "Installed heat pump capacity",
+    #         "Installed capacity per heat pump",
+    #         "Installed TES capacity"
     #
-    # "Total costs",
-    # "Total emissions",
-    # "Self consumption"
+    #         "Total costs",
+    #         "Total emissions",
+    #         "Self consumption"
     #     ],
     #     scenario_list,
     # )
