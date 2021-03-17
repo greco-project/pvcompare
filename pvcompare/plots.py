@@ -956,6 +956,18 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
                 output.loc[index, "Total renewable energy"] = file_sheet3.at[
                     "Total renewable energy use", 0
                 ]
+                output.loc[index, "Total_excessElectricity"] = file_sheet3.at[
+                    "Total_excessElectricity", 0
+                ]
+                try:
+                    output.loc[
+                        index, "Installed capacity per heat pump"
+                    ] = file_sheet3.at["Installed capacity per heat pump", 0]
+                except (KeyError):
+                    file_sheet3.at["Installed capacity per heat pump", 0] = 0
+                    output.loc[
+                        index, "Installed capacity per heat pump"
+                    ] = file_sheet3.at["Installed capacity per heat pump", 0]
                 output.loc[index, "Renewable factor"] = file_sheet3.at[
                     "Renewable factor", 0
                 ]
@@ -990,7 +1002,7 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
             output_dict[scenario_name] = output_dict_column
     # define y labels
     y_title = {
-        "Costs total PV": "Costs total PV \n in EUR",
+        "Total costs PV": "Total costs PV \n in EUR",
         "Installed capacity PV": "Installed capacity \nPV in kWp",
         "Total renewable energy": "Total renewable \nenergy in kWh",
         "Renewable factor": "Renewable factor \nin %",
@@ -1001,6 +1013,9 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
         "Total emissions": "Total emissions \nin kgCO2eq/kWh",
         "Total non-renewable energy": "Total non-renewable \n energy in kWh",
         "Degree of NZE": "Degree of NZE \n in %",
+        "Total annual production": "Total annual production \n in kWh",
+        "Total_excessElectricity": "Total excess electricity \n in kWh",
+        "Installed capacity per heat pump": "Installed capacity per heat pump \n in kWh",
     }
 
     output.sort_index(inplace=True)
@@ -1389,46 +1404,53 @@ if __name__ == "__main__":
     #
     # scenario_list = [
     #     "Scenario_A1",
+    #     "Scenario_A3",
+    #     "Scenario_A5",
+    #     "Scenario_B1",
+    #     "Scenario_B3",
+    #     "Scenario_RefE1",
+    #     "Scenario_RefG1",
+    # ]
+    # scenario_list = [
     #     "Scenario_A2",
-    #     "Scenario_E3",
-    #     "Scenario_E4",
-    #     "Scenario_E5",
-    #     "Scenario_E6",
-    #     "Scenario_F1",
-    #     "Scenario_F2",
-    #     "Scenario_F3",
-    #     "Scenario_F4",
+    #     "Scenario_A4",
+    #     "Scenario_A6",
+    #     "Scenario_B2",
+    #     "Scenario_B4",
+    #     "Scenario_RefE2",
+    #     "Scenario_RefG2"
     # ]
     # plot_compare_scenarios(
-    #     "lifetime",
+    #     "storeys",
     #     [
     #         "Total non-renewable energy",
-    #         "Self consumption",
     #         "Total renewable energy",
+    #         "Total costs PV",
     #         "Installed capacity PV",
-    #         "Degree of NZE",
-    #         "Degree of autonomy",
-    #         "Total emissions",
+    #         "Total annual production",
+    #         "Total_excessElectricity",
+    #         "Self consumption",
+    #         "Installed capacity per heat pump",
     #     ],
     #     scenario_list,
     # )
-    scenario_list = [
-        "Scenario_H1",
-        "Scenario_H2",
-        "Scenario_H3",
-        "Scenario_H4",
-        "Scenario_H5",
-        "Scenario_H6",
-        "Scenario_H7",
-        "Scenario_H8",
-        "Scenario_H9",
-        "Scenario_H10",
-        "Scenario_H11",
-        "Scenario_H12",
-    ]
-    plot_compare_technologies(
-        variable_name="technology",
-        kpi=["Total annual production", "Degree of NZE"],
-        scenario_list=scenario_list,
-        outputs_directory=None,
-    )
+    # scenario_list = [
+    #     "Scenario_H1",
+    #     "Scenario_H2",
+    #     "Scenario_H3",
+    #     "Scenario_H4",
+    #     "Scenario_H5",
+    #     "Scenario_H6",
+    #     "Scenario_H7",
+    #     "Scenario_H8",
+    #     "Scenario_H9",
+    #     "Scenario_H10",
+    #     "Scenario_H11",
+    #     "Scenario_H12",
+    # ]
+    # plot_compare_technologies(
+    #     variable_name="technology",
+    #     kpi=["Total annual production", "Degree of NZE"],
+    #     scenario_list=scenario_list,
+    #     outputs_directory=None,
+    # )
