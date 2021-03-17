@@ -13,4 +13,5 @@ outflow_direction,str,PV bus,PV bus,PV bus
 file_name,str,,,
 energyVector,str,Electricity,Electricity,Electricity
 renewableAsset,bool,True,True,True
+emission_factor,kgCO2eq/unit,0,0,0
 type_oemof,str,source,source,source
