@@ -208,8 +208,8 @@ def loop_pvcompare(
                         step=number_of_storeys,
                         loop_type=loop_type,
                     )
-                except:
-                    print("the system could not be optimized.")
+                except Exception:
+                    pass
                 number_of_storeys = number_of_storeys + loop_dict["step"]
 
         elif loop_type is "technology":
