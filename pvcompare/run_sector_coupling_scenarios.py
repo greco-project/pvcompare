@@ -35,13 +35,13 @@ class Scenarios:
         )
         self.user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
 
-    def run_scenario_ABCD_Ref1(self):
+    def run_scenario_RefE1(self):
         """
 
         :return:
         """
 
-        scenario_name = "Scenario_ABCD_Ref1"
+        scenario_name = "Scenario_RefE1"
         data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
         # load input parameters from pv_setup.csv
         pv_setup = pd.read_csv(data_path)
@@ -65,13 +65,13 @@ class Scenarios:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_ABCD_Ref2(self):
+    def run_scenario_RefE2(self):
         """
 
         :return:
         """
 
-        scenario_name = "Scenario_ABCD_Ref2"
+        scenario_name = "Scenario_RefE2"
         data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
         # load input parameters from pv_setup.csv
         pv_setup = pd.read_csv(data_path)
@@ -2538,7 +2538,7 @@ class ScenariosGas:
                 os.path.join(self.user_inputs_pvcompare_directory, name), na_rep="NaN"
             )
 
-    def run_scenario_ABC_Ref1(self):
+    def run_scenario_RefG1(self):
         """
         Scenario description:
             - Sector-coupled
@@ -2549,7 +2549,7 @@ class ScenariosGas:
             - Heat demand for room heating only
         """
 
-        scenario_name = "Scenario_ABC_Ref1"
+        scenario_name = "Scenario_RefG1"
 
         # Get data
         (
@@ -2582,7 +2582,7 @@ class ScenariosGas:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_ABC_Ref2(self):
+    def run_scenario_RefG2(self):
         """
         Scenario description:
             - Sector-coupled
@@ -2593,7 +2593,7 @@ class ScenariosGas:
             - Heat demand for room heating only
         """
 
-        scenario_name = "Scenario_ABC_Ref2"
+        scenario_name = "Scenario_RefG2"
 
         # Get data
         (
@@ -2626,7 +2626,7 @@ class ScenariosGas:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_D_Ref1(self):
+    def run_scenario_RefG3(self):
         """
         Scenario description:
             - Sector-coupled
@@ -2637,7 +2637,7 @@ class ScenariosGas:
             - Heat demand for room heating and warm water
         """
 
-        scenario_name = "Scenario_D_Ref1"
+        scenario_name = "Scenario_RefG3"
 
         # Get data
         (
@@ -2670,7 +2670,7 @@ class ScenariosGas:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_D_Ref2(self):
+    def run_scenario_RefG4(self):
         """
         Scenario description:
             - Sector-coupled
@@ -2681,7 +2681,7 @@ class ScenariosGas:
             - Heat demand for room heating and warm water
         """
 
-        scenario_name = "Scenario_D_Ref2"
+        scenario_name = "Scenario_RefG4"
 
         # Get data
         (
@@ -2739,8 +2739,8 @@ if __name__ == "__main__":
     scenarios = Scenarios()
     scenarios.setup_class()
 
-    scenarios.run_scenario_ABCD_Ref1()
-    scenarios.run_scenario_ABCD_Ref2()
+    # scenarios.run_scenario_RefE1()
+    # scenarios.run_scenario_RefE2()
 
     scenarios_sector_coupling = ScenariosSectorCoupling()
     scenarios_sector_coupling.setup_class()
@@ -2804,11 +2804,11 @@ if __name__ == "__main__":
 
     scenarios_gas = ScenariosGas()
     scenarios_gas.setup_class()
-    scenarios_gas.run_scenario_ABC_Ref1()
-    scenarios_gas.revert_inputs_changes()
-    scenarios_gas.run_scenario_ABC_Ref2()
-    scenarios_gas.revert_inputs_changes()
-    scenarios_gas.run_scenario_D_Ref1()
-    scenarios_gas.revert_inputs_changes()
-    scenarios_gas.run_scenario_D_Ref2()
-    scenarios_gas.revert_inputs_changes()
+    # scenarios_gas.run_scenario_RefG1()
+    # scenarios_gas.revert_inputs_changes()
+    # scenarios_gas.run_scenario_RefG2()
+    # scenarios_gas.revert_inputs_changes()
+    # scenarios_gas.run_scenario_RefG3()
+    # scenarios_gas.revert_inputs_changes()
+    # scenarios_gas.run_scenario_RefG4()
+    # scenarios_gas.revert_inputs_changes()
