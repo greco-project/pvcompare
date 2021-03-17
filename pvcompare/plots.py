@@ -194,8 +194,8 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
             LCOE.loc[index, column] = file_sheet1.at[
                 "PV psi", "levelized_cost_of_energy_of_asset"
             ]
-            TOTALCOSTS.loc[index, column] = file_sheet3.at["costs_total", 0]
-    #    LCOE=LCOE.rename(columns={"500": "550", "600": "650", "700": "750", "800": "850", "900": "950", "1000": "1050", "1100": "1150"})
+            TOTALCOSTS.loc[index, column] = file_sheet1.at["PV psi", "costs_total"]
+
     LCOE.sort_index(ascending=False, inplace=True)
     INSTCAP.sort_index(ascending=False, inplace=True)
     TOTALCOSTS.sort_index(ascending=False, inplace=True)
@@ -244,6 +244,7 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
     plt.tight_layout()
 
     f.savefig(os.path.join(outputs_directory, f"plot_{scenario_name}_matrix.png",))
+
 
 
 def compare_weather_years(
@@ -509,9 +510,9 @@ def plot_kpi_loop(
             index = str(year) + "_" + str(step)
             output.loc[index, "step"] = int(step)
             output.loc[index, "year"] = int(year)
+            output.loc[index, "Total costs PV"] = 0
             output.loc[index, "Total annual production"] = 0
             output.loc[index, "Installed capacity PV"] = 0
-            output.loc[index, "Total costs PV"] = 0
             counter = 1
             for pv in pv_labels:
                 output.loc[index, "Total costs PV"] = (
@@ -588,27 +589,33 @@ def plot_kpi_loop(
         ax = fig.add_subplot(num)
         num = num + 1
         for key in output_dict.keys():
-            if "Basis" not in key:
+            if "Reference" not in key:
                 x_min = min(output_dict[key]["step"].values())
                 x_max = max(output_dict[key]["step"].values())
+        counter = 1
         for key in output_dict.keys():
             df = pd.DataFrame()
             df = df.from_dict(output_dict[key])
-            if "Basis" in key and len(df) <= 3:
+            if "Reference" in key and len(df) <= 3:
                 for index in df.index:
+                    if counter ==1:
+                        color = "tab:blue"
+                    if counter ==2:
+                        color = "orange"
                     data = float(df.at[index, i])
                     base = pd.Series(
                         data=data, index=list(range(int(x_min), int(x_max) + 1))
                     )
                     #                   ax.hlines(y=float(row[i]), xmin=x_min, xmax=x_max, label = key, linestyle='--', color = "orange")
                     base.plot(
-                        color="orange",
+                        color=color,
                         style="--",
                         ax=ax,
-                        label="_nolegend_",
+                        label=str(key),
                         legend=False,
                         sharex=True,
                     )
+                counter +=1
             else:
                 df.plot(
                     x="step",
@@ -626,14 +633,18 @@ def plot_kpi_loop(
                 ax.set_xticks(df.step)
                 ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
 
-    plt.tight_layout(rect=(0.02, 0.07, 1, 1))
+    plt.tight_layout(rect=(0.04, 0.13, 1, 1))
 
     plt.xticks(rotation=45)
 
     handles, labels = ax.get_legend_handles_labels()
-    fig.legend(
-        handles, labels, loc="lower left", mode="expand",
-    )
+    by_label = dict(zip(labels, handles))
+    fig.legend(handles=by_label.values(), labels=by_label.keys(), loc="lower left", mode="expand",)
+
+#    handles, labels = ax.get_legend_handles_labels()
+#    fig.legend(
+#        handles, labels, loc="lower left", mode="expand",
+#    )
 
     name = ""
     for scenario_name in scenario_dict.keys():
@@ -1189,7 +1200,8 @@ def plot_compare_technologies(
             )
         # parse through scalars folder and read in all excel sheets
         output_dict[scenario_name] = {}
-        output_dict[scenario_name]["costs_total"] = pd.DataFrame()
+        output_dict[scenario_name]["Total costs"] = pd.DataFrame()
+        output_dict[scenario_name]["Total costs PV"] = pd.DataFrame()
         output_dict[scenario_name]["LCOE"] = pd.DataFrame()
         output_dict[scenario_name]["Installed capacity PV"] = pd.DataFrame()
         output_dict[scenario_name]["Total annual production"] = pd.DataFrame()
@@ -1243,8 +1255,8 @@ def plot_compare_technologies(
             index = str(year)  # + "_" + str(step)
 
             for pv in pv_labels:
-                output_dict[scenario_name]["costs_total"].loc[index, pv] = int(year)
-                output_dict[scenario_name]["costs_total"].loc[
+                output_dict[scenario_name]["Total costs"].loc[index, pv] = file_sheet3.at["costs_total", 0]
+                output_dict[scenario_name]["Total costs PV"].loc[
                     index, pv
                 ] = file_sheet1.at[pv, "costs_total"]
                 output_dict[scenario_name]["LCOE"].loc[index, pv] = file_sheet1.at[
@@ -1327,6 +1339,23 @@ def plot_compare_technologies(
         "Total non-renewable energy": "Total non-renewable \n energy in kWh",
         "Degree of NZE": "Degree of NZE \n in %",
         "Total annual production": "Total annual production \n in kWh",
+        "Total costs" : "Total costs \n in EUR"
+    }
+
+    x_title = {
+        "Scenario_H1" : "Helsinki, Finland",
+        "Scenario_H2": "Riga, Latvia",
+        "Scenario_H3": "Sevilla, Spain",
+        "Scenario_H4": "Paris, France",
+        "Scenario_H5": "Budapest, Hungary",
+        "Scenario_H6": "Warsaw, Poland",
+        "Scenario_H7": "Bukarest, Romania",
+        "Scenario_H8": "Rome, Italy",
+        "Scenario_H9": "Athens, Greece",
+        "Scenario_H10": "Manchester, UK",
+        "Scenario_H11": "Berlin, Germany",
+        "Scenario_H12": "Madrid, Spain",
+
     }
 
     #    output.sort_index(inplace=True)
@@ -1376,7 +1405,7 @@ def plot_compare_technologies(
             color=color_1,
             linewidth=0.5,
         )
-
+        ax.set_xticklabels(x_title.values(),rotation=40, ha="right")
         ax.set_ylabel(y_title[i])
         ax.set_xlabel("technology")
         ax.get_yaxis().set_label_coords(-0.04, 0.5)
@@ -1385,7 +1414,7 @@ def plot_compare_technologies(
         ax.grid(b=True, which="minor", axis="both", color="w", linewidth=0.5)
     plt.tight_layout(rect=(0.02, 0.03, 1, 1))
 
-    plt.xticks(rotation=45)
+#    plt.xticks(x_title.values(),rotation=40, ha="right")
     fig.legend(
         df_min.columns, loc="lower left", mode="expand",
     )
