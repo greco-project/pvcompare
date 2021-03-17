@@ -615,62 +615,12 @@ def postprocessing_kpi(
         for filepath_t in list(
             glob.glob(os.path.join(loop_output_directory, "timeseries", "*.xlsx"))
         ):
+            heat_exists = False
             if filepath_t.endswith(ending) is True:
-                timeseries_heat = pd.read_excel(filepath_t, sheet_name="Heat bus")
-                if "TES output power" in timeseries_heat:
-                    # Calculate maximum capacity, nominal capacity and height
-                    # of one storage unit
-                    maximal_tes_capacity = file_sheet2.at[
-                        "TES storage capacity", "optimizedAddCap"
-                    ]
-                    # There is 15 % of unused storage volume according to
-                    # https://op.europa.eu/en/publication-detail/-/publication/312f0f62-dfbd-11e7-9749-01aa75ed71a1/language-en
-                    # The nominal storage capacity is hence the maximum storage capacity multiplied by 1.15
-                    nominal_storage_capacity = maximal_tes_capacity * 1.15
-                    # Calculate volume of TES using oemof-thermal's equations
-                    # in stratified_thermal_storage.py
-                    volume = (
-                        maximal_tes_capacity
-                        * 1000
-                        / (heat_capacity * density * (temp_h - temp_c) * (1 / 3600))
-                    )
-                    # Calculate height of TES using oemof-thermal's equations
-                    # in stratified_thermal_storage.py
-                    height = volume / (0.25 * np.pi * diameter ** 2)
-                    file_sheet3.at[
-                        "Installed capacity per TES", "Unnamed: 0"
-                    ] = "Installed capacity per TES"
-                    # Divide total capacity through number of households = number of plants
-                    file_sheet3.at["Installed capacity per TES", 0] = (
-                        maximal_tes_capacity / total_number_households
-                    )
-                    file_sheet3.at[
-                        "Installed nominal capacity per TES", "Unnamed: 0"
-                    ] = "Installed nominal capacity per TES"
-                    # Divide total nominal capacity through number of households = number of plants
-                    file_sheet3.at["Installed nominal capacity per TES", 0] = (
-                        nominal_storage_capacity / total_number_households
-                    )
-                    file_sheet3.at[
-                        "Height of each TES", "Unnamed: 0"
-                    ] = "Height of each TES"
-                    # Divide total height of all TES through number of households = number of plants
-                    file_sheet3.at["Height of each TES", 0] = (
-                        height / total_number_households
-                    )
-                if "Heat pump" in timeseries_heat.columns:
-                    # Calculate maximum capacity of one heat pump unit and write to scalars
-                    maximal_hp_capacity = max(timeseries_heat["Heat pump"])
-                    file_sheet3.at[
-                        "Installed capacity per heat pump", "Unnamed: 0"
-                    ] = "Installed capacity per heat pump"
-                    # Divide total capacity through number of households = number of plants
-                    file_sheet3.at["Installed capacity per heat pump", 0] = (
-                        maximal_hp_capacity / total_number_households
-                    )
-
+                # add heat demand to electricty demand it heat demand exists
                 timeseries = pd.read_excel(filepath_t, sheet_name="Electricity bus")
                 if "Heat pump" in timeseries.columns:
+                    heat_exists = True
                     electricity_demand = (
                         timeseries["Electricity demand"] + timeseries["Heat pump"]
                     )
@@ -683,15 +633,75 @@ def postprocessing_kpi(
                 else:
                     electricity_demand = timeseries["Electricity demand"]
 
+                if heat_exists == True:
+                    timeseries_heat = pd.read_excel(filepath_t, sheet_name="Heat bus")
+                    if "TES output power" in timeseries_heat:
+                        # Calculate maximum capacity, nominal capacity and height
+                        # of one storage unit
+                        maximal_tes_capacity = file_sheet2.at[
+                            "TES storage capacity", "optimizedAddCap"
+                        ]
+                        # There is 15 % of unused storage volume according to
+                        # https://op.europa.eu/en/publication-detail/-/publication/312f0f62-dfbd-11e7-9749-01aa75ed71a1/language-en
+                        # The nominal storage capacity is hence the maximum storage capacity multiplied by 1.15
+                        nominal_storage_capacity = maximal_tes_capacity * 1.15
+                        # Calculate volume of TES using oemof-thermal's equations
+                        # in stratified_thermal_storage.py
+                        volume = (
+                            maximal_tes_capacity
+                            * 1000
+                            / (heat_capacity * density * (temp_h - temp_c) * (1 / 3600))
+                        )
+                        # Calculate height of TES using oemof-thermal's equations
+                        # in stratified_thermal_storage.py
+                        height = volume / (0.25 * np.pi * diameter ** 2)
+                        file_sheet3.at[
+                            "Installed capacity per TES", "Unnamed: 0"
+                        ] = "Installed capacity per TES"
+                        # Divide total capacity through number of households = number of plants
+                        file_sheet3.at["Installed capacity per TES", 0] = (
+                            maximal_tes_capacity / total_number_households
+                        )
+                        file_sheet3.at[
+                            "Installed nominal capacity per TES", "Unnamed: 0"
+                        ] = "Installed nominal capacity per TES"
+                        # Divide total nominal capacity through number of households = number of plants
+                        file_sheet3.at["Installed nominal capacity per TES", 0] = (
+                            nominal_storage_capacity / total_number_households
+                        )
+                        file_sheet3.at[
+                            "Height of each TES", "Unnamed: 0"
+                        ] = "Height of each TES"
+                        # Divide total height of all TES through number of households = number of plants
+                        file_sheet3.at["Height of each TES", 0] = (
+                            height / total_number_households
+                        )
+                    if "Heat pump" in timeseries_heat.columns:
+                        # Calculate maximum capacity of one heat pump unit and write to scalars
+                        maximal_hp_capacity = max(timeseries_heat["Heat pump"])
+                        file_sheet3.at[
+                            "Installed capacity per heat pump", "Unnamed: 0"
+                        ] = "Installed capacity per heat pump"
+                        # Divide total capacity through number of households = number of plants
+                        file_sheet3.at["Installed capacity per heat pump", 0] = (
+                            maximal_hp_capacity / total_number_households
+                        )
+
         # recalculate KPI
         file_sheet2.at["Electricity demand", "total_flow"] = sum(electricity_demand) * (
             -1
         )
         file_sheet3.at["Total_demandElectricity", 0] = sum(electricity_demand) * (-1)
         file_sheet3.at["Degree of NZE", 0] = (
-            file_sheet3.at["Total internal renewable generation", 0]
-            - file_sheet3.at["Total_excessElectricity", 0]
-        ) / file_sheet3.at["Total_demandElectricity", 0]
+            1
+            + (
+                file_sheet3.at["Total_feedinElectricity", 0]
+                - file_sheet3.at[
+                    "Total_consumption_from_energy_provider_electricity_equivalent", 0
+                ]
+            )
+            / file_sheet3.at["Total_demandElectricity", 0]
+        )
         file_sheet3.at["Degree of autonomy", 0] = (
             file_sheet3.at["Total_demandElectricity", 0]
             - file_sheet3.at["Total_consumption_from_energy_providerElectricity", 0]
@@ -764,4 +774,9 @@ if __name__ == "__main__":
     #     scenario_name=scenario_name,
     # )
     #
-    # postprocessing_kpi(scenario_name="Scenario_E3", variable_name="storeys", user_inputs_pvcompare_directory=None, outputs_directory=None)
+    postprocessing_kpi(
+        scenario_name="Scenario_F1_ohne_try",
+        variable_name="storeys",
+        user_inputs_pvcompare_directory=None,
+        outputs_directory=None,
+    )
