@@ -1387,31 +1387,31 @@ if __name__ == "__main__":
     #     outputs_directory=None,
     # )
     #
-    #     scenario_list = [
-    #         "Scenario_A1",
-    #         "Scenario_A2",
-    # #        "Scenario_E3",
-    # #        "Scenario_E4",
-    #  #       "Scenario_E5",
-    # #        "Scenario_E6",
-    # #        "Scenario_F1",
-    # #        "Scenario_F2",
-    # #        "Scenario_F3",
-    # #        "Scenario_F4",
-    #     ]
-    #     plot_compare_scenarios(
-    #         "lifetime",
-    #         [
-    #             "Total non-renewable energy",
-    #             "Self consumption",
-    #             "Total renewable energy",
-    #             "Installed capacity PV",
-    #             "Degree of NZE",
-    #             "Degree of autonomy",
-    #             "Total emissions",
-    #         ],
-    #         scenario_list,
-    #     )
+    # scenario_list = [
+    #     "Scenario_A1",
+    #     "Scenario_A2",
+    #     "Scenario_E3",
+    #     "Scenario_E4",
+    #     "Scenario_E5",
+    #     "Scenario_E6",
+    #     "Scenario_F1",
+    #     "Scenario_F2",
+    #     "Scenario_F3",
+    #     "Scenario_F4",
+    # ]
+    # plot_compare_scenarios(
+    #     "lifetime",
+    #     [
+    #         "Total non-renewable energy",
+    #         "Self consumption",
+    #         "Total renewable energy",
+    #         "Installed capacity PV",
+    #         "Degree of NZE",
+    #         "Degree of autonomy",
+    #         "Total emissions",
+    #     ],
+    #     scenario_list,
+    # )
     scenario_list = [
         "Scenario_H1",
         "Scenario_H2",
