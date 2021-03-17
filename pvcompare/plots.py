@@ -246,7 +246,6 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
     f.savefig(os.path.join(outputs_directory, f"plot_{scenario_name}_matrix.png",))
 
 
-
 def compare_weather_years(
     latitude,
     longitude,
@@ -598,9 +597,9 @@ def plot_kpi_loop(
             df = df.from_dict(output_dict[key])
             if "Reference" in key and len(df) <= 3:
                 for index in df.index:
-                    if counter ==1:
+                    if counter == 1:
                         color = "tab:blue"
-                    if counter ==2:
+                    if counter == 2:
                         color = "orange"
                     data = float(df.at[index, i])
                     base = pd.Series(
@@ -615,7 +614,7 @@ def plot_kpi_loop(
                         legend=False,
                         sharex=True,
                     )
-                counter +=1
+                counter += 1
             else:
                 df.plot(
                     x="step",
@@ -639,12 +638,17 @@ def plot_kpi_loop(
 
     handles, labels = ax.get_legend_handles_labels()
     by_label = dict(zip(labels, handles))
-    fig.legend(handles=by_label.values(), labels=by_label.keys(), loc="lower left", mode="expand",)
+    fig.legend(
+        handles=by_label.values(),
+        labels=by_label.keys(),
+        loc="lower left",
+        mode="expand",
+    )
 
-#    handles, labels = ax.get_legend_handles_labels()
-#    fig.legend(
-#        handles, labels, loc="lower left", mode="expand",
-#    )
+    #    handles, labels = ax.get_legend_handles_labels()
+    #    fig.legend(
+    #        handles, labels, loc="lower left", mode="expand",
+    #    )
 
     name = ""
     for scenario_name in scenario_dict.keys():
@@ -1255,7 +1259,9 @@ def plot_compare_technologies(
             index = str(year)  # + "_" + str(step)
 
             for pv in pv_labels:
-                output_dict[scenario_name]["Total costs"].loc[index, pv] = file_sheet3.at["costs_total", 0]
+                output_dict[scenario_name]["Total costs"].loc[
+                    index, pv
+                ] = file_sheet3.at["costs_total", 0]
                 output_dict[scenario_name]["Total costs PV"].loc[
                     index, pv
                 ] = file_sheet1.at[pv, "costs_total"]
@@ -1339,11 +1345,11 @@ def plot_compare_technologies(
         "Total non-renewable energy": "Total non-renewable \n energy in kWh",
         "Degree of NZE": "Degree of NZE \n in %",
         "Total annual production": "Total annual production \n in kWh",
-        "Total costs" : "Total costs \n in EUR"
+        "Total costs": "Total costs \n in EUR",
     }
 
     x_title = {
-        "Scenario_H1" : "Helsinki, Finland",
+        "Scenario_H1": "Helsinki, Finland",
         "Scenario_H2": "Riga, Latvia",
         "Scenario_H3": "Sevilla, Spain",
         "Scenario_H4": "Paris, France",
@@ -1355,7 +1361,6 @@ def plot_compare_technologies(
         "Scenario_H10": "Manchester, UK",
         "Scenario_H11": "Berlin, Germany",
         "Scenario_H12": "Madrid, Spain",
-
     }
 
     #    output.sort_index(inplace=True)
@@ -1405,7 +1410,7 @@ def plot_compare_technologies(
             color=color_1,
             linewidth=0.5,
         )
-        ax.set_xticklabels(x_title.values(),rotation=40, ha="right")
+        ax.set_xticklabels(x_title.values(), rotation=40, ha="right")
         ax.set_ylabel(y_title[i])
         ax.set_xlabel("technology")
         ax.get_yaxis().set_label_coords(-0.04, 0.5)
@@ -1414,7 +1419,7 @@ def plot_compare_technologies(
         ax.grid(b=True, which="minor", axis="both", color="w", linewidth=0.5)
     plt.tight_layout(rect=(0.02, 0.03, 1, 1))
 
-#    plt.xticks(x_title.values(),rotation=40, ha="right")
+    #    plt.xticks(x_title.values(),rotation=40, ha="right")
     fig.legend(
         df_min.columns, loc="lower left", mode="expand",
     )
@@ -1445,17 +1450,19 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    # scenario_dict = {"Scenario_A2": "psi", "Scenario_A9": "psi_HP"}
-    # plot_kpi_loop(
-    #     scenario_dict=scenario_dict,
-    #     variable_name="lifetime",
-    #     kpi=[
-    #         "Installed capacity PV",
-    #         "Total emissions",
-    #         "Degree of autonomy",
-    #         "Degree of NZE"
-    #     ],
-    # )
+    scenario_dict = {"Scenario_E1": "si", "Scenario_E2": "psi", "Scenario_E3": "cpv"}
+    plot_kpi_loop(
+        scenario_dict=scenario_dict,
+        variable_name="storeys",
+        kpi=[
+            "Total annual production",
+            "Degree of NZE",
+            "Total costs PV",
+            "Installed capacity PV",
+            "Self consumption",
+            "Degree of autonomy",
+        ],
+    )
     #
     # compare_weather_years(
     #     latitude=latitude,
