@@ -592,27 +592,33 @@ def plot_kpi_loop(
         ax = fig.add_subplot(num)
         num = num + 1
         for key in output_dict.keys():
-            if "Basis" not in key:
+            if "Reference" not in key:
                 x_min = min(output_dict[key]["step"].values())
                 x_max = max(output_dict[key]["step"].values())
+        counter = 1
         for key in output_dict.keys():
             df = pd.DataFrame()
             df = df.from_dict(output_dict[key])
-            if "Basis" in key and len(df) <= 3:
+            if "Reference" in key and len(df) <= 3:
                 for index in df.index:
+                    if counter ==1:
+                        color = "tab:blue"
+                    if counter ==2:
+                        color = "orange"
                     data = float(df.at[index, i])
                     base = pd.Series(
                         data=data, index=list(range(int(x_min), int(x_max) + 1))
                     )
                     #                   ax.hlines(y=float(row[i]), xmin=x_min, xmax=x_max, label = key, linestyle='--', color = "orange")
                     base.plot(
-                        color="orange",
+                        color=color,
                         style="--",
                         ax=ax,
-                        label="_nolegend_",
+                        label=str(key),
                         legend=False,
                         sharex=True,
                     )
+                counter +=1
             else:
                 df.plot(
                     x="step",
@@ -630,14 +636,18 @@ def plot_kpi_loop(
                 ax.set_xticks(df.step)
                 ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
 
-    plt.tight_layout(rect=(0.02, 0.07, 1, 1))
+    plt.tight_layout(rect=(0.04, 0.13, 1, 1))
 
     plt.xticks(rotation=45)
 
     handles, labels = ax.get_legend_handles_labels()
-    fig.legend(
-        handles, labels, loc="lower left", mode="expand",
-    )
+    by_label = dict(zip(labels, handles))
+    fig.legend(handles=by_label.values(), labels=by_label.keys(), loc="lower left", mode="expand",)
+
+#    handles, labels = ax.get_legend_handles_labels()
+#    fig.legend(
+#        handles, labels, loc="lower left", mode="expand",
+#    )
 
     name = ""
     for scenario_name in scenario_dict.keys():
@@ -1138,7 +1148,8 @@ def plot_compare_technologies(
             )
         # parse through scalars folder and read in all excel sheets
         output_dict[scenario_name] = {}
-        output_dict[scenario_name]["costs_total"] = pd.DataFrame()
+        output_dict[scenario_name]["Total costs"] = pd.DataFrame()
+        output_dict[scenario_name]["Total costs PV"] = pd.DataFrame()
         output_dict[scenario_name]["LCOE"] = pd.DataFrame()
         output_dict[scenario_name]["Installed capacity PV"] = pd.DataFrame()
         output_dict[scenario_name]["Total annual production"] = pd.DataFrame()
@@ -1192,8 +1203,8 @@ def plot_compare_technologies(
             index = str(year)  # + "_" + str(step)
 
             for pv in pv_labels:
-                output_dict[scenario_name]["costs_total"].loc[index, pv] = int(year)
-                output_dict[scenario_name]["costs_total"].loc[
+                output_dict[scenario_name]["Total costs"].loc[index, pv] = file_sheet3.at["costs_total", 0]
+                output_dict[scenario_name]["Total costs PV"].loc[
                     index, pv
                 ] = file_sheet1.at[pv, "costs_total"]
                 output_dict[scenario_name]["LCOE"].loc[index, pv] = file_sheet1.at[
@@ -1276,6 +1287,23 @@ def plot_compare_technologies(
         "Total non-renewable energy": "Total non-renewable \n energy in kWh",
         "Degree of NZE": "Degree of NZE \n in %",
         "Total annual production": "Total annual production \n in kWh",
+        "Total costs" : "Total costs \n in EUR"
+    }
+
+    x_title = {
+        "Scenario_H1" : "Helsinki, Finland",
+        "Scenario_H2": "Riga, Latvia",
+        "Scenario_H3": "Sevilla, Spain",
+        "Scenario_H4": "Paris, France",
+        "Scenario_H5": "Budapest, Hungary",
+        "Scenario_H6": "Warsaw, Poland",
+        "Scenario_H7": "Bukarest, Romania",
+        "Scenario_H8": "Rome, Italy",
+        "Scenario_H9": "Athens, Greece",
+        "Scenario_H10": "Manchester, UK",
+        "Scenario_H11": "Berlin, Germany",
+        "Scenario_H12": "Madrid, Spain",
+
     }
 
     #    output.sort_index(inplace=True)
@@ -1325,7 +1353,7 @@ def plot_compare_technologies(
             color=color_1,
             linewidth=0.5,
         )
-
+        ax.set_xticklabels(x_title.values(),rotation=40, ha="right")
         ax.set_ylabel(y_title[i])
         ax.set_xlabel("technology")
         ax.get_yaxis().set_label_coords(-0.04, 0.5)
@@ -1334,7 +1362,7 @@ def plot_compare_technologies(
         ax.grid(b=True, which="minor", axis="both", color="w", linewidth=0.5)
     plt.tight_layout(rect=(0.02, 0.03, 1, 1))
 
-    plt.xticks(rotation=45)
+#    plt.xticks(x_title.values(),rotation=40, ha="right")
     fig.legend(
         df_min.columns, loc="lower left", mode="expand",
     )
@@ -1365,17 +1393,18 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    # scenario_dict = {"Scenario_A2": "psi", "Scenario_A9": "psi_HP"}
-    # plot_kpi_loop(
-    #     scenario_dict=scenario_dict,
-    #     variable_name="lifetime",
-    #     kpi=[
-    #         "Installed capacity PV",
-    #         "Total emissions",
-    #         "Degree of autonomy",
-    #         "Degree of NZE"
-    #     ],
-    # )
+    scenario_dict = {"Scenario_G4_25F": "SI", "Scenario_G5_25F":"PSI", "Scenario_G6_25F":"CPV"}
+    plot_kpi_loop(
+        scenario_dict=scenario_dict,
+        variable_name="storeys",
+        kpi=[
+            "Total annual production",
+            "Total costs",
+            "Degree of NZE",
+            "Self consumption",
+            "Degree of autonomy",
+        ],
+    )
     #
     # country="Germany"
     # longitude= 13.4105300
@@ -1419,23 +1448,23 @@ if __name__ == "__main__":
     #         ],
     #         scenario_list,
     #     )
-    scenario_list = [
-        "Scenario_H1",
-        "Scenario_H2",
-        "Scenario_H3",
-        "Scenario_H4",
-        "Scenario_H5",
-        "Scenario_H6",
-        "Scenario_H7",
-        "Scenario_H8",
-        "Scenario_H9",
-        "Scenario_H10",
-        "Scenario_H11",
-        "Scenario_H12",
-    ]
-    plot_compare_technologies(
-        variable_name="technology",
-        kpi=["Total annual production", "Degree of NZE"],
-        scenario_list=scenario_list,
-        outputs_directory=None,
-    )
+    # scenario_list = [
+    #     "Scenario_I1",
+    #     "Scenario_I2",
+    #     "Scenario_I3",
+    #     "Scenario_I4",
+    #     "Scenario_I5",
+    #     "Scenario_I6",
+    #     "Scenario_I7",
+    #     "Scenario_I8",
+    #     "Scenario_I9",
+    #     "Scenario_I10",
+    #     "Scenario_I11",
+    #     "Scenario_I12",
+    # ]
+    # plot_compare_technologies(
+    #     variable_name="technology",
+    #     kpi=["Total annual production", "Installed capacity PV", "Degree of NZE", "Total costs", "Total emissions"],
+    #     scenario_list=scenario_list,
+    #     outputs_directory=None,
+    # )

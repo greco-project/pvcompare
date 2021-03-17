@@ -801,7 +801,7 @@ class Scenarios:
             storeys=self.storeys,
             country=self.country_germany,
             loop_type="storeys",
-            loop_dict = {"start": 3, "stop": 8, "step": 1},
+            loop_dict = {"start": 4, "stop": 8, "step": 1},
             user_inputs_mvs_directory=None,
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
@@ -957,7 +957,7 @@ class Scenarios:
             pv_setup.at[i, "technology"] = str("si")
         pv_setup.to_csv(data_path, index=False)
 
-        scenario_name = "Scenario_G1"
+        scenario_name = "Scenario_G1_25R"
 
         outputs.loop_pvcompare(
             scenario_name=scenario_name,
@@ -967,7 +967,7 @@ class Scenarios:
             storeys=self.storeys,
             country=self.country_germany,
             loop_type="storeys",
-            loop_dict = {"start": 4, "stop": 8, "step": 1},
+            loop_dict = {"start": 3, "stop": 8, "step": 1},
             user_inputs_mvs_directory=None,
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
@@ -985,7 +985,7 @@ class Scenarios:
             pv_setup.at[i, "technology"] = str("psi")
         pv_setup.to_csv(data_path, index=False)
 
-        scenario_name = "Scenario_G2"
+        scenario_name = "Scenario_G2_25R"
         outputs.loop_pvcompare(
             scenario_name=scenario_name,
             latitude=self.latitude_germany,
@@ -994,7 +994,7 @@ class Scenarios:
             storeys=self.storeys,
             country=self.country_germany,
             loop_type="storeys",
-            loop_dict = {"start": 4, "stop": 8, "step": 1},
+            loop_dict = {"start": 3, "stop": 8, "step": 1},
             user_inputs_mvs_directory=None,
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
@@ -1012,7 +1012,7 @@ class Scenarios:
             pv_setup.at[i, "technology"] = str("cpv")
         pv_setup.to_csv(data_path, index=False)
 
-        scenario_name = "Scenario_G3"
+        scenario_name = "Scenario_G3_25R"
         outputs.loop_pvcompare(
             scenario_name=scenario_name,
             latitude=self.latitude_germany,
@@ -1021,7 +1021,7 @@ class Scenarios:
             storeys=self.storeys,
             country=self.country_germany,
             loop_type="storeys",
-            loop_dict = {"start": 4, "stop": 8, "step": 1},
+            loop_dict = {"start": 3, "stop": 8, "step": 1},
             user_inputs_mvs_directory=None,
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
@@ -1039,7 +1039,7 @@ class Scenarios:
             pv_setup.at[i, "technology"] = str("si")
         pv_setup.to_csv(data_path, index=False)
 
-        scenario_name = "Scenario_G4"
+        scenario_name = "Scenario_G4_25R"
         outputs.loop_pvcompare(
             scenario_name=scenario_name,
             latitude=self.latitude_spain,
@@ -1048,7 +1048,7 @@ class Scenarios:
             storeys=self.storeys,
             country=self.country_spain,
             loop_type="storeys",
-            loop_dict = {"start": 4, "stop": 8, "step": 1},
+            loop_dict = {"start": 3, "stop": 8, "step": 1},
             user_inputs_mvs_directory=None,
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
@@ -1067,7 +1067,7 @@ class Scenarios:
             pv_setup.at[i, "technology"] = str("psi")
         pv_setup.to_csv(data_path, index=False)
 
-        scenario_name = "Scenario_G5"
+        scenario_name = "Scenario_G5_25R"
         outputs.loop_pvcompare(
             scenario_name=scenario_name,
             latitude=self.latitude_spain,
@@ -1076,7 +1076,7 @@ class Scenarios:
             storeys=self.storeys,
             country=self.country_spain,
             loop_type="storeys",
-            loop_dict = {"start": 4, "stop": 8, "step": 1},
+            loop_dict = {"start": 3, "stop": 8, "step": 1},
             user_inputs_mvs_directory=None,
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
@@ -1095,7 +1095,7 @@ class Scenarios:
             pv_setup.at[i, "technology"] = str("cpv")
         pv_setup.to_csv(data_path, index=False)
 
-        scenario_name = "Scenario_G6"
+        scenario_name = "Scenario_G6_25R"
         outputs.loop_pvcompare(
             scenario_name=scenario_name,
             latitude=self.latitude_spain,
@@ -1104,7 +1104,7 @@ class Scenarios:
             storeys=self.storeys,
             country=self.country_spain,
             loop_type="storeys",
-            loop_dict = {"start": 4, "stop": 8, "step": 1},
+            loop_dict = {"start": 3, "stop": 8, "step": 1},
             user_inputs_mvs_directory=None,
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
@@ -1506,7 +1506,401 @@ class Scenarios:
             user_inputs_pvcompare_directory=None,
         )
 
+    def run_scenario_I1(self):
+        """
 
+        :return:
+        """
+
+        scenario_name = "Scenario_I1"
+        data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
+        # load input parameters from pv_setup.csv
+        pv_setup = pd.read_csv(data_path)
+        pv_setup.at[0, "technology"] = "si"
+        pv_setup.to_csv(data_path, index=False)
+
+        years=[2014, 2017]
+        latitude=60.192059
+        longitude=24.945831
+        country="Finland"
+
+
+        outputs.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=latitude,
+            longitude=longitude,
+            years=years,
+            storeys=self.storeys,
+            country=country,
+            loop_type="technology",
+            loop_dict={"step1": "si", "step2": "psi", "step3": "cpv"},
+            user_inputs_mvs_directory=None,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_I2(self):
+        """
+
+        :return:
+        """
+
+        scenario_name = "Scenario_I2"
+        data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
+        # load input parameters from pv_setup.csv
+        pv_setup = pd.read_csv(data_path)
+        pv_setup.at[0, "technology"] = "si"
+        pv_setup.to_csv(data_path, index=False)
+
+        years=[2014, 2017]
+        latitude=56.946285
+        longitude=24.105078
+        country="Latvia"
+
+
+        outputs.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=latitude,
+            longitude=longitude,
+            years=years,
+            storeys=self.storeys,
+            country=country,
+            loop_type="technology",
+            loop_dict={"step1": "si", "step2": "psi", "step3": "cpv"},
+            user_inputs_mvs_directory=None,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_I3(self):
+        """
+
+        :return:
+        """
+
+        scenario_name = "Scenario_I3"
+        data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
+        # load input parameters from pv_setup.csv
+        pv_setup = pd.read_csv(data_path)
+        pv_setup.at[0, "technology"] = "si"
+        pv_setup.to_csv(data_path, index=False)
+
+        years=[2014, 2017]
+        latitude=37.385994
+        longitude=-5.998401
+        country="Spain"
+
+
+        outputs.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=latitude,
+            longitude=longitude,
+            years=years,
+            storeys=self.storeys,
+            country=country,
+            loop_type="technology",
+            loop_dict={"step1": "si", "step2": "psi", "step3": "cpv"},
+            user_inputs_mvs_directory=None,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_I4(self):
+        """
+
+        :return:
+        """
+
+        scenario_name = "Scenario_I4"
+        data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
+        # load input parameters from pv_setup.csv
+        pv_setup = pd.read_csv(data_path)
+        pv_setup.at[0, "technology"] = "si"
+        pv_setup.to_csv(data_path, index=False)
+
+        years=[2014, 2017]
+        latitude=48.864716
+        longitude=2.349014
+        country="France"
+
+
+        outputs.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=latitude,
+            longitude=longitude,
+            years=years,
+            storeys=self.storeys,
+            country=country,
+            loop_type="technology",
+            loop_dict={"step1": "si", "step2": "psi", "step3": "cpv"},
+            user_inputs_mvs_directory=None,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_I5(self):
+        """
+
+        :return:
+        """
+
+        scenario_name = "Scenario_I5"
+        data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
+        # load input parameters from pv_setup.csv
+        pv_setup = pd.read_csv(data_path)
+        pv_setup.at[0, "technology"] = "si"
+        pv_setup.to_csv(data_path, index=False)
+
+        years=[2014, 2017]
+        latitude=47.497913
+        longitude=19.040236
+        country="Hungary"
+
+
+        outputs.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=latitude,
+            longitude=longitude,
+            years=years,
+            storeys=self.storeys,
+            country=country,
+            loop_type="technology",
+            loop_dict={"step1": "si", "step2": "psi", "step3": "cpv"},
+            user_inputs_mvs_directory=None,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_I6(self):
+        """
+
+        :return:
+        """
+
+        scenario_name = "Scenario_I6"
+        data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
+        # load input parameters from pv_setup.csv
+        pv_setup = pd.read_csv(data_path)
+        pv_setup.at[0, "technology"] = "si"
+        pv_setup.to_csv(data_path, index=False)
+
+        years=[2014, 2017]
+        latitude=52.237049
+        longitude=21.017532
+        country="Poland"
+
+
+        outputs.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=latitude,
+            longitude=longitude,
+            years=years,
+            storeys=self.storeys,
+            country=country,
+            loop_type="technology",
+            loop_dict={"step1": "si", "step2": "psi", "step3": "cpv"},
+            user_inputs_mvs_directory=None,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_I7(self):
+        """
+
+        :return:
+        """
+
+        scenario_name = "Scenario_I7"
+        data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
+        # load input parameters from pv_setup.csv
+        pv_setup = pd.read_csv(data_path)
+        pv_setup.at[0, "technology"] = "si"
+        pv_setup.to_csv(data_path, index=False)
+
+        years=[2014, 2017]
+        latitude=44.439663
+        longitude=26.096306
+        country="Romania"
+
+
+        outputs.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=latitude,
+            longitude=longitude,
+            years=years,
+            storeys=self.storeys,
+            country=country,
+            loop_type="technology",
+            loop_dict={"step1": "si", "step2": "psi", "step3": "cpv"},
+            user_inputs_mvs_directory=None,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_I8(self):
+        """
+
+        :return:
+        """
+
+        scenario_name = "Scenario_I8"
+        data_path = os.path.join(self.user_inputs_pvcompare_directory, "pv_setup.csv")
+        # load input parameters from pv_setup.csv
+        pv_setup = pd.read_csv(data_path)
+        pv_setup.at[0, "technology"] = "si"
+        pv_setup.to_csv(data_path, index=False)
+
+        years=[2014, 2017]
+        latitude=41.902782
+        longitude=12.496366
+        country="Italy"
+
+
+        outputs.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=latitude,
+            longitude=longitude,
+            years=years,
+            storeys=self.storeys,
+            country=country,
+            loop_type="technology",
+            loop_dict={"step1": "si", "step2": "psi", "step3": "cpv"},
+            user_inputs_mvs_directory=None,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_I9(self):
+        """
+
+        :return:
+        """
+
+        scenario_name = "Scenario_I9"
+        data_path = os.path.join(self.user_inputs_pvcompare_directory,
+                                 "pv_setup.csv")
+        # load input parameters from pv_setup.csv
+        pv_setup = pd.read_csv(data_path)
+        pv_setup.at[0, "technology"] = "si"
+        pv_setup.to_csv(data_path, index=False)
+
+        years = [2014, 2017]
+        latitude = 37.983810
+        longitude = 23.727539
+        country = "Greece"
+
+        outputs.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=latitude,
+            longitude=longitude,
+            years=years,
+            storeys=self.storeys,
+            country=country,
+            loop_type="technology",
+            loop_dict={"step1": "si", "step2": "psi", "step3": "cpv"},
+            user_inputs_mvs_directory=None,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_I10(self):
+        """
+
+        :return:
+        """
+
+        scenario_name = "Scenario_I10"
+        data_path = os.path.join(self.user_inputs_pvcompare_directory,
+                                 "pv_setup.csv")
+        # load input parameters from pv_setup.csv
+        pv_setup = pd.read_csv(data_path)
+        pv_setup.at[0, "technology"] = "si"
+        pv_setup.to_csv(data_path, index=False)
+
+        years = [2014, 2017]
+        latitude = 53.483959
+        longitude = -2.244644
+        country = "United Kingdom"
+
+        outputs.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=latitude,
+            longitude=longitude,
+            years=years,
+            storeys=self.storeys,
+            country=country,
+            loop_type="technology",
+            loop_dict={"step1": "si", "step2": "psi", "step3": "cpv"},
+            user_inputs_mvs_directory=None,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_I11(self):
+        """
+
+        :return:
+        """
+
+        scenario_name = "Scenario_I11"
+        data_path = os.path.join(self.user_inputs_pvcompare_directory,
+                                 "pv_setup.csv")
+        # load input parameters from pv_setup.csv
+        pv_setup = pd.read_csv(data_path)
+        pv_setup.at[0, "technology"] = "si"
+        pv_setup.to_csv(data_path, index=False)
+
+        years = [2014, 2017]
+        latitude = 52.5243700
+        longitude = 13.4105300
+        country = "Germany"
+
+        outputs.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=latitude,
+            longitude=longitude,
+            years=years,
+            storeys=self.storeys,
+            country=country,
+            loop_type="technology",
+            loop_dict={"step1": "si", "step2": "psi", "step3": "cpv"},
+            user_inputs_mvs_directory=None,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+
+    def run_scenario_I12(self):
+        """
+
+        :return:
+        """
+
+        scenario_name = "Scenario_I12"
+        data_path = os.path.join(self.user_inputs_pvcompare_directory,
+                                 "pv_setup.csv")
+        # load input parameters from pv_setup.csv
+        pv_setup = pd.read_csv(data_path)
+        pv_setup.at[0, "technology"] = "si"
+        pv_setup.to_csv(data_path, index=False)
+
+        years = [2014, 2017]
+        latitude = 40.416775
+        longitude = -3.703790
+        country = "Spain"
+
+        outputs.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=latitude,
+            longitude=longitude,
+            years=years,
+            storeys=self.storeys,
+            country=country,
+            loop_type="technology",
+            loop_dict={"step1": "si", "step2": "psi", "step3": "cpv"},
+            user_inputs_mvs_directory=None,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
 
 if __name__ == "__main__":
 
@@ -1538,15 +1932,15 @@ if __name__ == "__main__":
 #    scenarios.run_scenario_F2()
 #    scenarios.run_scenario_F3()
 #    scenarios.run_scenario_F4()
-#    scenarios.run_scenario_F5()
+    scenarios.run_scenario_F5()
 #    scenarios.run_scenario_F6()
 
-    scenarios.run_scenario_G1()
-#    scenarios.run_scenario_G2()
-#    scenarios.run_scenario_G3()
- #   scenarios.run_scenario_G4()
- #   scenarios.run_scenario_G5()
-  #  scenarios.run_scenario_G6()
+    # scenarios.run_scenario_G1()
+    # scenarios.run_scenario_G2()
+    # scenarios.run_scenario_G3()
+    # scenarios.run_scenario_G4()
+    # scenarios.run_scenario_G5()
+    # scenarios.run_scenario_G6()
 
     # scenarios.run_scenario_H1()
     # scenarios.run_scenario_H2()
@@ -1560,3 +1954,16 @@ if __name__ == "__main__":
     # scenarios.run_scenario_H10()
     # scenarios.run_scenario_H11()
     # scenarios.run_scenario_H12()
+
+    # scenarios.run_scenario_I1()
+    # scenarios.run_scenario_I2()
+    # scenarios.run_scenario_I3()
+    # scenarios.run_scenario_I4()
+    # scenarios.run_scenario_I5()
+    # scenarios.run_scenario_I6()
+    # scenarios.run_scenario_I7()
+    # scenarios.run_scenario_I8()
+    # scenarios.run_scenario_I9()
+    # scenarios.run_scenario_I10()
+    # scenarios.run_scenario_I11()
+    # scenarios.run_scenario_I12()

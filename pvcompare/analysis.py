@@ -210,7 +210,6 @@ def loop_pvcompare(
                     )
                 except:
                     print("the system could not be optimized.")
-                    sys.exit(1)
                 number_of_storeys = number_of_storeys + loop_dict["step"]
 
         elif loop_type is "technology":
@@ -275,11 +274,11 @@ def loop_pvcompare(
                 temp_high = temp_high + loop_dict["step"]
 
     logging.info("starting postprocessing KPI")
-    postprocessing_kpi(
-        scenario_name=scenario_name,
-        outputs_directory=outputs_directory,
-        variable_name=loop_type,
-    )
+    # postprocessing_kpi(
+    #     scenario_name=scenario_name,
+    #     outputs_directory=outputs_directory,
+    #     variable_name=loop_type,
+    # )
 
 
 def single_loop_pvcompare(
@@ -678,4 +677,4 @@ if __name__ == "__main__":
     #     scenario_name=scenario_name,
     # )
     #
-    # postprocessing_kpi(scenario_name="Scenario_A9", outputs_directory=None)
+    postprocessing_kpi(scenario_name="Scenario_F6", variable_name = "storeys", outputs_directory=None)

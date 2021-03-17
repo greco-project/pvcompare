@@ -270,13 +270,11 @@ if __name__ == "__main__":
 
     latitude = 40.416775  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
 
-    longitude = (
-        -3.703790
-    )  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
-    year = 2018
-    storeys = 5
+    longitude = -3.703790  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
+    year = 2013
+    storeys = 8
     country = "Spain"
-    scenario_name = "Scenario_B2"
+    scenario_name = "Scenario_F4_8"
 
     apply_pvcompare(
         latitude=latitude,
@@ -286,8 +284,8 @@ if __name__ == "__main__":
         country=country,
     )
 
-    # apply_mvs(
-    #     scenario_name=scenario_name,
-    #     outputs_directory=None,
-    #     user_inputs_mvs_directory=None,
-    # )
+    apply_mvs(
+        scenario_name=scenario_name,
+        outputs_directory=None,
+        user_inputs_mvs_directory=None,
+    )
