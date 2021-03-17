@@ -964,9 +964,7 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
                     output.loc[index, "Total costs PV"]
                     + file_sheet1.at[pv, "costs_total"]
                 )
-                output.loc[index, "Total costs"] = file_sheet3.at[
-                    "costs_total", 0
-                ]
+                output.loc[index, "Total costs"] = file_sheet3.at["costs_total", 0]
                 output.loc[index, "Installed capacity PV"] = (
                     output.loc[index, "Installed capacity PV"]
                     + file_sheet2.at[pv, "optimizedAddCap"]
@@ -1459,28 +1457,28 @@ if __name__ == "__main__":
     #     "Scenario_A6",
     #     "Scenario_B2",
     #     "Scenario_B4",
-        # "Scenario_RefE2",
-        # "Scenario_RefG2"
+    # "Scenario_RefE2",
+    # "Scenario_RefG2"
     # ]
     # plot_compare_scenarios(
     #     "storeys",
     #     [
-            # "Total costs",
-            # "Installed capacity PV",
-            # "Total annual production",
-            # "Total_excessElectricity",
-            # "Total_feedinElectricity",
-            # "Total_consumption_from_grid",
-            # "Self consumption",
-            #
-            # "Total electricity demand heat pump",
-            # "Installed heat pump capacity",
-            # "Installed capacity per heat pump",
-            # "Installed TES capacity"
-            #
-            # "Total costs",
-            # "Total emissions",
-            # "Self consumption"
+    # "Total costs",
+    # "Installed capacity PV",
+    # "Total annual production",
+    # "Total_excessElectricity",
+    # "Total_feedinElectricity",
+    # "Total_consumption_from_grid",
+    # "Self consumption",
+    #
+    # "Total electricity demand heat pump",
+    # "Installed heat pump capacity",
+    # "Installed capacity per heat pump",
+    # "Installed TES capacity"
+    #
+    # "Total costs",
+    # "Total emissions",
+    # "Self consumption"
     #     ],
     #     scenario_list,
     # )
