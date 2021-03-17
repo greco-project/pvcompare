@@ -573,10 +573,10 @@ def postprocessing_kpi(
         index_col=0,
     )
 
-    # Calculate the number of households
+    # Calculate the toal number of households
     # and hence obtain number of plants in simulation by assuming
     # that every household has one plant
-    number_plants_per_household = (
+    total_number_households = (
         float(building_params.at["number of houses", "value"])
         * float(building_params.at["number of storeys", "value"])
         * (float(building_params.at["population per storey", "value"]) / 4)
@@ -619,7 +619,7 @@ def postprocessing_kpi(
                 timeseries_heat = pd.read_excel(filepath_t, sheet_name="Heat bus")
                 if "TES output power" in timeseries_heat:
                     # Calculate maximum capacity, nominal capacity and height
-                    # of one heat pump unit and write to scalars
+                    # of one storage unit
                     maximal_tes_capacity = file_sheet2.at[
                         "TES storage capacity", "optimizedAddCap"
                     ]
@@ -640,20 +640,23 @@ def postprocessing_kpi(
                     file_sheet3.at[
                         "Installed capacity per TES", "Unnamed: 0"
                     ] = "Installed capacity per TES"
+                    # Divide total capacity through number of households = number of plants
                     file_sheet3.at["Installed capacity per TES", 0] = (
-                        maximal_tes_capacity / number_plants_per_household
+                        maximal_tes_capacity / total_number_households
                     )
                     file_sheet3.at[
                         "Installed nominal capacity per TES", "Unnamed: 0"
                     ] = "Installed nominal capacity per TES"
+                    # Divide total nominal capacity through number of households = number of plants
                     file_sheet3.at["Installed nominal capacity per TES", 0] = (
-                        nominal_storage_capacity / number_plants_per_household
+                        nominal_storage_capacity / total_number_households
                     )
                     file_sheet3.at[
                         "Height of each TES", "Unnamed: 0"
                     ] = "Height of each TES"
+                    # Divide total height of all TES through number of households = number of plants
                     file_sheet3.at["Height of each TES", 0] = (
-                        height / number_plants_per_household
+                        height / total_number_households
                     )
                 if "Heat pump" in timeseries_heat.columns:
                     # Calculate maximum capacity of one heat pump unit and write to scalars
@@ -661,8 +664,9 @@ def postprocessing_kpi(
                     file_sheet3.at[
                         "Installed capacity per heat pump", "Unnamed: 0"
                     ] = "Installed capacity per heat pump"
+                    # Divide total capacity through number of households = number of plants
                     file_sheet3.at["Installed capacity per heat pump", 0] = (
-                        maximal_hp_capacity / number_plants_per_household
+                        maximal_hp_capacity / total_number_households
                     )
 
                 timeseries = pd.read_excel(filepath_t, sheet_name="Electricity bus")
