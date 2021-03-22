@@ -48,11 +48,5 @@ setup(
         "seaborn",
         "Pyomo==5.7.2",
     ],
-    extras_require={
-        "dev": [
-            "pytest==5.3.5",
-            "black==19.10b0",
-            "sphinx_rtd_theme",
-        ]
-    },
+    extras_require={"dev": ["pytest==5.3.5", "black==19.10b0", "sphinx_rtd_theme",]},
 )
