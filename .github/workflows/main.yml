@@ -68,7 +68,7 @@ jobs:
 
       - name: Test with pytest
         run: |
-          coverage run --rcfile=.coveragerc -m pytest
+          pytest --cov=./ --cov-report=xml
 
       - name: "Upload coverage to Codecov"
         uses: codecov/codecov-action@v1
