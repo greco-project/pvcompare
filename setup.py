@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name="pvcompare",
-    version="0.0.1dev",
+    version="0.0.1",
     description="Evaluating pv technologies in net zero energy communities.",
     url="https://github.com/greco-project/pvcompare",
     author="Reiner Lemoine Institut",
