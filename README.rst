@@ -1,4 +1,5 @@
 |badge_docs| |badge_CI| |badge_coverage|
+
 Deprecated: |badge_travis|
 
 .. |badge_docs| image:: https://readthedocs.org/projects/pvcompare/badge/?version=latest
@@ -16,6 +17,9 @@ Deprecated: |badge_travis|
 .. |badge_travis| image:: https://travis-ci.com/greco-project/pvcompare.svg?branch=dev
     :target: https://travis-ci.com/greco-project/pvcompare
 
+
+pvcompare
+~~~~~~~~~
 
 Introduction
 ============
