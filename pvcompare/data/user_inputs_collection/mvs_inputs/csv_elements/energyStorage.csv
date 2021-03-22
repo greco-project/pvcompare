@@ -1,0 +1,8 @@
+,unit,storage_01,storage_02
+label,str,ESS Li-Ion,TES
+optimizeCap,bool,True,True
+outflow_direction,str,ESS Li-Ion bus,Heat bus
+inflow_direction,str,ESS Li-Ion bus,Heat bus
+storage_filename,str,storage_01.csv,storage_02.csv
+energyVector,str,Electricity,Heat
+type_oemof,str,storage,storage

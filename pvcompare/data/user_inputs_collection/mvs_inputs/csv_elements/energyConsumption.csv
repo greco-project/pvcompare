@@ -1,0 +1,8 @@
+,unit,Electricity demand,Heat demand
+unit,str,kW,kW
+inflow_direction,str,Electricity bus,Heat bus
+file_name,str,,
+energyVector,str,Electricity,Heat
+type_oemof,str,sink,sink
+type_asset,str,demand,demand
+dsm,str,False,False

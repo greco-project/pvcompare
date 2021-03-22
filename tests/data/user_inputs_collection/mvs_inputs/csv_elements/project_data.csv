@@ -1,0 +1,9 @@
+,unit,project_data,project_data
+country,str,Germany,Spain
+latitude,str,52.52437,40.416775
+longitude,str,13.41053,-3.703790
+project_id,str,1,1
+project_name,str,net zero energy community,net zero energy community
+scenario_id,str,1,1
+scenario_name,str,Scenario_Germany,Scenario_Spain
+scenario_description,str,Simulation of Berlin,Simulation of Madrid
