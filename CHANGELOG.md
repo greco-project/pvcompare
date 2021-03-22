@@ -16,15 +16,8 @@ Here is a template for new release sections
 ### Removed
 -
 ```
-## [Unreleased]
+## [0.0.1] - 2021-03-22
 
-### Added
-- one thing
-
-### Changed
-- another thing
-
-### Removed
-- yet another thing
+Note that changes are tracked from next version.
 
 
