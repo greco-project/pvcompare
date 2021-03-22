@@ -1,6 +1,6 @@
-|badge_docs| |badge_CI| |badge_coverage|
+|badge_docs| |badge_CI|
 
-Deprecated: |badge_travis|
+Deprecated: |badge_travis| |badge_coverage|
 
 .. |badge_docs| image:: https://readthedocs.org/projects/pvcompare/badge/?version=latest
     :target: https://pvcompare.readthedocs.io/en/latest/?badge=latest
