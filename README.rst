@@ -18,6 +18,9 @@ Deprecated: |badge_travis|
     :target: https://travis-ci.com/greco-project/pvcompare
 
 
+pvcompare
+~~~~~~~~~
+
 Introduction
 ============
 
