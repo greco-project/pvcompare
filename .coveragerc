@@ -1,3 +1,2 @@
 [run]
 source = pvcompare
--pytest --cov=./ --cov-report=xml
