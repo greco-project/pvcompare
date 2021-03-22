@@ -60,6 +60,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install wheel
           pip install .[dev]
+          pip install pytest-cov
 
       - name: Lint with black
         run: |

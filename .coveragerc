@@ -1,4 +1,3 @@
 [run]
 source = pvcompare
-pip install pytest-cov
 pytest --cov=./
