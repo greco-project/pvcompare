@@ -68,7 +68,7 @@ jobs:
 
       - name: Test with pytest
         run: |
-          coverage run --rcfile=.coveragerc --source pvcompare -m py.test
+          coverage run --rcfile=.coveragerc -m pytest
 
       - name: "Upload coverage to Codecov"
         uses: codecov/codecov-action@v1
