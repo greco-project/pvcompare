@@ -18,16 +18,21 @@ Here is a template for new release sections
 ### Fixed
 -
 ```
+
 ## [Unreleased]
 
 ### Added
-- one thing
-
+-
 ### Changed
-- another thing
-
+-
 ### Removed
-- yet another thing
+-
+### Fixed
+-
+
+## [0.0.1] - 2021-03-22
+
+Note that changes are tracked from next version.
 
 ### Fixed
 - ...
