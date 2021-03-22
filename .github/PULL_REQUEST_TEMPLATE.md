@@ -8,7 +8,7 @@ The following steps were realized, as well (if applies):
 - [ ] Write docstrings to your code
 - [ ] For new functionalities: Explain in readthedocs
 - [ ] Write test(s) for your new patch of code
-- [ ] Update the CHANGELOG.md (let's start this after the first release)
+- [ ] Update the CHANGELOG.md
 - [ ] Apply black (`black . --exclude docs/`)
 - [ ] Check if full simulation tests pass locally (`EXECUTE_TESTS_ON=master pytest`)
 
