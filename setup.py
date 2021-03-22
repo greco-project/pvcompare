@@ -52,8 +52,6 @@ setup(
         "dev": [
             "pytest==5.3.5",
             "black==19.10b0",
-            "coverage==5.0.3",
-            "coveralls==1.11.0",
             "sphinx_rtd_theme",
         ]
     },
