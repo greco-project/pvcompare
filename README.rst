@@ -1,4 +1,5 @@
 |badge_docs| |badge_CI| |badge_coverage|
+
 Deprecated: |badge_travis|
 
 .. |badge_docs| image:: https://readthedocs.org/projects/pvcompare/badge/?version=latest
