@@ -15,6 +15,8 @@ Here is a template for new release sections
 -
 ### Removed
 -
+### Fixed
+-
 ```
 ## [Unreleased]
 
@@ -27,4 +29,5 @@ Here is a template for new release sections
 ### Removed
 - yet another thing
 
-
+### Fixed
+- ...
