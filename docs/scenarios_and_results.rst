@@ -14,7 +14,7 @@ Definition of KPIs
 .. _Self-consumption:
 
 .. math::
-        Self Consumption &=\frac{\sum_{i} {E_{generation} (i)} - E_{gridfeedin}(i) - E_{excess}(i)}{\sum_{i} {E_{generation} (i)} }
+        Self\_Consumption &=\frac{\sum_{i} {E_{generation} (i)} - E_{gridfeedin}(i) - E_{excess}(i)}{\sum_{i} {E_{generation} (i)} }
 
         &Self Consumption \epsilon \text{[0,1]}
 
