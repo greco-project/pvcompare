@@ -13,8 +13,7 @@ Welcome to the documentation of pvcompare!
    :maxdepth: 2
    :glob:
 
-   about
-   getting_started
+   readme
    basic_usage
    model_assumptions
    parameters
@@ -22,6 +21,7 @@ Welcome to the documentation of pvcompare!
    scope_limits
    scenarios_and_results
    code
+   troubleshooting
 
 
 Indices and tables

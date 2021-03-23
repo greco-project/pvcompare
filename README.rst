@@ -1,5 +1,25 @@
-|badge_docs| |badge_travis| |badge_coverage|
+|badge_docs| |badge_CI|
 
+Deprecated: |badge_travis| |badge_coverage|
+
+.. |badge_docs| image:: https://readthedocs.org/projects/pvcompare/badge/?version=latest
+    :target: https://pvcompare.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+.. |badge_CI| image:: https://github.com/greco-project/pvcompare/actions/workflows/main.yml/badge.svg
+    :target: https://github.com/greco-project/pvcompare/actions/workflows/main.yml
+    :alt: Build status
+
+.. |badge_coverage| image:: https://coveralls.io/repos/github/greco-project/pvcompare/badge.svg?branch=dev
+    :target: https://coveralls.io/github/greco-project/pvcompare?branch=dev
+    :alt: Test coverage
+
+.. |badge_travis| image:: https://travis-ci.com/greco-project/pvcompare.svg?branch=dev
+    :target: https://travis-ci.com/greco-project/pvcompare
+
+
+pvcompare
+~~~~~~~~~
 
 Introduction
 ============
@@ -45,19 +65,18 @@ To install *pvcompare* follow these steps:
    git clone git@github.com:greco-project/pvcompare.git
    cd pvcompare
 
-- Install the ``requirements.txt`` and the package:
+- Install the package:
 
 ::
 
-   pip install -r requirements.txt
    pip install -e .
 
 - For the optimization you need to install a solver. Your can download the open source `cbc-solver <https://projects.coin-or.org/Cbc>`_ from https://ampl.com/dl/open/cbc/ . Please follow the installation `steps <https://oemof-solph.readthedocs.io/en/latest/readme.html#installing-a-solver>`_ in the oemof installation instructions. You also find information about other solvers there.
 
 Examples and basic usage
 ========================
-The basic usage of *pvcompare* is explained in section `Basic usage of pvcompare <https://github.com/greco-project/pvcompare/blob/dev/CONTRIBUTING.md>`_. TODO adapt link
-You can look into the section `Selected scenarios and results <https://github.com/greco-project/pvcompare/blob/dev/CONTRIBUTING.md>`_ for examples of simulations with *pvcompare*. TODO adapt link
+The basic usage of *pvcompare* is explained in the documentation in section `Basic usage of pvcompare <https://pvcompare.readthedocs.io/en/latest/basic_usage.html>`_.
+
 
 Contributing
 ============
@@ -65,15 +84,3 @@ Contributing
 We are warmly welcoming all who want to contribute to *pvcompare*.
 Please read our `Contributing Guidelines <https://github.com/greco-project/pvcompare/blob/dev/CONTRIBUTING.md>`_.
 
-
-.. |badge_docs| image:: https://readthedocs.org/projects/pvcompare/badge/?version=latest
-    :target: https://pvcompare.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status
-
-.. |badge_travis| image:: https://travis-ci.com/greco-project/pvcompare.svg?branch=dev
-    :target: https://travis-ci.com/greco-project/pvcompare
-    :alt: Build status
-
-.. |badge_coverage| image:: https://coveralls.io/repos/github/greco-project/pvcompare/badge.svg?branch=dev
-    :target: https://coveralls.io/github/greco-project/pvcompare?branch=dev
-    :alt: Test coverage
