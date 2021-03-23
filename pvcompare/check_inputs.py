@@ -519,7 +519,7 @@ def add_evaluated_period_to_simulation_settings(time_series, user_inputs_mvs_dir
         mvs_filename="simulation_settings.csv",
         mvs_row="evaluated_period",
         mvs_column="simulation_settings",
-        pvcompare_parameter=int(length),
+        pvcompare_parameter=length,
         warning=False,
     )
 
