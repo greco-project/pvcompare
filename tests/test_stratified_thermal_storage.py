@@ -432,7 +432,8 @@ class TestTES:
 
         for file in time_series_files:
             if os.path.exists(time_series_path):
-                os.remove(os.path.join(time_series_path, file))
+                if file != "file_exists.csv":
+                    os.remove(os.path.join(time_series_path, file))
 
 
 class TestCalcStratTesParam:
