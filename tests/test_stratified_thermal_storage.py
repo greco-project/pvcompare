@@ -451,8 +451,15 @@ class TestCalcStratTesParam:
             columns=["no_unit"],
             index=self.date_range,
         )
+        self.filename_storage_xx = os.path.join(
+            TEST_USER_INPUTS_MVS_SECTOR_COUPLING, "csv_elements", "storage_TES.csv"
+        )
 
     def test_calc_strat_tes_param(self):
+        original_storage_xx_data = pd.read_csv(
+            self.filename_storage_xx, header=0, index_col=0
+        )
+
         (
             nominal_storage_capacity,
             loss_rate,
@@ -487,7 +494,13 @@ class TestCalcStratTesParam:
         for item, value in enumerate(fixed_losses_absolute):
             assert np.round(value, 7) == np.round(expected_abs_losses[item], 7)
 
+        original_storage_xx_data.to_csv(self.filename_storage_xx, na_rep="NaN")
+
     def test_calc_strat_tes_param_nominal_storage_capacity_nan_to_zero(self):
+        original_storage_xx_data = pd.read_csv(
+            self.filename_storage_xx, header=0, index_col=0
+        )
+
         (
             nominal_storage_capacity,
             loss_rate,
@@ -509,7 +522,13 @@ class TestCalcStratTesParam:
         assert math.isnan(height) == True
         assert nominal_storage_capacity == 0
 
+        original_storage_xx_data.to_csv(self.filename_storage_xx, na_rep="NaN")
+
     def test_add_strat_tes_calculate_losses_saved_file(self):
+        original_storage_xx_data = pd.read_csv(
+            self.filename_storage_xx, header=0, index_col=0
+        )
+
         sts.add_strat_tes(
             weather=self.weather,
             lat=self.lat,
@@ -533,7 +552,13 @@ class TestCalcStratTesParam:
             )
         )
 
+        original_storage_xx_data.to_csv(self.filename_storage_xx, na_rep="NaN")
+
     def test_save_time_dependent_values(self):
+        original_storage_xx_data = pd.read_csv(
+            self.filename_storage_xx, header=0, index_col=0
+        )
+
         file_name = "fixed_thermal_losses_relative_test.csv"
         file_path = os.path.join(
             TEST_USER_INPUTS_MVS_SECTOR_COUPLING, "time_series", file_name
@@ -547,6 +572,8 @@ class TestCalcStratTesParam:
         )
 
         assert os.path.exists(file_path) == True
+
+        original_storage_xx_data.to_csv(self.filename_storage_xx, na_rep="NaN")
 
     def teardown_method(self):
         # delete file
@@ -592,6 +619,10 @@ class TestAddStratTes:
         original_data.to_csv(self.filename_storage_xx, na_rep="NaN")
 
     def test_add_sector_coupling_strat_tes_file_already_exists(self, select_conv_tech):
+        original_storage_xx_data = pd.read_csv(
+            self.filename_storage_xx, header=0, index_col=0
+        )
+
         select_conv_tech(columns="storage capacity")
         sts.add_strat_tes(
             weather=self.weather_2017,
@@ -629,9 +660,15 @@ class TestAddStratTes:
             in df.loc["fixed_thermal_losses_absolute"].item()
         ) == True
 
+        original_storage_xx_data.to_csv(self.filename_storage_xx, na_rep="NaN")
+
     def test_add_sector_coupling_strat_tes_file_already_exists_overwrite_true(
         self, select_conv_tech
     ):
+        original_storage_xx_data = pd.read_csv(
+            self.filename_storage_xx, header=0, index_col=0
+        )
+
         select_conv_tech(columns="storage capacity")
         sts.add_strat_tes(
             weather=self.weather_2019,
@@ -654,6 +691,8 @@ class TestAddStratTes:
             "fixed_thermal_losses_absolute_2019_53.2_13.2_60.0.csv"
             in df.loc["fixed_thermal_losses_absolute"].item()
         ) == True
+
+        original_storage_xx_data.to_csv(self.filename_storage_xx, na_rep="NaN")
 
     def teardown_method(self):
         # delete file
@@ -687,6 +726,11 @@ class TestAddStratTes:
                 os.remove(file)
 
     def test_add_sector_coupling_strat_tes_file_non_existent(self, select_conv_tech):
+
+        original_storage_xx_data = pd.read_csv(
+            self.filename_storage_xx, header=0, index_col=0
+        )
+
         select_conv_tech(columns="storage capacity")
         sts.add_strat_tes(
             weather=self.weather_2017,
@@ -709,6 +753,8 @@ class TestAddStratTes:
             "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv"
             in df.loc["fixed_thermal_losses_absolute"].item()
         ) == True
+
+        original_storage_xx_data.to_csv(self.filename_storage_xx, na_rep="NaN")
 
     def teardown_method(self):
         # delete file
