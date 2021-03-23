@@ -9,7 +9,7 @@ Here we will publish selected scenarios that we simulated for the H2020 Project 
 Definition of KPIs
 ------------------
 
-`Self-consumption`_  also *onsite energy fraction* is defined as the fraction of all locally generated energy that is consumed by the system itself to the system's total generation:
+`Self-consumption`_  also *onsite energy fraction* is defined as the fraction of all locally generated energy that is consumed by the system itself to the system's total local generation:
 
 .. _Self-consumption:
 
