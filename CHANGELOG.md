@@ -26,7 +26,8 @@ Here is a template for new release sections
 ### Removed
 -
 ### Fixed
--
+- Bug fix `fixcosts.csv` in test data (#263)
+- Bug fix in setup.py (#263)
 
 ## [0.0.1] - 2021-03-22
 
