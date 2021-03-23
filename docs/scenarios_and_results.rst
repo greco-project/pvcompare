@@ -6,38 +6,6 @@ GRECO Results
 
 Here we will publish selected scenarios that we simulated for the H2020 Project GRECO and their results, which will also serve as examples.
 
-Definition of KPIs
-------------------
-
-`Self-consumption`_  also *onsite energy fraction* is defined as the fraction of all locally generated energy that is consumed by the system itself to the system's total local generation:
-
-.. _Self-consumption:
-
-.. math::
-        Self\_Consumption &=\frac{\sum_{i} {E_{generation} (i)} - E_{gridfeedin}(i) - E_{excess}(i)}{\sum_{i} {E_{generation} (i)} }
-
-        &Self Consumption \epsilon \text{[0,1]}
-
-
-The `degree of autonomy`_ is used to describe all locally generated energy that is consumed by the system over the system's total demand:
-
-.. _degree of autonomy:
-
-.. math::
-       Degree Of Autonomy &=\frac{\sum_{i} {E_{generation} (i)} - E_{gridfeedin}(i) - E_{excess}(i)}{\sum_i {E_{demand} (i)}}
-
-        &Degree of Autonomy \epsilon \text{[0,1]}
-
-With the `degree of net zero energy`_ , the margin between grid feed-in and grid consumption is compared to the overall demand:
-
-.. _degree of net zero energy:
-
-.. math::
-       Degree Of Net Zero Energy = 1 + \frac{\sum_{i} E_{gridfeedin}(i) - E_{consumption,provider}(i)}{\sum_{i} E_{demand} (i)}
-
-
-Please see the section `Outputs of the MVS simulation / Technical data <https://multi-vector-simulator.readthedocs.io/en/latest/MVS_Outputs.html#technical-data>`_ of MVS's documentation to learn more about the `degree of net zero energy`_.
-
 Results of PV modeling
 -----------------------
 In :ref:`pv-feedin` the models used to generate feed-in time series for SI, CPV and
