@@ -22,7 +22,7 @@ Here is a template for new release sections
 ### Added
 -
 ### Changed
--
+- The evaluated period is no longer processed as integer but as float. Hence it is possible to simulate time periods that are for instance shorter than a day (#265)
 ### Removed
 -
 ### Fixed
