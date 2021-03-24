@@ -27,8 +27,11 @@ Here is a template for new release sections
 
 ### Changed
 - The evaluated period is no longer processed as integer but as float. Hence it is possible to simulate time periods that are for instance shorter than a day (#265)
+- Divided check boxes in PR template into required checks and checks that do not apply to every PR, deleted the check box "Apply black" and added helpful notes (#266)
+
 ### Removed
 -
+
 ### Fixed
 - Bug fix `fixcosts.csv` in test data (#263)
 - Bug fix in setup.py (#263)
