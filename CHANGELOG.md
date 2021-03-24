@@ -19,6 +19,17 @@ Here is a template for new release sections
 -
 ```
 
+## [unreleased]
+
+### Added
+-
+### Changed
+-
+### Removed
+-
+### Fixed
+-
+
 ## [0.0.2] - 2021-03-24
 
 ### Added
