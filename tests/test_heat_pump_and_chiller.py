@@ -259,7 +259,8 @@ class TestCalculateCopsAndEers:
         for file in files:
             filepath = os.path.join(self.mvs_inputs_directory, "time_series", file)
             if os.path.exists(filepath):
-                os.remove(filepath)
+                if file != "file_exists.csv":
+                    os.remove(filepath)
 
         filename_3 = "temperatures_heat_pump.csv"
         filepath_3 = os.path.join(self.user_inputs_pvcompare_directory, filename_3)
@@ -418,7 +419,8 @@ class TestCalculateCopsAndEers:
         for file in files:
             filepath = os.path.join(self.mvs_inputs_directory, "time_series", file)
             if os.path.exists(filepath):
-                os.remove(filepath)
+                if file != "file_exists.csv":
+                    os.remove(filepath)
 
         filename_3 = "temperatures_heat_pump.csv"
         filepath_3 = os.path.join(self.user_inputs_pvcompare_directory, filename_3)
@@ -559,7 +561,8 @@ class TestCalculateCopsAndEers:
         for file in files:
             filepath = os.path.join(self.mvs_inputs_directory, "time_series", file)
             if os.path.exists(filepath):
-                os.remove(filepath)
+                if file != "file_exists.csv":
+                    os.remove(filepath)
 
         filename_3 = "temperatures_chiller.csv"
         filepath_3 = os.path.join(self.user_inputs_pvcompare_directory, filename_3)
@@ -913,6 +916,11 @@ class TestAddSectorCoupling:
 
     def test_add_sector_coupling_heat_pump_file_already_exists(self, select_conv_tech):
         select_conv_tech(columns="heat_pump_file_exists")
+
+        original_data_conversion = pd.read_csv(
+            self.filename_conversion, header=0, index_col=0
+        )
+
         hc.add_sector_coupling(
             weather=self.weather_2019,
             lat=self.lat,
@@ -932,10 +940,17 @@ class TestAddSectorCoupling:
         df = pd.read_csv(self.filename_conversion, header=0, index_col=0)
         assert ("file_exists.csv" in df.loc["efficiency"].heat_pump_file_exists) == True
 
+        original_data_conversion.to_csv(self.filename_conversion, na_rep="NaN")
+
     def test_add_sector_coupling_heat_pump_file_already_exists_overwrite_True(
         self, select_conv_tech
     ):
         select_conv_tech(columns="heat_pump_file_exists")
+
+        original_data_conversion = pd.read_csv(
+            self.filename_conversion, header=0, index_col=0
+        )
+
         hc.add_sector_coupling(
             weather=self.weather_2019,
             lat=self.lat,
@@ -958,8 +973,15 @@ class TestAddSectorCoupling:
             in df.loc["efficiency"].heat_pump_file_exists
         ) == True
 
+        original_data_conversion.to_csv(self.filename_conversion, na_rep="NaN")
+
     def test_add_sector_coupling_heat_pump_file_created(self, select_conv_tech):
         select_conv_tech(columns="heat_pump_file_non_existent")
+
+        original_data_conversion = pd.read_csv(
+            self.filename_conversion, header=0, index_col=0
+        )
+
         hc.add_sector_coupling(
             weather=self.weather,
             lat=self.lat,
@@ -982,8 +1004,15 @@ class TestAddSectorCoupling:
             in df.loc["efficiency"].heat_pump_file_non_existent
         ) == True
 
+        original_data_conversion.to_csv(self.filename_conversion, na_rep="NaN")
+
     def test_add_sector_coupling_heat_pump_constant_efficiency(self, select_conv_tech):
         select_conv_tech(columns="heat_pump_constant_eff")
+
+        original_data_conversion = pd.read_csv(
+            self.filename_conversion, header=0, index_col=0
+        )
+
         hc.add_sector_coupling(
             weather=self.weather,
             lat=self.lat,
@@ -1002,6 +1031,8 @@ class TestAddSectorCoupling:
         # check efficiency
         df = pd.read_csv(self.filename_conversion, header=0, index_col=0)
         assert float(df.loc["efficiency"].heat_pump_constant_eff) == 0.9
+
+        original_data_conversion.to_csv(self.filename_conversion, na_rep="NaN")
 
     def test_add_sector_coupling_multiple_heat_pumps(self):
         pass
