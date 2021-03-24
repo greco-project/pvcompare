@@ -22,6 +22,7 @@ Here is a template for new release sections
 ### Added
 -
 ### Changed
+- Divided check boxes in PR template into required checks and checks that do not apply to every PR, deleted the check box "Apply black" and added helpful notes (#266)
 -
 ### Removed
 -
