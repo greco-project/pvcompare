@@ -23,6 +23,8 @@ Here is a template for new release sections
 
 ### Added
 - Description of KPIs were added to the RTD that are used for evaluating the autonomy of the system (#261)
+- "How to release" section in `contributing.md` (#259)
+
 ### Changed
 - The evaluated period is no longer processed as integer but as float. Hence it is possible to simulate time periods that are for instance shorter than a day (#265)
 ### Removed
