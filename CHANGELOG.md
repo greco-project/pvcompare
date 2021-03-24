@@ -15,23 +15,31 @@ Here is a template for new release sections
 -
 ### Removed
 -
+### Fixed
+-
 ```
 
 ## [Unreleased]
 
 ### Added
--
+- Description of KPIs were added to the RTD that are used for evaluating the autonomy of the system (#261)
+- "How to release" section in `contributing.md` (#259)
+
 ### Changed
+- The evaluated period is no longer processed as integer but as float. Hence it is possible to simulate time periods that are for instance shorter than a day (#265)
 - Divided check boxes in PR template into required checks and checks that do not apply to every PR, deleted the check box "Apply black" and added helpful notes (#266)
--
+
 ### Removed
 -
+
 ### Fixed
 - Bug fix `fixcosts.csv` in test data (#263)
 - Bug fix in setup.py (#263)
+- Bug in calculation of the self-consumption was fixed (#261)
 
 ## [0.0.1] - 2021-03-22
 
 Note that changes are tracked from next version.
 
-
+### Fixed
+- ...
