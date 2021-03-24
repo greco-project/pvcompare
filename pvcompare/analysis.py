@@ -707,8 +707,9 @@ def postprocessing_kpi(
             - file_sheet3.at["Total_consumption_from_energy_providerElectricity", 0]
         ) / file_sheet3.at["Total_demandElectricity", 0]
         file_sheet3.at["Onsite energy fraction", 0] = (
-            file_sheet3.at["Total_demandElectricity", 0]
+            file_sheet3.at["Total internal renewable generation", 0]
             - file_sheet3.at["Total_feedinElectricity", 0]
+            - file_sheet3.at["Total_excessElectricity", 0]
         ) / file_sheet3.at["Total internal renewable generation", 0]
 
         # save excel sheets
