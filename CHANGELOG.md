@@ -33,6 +33,7 @@ Here is a template for new release sections
 - Bug fix `fixcosts.csv` in test data (#263)
 - Bug fix in setup.py (#263)
 - Bug in calculation of the self-consumption was fixed (#261)
+- Hot fix: install MVS with option `[report]` to install missing packages (#270) 
 
 ## [0.0.1] - 2021-03-22
 
