@@ -19,5 +19,6 @@ Also the following steps were realized (if applies):
 - [x] Done
 
 In case of an error due to linting run `black . --exclude docs/` and push your changes.
+Note that in case you do not fix a whole issue you should start your PR with `Address #xyz`.
 
 <sub>*For more information on how to contribute check the [CONTRIBUTING.md](https://github.com/rl-institut/mvs_eland/blob/dev/CONTRIBUTING.md).*<sub>
