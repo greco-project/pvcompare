@@ -123,7 +123,7 @@ Currently *pvcompare* is not released on pypi, but only on github. Please follow
 3. Add the structure for a new `unreleased` version to the [`CHANGELOG.md`](https://github.com/greco-project/pvcompare/blob/dev/CHANGELOG.md):
     ```
     ## [unreleased]
-    -
+
     ### Added
     -
     ### Changed
