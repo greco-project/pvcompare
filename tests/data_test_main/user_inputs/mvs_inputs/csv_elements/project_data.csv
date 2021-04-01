@@ -6,3 +6,4 @@ project_id,str,1
 project_name,str,net zero energy community
 scenario_id,str,1
 scenario_name,str,Scenario_B2
+scenario_description,str,Simulation of test_main.py

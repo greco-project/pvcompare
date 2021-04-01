@@ -1,13 +1,12 @@
-from pvcompare import check_inputs
 import pvcompare.main as main
 import pvcompare.constants as constants
 import os
 import pandas as pd
+import numpy as np
 import shutil
 import glob
 import matplotlib.pyplot as plt
 import logging
-import numpy as np
 import seaborn as sns
 import sys
 
@@ -191,25 +190,24 @@ def loop_pvcompare(
 
             number_of_storeys = loop_dict["start"]
             while number_of_storeys <= loop_dict["stop"]:
-                try:
-                    single_loop_pvcompare(
-                        scenario_name=scenario_name,
-                        storeys=number_of_storeys,
-                        country=country,
-                        latitude=latitude,
-                        longitude=longitude,
-                        year=year,
-                        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
-                        user_inputs_mvs_directory=user_inputs_mvs_directory,
-                        outputs_directory=outputs_directory,
-                        plot=False,
-                        pv_setup=pv_setup,
-                        loop_output_directory=loop_output_directory,
-                        step=number_of_storeys,
-                        loop_type=loop_type,
-                    )
-                except Exception:
-                    pass
+
+                single_loop_pvcompare(
+                    scenario_name=scenario_name,
+                    storeys=number_of_storeys,
+                    country=country,
+                    latitude=latitude,
+                    longitude=longitude,
+                    year=year,
+                    user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+                    user_inputs_mvs_directory=user_inputs_mvs_directory,
+                    outputs_directory=outputs_directory,
+                    plot=False,
+                    pv_setup=pv_setup,
+                    loop_output_directory=loop_output_directory,
+                    step=number_of_storeys,
+                    loop_type=loop_type,
+                )
+
                 number_of_storeys = number_of_storeys + loop_dict["step"]
 
         elif loop_type is "technology":
@@ -274,11 +272,11 @@ def loop_pvcompare(
                 temp_high = temp_high + loop_dict["step"]
 
     logging.info("starting postprocessing KPI")
-    # postprocessing_kpi(
-    #     scenario_name=scenario_name,
-    #     outputs_directory=outputs_directory,
-    #     variable_name=loop_type,
-    # )
+    postprocessing_kpi(
+        scenario_name=scenario_name,
+        variable_name=loop_type,
+        outputs_directory=outputs_directory,
+    )
 
 
 def single_loop_pvcompare(
@@ -529,7 +527,12 @@ def loop_mvs(
     )
 
 
-def postprocessing_kpi(scenario_name, variable_name, outputs_directory=None):
+def postprocessing_kpi(
+    scenario_name,
+    variable_name,
+    user_inputs_pvcompare_directory=None,
+    outputs_directory=None,
+):
     """
     Overwrites all output excel files "timeseries_all_flows.xlsx" and "scalars.xlsx"
     in loop output directory of a scenario with modified KPI's.
@@ -538,6 +541,8 @@ def postprocessing_kpi(scenario_name, variable_name, outputs_directory=None):
     2) Creates new sheets in scalars.xlsx with KPI's adjusted to the new demand.
     :param scenario_name: str
         scenario name
+    :param user_inputs_pvcompare_directory: str
+        pvcompare inputs directory
     :param outputs_directory: str
         output directory
     :return:
@@ -549,6 +554,38 @@ def postprocessing_kpi(scenario_name, variable_name, outputs_directory=None):
         scenario_folder = os.path.join(outputs_directory, scenario_name)
         if not os.path.isdir(scenario_folder):
             logging.warning(f"The scenario folder {scenario_name} does not exist.")
+    if user_inputs_pvcompare_directory == None:
+        user_inputs_pvcompare_directory = (
+            constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        )
+
+    # Get stratified TES inputs
+    strat_tes_inputs = os.path.join(
+        user_inputs_pvcompare_directory, "stratified_thermal_storage.csv"
+    )
+    if os.path.exists(strat_tes_inputs):
+        strat_tes = pd.read_csv(strat_tes_inputs, index_col=0)
+        heat_capacity = 4195.52
+        density = 971.803
+        temp_h = strat_tes.at["temp_h", "var_value"]
+        temp_c = strat_tes.at["temp_c", "var_value"]
+        diameter = strat_tes.at["diameter", "var_value"]
+
+    # Get number of households in simulation
+    building_params = pd.read_csv(
+        os.path.join(user_inputs_pvcompare_directory, "building_parameters.csv"),
+        index_col=0,
+    )
+
+    # Calculate the toal number of households
+    # and hence obtain number of plants in simulation by assuming
+    # that every household has one plant
+    total_number_households = (
+        float(building_params.at["number of houses", "value"])
+        * float(building_params.at["number of storeys", "value"])
+        * (float(building_params.at["population per storey", "value"]) / 4)
+    )
+
     # # loop over all loop output folders with variable name
     loop_output_directory = os.path.join(
         scenario_folder, "loop_outputs_" + str(variable_name)
@@ -562,7 +599,15 @@ def postprocessing_kpi(scenario_name, variable_name, outputs_directory=None):
     for filepath_s in list(
         glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
     ):
+        # read sheets of scalars
         scalars = pd.read_excel(filepath_s, sheet_name=None)
+
+        file_sheet1 = scalars["cost_matrix"]
+        file_sheet2 = scalars["scalar_matrix"]
+        file_sheet2.index = file_sheet2["label"]
+        file_sheet3 = scalars["scalars"]
+        file_sheet3.index = file_sheet3.iloc[:, 0]
+        file_sheet4 = scalars["KPI individual sectors"]
 
         # get variable value from filepath
         split_path = filepath_s.split("_")
@@ -574,9 +619,12 @@ def postprocessing_kpi(scenario_name, variable_name, outputs_directory=None):
         for filepath_t in list(
             glob.glob(os.path.join(loop_output_directory, "timeseries", "*.xlsx"))
         ):
+            heat_exists = False
             if filepath_t.endswith(ending) is True:
+                # add heat demand to electricty demand it heat demand exists
                 timeseries = pd.read_excel(filepath_t, sheet_name="Electricity bus")
                 if "Heat pump" in timeseries.columns:
+                    heat_exists = True
                     electricity_demand = (
                         timeseries["Electricity demand"] + timeseries["Heat pump"]
                     )
@@ -588,13 +636,60 @@ def postprocessing_kpi(scenario_name, variable_name, outputs_directory=None):
                     )
                 else:
                     electricity_demand = timeseries["Electricity demand"]
-        # read sheets of scalars
-        file_sheet1 = scalars["cost_matrix"]
-        file_sheet2 = scalars["scalar_matrix"]
-        file_sheet2.index = file_sheet2["label"]
-        file_sheet3 = scalars["scalars"]
-        file_sheet3.index = file_sheet3.iloc[:, 0]
-        file_sheet4 = scalars["KPI individual sectors"]
+
+                if heat_exists == True:
+                    timeseries_heat = pd.read_excel(filepath_t, sheet_name="Heat bus")
+                    if "TES output power" in timeseries_heat:
+                        # Calculate maximum capacity, nominal capacity and height
+                        # of one storage unit
+                        maximal_tes_capacity = file_sheet2.at[
+                            "TES storage capacity", "optimizedAddCap"
+                        ]
+                        # There is 15 % of unused storage volume according to
+                        # https://op.europa.eu/en/publication-detail/-/publication/312f0f62-dfbd-11e7-9749-01aa75ed71a1/language-en
+                        # The nominal storage capacity is hence the maximum storage capacity multiplied by 1.15
+                        nominal_storage_capacity = maximal_tes_capacity * 1.15
+                        # Calculate volume of TES using oemof-thermal's equations
+                        # in stratified_thermal_storage.py
+                        volume = (
+                            maximal_tes_capacity
+                            * 1000
+                            / (heat_capacity * density * (temp_h - temp_c) * (1 / 3600))
+                        )
+                        # Calculate height of TES using oemof-thermal's equations
+                        # in stratified_thermal_storage.py
+                        height = volume / (0.25 * np.pi * diameter ** 2)
+                        file_sheet3.at[
+                            "Installed capacity per TES", "Unnamed: 0"
+                        ] = "Installed capacity per TES"
+                        # Divide total capacity through number of households = number of plants
+                        file_sheet3.at["Installed capacity per TES", 0] = (
+                            maximal_tes_capacity / total_number_households
+                        )
+                        file_sheet3.at[
+                            "Installed nominal capacity per TES", "Unnamed: 0"
+                        ] = "Installed nominal capacity per TES"
+                        # Divide total nominal capacity through number of households = number of plants
+                        file_sheet3.at["Installed nominal capacity per TES", 0] = (
+                            nominal_storage_capacity / total_number_households
+                        )
+                        file_sheet3.at[
+                            "Height of each TES", "Unnamed: 0"
+                        ] = "Height of each TES"
+                        # Divide total height of all TES through number of households = number of plants
+                        file_sheet3.at["Height of each TES", 0] = (
+                            height / total_number_households
+                        )
+                    if "Heat pump" in timeseries_heat.columns:
+                        # Calculate maximum capacity of one heat pump unit and write to scalars
+                        maximal_hp_capacity = max(timeseries_heat["Heat pump"])
+                        file_sheet3.at[
+                            "Installed capacity per heat pump", "Unnamed: 0"
+                        ] = "Installed capacity per heat pump"
+                        # Divide total capacity through number of households = number of plants
+                        file_sheet3.at["Installed capacity per heat pump", 0] = (
+                            maximal_hp_capacity / total_number_households
+                        )
 
         # recalculate KPI
         file_sheet2.at["Electricity demand", "total_flow"] = sum(electricity_demand) * (
@@ -602,16 +697,23 @@ def postprocessing_kpi(scenario_name, variable_name, outputs_directory=None):
         )
         file_sheet3.at["Total_demandElectricity", 0] = sum(electricity_demand) * (-1)
         file_sheet3.at["Degree of NZE", 0] = (
-            file_sheet3.at["Total internal renewable generation", 0]
-            - file_sheet3.at["Total_excessElectricity", 0]
-        ) / file_sheet3.at["Total_demandElectricity", 0]
+            1
+            + (
+                file_sheet3.at["Total_feedinElectricity", 0]
+                - file_sheet3.at[
+                    "Total_consumption_from_energy_provider_electricity_equivalent", 0
+                ]
+            )
+            / file_sheet3.at["Total_demandElectricity", 0]
+        )
         file_sheet3.at["Degree of autonomy", 0] = (
             file_sheet3.at["Total_demandElectricity", 0]
             - file_sheet3.at["Total_consumption_from_energy_providerElectricity", 0]
         ) / file_sheet3.at["Total_demandElectricity", 0]
         file_sheet3.at["Onsite energy fraction", 0] = (
-            file_sheet3.at["Total_demandElectricity", 0]
+            file_sheet3.at["Total internal renewable generation", 0]
             - file_sheet3.at["Total_feedinElectricity", 0]
+            - file_sheet3.at["Total_excessElectricity", 0]
         ) / file_sheet3.at["Total internal renewable generation", 0]
 
         # save excel sheets
@@ -677,4 +779,9 @@ if __name__ == "__main__":
     #     scenario_name=scenario_name,
     # )
     #
-    postprocessing_kpi(scenario_name="Scenario_F6", variable_name = "storeys", outputs_directory=None)
+    postprocessing_kpi(
+        scenario_name="Scenario_F1_ohne_try",
+        variable_name="storeys",
+        user_inputs_pvcompare_directory=None,
+        outputs_directory=None,
+    )
