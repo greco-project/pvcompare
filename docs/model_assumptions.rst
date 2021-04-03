@@ -461,7 +461,7 @@ To model a water or brine source heat pump, you can either
     .. code-block:: python
 
         mode,technology,quality_grade,temp_high,temp_low,factor_icing,temp_threshold_icing
-        heat_pump,brine-water,0.53,65,16,None,None
+        heat_pump,brine-water,0.53,50,16,None,None
 
     (In this example with constant inlet temperature **temp_low**)
 
@@ -470,7 +470,7 @@ To model a brine source heat pump from an automatically calculated ground temper
     .. code-block:: python
 
         mode,technology,quality_grade,temp_high,temp_low,factor_icing,temp_threshold_icing
-        heat_pump,brine-water,0.53,65,,None,None
+        heat_pump,brine-water,0.53,50,,None,None
 
     (In this example without passed inlet temperature **temp_low**)
 
