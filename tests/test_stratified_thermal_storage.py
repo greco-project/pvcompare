@@ -473,20 +473,11 @@ class TestCalcStratTesParam:
             user_inputs_mvs_directory=TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
         )
         expected_rel_losses = [
-            0.00085445,
-            0.001039,
-            0.00121801,
-            0.00129182,
-            0.00140255,
-            0.00029527,
+            0.00340642, 0.00417536, 0.00492123, 0.00522881, 0.00569018, 0.00107652
         ]
         expected_abs_losses = [
-            1.41958595e-05,
-            1.61868636e-05,
-            1.81181376e-05,
-            1.89145392e-05,
-            2.01091417e-05,
-            8.16311694e-06,
+            1.00147508e-05, 1.20057549e-05, 1.39370289e-05, 1.47334306e-05,
+            1.59280330e-05, 3.98200826e-06
         ]
 
         assert loss_rate == 0.00092273109671008
@@ -542,14 +533,14 @@ class TestCalcStratTesParam:
             os.path.join(
                 TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
                 "time_series",
-                "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv",
+                "fixed_thermal_losses_absolute_2017_53.2_13.2_40.0.csv",
             )
         )
         assert os.path.exists(
             os.path.join(
                 TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
                 "time_series",
-                "fixed_thermal_losses_relative_2017_53.2_13.2_60.0.csv",
+                "fixed_thermal_losses_relative_2017_53.2_13.2_40.0.csv",
             )
         )
 
@@ -637,13 +628,13 @@ class TestAddStratTes:
         filename = os.path.join(
             TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
-            "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv",
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_40.0.csv",
         )
         assert os.path.exists(filename) == True
         # filename in storage_TES.csv does not change
         df = pd.read_csv(self.filename_storage_xx, header=0, index_col=0)
         assert (
-            "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv"
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_40.0.csv"
             in df.loc["fixed_thermal_losses_absolute"].item()
         ) == True
 
@@ -657,7 +648,7 @@ class TestAddStratTes:
         )
         df = pd.read_csv(self.filename_storage_xx, header=0, index_col=0)
         assert (
-            "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv"
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_40.0.csv"
             in df.loc["fixed_thermal_losses_absolute"].item()
         ) == True
 
@@ -683,13 +674,13 @@ class TestAddStratTes:
         filename = os.path.join(
             TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
-            "fixed_thermal_losses_absolute_2019_53.2_13.2_60.0.csv",
+            "fixed_thermal_losses_absolute_2019_53.2_13.2_40.0.csv",
         )
         assert os.path.exists(filename) == True
         # filename in storage_TES.csv overwritten
         df = pd.read_csv(self.filename_storage_xx, header=0, index_col=0)
         assert (
-            "fixed_thermal_losses_absolute_2019_53.2_13.2_60.0.csv"
+            "fixed_thermal_losses_absolute_2019_53.2_13.2_40.0.csv"
             in df.loc["fixed_thermal_losses_absolute"].item()
         ) == True
 
@@ -700,24 +691,24 @@ class TestAddStratTes:
         filename_1 = os.path.join(
             TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
-            "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv",
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_40.0.csv",
         )
         filename_2 = os.path.join(
             TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
-            "fixed_thermal_losses_relative_2017_53.2_13.2_60.0.csv",
+            "fixed_thermal_losses_relative_2017_53.2_13.2_40.0.csv",
         )
 
         filename_3 = os.path.join(
             TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
-            "fixed_thermal_losses_relative_2019_53.2_13.2_60.0.csv",
+            "fixed_thermal_losses_relative_2019_53.2_13.2_40.0.csv",
         )
 
         filename_4 = os.path.join(
             TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
-            "fixed_thermal_losses_absolute_2019_53.2_13.2_60.0.csv",
+            "fixed_thermal_losses_absolute_2019_53.2_13.2_40.0.csv",
         )
 
         files = [filename_1, filename_2, filename_3, filename_4]
@@ -745,13 +736,13 @@ class TestAddStratTes:
         filename = os.path.join(
             TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
-            "fixed_thermal_losses_absolute_2018_53.2_13.2_60.0.csv",
+            "fixed_thermal_losses_absolute_2018_53.2_13.2_40.0.csv",
         )
         assert os.path.exists(filename) == False
         # filename in storage_TES.csv does not change
         df = pd.read_csv(self.filename_storage_xx, header=0, index_col=0)
         assert (
-            "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv"
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_40.0.csv"
             in df.loc["fixed_thermal_losses_absolute"].item()
         ) == True
 
@@ -762,12 +753,12 @@ class TestAddStratTes:
         filename_1 = os.path.join(
             TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
-            "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv",
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_40.0.csv",
         )
         filename_2 = os.path.join(
             TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
-            "fixed_thermal_losses_relative_2017_53.2_13.2_60.0.csv",
+            "fixed_thermal_losses_relative_2017_53.2_13.2_40.0.csv",
         )
         if os.path.exists(filename_1):
             os.remove(filename_1)
@@ -827,7 +818,7 @@ class TestAddStratTes_file_constant_losses:
         filename = os.path.join(
             TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
-            "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv",
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_40.0.csv",
         )
 
         assert os.path.exists(filename) == False
@@ -844,24 +835,24 @@ class TestAddStratTes_file_constant_losses:
         filename_1 = os.path.join(
             TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
-            "fixed_thermal_losses_absolute_2017_53.2_13.2_60.0.csv",
+            "fixed_thermal_losses_absolute_2017_53.2_13.2_40.0.csv",
         )
         filename_2 = os.path.join(
             TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
-            "fixed_thermal_losses_relative_2017_53.2_13.2_60.0.csv",
+            "fixed_thermal_losses_relative_2017_53.2_13.2_40.0.csv",
         )
 
         filename_3 = os.path.join(
             TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
-            "fixed_thermal_losses_relative_2019_53.2_13.2_60.0.csv",
+            "fixed_thermal_losses_relative_2019_53.2_13.2_40.0.csv",
         )
 
         filename_4 = os.path.join(
             TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
             "time_series",
-            "fixed_thermal_losses_absolute_2019_53.2_13.2_60.0.csv",
+            "fixed_thermal_losses_absolute_2019_53.2_13.2_40.0.csv",
         )
 
         files = [filename_1, filename_2, filename_3, filename_4]
