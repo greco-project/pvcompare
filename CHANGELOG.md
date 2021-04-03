@@ -24,7 +24,8 @@ Here is a template for new release sections
 ### Added
 -
 ### Changed
--
+- The pvcompare input parameters have been revised (#)
+
 ### Removed
 -
 ### Fixed
