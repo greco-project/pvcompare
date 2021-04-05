@@ -28,7 +28,7 @@ Here is a template for new release sections
 ### Removed
 -
 ### Fixed
--
+- fix costs parameters for new BOS and module costs (#273)
 # Hot fixes
 - Hot fix: install MVS with option `[report]` to install missing packages (#270)
 - Hot fix: remove build for python 3.6 from `main.yml` github actions workflow (#270)
