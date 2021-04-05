@@ -6,7 +6,7 @@ installedCap,kWp,0
 age_installed,year,0
 lifetime,year,25
 development_costs,currency,0
-specific_costs,currency/unit,935
+specific_costs,currency/unit,934
 specific_costs_om,currency/unit/year,50
 dispatch_price,currency/kWh,0
 outflow_direction,str,PV bus
