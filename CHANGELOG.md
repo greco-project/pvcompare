@@ -24,7 +24,8 @@ Here is a template for new release sections
 ### Added
 -
 ### Changed
--
+- Improved "how to release" section in `contributing.md` with insights from last release (#275)
+
 ### Removed
 -
 ### Fixed
