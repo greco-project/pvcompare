@@ -24,7 +24,7 @@ Here is a template for new release sections
 ### Added
 -
 ### Changed
-- The pvcompare input parameters have been revised (#272)
+- The inlet temperatures of the heat pump and the stratified thermal storage have been revised in the pvcompare input parameters, adapting them in order to fit typical temperatures of the heating system (#272)
 
 ### Removed
 -
