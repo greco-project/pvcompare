@@ -29,7 +29,8 @@ Here is a template for new release sections
 ### Removed
 -
 ### Fixed
--
+- fix PV costs parameters and PSI lifetime (#273)
+- fix number of houses to 20 (8 flats per storey makes 40 flats per house with 5 storeys, makes 800 in total (and 480 for 3 storeys)) (#273)
 # Hot fixes
 - Hot fix: install MVS with option `[report]` to install missing packages (#270)
 - Hot fix: remove build for python 3.6 from `main.yml` github actions workflow (#270)
