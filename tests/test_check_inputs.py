@@ -317,7 +317,7 @@ class TestDemandProfiles:
         file = pd.read_csv(filename, index_col=0, header=0,)
 
         assert (
-            int(file.at["evaluated_period", "simulation_settings"])
+            float(file.at["evaluated_period", "simulation_settings"])
             == len(ts.index) / 24
         )
 

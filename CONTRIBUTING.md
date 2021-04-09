@@ -58,6 +58,12 @@ If a test fails, it is only due to what you changed (the test must passed before
   test names and error messages are there to help you find the error, please read them to try to
    debug yourself before seeking assistance.
 
+As some tests run full simulations they take a long time and are therefore not run at every push, but are disabled by default.
+Before you ask for a review please run all tests locally by:
+ ```bash
+EXECUTE_TESTS_ON=master pytest
+```
+
 #### Step 4: Submit a pull request (PR)
 
 Follow the [steps](https://help.github.com/en/articles/creating-a-pull-request) of the github help to create the PR.
@@ -88,3 +94,44 @@ After editing, build the documentation locally by running
 to check the results by opening the html files in the directory `pvcompare_docs`.
 
 An introduction to creating the readthedocs with Sphinx is given here: https://docs.readthedocs.io/en/stable/intro/getting-started-with-sphinx.html.
+
+## How to release
+
+Currently *pvcompare* is not released on pypi, but only on github. Please follow the instructions do create a new release on github. Check [GitHub Docs](https://docs.github.com/en/github/administering-a-repository/managing-releases-in-a-repository) for more information on releases.
+
+### Preparations
+1. Create a release branch by branching off from `dev` branch
+    ```bash
+    git checkout -b release/vX.Y.Z dev
+    ```
+    Please use [semantic versioning guidelines](https://semver.org/spec/v2.0.0.html) for `X`, `Y` and `Z`.
+2. In the release branch update the version number in [`__init__.py`](https://github.com/greco-project/pvcompare/blob/dev/pvcompare/__init__.py) and [`setup.py`](https://github.com/greco-project/pvcompare/blob/dev/setup.py).
+3. Adapt the header `[Unreleased]` of [Changelog.md](https://github.com/greco-project/pvcompare/blob/dev/CHANGELOG.md) with the version number and the date of the release in [ISO format](https://xkcd.com/1179/): `[Version] - YYYY-MM-DD`.
+4. Run all tests locally by `EXECUTE_TESTS_ON=master pytest`.
+5. If there are errors, fix them in the release branch.
+6. When `EXECUTE_TESTS_ON=master pytest` passes, push your release branch, create a pull request towards `master` and merge.
+
+### The actual release
+1. Draft a new release on [github](https://github.com/greco-project/pvcompare/releases/) and choose `master` as target.
+2. As tag version use `vX.Y.Z` please.
+3. Type a descriptive title and copy the [Changelog entries](https://github.com/greco-project/pvcompare/blob/dev/CHANGELOG.md) as description of the release.
+4. Use checkbox "this is a pre-release" to indicate that the model may be unstable.
+
+### After the release
+1. Locally, merge `release/vX.Y.Z` into `dev` and push to the remote version of dev.
+2. In your `dev` branch, set the version for next release in [`__init__.py`](https://github.com/greco-project/pvcompare/blob/dev/pvcompare/__init__.py) and [`setup.py`](https://github.com/greco-project/pvcompare/blob/dev/setup.py): for example `0.0.3dev`
+3. Add the structure for a new `unreleased` version to the [`CHANGELOG.md`](https://github.com/greco-project/pvcompare/blob/dev/CHANGELOG.md):
+    ```
+    ## [unreleased]
+
+    ### Added
+    -
+    ### Changed
+    -
+    ### Removed
+    -
+    ### Fixed
+    -
+    ```
+4. Commit and push your changes to `dev`.
+5. Party :)

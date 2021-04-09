@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name="pvcompare",
-    version="0.0.1dev",
+    version="0.0.3dev",
     description="Evaluating pv technologies in net zero energy communities.",
     url="https://github.com/greco-project/pvcompare",
     author="Reiner Lemoine Institut",
@@ -41,10 +41,11 @@ setup(
         "scipy",
         "maya~=0.6.1",
         "workalendar < 7.0.0",
-        "multi_vector_simulator==0.5.5",
+        "multi_vector_simulator[report]==0.5.5",
         "greco_technologies @ git+https://github.com/greco-project/greco_technologies.git@dev#egg=greco_technologies-0",
         "cpvlib @ git+https://github.com/isi-ies-group/cpvlib.git@2020-11#egg=cpvlib-0",
-        "mock>=3.0.5" "plotly==4.14.2",
+        "mock>=3.0.5",
+        "plotly==4.14.2",
         "seaborn",
         "Pyomo==5.7.2",
     ],
