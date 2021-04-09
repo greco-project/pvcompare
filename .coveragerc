@@ -2,3 +2,6 @@
 source =
     pvcompare
     tests
+    pvcompare/cpv
+    pvcompare/perosi
+    pvcompare/data
