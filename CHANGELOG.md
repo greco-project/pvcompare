@@ -22,9 +22,11 @@ Here is a template for new release sections
 ## [unreleased]
 
 ### Added
--
+- Add config file for RTD `readthedocs.yml` (#276)
+
 ### Changed
--
+- Move docs requirements from `docs/docs_requirements.txt ` to `setup.py` - now installed e.g. by `pip install -e .[dev, docs]` (#276)
+
 ### Removed
 -
 ### Fixed
