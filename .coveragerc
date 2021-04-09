@@ -1,2 +1,4 @@
 [run]
-source = pvcompare
+source =
+    pvcompare
+    tests
