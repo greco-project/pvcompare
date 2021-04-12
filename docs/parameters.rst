@@ -374,13 +374,13 @@ The following list will give a brief introduction into the description of the cs
 
     1. **var_name**: var_value, var_unit
     2. **height**: Empty to model investment optimization or numeric to model with a fix storage size, m
-    3. **diameter**: 0.99 (cf. data sheet of `[TH 1000] <https://www.schindler-hofmann.de/content/pdf/prospekte/S+H_Pufferspeicher+Kombispeicher.pdf>`_ ), m
+    3. **diameter**: 0.79 (cf. inner diameter in data sheet of `[TH 1000] <https://www.schindler-hofmann.de/content/pdf/prospekte/S+H_Pufferspeicher+Kombispeicher.pdf>`_ ), m
     4. **temp_h**: 40 (Assuming a surface heating temperature of 40 °C), degC
     5. **temp_c**: 34 (Considering temperature spread of 6 K of inlet and outlet temperature [4]), degC
     6. **s_iso**: 100 (cf. [TH 1000]), mm
     7. **lamb_iso**: 0.03 (Assumption taken from [5]), W/(m*K)
-    8. **alpha_inside**: 10 (Calculated with calculations in section 3.1.3.3 of [5]), W/(m2*K)
-    9. **alpha_outside** 2.31 (Calculated with calculations in section 3.1.3.4 of [5]), W/(m2*K)
+    8. **alpha_inside**: 4.3 (Calculated with calculations in [6]), W/(m2*K)
+    9. **alpha_outside** 3.17 (Calculated with calculations in [6]), W/(m2*K)
 
 * list_of_workalendar:
     *list of countries for which a python.workalendar [3] exists with the column name "country".*
@@ -397,3 +397,6 @@ The following list will give a brief introduction into the description of the cs
 
 [5] Beikircher, Thomas & Buttinger, Frank & Rottmann, Matthias & Herzog, Fabian & Konrad, Martin & Reuß, Manfred & Beikircher, Redaktion, 2013: Superisolierter Heißwasser-Langzeitwärmespeicher : Abschlussbericht zu BMU-Projekt Förderkennzeichen 0325964A, Projektlaufzeit: 01.05.2010 - 31.10.2012. 10.2314/GBV:749701188.
 \* the described csv files are to be added to the input folder accordingly.
+
+[6] In:Klan, H, 2002: Wärmeübergang durch freie Konvektion an umströmten Körpern. Berlin, Heidelberg: Springer Berlin Heidelberg, ISBN 978-3-662-10743-0, 567-591
+
