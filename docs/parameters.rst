@@ -347,7 +347,6 @@ The following list will give a brief introduction into the description of the cs
     *Parameters that describe characteristics of the heat pumps and chillers in the simulated energy system.*
     *Values below assumed for each heat pump technology from research and comparison of three models, each of a different manufacturer.*
     *For each technology the quality grade has been calculated from the mean quality grade of the three models.*
-    *Maximal and minimal operation ranges had been considered in order to make a reasonable assumption regarding* **temp_high** *and* **temp_low** *.*
 
     1. **mode**: str, options: 'heat_pump' or 'chiller'
     2. **technology**: str, options: 'air-air', 'air-water' or 'brine-water' (These three technologies can be processed so far. Default: If missing or different the plant will be modeled as air source)
@@ -357,9 +356,9 @@ The following list will give a brief introduction into the description of the cs
         c. **brine-to-water heat pump**: default: 0.53, Average quality grade of the following heat pump models: `WPS 6K-1 of Bosch Thermotechnik GmbH – Buderus <https://productsde.buderus.com/buderus/productsde.buderus.com/broschueren/buderus-broschuere-logatherm-wps1-wpsk1-wsw196itts-110920.pdf>`_, `WPF 05 of STIEBEL ELTRON GmbH & Co. KG <https://www.stiebel-eltron.de/de/home/produkte-loesungen/erneuerbare_energien/waermepumpe/sole-wasser-waermepumpen/wpf_04_05_07_10_1316/wpf_16/technische-daten.product.pdf>`_ and `5008.5Ai of WATERKOTTE GmbH <https://www.waterkotte.de/fileadmin/data/editor/6_systempartner/Prospekt/EcoTouch_5029_Ai_D_0519.pdf>`_
         d. **air-to-air chiller**: 0.3 (Obtained from `monitored data <https://oemof-thermal.readthedocs.io/en/latest/validation_compression_heat_pumps_and_chillers.html>`_ of the GRECO project)
     3. **temp_high**: float, temperature in °C of the sink (external outlet temperature at the condenser),
-        a. **air-to-air heat pump**: 26 (Maximal operation temperature in data sheet of RAC-50WXE Hitachi)
-        b. **air-to-water heat pump**: 60 (Maximal operation temperature in data sheet of 221.A10 of Viessmann Climate Solutions SE)
-        c. **brine-to-water heat pump**: 65 (Maximal operation temperature in data sheet of WPF 05 of STIEBEL ELTRON GmbH & Co. KG)
+        a. **air-to-air heat pump**: 38, Internal condensor temperature assuming a room temperature of 20 °C, adding a dT of 2 K to heat exchange between air and external circuit, considering temperature spread of 6 K of the external medium [4] and assuming a 10 K temperature difference between external and internal condensor flow
+        b. **air-to-water heat pump**: 50, Internal condensor temperature assuming a surface heating temperature of 40 °C (see for instance this `advisor of Vaillant <https://www.vaillant.de/heizung/heizung-verstehen/tipps-rund-um-ihre-heizung/vorlauf-rucklauftemperatur/>`_) and a 10 K temperature difference between external and internal condensor flow
+        c. **brine-to-water heat pump**: 50, Internal condensor temperature assuming a surface heating temperature of 40 °C (see for instance this `advisor of Vaillant <https://www.vaillant.de/heizung/heizung-verstehen/tipps-rund-um-ihre-heizung/vorlauf-rucklauftemperatur/>`_) and a 10 K temperature difference between external and internal condensor flow
         d. **air-to-air chiller**: Passed empty or with *NaN* in order to model from ambient temperature
     4. **temp_low**: float, temperature in °C of the source (external outlet temperature at the evaporator),
         a. **air source heat pump**: Passed empty or with *NaN* in order to model from ambient temperature
@@ -368,6 +367,20 @@ The following list will give a brief introduction into the description of the cs
         d. **air-to-air chiller**: 15 (The low temperature has been set for now to 15° C, a temperature lower the comfort temperature of 20–22 °C. The chiller has not been implemented in the model yet. However, should it been done so in the future, these temperatures must be researched and adjusted.)
     5. **factor_icing**: float or None, COP reduction caused by icing, only for `mode` 'heat_pump', default: None
     6. **temp_threshold_icing**: float or None, Temperature below which icing occurs, only for `mode` 'heat_pump', default: None
+
+* stratified_thermal_storage.csv:
+    *Parameters that describe characteristics of the stratified thermal storage in the simulated energy system.*
+    *The parameters have been set on the example of the stratified thermal storage TH 1000 of Schindler+Hofmann GmbH &  Co. KG*
+
+    1. **var_name**: var_value, var_unit
+    2. **height**: Empty to model investment optimization or numeric to model with a fix storage size, m
+    3. **diameter**: 0.79 (cf. inner diameter in data sheet of `[TH 1000] <https://www.schindler-hofmann.de/content/pdf/prospekte/S+H_Pufferspeicher+Kombispeicher.pdf>`_ ), m
+    4. **temp_h**: 40 (Assuming a surface heating temperature of 40 °C), degC
+    5. **temp_c**: 34 (Considering temperature spread of 6 K of inlet and outlet temperature [4]), degC
+    6. **s_iso**: 100 (cf. [TH 1000]), mm
+    7. **lamb_iso**: 0.03 (Assumption taken from [5]), W/(m*K)
+    8. **alpha_inside**: 4.3 (Calculated with calculations in [6]), W/(m2*K)
+    9. **alpha_outside** 3.17 (Calculated with calculations in [6]), W/(m2*K)
 
 * list_of_workalendar:
     *list of countries for which a python.workalendar [3] exists with the column name "country".*
@@ -380,4 +393,10 @@ The following list will give a brief introduction into the description of the cs
 
 [3] Workalendar https://pypi.org/project/workalendar/
 
+[4] Felix Ziegler, Dr. Ing, 1997: Sorptionswärmepumpen. Erding, Forschungsberichte des Deutschen Kälte- und Klimatechnischen Vereins Nr. 57, habilitation
+
+[5] Beikircher, Thomas & Buttinger, Frank & Rottmann, Matthias & Herzog, Fabian & Konrad, Martin & Reuß, Manfred & Beikircher, Redaktion, 2013: Superisolierter Heißwasser-Langzeitwärmespeicher : Abschlussbericht zu BMU-Projekt Förderkennzeichen 0325964A, Projektlaufzeit: 01.05.2010 - 31.10.2012. 10.2314/GBV:749701188.
 \* the described csv files are to be added to the input folder accordingly.
+
+[6] In:Klan, H, 2002: Wärmeübergang durch freie Konvektion an umströmten Körpern. Berlin, Heidelberg: Springer Berlin Heidelberg, ISBN 978-3-662-10743-0, 567-591
+
