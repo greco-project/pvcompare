@@ -68,3 +68,12 @@ jobs:
       - name: Test with pytest
         run: |
           coverage run -m pytest tests/
+
+      - name: Check test coverage
+          run: coverage report -m
+
+      - name: Report to coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.coverage_token }}
+          COVERALLS_SERVICE_NAME: github
+        run: coveralls
