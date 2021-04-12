@@ -1,3 +1,10 @@
 [run]
-omit = tests/*
-source = pvcompare
+source =
+    pvcompare
+    tests
+parallel = true
+omit = *test*
+
+[report]
+show_missing = true
+precision = 2
