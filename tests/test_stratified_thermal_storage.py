@@ -473,23 +473,23 @@ class TestCalcStratTesParam:
             user_inputs_mvs_directory=TEST_USER_INPUTS_MVS_SECTOR_COUPLING,
         )
         expected_rel_losses = [
-            0.00340642,
-            0.00417536,
-            0.00492123,
-            0.00522881,
-            0.00569018,
-            0.00107652,
+            0.00425218,
+            0.00521203,
+            0.0061431,
+            0.00652704,
+            0.00710296,
+            0.0013438,
         ]
         expected_abs_losses = [
-            1.00147508e-05,
-            1.20057549e-05,
-            1.39370289e-05,
-            1.47334306e-05,
-            1.59280330e-05,
-            3.98200826e-06,
+            6.35227611e-06,
+            7.61515406e-06,
+            8.84014567e-06,
+            9.34529686e-06,
+            1.01030236e-05,
+            2.52575591e-06,
         ]
 
-        assert loss_rate == 0.00092273109671008
+        assert loss_rate == 0.0011518307999631612
         for item, value in enumerate(fixed_losses_relative):
             assert np.round(value, 7) == np.round(expected_rel_losses[item], 7)
         for item, value in enumerate(fixed_losses_absolute):
