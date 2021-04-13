@@ -202,9 +202,9 @@ class ScenariosSectorCoupling:
         ]
 
         self.hp_pvcompare_param = ["technology", "quality_grade", "temp_high"]
-        self.aahp_pvcompare_values = ["air-air", 0.1852, 26]
-        self.awhp_pvcompare_values = ["air-water", 0.403, 60]
-        self.bwhp_pvcompare_values = ["brine-water", 0.53, 65]
+        self.aahp_pvcompare_values = ["air-air", 0.1852, 38]
+        self.awhp_pvcompare_values = ["air-water", 0.403, 50]
+        self.bwhp_pvcompare_values = ["brine-water", 0.53, 50]
 
         # Set paths
         self.user_inputs_pvcompare_directory = (
