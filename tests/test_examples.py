@@ -20,19 +20,40 @@ EXECUTE_TESTS_ON = os.environ.get("EXECUTE_TESTS_ON", "skip")
 TESTS_ON_MASTER = "master"
 
 
-class TestCalculateCopsAndEers:
+class TestExamples:
     @classmethod
     def setup_class(self):
         self.outputs_directory = constants.EXAMPLE_OUTPUTS_DIRECTORY
         self.elec_sector_path = os.path.join(
             constants.EXAMPLE_DIRECTORY, "run_pvcompare_example_electricity_sector.py"
         )
+        self.elec_sector_scenario_name = "Scenario_example_electricity_sector"
+
         self.coupled_sector_path = os.path.join(
             constants.EXAMPLE_DIRECTORY, "run_pvcompare_example_sector_coupling.py"
         )
+        self.coupled_sector_scenario_name = "Scenario_example_sector_coupling"
+
         self.coupled_sector_gas_path = os.path.join(
             constants.EXAMPLE_DIRECTORY, "run_pvcompare_example_sector_coupling_gas.py"
         )
+        self.coupled_sector_gas_scenario_name = (
+            "Scenario_example_sector_coupling_gas_heating"
+        )
+
+    def teardown_method(self):
+        scenarios = [
+            self.elec_sector_scenario_name,
+            self.coupled_sector_scenario_name,
+            self.coupled_sector_gas_scenario_name,
+        ]
+        # Delete example output directories of all tests they existing
+        for scenario in scenarios:
+            dir_name = os.path.join(
+                self.outputs_directory, scenario + "_test_run_through",
+            )
+            if os.path.exists(dir_name):
+                shutil.rmtree(dir_name, ignore_errors=True)
 
     # this ensures that the test is only run if explicitly executed, i.e. not when the `pytest` command
     # alone is called
@@ -44,7 +65,7 @@ class TestCalculateCopsAndEers:
     @mock.patch("argparse.ArgumentParser.parse_args", return_value=argparse.Namespace())
     def test_run_pvcompare_example_electricity_sector(self, margs):
         exit_code = 1
-        scenario_name = "Scenario_example_electricity_sector"
+        scenario_name = self.elec_sector_scenario_name
         # Read run_pvcompare_example_electricity_sector.py
         elec_sector = open(self.elec_sector_path).read()
 
@@ -76,11 +97,7 @@ class TestCalculateCopsAndEers:
         elec_sector_modified.close()
 
         # Delete example output directory of this test
-        dir_name = os.path.join(
-            self.outputs_directory, scenario_name + "_test_run_through",
-        )
-        if os.path.exists(dir_name):
-            shutil.rmtree(dir_name, ignore_errors=True)
+        TestExamples.teardown_method(self)
 
     # # this ensure that the test is only ran if explicitly executed, ie not when the `pytest` command
     # # alone is called
@@ -92,7 +109,7 @@ class TestCalculateCopsAndEers:
     @mock.patch("argparse.ArgumentParser.parse_args", return_value=argparse.Namespace())
     def test_run_pvcompare_example_sector_coupling(self, margs):
         exit_code = 1
-        scenario_name = "Scenario_example_sector_coupling"
+        scenario_name = self.coupled_sector_scenario_name
         # Read run_pvcompare_example_sector_coupling.py
         coupled_sector = open(self.coupled_sector_path).read()
 
@@ -124,11 +141,7 @@ class TestCalculateCopsAndEers:
         coupled_sector_modified.close()
 
         # Delete example output directory of this test
-        dir_name = os.path.join(
-            self.outputs_directory, scenario_name + "_test_run_through",
-        )
-        if os.path.exists(dir_name):
-            shutil.rmtree(dir_name, ignore_errors=True)
+        TestExamples.teardown_method(self)
 
     # # this ensure that the test is only ran if explicitly executed, ie not when the `pytest` command
     # # alone is called
@@ -140,7 +153,7 @@ class TestCalculateCopsAndEers:
     @mock.patch("argparse.ArgumentParser.parse_args", return_value=argparse.Namespace())
     def test_run_pvcompare_example_sector_coupling_gas(self, margs):
         exit_code = 1
-        scenario_name = "Scenario_example_sector_coupling_gas_heating"
+        scenario_name = self.coupled_sector_gas_scenario_name
         # Read run_pvcompare_example_sector_coupling_gas.py
         coupled_sector_gas = open(self.coupled_sector_gas_path).read()
 
@@ -172,8 +185,4 @@ class TestCalculateCopsAndEers:
         coupled_sector_gas_modified.close()
 
         # Delete example output directory of this test
-        dir_name = os.path.join(
-            self.outputs_directory, scenario_name + "_test_run_through",
-        )
-        if os.path.exists(dir_name):
-            shutil.rmtree(dir_name, ignore_errors=True)
+        TestExamples.teardown_method(self)
