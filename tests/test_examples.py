@@ -99,11 +99,11 @@ class TestExamples:
         # Delete example output directory of this test
         TestExamples.teardown_method(self)
 
-    # # this ensure that the test is only ran if explicitly executed, ie not when the `pytest` command
-    # # alone is called
+    # this ensures that the test is only run if explicitly executed, i.e. not when the `pytest` command
+    # alone is called
     @pytest.mark.skipif(
         EXECUTE_TESTS_ON not in (TESTS_ON_MASTER),
-        reason="Benchmark test deactivated, set env variable "
+        reason="Test deactivated, set env variable "
         "EXECUTE_TESTS_ON to 'master' to run this test",
     )
     @mock.patch("argparse.ArgumentParser.parse_args", return_value=argparse.Namespace())
@@ -143,11 +143,11 @@ class TestExamples:
         # Delete example output directory of this test
         TestExamples.teardown_method(self)
 
-    # # this ensure that the test is only ran if explicitly executed, ie not when the `pytest` command
-    # # alone is called
+    # this ensures that the test is only run if explicitly executed, i.e. not when the `pytest` command
+    # alone is called
     @pytest.mark.skipif(
         EXECUTE_TESTS_ON not in (TESTS_ON_MASTER),
-        reason="Benchmark test deactivated, set env variable "
+        reason="Test deactivated, set env variable "
         "EXECUTE_TESTS_ON to 'master' to run this test",
     )
     @mock.patch("argparse.ArgumentParser.parse_args", return_value=argparse.Namespace())
