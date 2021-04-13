@@ -34,11 +34,11 @@ class TestCalculateCopsAndEers:
             constants.EXAMPLE_DIRECTORY, "run_pvcompare_example_sector_coupling_gas.py"
         )
 
-    # # this ensure that the test is only ran if explicitly executed, ie not when the `pytest` command
-    # # alone is called
+    # this ensures that the test is only run if explicitly executed, i.e. not when the `pytest` command
+    # alone is called
     @pytest.mark.skipif(
         EXECUTE_TESTS_ON not in (TESTS_ON_MASTER),
-        reason="Benchmark test deactivated, set env variable "
+        reason="Test deactivated, set env variable "
         "EXECUTE_TESTS_ON to 'master' to run this test",
     )
     @mock.patch("argparse.ArgumentParser.parse_args", return_value=argparse.Namespace())
@@ -49,7 +49,7 @@ class TestCalculateCopsAndEers:
         elec_sector = open(self.elec_sector_path).read()
 
         # Modify the name of the scenario to ensure it will run through for the test
-        # if the user already has it in the examples output folder
+        # also if the user already has it in the examples output folder
         elec_sector_modified_string = elec_sector.replace(
             scenario_name, scenario_name + "_test_run_through"
         )
