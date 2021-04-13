@@ -89,7 +89,9 @@ class TestExamples:
         if os.system("python " + self.elec_sector_path) == 0:
             exit_code = 0
 
-        assert exit_code == 0
+        assert (
+            exit_code == 0
+        ), f"The example run_pvcompare_example_electricity_sector.py exited with exit code {exit_code}."
 
         # Revert changes made in the example file
         elec_sector_modified = open(self.elec_sector_path, "w")
@@ -133,7 +135,9 @@ class TestExamples:
         if os.system("python " + self.coupled_sector_path) == 0:
             exit_code = 0
 
-        assert exit_code == 0
+        assert (
+            exit_code == 0
+        ), f"The example run_pvcompare_example_sector_coupling.py exited with exit code {exit_code}."
 
         # Revert changes made in the example file
         coupled_sector_modified = open(self.coupled_sector_path, "w")
@@ -177,7 +181,9 @@ class TestExamples:
         if os.system("python " + self.coupled_sector_gas_path) == 0:
             exit_code = 0
 
-        assert exit_code == 0
+        assert (
+            exit_code == 0
+        ), f"The example run_pvcompare_example_sector_coupling_gas.py exited with exit code {exit_code}."
 
         # Revert changes made in the example file
         coupled_sector_gas_modified = open(self.coupled_sector_gas_path, "w")
