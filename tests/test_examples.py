@@ -54,23 +54,28 @@ class TestCalculateCopsAndEers:
             scenario_name, scenario_name + "_test_run_through"
         )
 
-        # Open D1_model_components.py in write modus and save the version
-        # with commented out fixed losses
+        # Open example file in write modus and save the version
+        # with changed scenrario name
         elec_sector_modified = open(self.elec_sector_path, "w")
         elec_sector_modified.write(elec_sector_modified_string)
         elec_sector_modified.close()
 
+        # Run example with os.system("python <filename_of_example.py>") and check if
+        # result is 0. In this case the script runs through with exit code 0
+        # In case the example errors out with exit code 1
+        # os.system("python <filename_of_example.py>") returns 256:
+        # 256 in 16 bits -> binary number: 00000001 00000000 -> 1
         if os.system("python " + self.elec_sector_path) == 0:
             exit_code = 0
 
         assert exit_code == 0
 
-        # Revert changes made in D1_model_components.py
+        # Revert changes made in the example file
         elec_sector_modified = open(self.elec_sector_path, "w")
         elec_sector_modified.write(elec_sector)
         elec_sector_modified.close()
 
-        # Delete example output of tests
+        # Delete example output directory of this test
         dir_name = os.path.join(
             self.outputs_directory, scenario_name + "_test_run_through",
         )
@@ -97,23 +102,28 @@ class TestCalculateCopsAndEers:
             scenario_name, scenario_name + "_test_run_through"
         )
 
-        # Open D1_model_components.py in write modus and save the version
-        # with commented out fixed losses
+        # Open example file in write modus and save the version
+        # with changed scenrario name
         coupled_sector_modified = open(self.coupled_sector_path, "w")
         coupled_sector_modified.write(coupled_sector_modified_string)
         coupled_sector_modified.close()
 
+        # Run example with os.system("python <filename_of_example.py>") and check if
+        # result is 0. In this case the script runs through with exit code 0
+        # In case the example errors out with exit code 1
+        # os.system("python <filename_of_example.py>") returns 256:
+        # 256 in 16 bits -> binary number: 00000001 00000000 -> 1
         if os.system("python " + self.coupled_sector_path) == 0:
             exit_code = 0
 
         assert exit_code == 0
 
-        # Revert changes made in D1_model_components.py
+        # Revert changes made in the example file
         coupled_sector_modified = open(self.coupled_sector_path, "w")
         coupled_sector_modified.write(coupled_sector)
         coupled_sector_modified.close()
 
-        # Delete example output of tests
+        # Delete example output directory of this test
         dir_name = os.path.join(
             self.outputs_directory, scenario_name + "_test_run_through",
         )
@@ -140,23 +150,28 @@ class TestCalculateCopsAndEers:
             scenario_name, scenario_name + "_test_run_through"
         )
 
-        # Open D1_model_components.py in write modus and save the version
-        # with commented out fixed losses
+        # Open example file in write modus and save the version
+        # with changed scenrario name
         coupled_sector_gas_modified = open(self.coupled_sector_gas_path, "w")
         coupled_sector_gas_modified.write(coupled_sector_gas_modified_string)
         coupled_sector_gas_modified.close()
 
+        # Run example with os.system("python <filename_of_example.py>") and check if
+        # result is 0. In this case the script runs through with exit code 0
+        # In case the example errors out with exit code 1
+        # os.system("python <filename_of_example.py>") returns 256:
+        # 256 in 16 bits -> binary number: 00000001 00000000 -> 1
         if os.system("python " + self.coupled_sector_gas_path) == 0:
             exit_code = 0
 
         assert exit_code == 0
 
-        # Revert changes made in D1_model_components.py
+        # Revert changes made in the example file
         coupled_sector_gas_modified = open(self.coupled_sector_gas_path, "w")
         coupled_sector_gas_modified.write(coupled_sector_gas)
         coupled_sector_gas_modified.close()
 
-        # Delete example output of tests
+        # Delete example output directory of this test
         dir_name = os.path.join(
             self.outputs_directory, scenario_name + "_test_run_through",
         )
