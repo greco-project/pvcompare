@@ -34,12 +34,12 @@ class TestCalculateCopsAndEers:
         )
         cops_exp = pd.Series(
             [
-                2.7883582554517132,
-                2.52604797742239,
-                2.314818103448276,
-                2.2376575,
-                2.131102380952381,
-                4.068468181818181,
+                3.413615989515072,
+                3.018063731170336,
+                2.7131135416666665,
+                2.604589,
+                2.457159433962264,
+                5.66215,
             ],
             index=self.date_range,
             name="no_unit",
@@ -71,12 +71,12 @@ class TestCalculateCopsAndEers:
         )
         cops_exp = pd.Series(
             [
-                2.7883582554517132,
-                2.52604797742239,
-                2.314818103448276,
-                1.7901259999999999,
-                1.7048819047619048,
-                4.068468181818181,
+                3.413615989515072,
+                3.018063731170336,
+                2.7131135416666665,
+                2.0836712,
+                1.9657275471698115,
+                5.66215,
             ],
             index=self.date_range,
             name="no_unit",
@@ -115,7 +115,7 @@ class TestCalculateCopsAndEers:
             os.path.join(
                 self.mvs_inputs_directory,
                 "time_series",
-                "cops_heat_pump_2017_53.2_13.2_60.0.csv",
+                "cops_heat_pump_2017_53.2_13.2_50.0.csv",
             )
         )
 
@@ -124,7 +124,7 @@ class TestCalculateCopsAndEers:
         filename = os.path.join(
             self.mvs_inputs_directory,
             "time_series",
-            "cops_heat_pump_2017_53.2_13.2_60.0.csv",
+            "cops_heat_pump_2017_53.2_13.2_50.0.csv",
         )
         if os.path.exists(filename):
             os.remove(filename)
@@ -933,7 +933,7 @@ class TestAddSectorCoupling:
         filename = os.path.join(
             self.mvs_inputs_directory,
             "time_series",
-            "cops_heat_pump_2017_53.2_13.2_60.0.csv",
+            "cops_heat_pump_2017_53.2_13.2_50.0.csv",
         )
         assert os.path.exists(filename) == False
         # filename in energyConversion.csv does not change
@@ -963,13 +963,13 @@ class TestAddSectorCoupling:
         filename = os.path.join(
             self.mvs_inputs_directory,
             "time_series",
-            "cops_heat_pump_2019_53.2_13.2_60.0.csv",
+            "cops_heat_pump_2019_53.2_13.2_50.0.csv",
         )
         assert os.path.exists(filename) == True
         # filename in energyConversion.csv does not change
         df = pd.read_csv(self.filename_conversion, header=0, index_col=0)
         assert (
-            "cops_heat_pump_2019_53.2_13.2_60.0.csv"
+            "cops_heat_pump_2019_53.2_13.2_50.0.csv"
             in df.loc["efficiency"].heat_pump_file_exists
         ) == True
 
@@ -994,13 +994,13 @@ class TestAddSectorCoupling:
         filename = os.path.join(
             self.mvs_inputs_directory,
             "time_series",
-            "cops_heat_pump_2017_53.2_13.2_60.0.csv",
+            "cops_heat_pump_2017_53.2_13.2_50.0.csv",
         )
         assert os.path.exists(filename) == True
         # filename in energyConversion.csv changed
         df = pd.read_csv(self.filename_conversion, header=0, index_col=0)
         assert (
-            "cops_heat_pump_2017_53.2_13.2_60.0.csv"
+            "cops_heat_pump_2017_53.2_13.2_50.0.csv"
             in df.loc["efficiency"].heat_pump_file_non_existent
         ) == True
 
@@ -1025,7 +1025,7 @@ class TestAddSectorCoupling:
         filename = os.path.join(
             self.mvs_inputs_directory,
             "time_series",
-            "cops_heat_pump_2017_53.2_13.2_60.0.csv",
+            "cops_heat_pump_2017_53.2_13.2_50.0.csv",
         )
         assert os.path.exists(filename) == False
         # check efficiency
@@ -1053,12 +1053,12 @@ class TestAddSectorCoupling:
         filename_1 = os.path.join(
             self.mvs_inputs_directory,
             "time_series",
-            "cops_heat_pump_2017_53.2_13.2_60.0.csv",
+            "cops_heat_pump_2017_53.2_13.2_50.0.csv",
         )
         filename_2 = os.path.join(
             self.mvs_inputs_directory,
             "time_series",
-            "cops_heat_pump_2019_53.2_13.2_60.0.csv",
+            "cops_heat_pump_2019_53.2_13.2_50.0.csv",
         )
 
         files = [filename_1, filename_2]
