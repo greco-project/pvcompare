@@ -2407,7 +2407,8 @@ class ScenariosSectorCoupling:
 
         for file in time_series_files:
             if os.path.exists(os.path.join(time_series_path, file)):
-                os.remove(os.path.join(time_series_path, file))
+                if "si" or "cpv" not in file:
+                    os.remove(os.path.join(time_series_path, file))
 
 
 class ScenariosGas:
@@ -2731,7 +2732,8 @@ class ScenariosGas:
 
         for file in time_series_files:
             if os.path.exists(os.path.join(time_series_path, file)):
-                os.remove(os.path.join(time_series_path, file))
+                if "si" or "cpv" not in file:
+                    os.remove(os.path.join(time_series_path, file))
 
 
 if __name__ == "__main__":
