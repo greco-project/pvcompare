@@ -4,6 +4,14 @@
 Model assumptions
 ~~~~~~~~~~~~~~~~~
 
+The energy system optimization is a linear optimization that minimizes the costs of the
+energy system. Depending on the input parameters single components or all components of
+the energy system underlie an investment optimization. Certain constraints like a maximum
+installed capacity, a maximum amount of greenhouse gas / CO2 emissions or the requirement
+of forming a net zero energy (NZE) *community*, if applied, have to be met.
+Check out the `model equations <https://multi-vector-simulator.readthedocs.io/en/latest/Model_Assumptions.html#modeling-assumptions-of-the-mvs>`_
+and `model assumptions <https://multi-vector-simulator.readthedocs.io/en/latest/Model_Assumptions.html#>`_ of MVS for detailed information.
+
 .. _building_assumptions:
 
 Building assumptions
