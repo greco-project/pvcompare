@@ -12,10 +12,15 @@ of forming a net zero energy (NZE) *community*, if applied, have to be met.
 Check out the `model equations <https://multi-vector-simulator.readthedocs.io/en/latest/Model_Assumptions.html#modeling-assumptions-of-the-mvs>`_
 and `model assumptions <https://multi-vector-simulator.readthedocs.io/en/latest/Model_Assumptions.html#>`_ of MVS for detailed information.
 
+.. _local_energy_system:
+
+Local energy sytem
+==================
+
 .. _building_assumptions:
 
 Building assumptions
-====================
+--------------------
 
 The demand profiles that are introduced in the next sections are based on so called
 standard load profiles. These standard load profiles are generated for around 500-1000
