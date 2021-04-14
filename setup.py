@@ -55,7 +55,7 @@ setup(
             "black==19.10b0",
             "coverage==5.0.3",
             "coveralls==1.11.0",
-            "sphinx_rtd_theme",
-        ]
+        ],
+        "docs": ["sphinx_rtd_theme", "Sphinx>=1.4.3"],
     },
 )
