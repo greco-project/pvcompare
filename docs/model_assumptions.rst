@@ -35,24 +35,23 @@ from surrounding buildings or trees.
 
 The stardard building is constructed with defined building parameters, such as
 
-* length south facade
-* length eastwest facade
+* length south façade
+* length eastwest façade
 * total storey area
 * hight of storey
 * population per storey
 
-All building parameters are contained in 'data/static_inputs/building_parameters.csv'.
-The construction of the buidling, as well as the available facades for PV usage
+The construction of the buidling, as well as the available façades for PV usage
 are based on the research of `Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_.
 
 The default building parameters are based on the following assumptions that have
 been adopted from `Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_:
-
-Each storey (with a total area of 1232 m²) is defided into 8 flats, each 120 m². The rest of the
+Each storey (with a total area of 1232m²) is divided into 8 flats of 120m² each. The rest of the
 storey area is used for hallway and staircases etc. Each of the 8 flats is inhabited
 by 4 people, meaning in average 30m² per person (it is assumed that a NZE building
 is operated efficiently). Therefore the number of persons per storey is set to 32.
 
+All building parameters can be adjusted in the inputs file :ref:`building_parameters`.
 
 Exploitation for PV Installation
 --------------------------------
@@ -60,7 +59,7 @@ Exploitation for PV Installation
 It is assumed that PV systems can cover "50% of the south façade
 area, starting from the third floor up, and 80% of the east and west
 façades." (`Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_.)
-The facades of the first two floors are discarded for PV installation because of
+The façades of the first two floors are discarded for PV installation because of
 shading.
 
 It is possible to simulate a gable roof as well as a flat roof. For the gable roof it
@@ -68,14 +67,14 @@ is assumed that only the south facing area is used for PV installations. Assumin
 an elevation of 45°, the gable roof area facing south equals 70% of the total floor area.
 
 For a flat roof area available to PV installations is assumed to be 40% of the
-total floor area, due to shading between the modules (see `Energieatlas <https://energieatlas.berlin.de/Energieatlas_Be/Docs/Datendokumentation-Solarkataster_BLN.pdf>`_.
+total floor area, due to shading between the modules (see `Energieatlas <https://energieatlas.berlin.de/Energieatlas_Be/Docs/Datendokumentation-Solarkataster_BLN.pdf>`_).
 
 Maximum Capacity
 ----------------
 With the help of the calculated available area for PV exploitation, the maximum
 capacity can be calculated. The maximum capacity, given in
 the unit of kWp, depends on the size and the efficiency of the specific PV technology.
-It serves as a limit for the investment optimization with MVS.
+It serves as a limit (constraint) for the investment optimization.
 It is calculated as follows:
 
 .. math::
