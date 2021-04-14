@@ -1,7 +1,9 @@
 [run]
 source =
     pvcompare
-omit = *test*
+omit =
+    pvcompare/cpv/inputs.py
+    pvcompare/perosi/data/*
 
 [report]
 show_missing = true
