@@ -22,13 +22,13 @@ Local energy sytem
 Building assumptions
 --------------------
 
-The demand profiles that are introduced in the next sections are based on so called
-standard load profiles. These standard load profiles are generated for around 500-1000
-Household, therefore the curve is flattened and cannot be compares to the load curve of
-a single household. This is why the *pvcompare* simulations are based on *NZE communities*
-reather than a single *NZE building*. As a consequence all simulations are run over a
-number of 400 identical buildings. In order to interpret the simulation results for
-a single building, the total demand / production can be devided by 400. (TODO: is this correct??)
+The analyzed local energy system is assumed to belong to an urban neighbourhood with a specific
+number of buildings. A minimum amount of buildings is required when using the functionalities
+for calculating demand profiles of *pvcompare*, which are introdcued in :ref:`demand`. They are based on standard load
+profiles that are generated for around 500-1000 households. These load profiles are therefore flattened compared to load profiles of
+single households.
+The amount of buildings, households per storey, number of people per household and further parameters
+can be adjusted in the inputs file :ref:`building_parameters`; the default is a number of 20 buildings.
 
 In general we assume an urban environment that allows high solar exposure without shading
 from surrounding buildings or trees.
