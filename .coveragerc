@@ -1,7 +1,7 @@
 [run]
 source =
     pvcompare
-    tests
+
 parallel = true
 omit = *test*
 
