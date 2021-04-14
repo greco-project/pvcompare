@@ -22,11 +22,14 @@ Here is a template for new release sections
 ## [unreleased]
 
 ### Added
+- Add config file for RTD `readthedocs.yml` (#276)
 - Tests have been added which check if the examples of pvcompare run with exit code 0 (#284)
 
 ### Changed
 - The inlet temperatures of the heat pump and the stratified thermal storage have been revised in the pvcompare input parameters, adapting them in order to fit typical temperatures of the heating system. Also the pvcompare input parameters of the stratified thermal storage have been revised (#272)
 - Improved "how to release" section in `contributing.md` with insights from last release (#275)
+- Tests have been added which check if the examples of pvcompare run with exit code 0 (#284)
+- Move docs requirements from `docs/docs_requirements.txt ` to `setup.py` - now installed e.g. by `pip install -e .[dev, docs]` (#276)
 - Update code documentation in RTD: add missing functions and modules and delete outdated ones (#287)
 
 ### Removed
