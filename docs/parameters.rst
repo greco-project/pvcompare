@@ -18,7 +18,8 @@ relevant parameters of *MVS* can be found in the `documentation of MVS <https://
 The values used by default in *pvcompare* for the above parameters in each CSV, are detailed below.
 Some parameters can be calculated automatically by *pvcompare* and do not need to be filled it by hand. These parameters are marked with * *auto_calc*.
 
-* project_data.csv
+project_data.csv
+----------------
     1. **country**: str, Spain (the country in which the project is located), * *auto_calc*
     2. **label**: str, project_data
     3. **latitude**: str, 45.641603 * *auto_calc*
@@ -27,14 +28,16 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     6. **project_name**: str, net zero energy community
     7. **scenario_description**: str, Simulation of scenario scenario_name
 
-* economic_data.csv
+economic_data.csv
+-----------------
     1. **curency**: str, EUR (stands for euro; can be replaced by SEK, if the system is located in Sweden, for instance).
     2. **discount_factor**: factor, 0.06 (most recent data is from 2018, as documented by this market `survey <https://www.grantthornton.co.uk/insights/renewable-energy-discount-rate-survey-2018/>`_.
     3. **label**: str, economic_data
     4. **project_duration**: year, 1 (number of years)
     5. **tax**: factor, 0 (this feature has not been implemented yet, as per MVS documentation)
 
-* simulation_settings.csv
+simulation_settings.csv
+-----------------------
     1. **evaluated_period**: days, 365 (number of days),  * *auto_calc*
     2. **label**: str, simulation_settings
     3. **output_lp_file**: bool, False
@@ -45,7 +48,8 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     8. **display_nx_graph**: bool, False
     9. **store_nx_graph**: bool ,True
 
-* fixcost.csv
+fixcost.csv
+-----------
     +----------------------+-------------------+----------------------------------+------------------+-----------------------+
     |                      |        Unit       |        distribution_grid         | engineering      |       operation       |
     +======================+===================+==================================+==================+=======================+
@@ -63,7 +67,8 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     +----------------------+-------------------+----------------------------------+------------------+-----------------------+
     |  **dispatch_price**  |    currency/kWh   |                0                 |         0        |           0           |
     +----------------------+-------------------+----------------------------------+------------------+-----------------------+
-* energyConsumption.csv
+energyConsumption.csv
+---------------------
     1. **dsm**: str, False (dsm stands for Demand Side Management. This feature has not been implement in MVS as of now.)
     2. **file_name**: str, electricity_load.csv
     3. **label**: str, Households
@@ -73,7 +78,8 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     7. **inflow_direction**: str, Electricity
     8. **unit**: str, kW
 
-* energyConversion.csv
+energyConversion.csv
+--------------------
     1. **age_installed**: year, 0 (for all components such as charge controllers, inverters, heat pumps, gas boilers)
     2. **development_costs**: currency, 0 (for all components)
     3. **specific_costs**: currency/kW
@@ -156,7 +162,8 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     14. **type_oemof**: str, transformer (same for all the components)
     15. **unit**: str, kW (applies to all the components)
 
-* energyProduction.csv:
+energyProduction.csv
+--------------------
     1. **age_installed**: year, 0 (for all the components)
     2. **development_costs**: currency, 0 (**TO BE DECIDED**)
     3. **specific_costs**: currency/unit, (**TO BE DECIDED**)
@@ -181,7 +188,9 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     13. **type_oemof**: str, source (for all of the components)
     14. **unit**: str, kWp (for all of the components)
     15. **energyVector**: str, Electricity (for all of the components)
-* energyProviders.csv:
+
+energyProviders.csv
+-------------------
     1. **energy_price**: currency/kWh,
         a. **Electricity grid**: 0.24  * *auto_calc* (0.24 €/kWh is the average household electricity price of Spain for 2019S1. Obtained from `Eurostat <https://ec.europa.eu/eurostat/statistics-explained/images/d/d9/Electricity_prices%2C_first_semester_of_2017-2019_%28EUR_per_kWh%29.png>`_.)
         b. **Gas plant**: 0.0598 * *auto_calc* (0,0598 €/kWh for Germany and 0.072 €/kWh for Spain (2019 / 2020) - Values read in depending on location obtained from `Eurostat's statistic of gas prices <https://ec.europa.eu/eurostat/databrowser/view/ten00118/default/table?lang=en>`_)
@@ -205,7 +214,9 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     11. **emission factor**: kgCO2eq/kWh
         a. **Electricity grid**: 0.338
         b. **Gas plant**: 0.2 (Obtained from `Quaschning 06/2015 <https://www.volker-quaschning.de/datserv/CO2-spez/index_e.php>`_.)
-* energyStorage.csv:
+
+energyStorage.csv
+-----------------
     1. **inflow_direction**: str, ESS Li-Ion
     2. **label**: str, ESS Li-Ion
     3. **optimizeCap**: bool, True
@@ -213,7 +224,9 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     5. **type_oemof**: str, storage
     6. **storage_filename**: str, storage_01.csv
     7. **energyVector**: str, Electricity
-* storage_01.csv:
+
+storage_01.csv
+--------------
     1. **age_installed**: year, 0 (for all components)
     2. **development_costs**: currency, 0 (for all components)
     3. **specific_costs**: currency/unit
@@ -254,7 +267,8 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
 
         b. **input power** and **output power**: kW
 
-* storage_02.csv:
+storage_02.csv
+--------------
     1. **age_installed**: year, 0 (for all components of the stratified thermal storage)
     2. **development_costs**: currency, 0 (for all components of the stratified thermal storage)
     3. **specific_costs**: currency/unit
@@ -315,7 +329,8 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
 In order to run *pvcompare*, a number of input parameters are needed; many of which are stored in csv files with default values in ``pvcompare/pvcompare/inputs/``.
 The following list will give a brief introduction into the description of the csv files and the source of the given default parameters.
 
-* pv_setup.csv:
+pv_setup.csv
+------------
     *The pv_setup.csv defines the number of facades that are covered with pv-modules.*
 
     1. **surface_type**: str, optional values are "flat_roof", "gable_roof", "south_facade", "east_facade" and "west_facade"
@@ -323,7 +338,10 @@ The following list will give a brief introduction into the description of the cs
     3. **surface_tilt**: integer, between 0 and 90, where 90 represents a vertical module and 0 a horizontal.
     4. **technology**: str, optional values are "si" for a silicone module, "cpv" for concentrator photovoltaics and "psi" for a perovskite silicone module
 
-* building_parameters:
+.. _building_parameters:
+
+building_parameters.csv
+-----------------------
     *Parameters that describe the characteristics of the building that should be considered in the simulation. The default values are taken from [1].*
 
     1. **number of storeys**: int
@@ -343,7 +361,8 @@ The following list will give a brief introduction into the description of the cs
     15. **filename_residential_electricity_demand**: str, name of the csv file that contains the total residential electricity demand for EU countries in different years [2] *
     16. **filename_country_population**: str, name of the csv file that contains population for EU countries in different years [2] *
 
-* heat_pumps_and_chillers:
+heat_pumps_and_chillers.csv
+---------------------------
     *Parameters that describe characteristics of the heat pumps and chillers in the simulated energy system.*
     *Values below assumed for each heat pump technology from research and comparison of three models, each of a different manufacturer.*
     *For each technology the quality grade has been calculated from the mean quality grade of the three models.*
@@ -368,7 +387,8 @@ The following list will give a brief introduction into the description of the cs
     5. **factor_icing**: float or None, COP reduction caused by icing, only for `mode` 'heat_pump', default: None
     6. **temp_threshold_icing**: float or None, Temperature below which icing occurs, only for `mode` 'heat_pump', default: None
 
-* stratified_thermal_storage.csv:
+stratified_thermal_storage.csv
+------------------------------
     *Parameters that describe characteristics of the stratified thermal storage in the simulated energy system.*
     *The parameters have been set on the example of the stratified thermal storage TH 1000 of Schindler+Hofmann GmbH &  Co. KG*
 
@@ -382,7 +402,8 @@ The following list will give a brief introduction into the description of the cs
     8. **alpha_inside**: 4.3 (Calculated with calculations in [6]), W/(m2*K)
     9. **alpha_outside** 3.17 (Calculated with calculations in [6]), W/(m2*K)
 
-* list_of_workalendar:
+list_of_workalendar_countries.csv
+---------------------------------
     *list of countries for which a python.workalendar [3] exists with the column name "country".*
 
 
