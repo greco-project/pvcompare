@@ -9,7 +9,7 @@ from feedinlib.cds_request_tools import get_cds_data_from_datespan_and_position
 
 def load_era5_weatherdata(lat, lon, year):
     """
-    loads era5 weatherdata and converts it into pvlib standart format
+    Loads era5 weather data and converts it into format required by pvlib.
 
     Parameters
     ----------
