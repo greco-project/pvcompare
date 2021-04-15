@@ -112,6 +112,8 @@ conditions the following methods are selected from `modelchain object <https://p
 - temperature_model="sapm"
 - losses_model="pvwatts"
 
+.. _cpv:
+
 2. CPV
 ------
 
@@ -215,8 +217,9 @@ week measurement in Madrid in May 2019. The Data can be found in
 `Zenodo <https://zenodo.org/record/3346823#.X46UDZpCT0o>`_ ,
 whereas the performance testing of the test module is described in `Askins, et al. (2019) <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_.
 
+.. _psi:
 
-2. PeroSi
+3. PeroSi
 ---------
 The perovskite-silicon cell is a high-efficiency cell that is still in its
 test phase. Because perovskite is a material that is easily accessible many

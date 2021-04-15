@@ -32,13 +32,14 @@ The functionalities include
 
 * calculation of an area potential for PV on roof-tops and facades based on building parameters,
 * calculation of heat and electricity demand profiles for a specific amount of people living in these buildings,
-* calculation of PV feed-in time series for a set of PV installations on roof-tops and facades incl. different technologies,
+* calculation of PV feed-in time series for a set of PV installations on roof-tops and façades incl. different technologies,
 
     * all technologies in the database of `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_,
-    * a specific concentrator-PV module, and
-    * a module of silicon-perovskite cells,
+    * a specific concentrator-PV module (see :ref:`cpv`) and
+    * a module of silicon-perovskite cells (see :ref:`psi`),
 
 * calculation of temperature dependent COPs or respectively EERs for heat pumps and chillers,
+* download and formatting of `ERA5 weather data <https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/era5>`_ (global reanalysis data set),
 * preparation of data and input files for the energy system optimization,
 * a sensitivity analysis for input parameters and
 * visualisations for the comparison of different technologies.
@@ -58,7 +59,7 @@ Installation
 
 To install *pvcompare* follow these steps:
 
-- Clone *pvcompare* and navigate to the directory ``\pvcompare`` containing the ``setup.py`` and ``requirements.txt``:
+- Clone *pvcompare* and navigate to the directory ``\pvcompare`` containing the ``setup.py``:
 
 ::
 
@@ -83,4 +84,4 @@ Contributing
 
 We are warmly welcoming all who want to contribute to *pvcompare*.
 Please read our `Contributing Guidelines <https://github.com/greco-project/pvcompare/blob/dev/CONTRIBUTING.md>`_.
-
+You can also get in contact by writing an `issue on github <https://github.com/greco-project/pvcompare/issues/new/choose>`_.
