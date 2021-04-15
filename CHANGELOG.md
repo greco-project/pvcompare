@@ -24,7 +24,8 @@ Here is a template for new release sections
 ### Added
 - Tests have been added which check if the examples of pvcompare run with exit code 0 (#284)
 - Added basic model assumptions to RTD and introduced section "local energy system" in Model assumptions in RTD (#286)
-- Add headings in `parameters.rst` to make references of these sections possible in RTD (#286)
+- Added headings in `parameters.rst` to make references of these sections possible in RTD (#286)
+- Improved "scope and limitations" section of RTD with additional information and corrections (#286)
 
 ### Changed
 - The inlet temperatures of the heat pump and the stratified thermal storage have been revised in the pvcompare input parameters, adapting them in order to fit typical temperatures of the heating system. Also the pvcompare input parameters of the stratified thermal storage have been revised (#272)
