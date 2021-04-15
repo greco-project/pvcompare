@@ -329,6 +329,8 @@ storage_02.csv
 In order to run *pvcompare*, a number of input parameters are needed; many of which are stored in csv files with default values in ``pvcompare/pvcompare/inputs/``.
 The following list will give a brief introduction into the description of the csv files and the source of the given default parameters.
 
+.. _pv_setup:
+
 pv_setup.csv
 ------------
     *The pv_setup.csv defines the number of facades that are covered with pv-modules.*
