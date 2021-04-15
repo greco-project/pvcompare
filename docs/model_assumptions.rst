@@ -9,8 +9,8 @@ energy system. Depending on the input parameters single components or all compon
 the energy system underlie an investment optimization. Certain constraints like a maximum
 installed capacity, a maximum amount of greenhouse gas / CO2 emissions or the requirement
 of forming a net zero energy (NZE) *community*, if applied, have to be met.
-Check out the `model equations <https://multi-vector-simulator.readthedocs.io/en/latest/Model_Assumptions.html#modeling-assumptions-of-the-mvs>`_
-and `model assumptions <https://multi-vector-simulator.readthedocs.io/en/latest/Model_Assumptions.html#>`_ of MVS for detailed information.
+Check out the `model equations <https://multi-vector-simulator.readthedocs.io/en/v0.5.5/Model_Equations.html#>`_
+and `model assumptions <https://multi-vector-simulator.readthedocs.io/en/v0.5.5/Model_Assumptions.html#>`_ of MVS for detailed information.
 
 .. _local_energy_system:
 
