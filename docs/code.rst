@@ -114,7 +114,7 @@ Functions for implementing a sector-coupled system (electricity, heat) and for c
 Stratified thermal storage
 --------------------------
 
-Functions for calculating specific parameters of a stratified thermal storage and for adding it to the energy system.
+Functions for calculating thermal losses of a stratified thermal storage and for adding it to the energy system.
 
 .. autosummary::
     :toctree: temp/

@@ -256,7 +256,7 @@ def compare_weather_years(
     user_inputs_mvs_directory=None,
 ):
     """
-    Barplot that shows yearly aggregated weather parameters: ghi, dni, dhi and temperature.
+    Bar plot that shows yearly aggregated weather parameters: ghi, dni, dhi and temperature.
 
     Parameters
     ----------

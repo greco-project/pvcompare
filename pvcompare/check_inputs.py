@@ -221,7 +221,7 @@ def check_for_valid_country_year(country, year, static_inputs_directory):
 
 def add_local_grid_parameters(static_inputs_directory, user_inputs_mvs_directory):
     """
-    Adds grid parameters to such as electricity price or feed-in tariff to energyProviders.csv.
+    Adds grid parameters such as electricity price or feed-in tariff to energyProviders.csv.
 
     This function adds the grid parameters (electricity price, feed-in tariff, CO2 emissions,
     renewable share, gas price) from local_grid_parameters.xlsx to energyProviders.csv.
