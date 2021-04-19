@@ -22,6 +22,7 @@ Here is a template for new release sections
 ## [unreleased]
 
 ### Added
+- Add config file for RTD `readthedocs.yml` (#276)
 - Tests have been added which check if the examples of pvcompare run with exit code 0 (#284)
 - Added basic model assumptions to RTD and introduced section "local energy system" in Model assumptions in RTD (#286)
 - Added headings in `parameters.rst` to make references of these sections possible in RTD (#286)
@@ -30,10 +31,14 @@ Here is a template for new release sections
 ### Changed
 - The inlet temperatures of the heat pump and the stratified thermal storage have been revised in the pvcompare input parameters, adapting them in order to fit typical temperatures of the heating system. Also the pvcompare input parameters of the stratified thermal storage have been revised (#272)
 - Improved "how to release" section in `contributing.md` with insights from last release (#275)
-- Move coverage badge of `coveralls.io` from deprecated to valid section in `README.rst`
+- Tests have been added which check if the examples of pvcompare run with exit code 0 (#284)
+- Move docs requirements from `docs/docs_requirements.txt ` to `setup.py` - now installed e.g. by `pip install -e .[dev, docs]` (#276)
+- Move coverage badge of `coveralls.io` from deprecated to valid section in `README.rst` (#289)
+- Update code documentation in RTD: add missing functions and modules and delete outdated ones (#287)
 
 ### Removed
 -
+
 ### Fixed
 - fix PV costs parameters and PSI lifetime (#273)
 - fix number of houses to 20 (8 flats per storey makes 40 flats per house with 5 storeys, makes 800 in total (and 480 for 3 storeys)) (#273)
