@@ -35,8 +35,8 @@ The functionalities include
 * calculation of PV feed-in time series for a set of PV installations on roof-tops and façades incl. different technologies,
 
     * all technologies in the database of `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_,
-    * a specific concentrator-PV module (see :ref:`cpv`) and
-    * a module of silicon-perovskite cells (see :ref:`psi`),
+    * a specific concentrator-PV module (`CPV <https://pvcompare.readthedocs.io/en/latest/model_assumptions.html#cpv>`_) and
+    * a module of perovskite-silicon cells (`PeroSI <https://pvcompare.readthedocs.io/en/latest/model_assumptions.html#perosi>`_),
 
 * calculation of temperature dependent COPs or respectively EERs for heat pumps and chillers,
 * download and formatting of `ERA5 weather data <https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/era5>`_ (global reanalysis data set),
