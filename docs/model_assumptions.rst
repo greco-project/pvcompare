@@ -4,10 +4,10 @@
 Model assumptions
 ~~~~~~~~~~~~~~~~~
 
-The energy system optimization is a linear optimization that minimizes the costs of the
+The energy system optimization implemented in *pvcompare* is a linear optimization that minimizes the costs of the
 energy system. Depending on the input parameters single components or all components of
 the energy system underlie an investment optimization. Certain constraints like a maximum
-installed capacity, a maximum amount of greenhouse gas / CO2 emissions or the requirement
+installed capacity, a maximum amount of greenhouse gas / CO₂ emissions or the requirement
 of forming a net zero energy (NZE) *community*, if applied, have to be met.
 Check out the `model equations <https://multi-vector-simulator.readthedocs.io/en/v0.5.5/Model_Equations.html#>`_
 and `model assumptions <https://multi-vector-simulator.readthedocs.io/en/v0.5.5/Model_Assumptions.html#>`_ of MVS for detailed information.
@@ -66,7 +66,7 @@ It is possible to simulate a gable roof as well as a flat roof. For the gable ro
 is assumed that only the south facing area is used for PV installations. Assuming
 an elevation of 45°, the gable roof area facing south equals 70% of the total floor area.
 
-For a flat roof area available to PV installations is assumed to be 40% of the
+For a flat roof, the area available to PV installations is assumed to be 40% of the
 total floor area, due to shading between the modules (see `Energieatlas <https://energieatlas.berlin.de/Energieatlas_Be/Docs/Datendokumentation-Solarkataster_BLN.pdf>`_).
 
 Maximum Capacity

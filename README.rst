@@ -30,7 +30,7 @@ easily be enhanced to analyse other conversion technologies.
 
 The functionalities include
 
-* calculation of an area potential for PV on roof-tops and facades based on building parameters,
+* calculation of an area potential for PV on roof-tops and façades based on building parameters,
 * calculation of heat and electricity demand profiles for a specific amount of people living in these buildings,
 * calculation of PV feed-in time series for a set of PV installations on roof-tops and façades incl. different technologies,
 

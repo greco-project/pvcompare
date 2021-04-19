@@ -67,6 +67,7 @@ fixcost.csv
     +----------------------+-------------------+----------------------------------+------------------+-----------------------+
     |  **dispatch_price**  |    currency/kWh   |                0                 |         0        |           0           |
     +----------------------+-------------------+----------------------------------+------------------+-----------------------+
+
 energyConsumption.csv
 ---------------------
     1. **dsm**: str, False (dsm stands for Demand Side Management. This feature has not been implement in MVS as of now.)
@@ -422,4 +423,3 @@ list_of_workalendar_countries.csv
 \* the described csv files are to be added to the input folder accordingly.
 
 [6] In:Klan, H, 2002: Wärmeübergang durch freie Konvektion an umströmten Körpern. Berlin, Heidelberg: Springer Berlin Heidelberg, ISBN 978-3-662-10743-0, 567-591
-
