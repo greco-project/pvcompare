@@ -4,42 +4,54 @@
 Model assumptions
 ~~~~~~~~~~~~~~~~~
 
+The energy system optimization implemented in *pvcompare* is a linear optimization that minimizes the costs of the
+energy system. Depending on the input parameters single components or all components of
+the energy system underlie an investment optimization. Certain constraints like a maximum
+installed capacity, a maximum amount of greenhouse gas / CO₂ emissions or the requirement
+of forming a net zero energy (NZE) *community*, if applied, have to be met.
+Check out the `model equations <https://multi-vector-simulator.readthedocs.io/en/v0.5.5/Model_Equations.html#>`_
+and `model assumptions <https://multi-vector-simulator.readthedocs.io/en/v0.5.5/Model_Assumptions.html#>`_ of MVS for detailed information.
+
+.. _local_energy_system:
+
+Local energy sytem
+==================
+
 .. _building_assumptions:
 
 Building assumptions
-====================
+--------------------
 
-The demand profiles that are introduced in the next sections are based on so called
-standard load profiles. These standard load profiles are generated for around 500-1000
-Household, therefore the curve is flattened and cannot be compares to the load curve of
-a single household. This is why the *pvcompare* simulations are based on *NZE communities*
-reather than a single *NZE building*. As a consequence all simulations are run over a
-number of 400 identical buildings. In order to interpret the simulation results for
-a single building, the total demand / production can be devided by 400. (TODO: is this correct??)
+The analyzed local energy system is assumed to belong to an urban neighbourhood with a specific
+number of buildings. A minimum amount of buildings is required when using the functionalities
+for calculating demand profiles of *pvcompare*, which are introdcued in :ref:`demand`. They are based on standard load
+profiles that are generated for around 500-1000 households. These load profiles are therefore flattened compared to load profiles of
+single households.
+The amount of buildings, households per storey, number of people per household and further parameters
+can be adjusted in the inputs file :ref:`building_parameters`; the default is a number of 20 buildings.
 
 In general we assume an urban environment that allows high solar exposure without shading
 from surrounding buildings or trees.
 
 The stardard building is constructed with defined building parameters, such as
 
-* length south facade
-* length eastwest facade
+* length south façade
+* length eastwest façade
 * total storey area
 * hight of storey
 * population per storey
 
-All building parameters are contained in 'data/static_inputs/building_parameters.csv'.
-The construction of the buidling, as well as the available facades for PV usage
+The construction of the buidling, as well as the available façades for PV usage
 are based on the research of `Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_.
 
 The default building parameters are based on the following assumptions that have
 been adopted from `Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_:
-
-Each storey (with a total area of 1232 m²) is defided into 8 flats, each 120 m². The rest of the
+Each storey (with a total area of 1232m²) is divided into 8 flats of 120m² each. The rest of the
 storey area is used for hallway and staircases etc. Each of the 8 flats is inhabited
 by 4 people, meaning in average 30m² per person (it is assumed that a NZE building
 is operated efficiently). Therefore the number of persons per storey is set to 32.
 
+All building parameters can be adjusted in the inputs file :ref:`building_parameters`.
 
 Exploitation for PV Installation
 --------------------------------
@@ -47,22 +59,22 @@ Exploitation for PV Installation
 It is assumed that PV systems can cover "50% of the south façade
 area, starting from the third floor up, and 80% of the east and west
 façades." (`Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_.)
-The facades of the first two floors are discarded for PV installation because of
+The façades of the first two floors are discarded for PV installation because of
 shading.
 
 It is possible to simulate a gable roof as well as a flat roof. For the gable roof it
 is assumed that only the south facing area is used for PV installations. Assuming
 an elevation of 45°, the gable roof area facing south equals 70% of the total floor area.
 
-For a flat roof area available to PV installations is assumed to be 40% of the
-total floor area, due to shading between the modules (see `Energieatlas <https://energieatlas.berlin.de/Energieatlas_Be/Docs/Datendokumentation-Solarkataster_BLN.pdf>`_.
+For a flat roof, the area available to PV installations is assumed to be 40% of the
+total floor area, due to shading between the modules (see `Energieatlas <https://energieatlas.berlin.de/Energieatlas_Be/Docs/Datendokumentation-Solarkataster_BLN.pdf>`_).
 
 Maximum Capacity
 ----------------
 With the help of the calculated available area for PV exploitation, the maximum
 capacity can be calculated. The maximum capacity, given in
 the unit of kWp, depends on the size and the efficiency of the specific PV technology.
-It serves as a limit for the investment optimization with MVS.
+It serves as a limit (constraint) for the investment optimization.
 It is calculated as follows:
 
 .. math::
@@ -99,6 +111,8 @@ conditions the following methods are selected from `modelchain object <https://p
 - spectral_model="first_solar"
 - temperature_model="sapm"
 - losses_model="pvwatts"
+
+.. _cpv:
 
 2. CPV
 ------
@@ -203,8 +217,9 @@ week measurement in Madrid in May 2019. The Data can be found in
 `Zenodo <https://zenodo.org/record/3346823#.X46UDZpCT0o>`_ ,
 whereas the performance testing of the test module is described in `Askins, et al. (2019) <https://zenodo.org/record/3349781#.X46UFZpCT0o>`_.
 
+.. _psi:
 
-2. PeroSi
+3. PeroSi
 ---------
 The perovskite-silicon cell is a high-efficiency cell that is still in its
 test phase. Because perovskite is a material that is easily accessible many
