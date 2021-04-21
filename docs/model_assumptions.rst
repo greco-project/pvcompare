@@ -561,3 +561,46 @@ To model a water or brine source chiller, you can either
         chiller,water-water,0.3,25,15,None,None
 
     (In this example with constant outlet temperature **temp_high**)
+
+
+2. Stratified thermal storage
+-----------------------------
+
+In order to model a stratified thermal energy storage *pvcompare* provides precalculations of this component.
+The parameters
+
+    - ``installedCap``,
+    - ``efficiency``,
+    - ``fixed_losses_relative`` and
+    - ``fixed_losses_absolute``
+
+can be obtained, if not provided, orientating on the stratified thermal storage component
+of `oemof.thermal  <https://github.com/oemof/oemof-thermal>`__.
+
+The precalculations are done passing the following input parameters with the file
+``stratified_thermal_storage.csv`` which is located in the *pvcompare*'s iputs directory:
+
+    - ``height``
+    - ``diameter``
+    - ``temp_h``
+    - ``temp_c``
+    - ``s_iso``
+    - ``lamb_iso``
+    - ``alpha_inside``
+    - ``alpha_outside``
+
+The calculations are implemented in ``stratified_thermal_storage.py``. For an investment optimization
+the height of the storage should be left open and `installedCap` should be set to 0 or NaN.
+
+If you do a simulation with a fixed storage capacity, you can either set a value for `installedCap` or
+use the precalculations. The parameters `U-value`, `volume` and `surface` of the storage, which are required to
+calculate `installedCap`, are precalculated within ``stratified_thermal_storage.py``.
+
+The efficiency :math:`\eta` of the storage is calculated as follows:
+
+.. math::
+   \eta = 1 - loss{\_}rate
+
+See further information on modeling the stratified thermal storage in the *MVS* in the `documentation of the MVS  <https://github.com/oemof/oemof-thermal>`__.
+
+
