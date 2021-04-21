@@ -382,17 +382,29 @@ Figure `Electricity demand`_ shows an exemplary electricty demand for Spain, 201
 Heat demand
 -----------
 
-The heat demand is calculated for a given number of houses with a given
-number of storeys, a certain country and year. The BDEW standard load profile
-is used. This standard load profile is derived for german households. Because
-there is no other standard load profiles available for other countries, the german
-standard load profiles is used for all countries as an approximation.
+The heat demand of either space heating or space heating and warm water is calculated for a
+given number of houses with a given number of storeys, a certain country and year. In order
+to take heat demand from warm water into account the parameter ``include warm water`` in
+*pvcompare*'s input file ``building_parameters.csv`` is set to ``True``.
+To generate the heat demand profiles the BDEW standard load profile is used. This standard
+load profile is derived for german households. Because there is no other standard load profiles
+available for other countries, the german standard load profiles is used for all countries as
+an approximation.
+
+Due to the characteristics of the sigmoid function used for the calculation of the heat demand
+profiles, the heat demand never equals zero. Since this does not correspond to the realistic
+behavior of heat supplied by means of space heating in summer, a heating limit temperature is
+introduced, above which no heating takes place. The heating limit temperature can be set in
+``building_parameters.csv``. In case of space heating, heat demand during summer is removed if
+the daily mean temperature crosses the the heating limit temperature. The excess heat demand is
+then distributed equally over the remaining heat demand. In case of a heat demand from space
+heating and warm water only the heat demand of the space heating is adjusted as described above.
 
 The standard load profile is scaled with the annual heat demand for the given
-population. The annual heat demand is calculated by the following procedure:
+population. The annual heat demand for space heating and warm water is calculated by the
+following procedure:
 
-1)  the residential heat demand for a country is requested from `EU Building Database <https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use>`_. Only the
-    Space Heating is used in the simulations (TODO: How to include WH).
+1)  the residential heat demand for a country is requested from `EU Building Database <https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use>`_.
 2)  on the lines of the electricity demand, the population of the country is requested from `EUROSTAT <https://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&plugin=1&language=en&pcode=tps00001>`_.
 3)  the total residential demand is divided by the countries population and
     multiplied by the house population that is calculated by the storeys
@@ -401,17 +413,30 @@ population. The annual heat demand is calculated by the following procedure:
     approach of HOTMAPS. For further information see p.127 in
     `HOTMAPS <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_.
 
-Figure `Heat demand`_ shows an exemplary electricty demand for Spain, 2013.
+Figure `Heat demand sh`_ shows an exemplary heat demand for space heating and figure `Heat demand shww`_
+the exemplary heat demand from space heating and warm water of Spain, 2013.
 
-.. _Heat demand:
+.. _Heat demand sh:
 
-.. figure:: ./images/input_timeseries_Heat_demand.png
+.. figure:: ./images/input_timeseries_Heat_demand_sh.png
     :width: 100%
-    :alt: Energy yield per kWp (left) and per m² (right) for Berlin and Madrid in 2014.
+    :alt: Heat demand in kW for space heating in Madrid in 2013.
     :align: center
 
-    Exemplary heat demand for Spain, 2013.
+    Exemplary heat demand for space heating in Madrid, 2013.
 
+
+
+.. _Heat demand shww:
+
+.. figure:: ./images/input_timeseries_Heat_demand_shww.png
+    :width: 100%
+    :alt: Heat demand in kW for space heating and warm water in Madrid in 2013.
+    :align: center
+
+    Exemplary heat demand for space heating and warm water in Madrid, 2013.
+
+TODO: Fix the image input_timeseries_Heat_demand_shww.png. It is not rendered due to some reason.
 
 .. _heat-sector:
 
