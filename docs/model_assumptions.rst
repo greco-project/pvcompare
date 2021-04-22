@@ -579,8 +579,8 @@ The storage's parameters in :ref:`storage_02.csv`
     - ``fixed_losses_relative`` and
     - ``fixed_losses_absolute``
 
-can be obtained, if not provided by the user, orientating on the stratified thermal storage component
-of `oemof.thermal  <https://github.com/oemof/oemof-thermal>`__.
+can be obtained, if not provided by the user, orientating on the `stratified thermal storage component <https://github.com/oemof/oemof-thermal/blob/dev/src/oemof/thermal/stratified_thermal_storage.py>`__
+of `oemof.thermal <https://github.com/oemof/oemof-thermal>`__.
 
 The precalculations are done passing the following input parameters with the file
 :ref:`stratTES_parameters`, which is located in the *pvcompare*'s iputs directory:
@@ -594,17 +594,113 @@ The precalculations are done passing the following input parameters with the fil
     - ``alpha_inside``
     - ``alpha_outside``
 
-Please see :ref:`stratTES_parameters` for further explanations of these parameters and the assumptions
-made setting them based on a manufacturer's prototype of a stratified thermal storage.
+Please see :ref:`stratTES_parameters` and the `documentation of oemof.thermal <https://oemof-thermal.readthedocs.io/en/latest/stratified_thermal_storage.html>`__
+for further explanations of these parameters. The assumptions made setting these parameters
+in *pvcompare*, based on a manufacturer's prototype of a stratified thermal storage, are summed up in
+:ref:`stratTES_parameters`.
 
-If you do a simulation with a fixed storage capacity, you can either set a value for `installedCap` or
-use the precalculations. The parameters `U-value`, `volume` and `surface` of the storage, which are required to
-calculate `installedCap`, are precalculated within ``stratified_thermal_storage.py``.
+For further information on how the stratified thermal storage is modeled in the *MVS*, please see the
+`documentation of the MVS  <https://multi-vector-simulator.readthedocs.io/en/stable/Model_Assumptions.html#thermal-energy-storage>`__.
+
+2.1 Installed Capacity
+^^^^^^^^^^^^^^^^^^^^^^
+
+The calculations are implemented within :ref:`thermal_storage`. For an investment optimization
+the height of the storage should be left open and ``installedCap`` should be set to 0 or NaN.
+If you do a simulation with a fixed storage capacity, you can either
+
+* set a numeric for ``installedCap``:
+
+    .. code-block:: python
+
+            ,unit,storage capacity,input power,output power
+            installedCap,kWh,100,0,0
+
+
+    (In this example the installed capacity is provided as a numeric within :ref:`storage_02.csv`)
+
+
+* or use the precalculations with leaving ``installedCap`` open or set to NaN and passing a numeric with the ``height`` parameter:
+
+    .. code-block:: python
+
+            ,unit,storage capacity,input power,output power
+            installedCap,kWh,,0,0
+
+
+    (In this example the installed capacity is left open within :ref:`storage_02.csv`)
+
+    .. code-block:: python
+
+            var_name,var_value,var_unit
+            height,2.04,m
+            diameter,0.79,m
+            temp_h,40,degC
+            temp_c,34,degC
+            s_iso,100,mm
+            lamb_iso,0.03,W/(m*K)
+            alpha_inside,4.3,W/(m2*K)
+            alpha_outside,3.17,W/(m2*K)
+
+
+    (In this example the ``height`` is provided as a numeric within :ref:`stratTES_parameters`)
+
+
+The parameters ``U-value``, ``volume`` and ``surface`` of the storage, which are required to
+calculate ``installedCap``, are precalculated as well within :ref:`thermal_storage`.
+
+
+2.2 Efficiency
+^^^^^^^^^^^^^^
 
 The efficiency :math:`\eta` of the storage is calculated as follows:
 
 .. math::
    \eta = 1 - loss{\_}rate
 
-See further information on modeling the stratified thermal storage in the *MVS* in the `documentation of the MVS  <https://github.com/oemof/oemof-thermal>`__.
+with the parameter ``loss_rate``, which is calculated in :ref:`thermal_storage` using the
+function calculate_losses(...) of *oemof.thermal*. Please see the
+`oemof.thermal` `examples <https://github.com/oemof/oemof-thermal/tree/dev/examples/stratified_thermal_storage>`__
+and the `documentation  <https://oemof-thermal.readthedocs.io/en/latest/stratified_thermal_storage.html>`__
+for further information.
+
+
+2.3 Fixed losses relative and absolute
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can model the stratified thermal storage with fixed thermal losses by either providing
+
+* a numeric value:
+
+    .. code-block:: python
+
+            ,unit,storage capacity,input power,output power
+            fixed_thermal_losses_relative,factor,0.001,NA,NA
+            fixed_thermal_losses_absolute,kWh,0.00001,NA,NA
+
+
+    (In this example the fixed thermal losses are provided as a numeric within :ref:`storage_02.csv`)
+
+* your own time series with numeric values:
+
+    .. code-block:: python
+
+            ,unit,storage capacity,input power,output power
+            fixed_thermal_losses_relative,factor,"{'file_name': 'my_fixed_losses_relative.csv', 'header': 'no_unit', 'unit': ''}",,
+            fixed_thermal_losses_absolute,kWh,"{'file_name': 'my_fixed_losses_absolute.csv', 'header': 'kWh', 'unit': ''}",,
+
+    (In this example the fixed thermal losses are provided as an own time series using CSV files within :ref:`storage_02.csv` with *no_unit* as header of the column with the fixed losses relative and *kWh* as header of the column with the fixed losses absolute)
+
+* or using *pvcompare*'s precalculation as described above:
+
+    .. code-block:: python
+
+            ,unit,storage capacity,input power,output power
+            fixed_thermal_losses_relative,factor,"{'file_name': 'None', 'header': 'no_unit', 'unit': ''}",,
+            fixed_thermal_losses_absolute,kWh,"{'file_name': 'None', 'header': 'kWh', 'unit': ''}",,
+
+    (In this example the fixed thermal losses are calculated in :ref:`thermal_storage` and written to the field ``'file_name'`` in :ref:`storage_02.csv` with *no_unit* as header of the column with the fixed losses relative and *kWh* as header of the column with the fixed losses absolute)
+
+
+
 
