@@ -359,10 +359,11 @@ Therefore the annual electricity demand is calculated by the following procedure
     \text{tc} &= \text{total cookin}g \\
     \text{ec} &= \text{electicity cooking} \\
 
-2)  the population of the country is requested from `EUROSTAT <https://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&plugin=1&language=en&pcode=tps00001>`_.
-3)  the total residential demand is divided by the countries population and
-    multiplied by the house population. The house population is calculated
-    by the number of storeys and the number of people per storey.
+2)  the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&plugin=1&language=en&pcode=tps00001>`_.
+3)  the total residential demand is divided by the country's population
+    and multiplied by the population. The population is calculated by the product of the
+    number of houses, the number of storeys and the number of people per storey (for
+    assumptions see :ref:`building_assumptions`).
 4)  The load profile is shifted due to country specific behaviour following the
     approach of HOTMAPS. For further information see p.127 in
     `HOTMAPS <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_.
@@ -387,29 +388,34 @@ given number of houses with a given number of storeys, a certain country and yea
 to take heat demand from warm water into account the parameter ``include warm water`` in
 *pvcompare*'s input file :ref:`building_parameters` is set to ``True``.
 To generate the heat demand profiles the BDEW standard load profile is used. This standard
-load profile is derived for german households. Because there is no other standard load profiles
-available for other countries, the german standard load profiles is used for all countries as
-an approximation.
+load profile is derived for german households. Because there is no other standard load profile
+available for other countries, the german standard load profile is used for all countries as
+an approximation. For multiple countries the profile is adapted however by hour shifting.
 
 Due to the characteristics of the sigmoid function used for the calculation of the heat demand
 profiles, the heat demand never equals zero. Since this does not correspond to the realistic
 behavior of heat supplied by means of space heating in summer, a heating limit temperature is
 introduced, above which no heating takes place. The heating limit temperature can be set in
-:ref:`building_parameters`. In case of space heating, heat demand during summer is removed if
-the daily mean temperature exceeds the heating limit temperature. The excess heat demand is
-then distributed equally over the remaining time of the year. In case of a heat demand from space
-heating and warm water, only the heat demand of the space heating is adjusted as described above.
+:ref:`building_parameters` and is 15 °C by default. In case of space heating, heat demand
+during summer is removed if the daily mean temperature exceeds the heating limit temperature.
+The excess heat demand is then distributed equally over the remaining time of the year. In case
+of a heat demand from space heating and warm water, only the heat demand of the space heating
+is adjusted as described above.
 
 The standard load profile is scaled with the annual heat demand for the given
 population, which is derived from the given number of houses and storeys (for assumptions see :ref:`building_assumptions`). The annual heat demand for space heating and warm water is calculated by the
 following procedure:
 
-1)  the residential heat demand for a country is taken from the `EU Building Database <https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use>`_.
-2)  on the lines of the electricity demand, the population of the country is requested from `EUROSTAT <https://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&plugin=1&language=en&pcode=tps00001>`_.
-3)  the total residential demand is divided by the country's population and
-    multiplied by the house population that is calculated by the storeys
-    of the house and the number of people in one storey
-4)  The load profile is shifted due to countries specific behaviour following the
+1)  the residential heat demand of a country is taken from the `EU Building Database <https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use>`_.
+2)  on the lines of the electricity demand, the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&plugin=1&language=en&pcode=tps00001>`_.
+3)  the total residential demand is divided by the country's population
+    and multiplied by the population. The population is calculated by the product of the
+    number of houses, the number of storeys and the number of people per storey (for
+    assumptions see :ref:`building_assumptions`).
+4)  Heat demand that occurs when a daily mean temperature is above the heating limit
+    temperature is removed and distributed evenly over the heat demand of the remaining time
+    of the year.
+5)  The load profile is shifted due to countries specific behaviour following the
     approach of HOTMAPS. For further information see p.127 in
     `HOTMAPS <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_.
 
@@ -566,7 +572,7 @@ To model a water or brine source chiller, you can either
 -----------------------------
 
 In order to model a stratified thermal energy storage *pvcompare* provides precalculations of this component.
-The parameters
+The storage's parameters in :ref:`storage_02.csv`
 
     - ``installedCap``,
     - ``efficiency``,
@@ -577,7 +583,7 @@ can be obtained, if not provided by the user, orientating on the stratified ther
 of `oemof.thermal  <https://github.com/oemof/oemof-thermal>`__.
 
 The precalculations are done passing the following input parameters with the file
-``stratified_thermal_storage.csv`` which is located in the *pvcompare*'s iputs directory:
+:ref:`stratTES_parameters`, which is located in the *pvcompare*'s iputs directory:
 
     - ``height``
     - ``diameter``
@@ -588,8 +594,8 @@ The precalculations are done passing the following input parameters with the fil
     - ``alpha_inside``
     - ``alpha_outside``
 
-The calculations are implemented in ``stratified_thermal_storage.py``. For an investment optimization
-the height of the storage should be left open and `installedCap` should be set to 0 or NaN.
+Please see :ref:`stratTES_parameters` for further explanations of these parameters and the assumptions
+made setting them based on a manufacturer's prototype of a stratified thermal storage.
 
 If you do a simulation with a fixed storage capacity, you can either set a value for `installedCap` or
 use the precalculations. The parameters `U-value`, `volume` and `surface` of the storage, which are required to
