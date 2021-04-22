@@ -361,7 +361,7 @@ Therefore the annual electricity demand is calculated by the following procedure
 
 2)  the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&plugin=1&language=en&pcode=tps00001>`_.
 3)  the total residential demand is divided by the country's population
-    and multiplied by the population. The population is calculated by the product of the
+    and multiplied by the population living in the area considered. The latter is calculated by the product of the
     number of houses, the number of storeys and the number of people per storey (for
     assumptions see :ref:`building_assumptions`).
 4)  The load profile is shifted due to country specific behaviour following the
@@ -409,13 +409,13 @@ following procedure:
 1)  the residential heat demand of a country is taken from the `EU Building Database <https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use>`_.
 2)  on the lines of the electricity demand, the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&plugin=1&language=en&pcode=tps00001>`_.
 3)  the total residential demand is divided by the country's population
-    and multiplied by the population. The population is calculated by the product of the
+    and multiplied by the population living in the area considered. The latter is calculated by the product of the
     number of houses, the number of storeys and the number of people per storey (for
     assumptions see :ref:`building_assumptions`).
 4)  Heat demand that occurs when a daily mean temperature is above the heating limit
     temperature is removed and distributed evenly over the heat demand of the remaining time
     of the year.
-5)  The load profile is shifted due to countries specific behaviour following the
+5)  For multiple countries, the load profile is adapted by hour shifting following the
     approach of HOTMAPS. For further information see p.127 in
     `HOTMAPS <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_.
 
@@ -700,7 +700,6 @@ You can model the stratified thermal storage with fixed thermal losses by either
             fixed_thermal_losses_absolute,kWh,"{'file_name': 'None', 'header': 'kWh', 'unit': ''}",,
 
     (In this example the fixed thermal losses are calculated in :ref:`thermal_storage` and written to the field ``'file_name'`` in :ref:`storage_02.csv` with *no_unit* as header of the column with the fixed losses relative and *kWh* as header of the column with the fixed losses absolute)
-
 
 
 
