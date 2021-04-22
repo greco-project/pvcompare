@@ -50,6 +50,7 @@ Here is a template for new release sections
 # Hot fixes
 - Hot fix: install MVS with option `[report]` to install missing packages (#270)
 - Hot fix: remove build for python 3.6 from `main.yml` github actions workflow (#270)
+- Hot fix: correct parameter `overwrite_grid_parameters` in `run_pvcompare.py` (#294)
 
 ## [0.0.2] - 2021-03-24
 
