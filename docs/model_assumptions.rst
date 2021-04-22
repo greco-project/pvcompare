@@ -659,7 +659,7 @@ The efficiency :math:`\eta` of the storage is calculated as follows:
    \eta = 1 - loss{\_}rate
 
 with the parameter ``loss_rate``, which is calculated in :ref:`thermal_storage` using the
-function calculate_losses(...) of *oemof.thermal*. Please see the
+function ``calculate_losses`` of *oemof.thermal*. Please see the
 `oemof.thermal` `examples <https://github.com/oemof/oemof-thermal/tree/dev/examples/stratified_thermal_storage>`__
 and the `documentation  <https://oemof-thermal.readthedocs.io/en/latest/stratified_thermal_storage.html>`__
 for further information.
@@ -668,6 +668,9 @@ for further information.
 2.3 Fixed losses relative and absolute
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Besides the relative thermal loss of storage content within one timestep [-] expressed by the ``loss_rate``,
+fixed losses as share of nominal storage capacity [-] and fixed absolute losses independent of storage
+content or nominal storage capacity [kWh] can be passed as well (cf. `oemof.thermal's documentation on the stratified thermal storage  <https://oemof-thermal.readthedocs.io/en/latest/stratified_thermal_storage.html>`__).
 You can model the stratified thermal storage with fixed thermal losses by either providing
 
 * a numeric value:
