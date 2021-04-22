@@ -18,7 +18,8 @@ relevant parameters of *MVS* can be found in the `documentation of MVS <https://
 The values used by default in *pvcompare* for the above parameters in each CSV, are detailed below.
 Some parameters can be calculated automatically by *pvcompare* and do not need to be filled it by hand. These parameters are marked with * *auto_calc*.
 
-* project_data.csv
+project_data.csv
+----------------
     1. **country**: str, Spain (the country in which the project is located), * *auto_calc*
     2. **label**: str, project_data
     3. **latitude**: str, 45.641603 * *auto_calc*
@@ -27,14 +28,16 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     6. **project_name**: str, net zero energy community
     7. **scenario_description**: str, Simulation of scenario scenario_name
 
-* economic_data.csv
+economic_data.csv
+-----------------
     1. **curency**: str, EUR (stands for euro; can be replaced by SEK, if the system is located in Sweden, for instance).
     2. **discount_factor**: factor, 0.06 (most recent data is from 2018, as documented by this market `survey <https://www.grantthornton.co.uk/insights/renewable-energy-discount-rate-survey-2018/>`_.
     3. **label**: str, economic_data
     4. **project_duration**: year, 1 (number of years)
     5. **tax**: factor, 0 (this feature has not been implemented yet, as per MVS documentation)
 
-* simulation_settings.csv
+simulation_settings.csv
+-----------------------
     1. **evaluated_period**: days, 365 (number of days),  * *auto_calc*
     2. **label**: str, simulation_settings
     3. **output_lp_file**: bool, False
@@ -45,7 +48,8 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     8. **display_nx_graph**: bool, False
     9. **store_nx_graph**: bool ,True
 
-* fixcost.csv
+fixcost.csv
+-----------
     +----------------------+-------------------+----------------------------------+------------------+-----------------------+
     |                      |        Unit       |        distribution_grid         | engineering      |       operation       |
     +======================+===================+==================================+==================+=======================+
@@ -63,7 +67,9 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     +----------------------+-------------------+----------------------------------+------------------+-----------------------+
     |  **dispatch_price**  |    currency/kWh   |                0                 |         0        |           0           |
     +----------------------+-------------------+----------------------------------+------------------+-----------------------+
-* energyConsumption.csv
+
+energyConsumption.csv
+---------------------
     1. **dsm**: str, False (dsm stands for Demand Side Management. This feature has not been implement in MVS as of now.)
     2. **file_name**: str, electricity_load.csv
     3. **label**: str, Households
@@ -73,7 +79,8 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     7. **inflow_direction**: str, Electricity
     8. **unit**: str, kW
 
-* energyConversion.csv
+energyConversion.csv
+--------------------
     1. **age_installed**: year, 0 (for all components such as charge controllers, inverters, heat pumps, gas boilers)
     2. **development_costs**: currency, 0 (for all components)
     3. **specific_costs**: currency/kW
@@ -156,7 +163,8 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     14. **type_oemof**: str, transformer (same for all the components)
     15. **unit**: str, kW (applies to all the components)
 
-* energyProduction.csv:
+energyProduction.csv
+--------------------
     1. **age_installed**: year, 0 (for all the components)
     2. **development_costs**: currency, 0 (**TO BE DECIDED**)
     3. **specific_costs**: currency/unit, (**TO BE DECIDED**)
@@ -181,7 +189,9 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     13. **type_oemof**: str, source (for all of the components)
     14. **unit**: str, kWp (for all of the components)
     15. **energyVector**: str, Electricity (for all of the components)
-* energyProviders.csv:
+
+energyProviders.csv
+-------------------
     1. **energy_price**: currency/kWh,
         a. **Electricity grid**: 0.24  * *auto_calc* (0.24 €/kWh is the average household electricity price of Spain for 2019S1. Obtained from `Eurostat <https://ec.europa.eu/eurostat/statistics-explained/images/d/d9/Electricity_prices%2C_first_semester_of_2017-2019_%28EUR_per_kWh%29.png>`_.)
         b. **Gas plant**: 0.0598 * *auto_calc* (0,0598 €/kWh for Germany and 0.072 €/kWh for Spain (2019 / 2020) - Values read in depending on location obtained from `Eurostat's statistic of gas prices <https://ec.europa.eu/eurostat/databrowser/view/ten00118/default/table?lang=en>`_)
@@ -205,7 +215,9 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     11. **emission factor**: kgCO2eq/kWh
         a. **Electricity grid**: 0.338
         b. **Gas plant**: 0.2 (Obtained from `Quaschning 06/2015 <https://www.volker-quaschning.de/datserv/CO2-spez/index_e.php>`_.)
-* energyStorage.csv:
+
+energyStorage.csv
+-----------------
     1. **inflow_direction**: str, ESS Li-Ion
     2. **label**: str, ESS Li-Ion
     3. **optimizeCap**: bool, True
@@ -213,7 +225,9 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
     5. **type_oemof**: str, storage
     6. **storage_filename**: str, storage_01.csv
     7. **energyVector**: str, Electricity
-* storage_01.csv:
+
+storage_01.csv
+--------------
     1. **age_installed**: year, 0 (for all components)
     2. **development_costs**: currency, 0 (for all components)
     3. **specific_costs**: currency/unit
@@ -254,7 +268,10 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
 
         b. **input power** and **output power**: kW
 
-* storage_02.csv:
+.. _storage_02.csv:
+
+storage_02.csv
+--------------
     1. **age_installed**: year, 0 (for all components of the stratified thermal storage)
     2. **development_costs**: currency, 0 (for all components of the stratified thermal storage)
     3. **specific_costs**: currency/unit
@@ -315,7 +332,10 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
 In order to run *pvcompare*, a number of input parameters are needed; many of which are stored in csv files with default values in ``pvcompare/pvcompare/inputs/``.
 The following list will give a brief introduction into the description of the csv files and the source of the given default parameters.
 
-* pv_setup.csv:
+.. _pv_setup:
+
+pv_setup.csv
+------------
     *The pv_setup.csv defines the number of facades that are covered with pv-modules.*
 
     1. **surface_type**: str, optional values are "flat_roof", "gable_roof", "south_facade", "east_facade" and "west_facade"
@@ -323,7 +343,10 @@ The following list will give a brief introduction into the description of the cs
     3. **surface_tilt**: integer, between 0 and 90, where 90 represents a vertical module and 0 a horizontal.
     4. **technology**: str, optional values are "si" for a silicone module, "cpv" for concentrator photovoltaics and "psi" for a perovskite silicone module
 
-* building_parameters:
+.. _building_parameters:
+
+building_parameters.csv
+-----------------------
     *Parameters that describe the characteristics of the building that should be considered in the simulation. The default values are taken from [1].*
 
     1. **number of storeys**: int
@@ -343,11 +366,13 @@ The following list will give a brief introduction into the description of the cs
     15. **filename_residential_electricity_demand**: str, name of the csv file that contains the total residential electricity demand for EU countries in different years [2] *
     16. **filename_country_population**: str, name of the csv file that contains population for EU countries in different years [2] *
 
-* heat_pumps_and_chillers:
+.. _HP_parameters:
+
+heat_pumps_and_chillers.csv
+---------------------------
     *Parameters that describe characteristics of the heat pumps and chillers in the simulated energy system.*
     *Values below assumed for each heat pump technology from research and comparison of three models, each of a different manufacturer.*
     *For each technology the quality grade has been calculated from the mean quality grade of the three models.*
-    *Maximal and minimal operation ranges had been considered in order to make a reasonable assumption regarding* **temp_high** *and* **temp_low** *.*
 
     1. **mode**: str, options: 'heat_pump' or 'chiller'
     2. **technology**: str, options: 'air-air', 'air-water' or 'brine-water' (These three technologies can be processed so far. Default: If missing or different the plant will be modeled as air source)
@@ -357,9 +382,9 @@ The following list will give a brief introduction into the description of the cs
         c. **brine-to-water heat pump**: default: 0.53, Average quality grade of the following heat pump models: `WPS 6K-1 of Bosch Thermotechnik GmbH – Buderus <https://productsde.buderus.com/buderus/productsde.buderus.com/broschueren/buderus-broschuere-logatherm-wps1-wpsk1-wsw196itts-110920.pdf>`_, `WPF 05 of STIEBEL ELTRON GmbH & Co. KG <https://www.stiebel-eltron.de/de/home/produkte-loesungen/erneuerbare_energien/waermepumpe/sole-wasser-waermepumpen/wpf_04_05_07_10_1316/wpf_16/technische-daten.product.pdf>`_ and `5008.5Ai of WATERKOTTE GmbH <https://www.waterkotte.de/fileadmin/data/editor/6_systempartner/Prospekt/EcoTouch_5029_Ai_D_0519.pdf>`_
         d. **air-to-air chiller**: 0.3 (Obtained from `monitored data <https://oemof-thermal.readthedocs.io/en/latest/validation_compression_heat_pumps_and_chillers.html>`_ of the GRECO project)
     3. **temp_high**: float, temperature in °C of the sink (external outlet temperature at the condenser),
-        a. **air-to-air heat pump**: 26 (Maximal operation temperature in data sheet of RAC-50WXE Hitachi)
-        b. **air-to-water heat pump**: 60 (Maximal operation temperature in data sheet of 221.A10 of Viessmann Climate Solutions SE)
-        c. **brine-to-water heat pump**: 65 (Maximal operation temperature in data sheet of WPF 05 of STIEBEL ELTRON GmbH & Co. KG)
+        a. **air-to-air heat pump**: 38, Internal condensor temperature assuming a room temperature of 20 °C, adding a dT of 2 K to heat exchange between air and external circuit, considering temperature spread of 6 K of the external medium [4] and assuming a 10 K temperature difference between external and internal condensor flow
+        b. **air-to-water heat pump**: 50, Internal condensor temperature assuming a surface heating temperature of 40 °C (see for instance this `advisor of Vaillant <https://www.vaillant.de/heizung/heizung-verstehen/tipps-rund-um-ihre-heizung/vorlauf-rucklauftemperatur/>`_) and a 10 K temperature difference between external and internal condensor flow
+        c. **brine-to-water heat pump**: 50, Internal condensor temperature assuming a surface heating temperature of 40 °C (see for instance this `advisor of Vaillant <https://www.vaillant.de/heizung/heizung-verstehen/tipps-rund-um-ihre-heizung/vorlauf-rucklauftemperatur/>`_) and a 10 K temperature difference between external and internal condensor flow
         d. **air-to-air chiller**: Passed empty or with *NaN* in order to model from ambient temperature
     4. **temp_low**: float, temperature in °C of the source (external outlet temperature at the evaporator),
         a. **air source heat pump**: Passed empty or with *NaN* in order to model from ambient temperature
@@ -369,7 +394,25 @@ The following list will give a brief introduction into the description of the cs
     5. **factor_icing**: float or None, COP reduction caused by icing, only for `mode` 'heat_pump', default: None
     6. **temp_threshold_icing**: float or None, Temperature below which icing occurs, only for `mode` 'heat_pump', default: None
 
-* list_of_workalendar:
+.. _stratTES_parameters:
+
+stratified_thermal_storage.csv
+------------------------------
+    *Parameters that describe characteristics of the stratified thermal storage in the simulated energy system.*
+    *The parameters have been set on the example of the stratified thermal storage TH 1000 of Schindler+Hofmann GmbH &  Co. KG*
+
+    1. **var_name**: var_value, var_unit
+    2. **height**: Empty to model investment optimization or numeric to model with a fix storage size, m
+    3. **diameter**: 0.79 (cf. inner diameter in data sheet of `[TH 1000] <https://www.schindler-hofmann.de/content/pdf/prospekte/S+H_Pufferspeicher+Kombispeicher.pdf>`_ ), m
+    4. **temp_h**: 40 (Assuming a surface heating temperature of 40 °C), degC
+    5. **temp_c**: 34 (Considering temperature spread of 6 K of inlet and outlet temperature [4]), degC
+    6. **s_iso**: 100 (cf. [TH 1000]), mm
+    7. **lamb_iso**: 0.03 (Assumption taken from [5]), W/(m*K)
+    8. **alpha_inside**: 4.3 (Calculated with calculations in [6]), W/(m2*K)
+    9. **alpha_outside** 3.17 (Calculated with calculations in [6]), W/(m2*K)
+
+list_of_workalendar_countries.csv
+---------------------------------
     *list of countries for which a python.workalendar [3] exists with the column name "country".*
 
 
@@ -380,4 +423,9 @@ The following list will give a brief introduction into the description of the cs
 
 [3] Workalendar https://pypi.org/project/workalendar/
 
+[4] Felix Ziegler, Dr. Ing, 1997: Sorptionswärmepumpen. Erding, Forschungsberichte des Deutschen Kälte- und Klimatechnischen Vereins Nr. 57, habilitation
+
+[5] Beikircher, Thomas & Buttinger, Frank & Rottmann, Matthias & Herzog, Fabian & Konrad, Martin & Reuß, Manfred & Beikircher, Redaktion, 2013: Superisolierter Heißwasser-Langzeitwärmespeicher : Abschlussbericht zu BMU-Projekt Förderkennzeichen 0325964A, Projektlaufzeit: 01.05.2010 - 31.10.2012. 10.2314/GBV:749701188.
 \* the described csv files are to be added to the input folder accordingly.
+
+[6] In:Klan, H, 2002: Wärmeübergang durch freie Konvektion an umströmten Körpern. Berlin, Heidelberg: Springer Berlin Heidelberg, ISBN 978-3-662-10743-0, 567-591

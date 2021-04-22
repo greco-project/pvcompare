@@ -8,9 +8,8 @@ from feedinlib.cds_request_tools import get_cds_data_from_datespan_and_position
 
 
 def load_era5_weatherdata(lat, lon, year):
-
     """
-    loads era5 weatherdata and converts it into pvlib standart format
+    Loads era5 weather data and converts it into format required by pvlib.
 
     Parameters
     ----------
@@ -75,7 +74,6 @@ def get_era5_data_from_datespan_and_position(
     chunks=None,
     cds_client=None,
 ):
-
     """
     Send request for era5 data to the Climate Data Store (CDS)
 
@@ -120,7 +118,6 @@ def get_era5_data_from_datespan_and_position(
 
 
 def format_pvcompare(ds):
-
     """
     Format dataset to dataframe as required by the pvlib's ModelChain.
 
@@ -197,7 +194,6 @@ def format_pvcompare(ds):
 
 
 def weather_df_from_era5(era5_netcdf_filename, lib, start=None, end=None):
-
     """
     Gets ERA5 weather data from netcdf file and converts it to a pandas
     dataframe as required by the spcified lib.

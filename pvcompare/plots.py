@@ -23,9 +23,9 @@ def plot_all_flows(
     calendar_week=None,
     weekday=None,
 ):
-
     """
     Plots all flows of the energy system for a given period of time.
+
     Parameters
     ----------
     scenario_name: str
@@ -52,6 +52,7 @@ def plot_all_flows(
     weekday: int
         The day of the caldendar_week (from 0-6 with 0 : Monday and 6: Sunday.
         If None: the next greater period is plotted. Default: None
+
     Returns
     -------
         None
@@ -255,8 +256,8 @@ def compare_weather_years(
     user_inputs_mvs_directory=None,
 ):
     """
-    Barplot that shows yearly aggregated weather parameters: ghi, dni, dhi and
-    temperature.
+    Bar plot that shows yearly aggregated weather parameters: ghi, dni, dhi and temperature.
+
     Parameters
     ----------
     latitude: float
@@ -616,21 +617,24 @@ def plot_kpi_loop(
                     )
                 counter += 1
             else:
-                df.plot(
-                    x="step",
-                    y=i,
-                    style=".",
-                    ax=ax,
-                    label=key,
-                    legend=False,
-                    sharex=True,
-                    xticks=df.step,
-                )
-                ax.set_ylabel(y_title[i])
-                ax.set_xlabel(variable_name)
-                ax.get_yaxis().set_label_coords(-0.13, 0.5)
-                ax.set_xticks(df.step)
-                ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
+                try:
+                    df.plot(
+                        x="step",
+                        y=i,
+                        style=".",
+                        ax=ax,
+                        label=key,
+                        legend=False,
+                        sharex=True,
+                        xticks=df.step,
+                    )
+                    ax.set_ylabel(y_title[i])
+                    ax.set_xlabel(variable_name)
+                    ax.get_yaxis().set_label_coords(-0.13, 0.5)
+                    ax.set_xticks(df.step)
+                    ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
+                except:
+                    pass
 
     plt.tight_layout(rect=(0.04, 0.13, 1, 1))
 
