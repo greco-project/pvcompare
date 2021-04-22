@@ -27,6 +27,7 @@ Here is a template for new release sections
 - Added basic model assumptions to RTD and introduced section "local energy system" in Model assumptions in RTD (#286)
 - Added headings in `parameters.rst` to make references of these sections possible in RTD (#286)
 - Improved "scope and limitations" section of RTD with additional information and corrections (#286)
+- Add info on energy systems consisting of more than one node in RTD section "scope and limitations" (#293)
 - Added description of the implementation of the stratified thermal storage in pvcompare with a description of the possibilities modeling it (#291)
 
 ### Changed
