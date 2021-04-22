@@ -385,7 +385,7 @@ Heat demand
 The heat demand of either space heating or space heating and warm water is calculated for a
 given number of houses with a given number of storeys, a certain country and year. In order
 to take heat demand from warm water into account the parameter ``include warm water`` in
-*pvcompare*'s input file ``building_parameters.csv`` is set to ``True``.
+*pvcompare*'s input file :ref:`building_parameters` is set to ``True``.
 To generate the heat demand profiles the BDEW standard load profile is used. This standard
 load profile is derived for german households. Because there is no other standard load profiles
 available for other countries, the german standard load profiles is used for all countries as
@@ -395,18 +395,18 @@ Due to the characteristics of the sigmoid function used for the calculation of t
 profiles, the heat demand never equals zero. Since this does not correspond to the realistic
 behavior of heat supplied by means of space heating in summer, a heating limit temperature is
 introduced, above which no heating takes place. The heating limit temperature can be set in
-``building_parameters.csv``. In case of space heating, heat demand during summer is removed if
-the daily mean temperature crosses the the heating limit temperature. The excess heat demand is
-then distributed equally over the remaining heat demand. In case of a heat demand from space
-heating and warm water only the heat demand of the space heating is adjusted as described above.
+:ref:`building_parameters`. In case of space heating, heat demand during summer is removed if
+the daily mean temperature exceeds the heating limit temperature. The excess heat demand is
+then distributed equally over the remaining time of the year. In case of a heat demand from space
+heating and warm water, only the heat demand of the space heating is adjusted as described above.
 
 The standard load profile is scaled with the annual heat demand for the given
-population. The annual heat demand for space heating and warm water is calculated by the
+population, which is derived from the given number of houses and storeys (for assumptions see :ref:`building_assumptions`). The annual heat demand for space heating and warm water is calculated by the
 following procedure:
 
-1)  the residential heat demand for a country is requested from `EU Building Database <https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use>`_.
+1)  the residential heat demand for a country is taken from the `EU Building Database <https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use>`_.
 2)  on the lines of the electricity demand, the population of the country is requested from `EUROSTAT <https://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&plugin=1&language=en&pcode=tps00001>`_.
-3)  the total residential demand is divided by the countries population and
+3)  the total residential demand is divided by the country's population and
     multiplied by the house population that is calculated by the storeys
     of the house and the number of people in one storey
 4)  The load profile is shifted due to countries specific behaviour following the
@@ -573,7 +573,7 @@ The parameters
     - ``fixed_losses_relative`` and
     - ``fixed_losses_absolute``
 
-can be obtained, if not provided, orientating on the stratified thermal storage component
+can be obtained, if not provided by the user, orientating on the stratified thermal storage component
 of `oemof.thermal  <https://github.com/oemof/oemof-thermal>`__.
 
 The precalculations are done passing the following input parameters with the file
@@ -601,5 +601,4 @@ The efficiency :math:`\eta` of the storage is calculated as follows:
    \eta = 1 - loss{\_}rate
 
 See further information on modeling the stratified thermal storage in the *MVS* in the `documentation of the MVS  <https://github.com/oemof/oemof-thermal>`__.
-
 
