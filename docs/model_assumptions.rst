@@ -436,7 +436,6 @@ the exemplary heat demand from space heating and warm water of Spain, 2013.
 
     Exemplary heat demand for space heating and warm water in Madrid, 2013.
 
-TODO: Fix the image input_timeseries_Heat_demand_shww.png. It is not rendered due to some reason.
 
 .. _heat-sector:
 
