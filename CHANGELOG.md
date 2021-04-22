@@ -27,6 +27,7 @@ Here is a template for new release sections
 - Added basic model assumptions to RTD and introduced section "local energy system" in Model assumptions in RTD (#286)
 - Added headings in `parameters.rst` to make references of these sections possible in RTD (#286)
 - Improved "scope and limitations" section of RTD with additional information and corrections (#286)
+- Added description of the implementation of the stratified thermal storage in pvcompare with a description of the possibilities modeling it (#291)
 
 ### Changed
 - The inlet temperatures of the heat pump and the stratified thermal storage have been revised in the pvcompare input parameters, adapting them in order to fit typical temperatures of the heating system. Also the pvcompare input parameters of the stratified thermal storage have been revised (#272)
@@ -35,6 +36,7 @@ Here is a template for new release sections
 - Move docs requirements from `docs/docs_requirements.txt ` to `setup.py` - now installed e.g. by `pip install -e .[dev, docs]` (#276)
 - Move coverage badge of `coveralls.io` from deprecated to valid section in `README.rst` (#289)
 - Update code documentation in RTD: add missing functions and modules and delete outdated ones (#287)
+- Update RTD's section `Electricity and heat demand modeling` and `Heat pump and thermal storage modelling` in `model_assumptions.rst` (#291)
 
 ### Removed
 -
