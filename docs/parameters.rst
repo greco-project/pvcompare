@@ -268,6 +268,8 @@ storage_01.csv
 
         b. **input power** and **output power**: kW
 
+.. _storage_02.csv:
+
 storage_02.csv
 --------------
     1. **age_installed**: year, 0 (for all components of the stratified thermal storage)
@@ -364,6 +366,8 @@ building_parameters.csv
     15. **filename_residential_electricity_demand**: str, name of the csv file that contains the total residential electricity demand for EU countries in different years [2] *
     16. **filename_country_population**: str, name of the csv file that contains population for EU countries in different years [2] *
 
+.. _HP_parameters:
+
 heat_pumps_and_chillers.csv
 ---------------------------
     *Parameters that describe characteristics of the heat pumps and chillers in the simulated energy system.*
@@ -389,6 +393,8 @@ heat_pumps_and_chillers.csv
         d. **air-to-air chiller**: 15 (The low temperature has been set for now to 15° C, a temperature lower the comfort temperature of 20–22 °C. The chiller has not been implemented in the model yet. However, should it been done so in the future, these temperatures must be researched and adjusted.)
     5. **factor_icing**: float or None, COP reduction caused by icing, only for `mode` 'heat_pump', default: None
     6. **temp_threshold_icing**: float or None, Temperature below which icing occurs, only for `mode` 'heat_pump', default: None
+
+.. _stratTES_parameters:
 
 stratified_thermal_storage.csv
 ------------------------------

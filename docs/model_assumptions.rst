@@ -359,10 +359,11 @@ Therefore the annual electricity demand is calculated by the following procedure
     \text{tc} &= \text{total cookin}g \\
     \text{ec} &= \text{electicity cooking} \\
 
-2)  the population of the country is requested from `EUROSTAT <https://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&plugin=1&language=en&pcode=tps00001>`_.
-3)  the total residential demand is divided by the countries population and
-    multiplied by the house population. The house population is calculated
-    by the number of storeys and the number of people per storey.
+2)  the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&plugin=1&language=en&pcode=tps00001>`_.
+3)  the total residential demand is divided by the country's population
+    and multiplied by the population living in the area considered. The latter is calculated by the product of the
+    number of houses, the number of storeys and the number of people per storey (for
+    assumptions see :ref:`building_assumptions`).
 4)  The load profile is shifted due to country specific behaviour following the
     approach of HOTMAPS. For further information see p.127 in
     `HOTMAPS <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_.
@@ -382,35 +383,64 @@ Figure `Electricity demand`_ shows an exemplary electricty demand for Spain, 201
 Heat demand
 -----------
 
-The heat demand is calculated for a given number of houses with a given
-number of storeys, a certain country and year. The BDEW standard load profile
-is used. This standard load profile is derived for german households. Because
-there is no other standard load profiles available for other countries, the german
-standard load profiles is used for all countries as an approximation.
+The heat demand of either space heating or space heating and warm water is calculated for a
+given number of houses with a given number of storeys, a certain country and year. In order
+to take heat demand from warm water into account the parameter ``include warm water`` in
+*pvcompare*'s input file :ref:`building_parameters` is set to ``True``.
+To generate the heat demand profiles the BDEW standard load profile is used. This standard
+load profile is derived for german households. Because there is no other standard load profile
+available for other countries, the german standard load profile is used for all countries as
+an approximation. For multiple countries the profile is adapted however by hour shifting.
+
+Due to the characteristics of the sigmoid function used for the calculation of the heat demand
+profiles, the heat demand never equals zero. Since this does not correspond to the realistic
+behavior of heat supplied by means of space heating in summer, a heating limit temperature is
+introduced, above which no heating takes place. The heating limit temperature can be set in
+:ref:`building_parameters` and is 15 °C by default. In case of space heating, heat demand
+during summer is removed if the daily mean temperature exceeds the heating limit temperature.
+The excess heat demand is then distributed equally over the remaining time of the year. In case
+of a heat demand from space heating and warm water, only the heat demand of the space heating
+is adjusted as described above.
 
 The standard load profile is scaled with the annual heat demand for the given
-population. The annual heat demand is calculated by the following procedure:
+population, which is derived from the given number of houses and storeys (for assumptions see :ref:`building_assumptions`). The annual heat demand for space heating and warm water is calculated by the
+following procedure:
 
-1)  the residential heat demand for a country is requested from `EU Building Database <https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use>`_. Only the
-    Space Heating is used in the simulations (TODO: How to include WH).
-2)  on the lines of the electricity demand, the population of the country is requested from `EUROSTAT <https://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&plugin=1&language=en&pcode=tps00001>`_.
-3)  the total residential demand is divided by the countries population and
-    multiplied by the house population that is calculated by the storeys
-    of the house and the number of people in one storey
-4)  The load profile is shifted due to countries specific behaviour following the
+1)  the residential heat demand of a country is taken from the `EU Building Database <https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use>`_.
+2)  on the lines of the electricity demand, the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&plugin=1&language=en&pcode=tps00001>`_.
+3)  the total residential demand is divided by the country's population
+    and multiplied by the population living in the area considered. The latter is calculated by the product of the
+    number of houses, the number of storeys and the number of people per storey (for
+    assumptions see :ref:`building_assumptions`).
+4)  Heat demand that occurs when a daily mean temperature is above the heating limit
+    temperature is removed and distributed evenly over the heat demand of the remaining time
+    of the year.
+5)  For multiple countries, the load profile is adapted by hour shifting following the
     approach of HOTMAPS. For further information see p.127 in
     `HOTMAPS <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_.
 
-Figure `Heat demand`_ shows an exemplary electricty demand for Spain, 2013.
+Figure `Heat demand sh`_ shows an exemplary heat demand for space heating and figure `Heat demand shww`_
+the exemplary heat demand from space heating and warm water of Spain, 2013.
 
-.. _Heat demand:
+.. _Heat demand sh:
 
-.. figure:: ./images/input_timeseries_Heat_demand.png
+.. figure:: ./images/input_timeseries_Heat_demand_sh.png
     :width: 100%
-    :alt: Energy yield per kWp (left) and per m² (right) for Berlin and Madrid in 2014.
+    :alt: Heat demand in kW for space heating in Madrid in 2013.
     :align: center
 
-    Exemplary heat demand for Spain, 2013.
+    Exemplary heat demand for space heating in Madrid, 2013.
+
+
+
+.. _Heat demand shww:
+
+.. figure:: ./images/input_timeseries_Heat_demand_shww.png
+    :width: 100%
+    :alt: Heat demand in kW for space heating and warm water in Madrid in 2013.
+    :align: center
+
+    Exemplary heat demand for space heating and warm water in Madrid, 2013.
 
 
 .. _heat-sector:
@@ -421,7 +451,7 @@ Heat pump and thermal storage modelling
 1. Heat pumps and chillers
 --------------------------
 
-Different types of heat pumps and chillers can be modelled by adjusting their parameters in ``heat_pumps_and_chillers.csv`` accordingly.
+Different types of heat pumps and chillers can be modelled by adjusting their parameters in :ref:`HP_parameters` accordingly.
 
 Parameters which can be adjusted and passed are:
 
@@ -536,3 +566,143 @@ To model a water or brine source chiller, you can either
         chiller,water-water,0.3,25,15,None,None
 
     (In this example with constant outlet temperature **temp_high**)
+
+
+2. Stratified thermal storage
+-----------------------------
+
+In order to model a stratified thermal energy storage *pvcompare* provides precalculations of this component.
+The storage's parameters in :ref:`storage_02.csv`
+
+    - ``installedCap``,
+    - ``efficiency``,
+    - ``fixed_losses_relative`` and
+    - ``fixed_losses_absolute``
+
+can be obtained, if not provided by the user, orientating on the `stratified thermal storage component <https://github.com/oemof/oemof-thermal/blob/dev/src/oemof/thermal/stratified_thermal_storage.py>`__
+of `oemof.thermal <https://github.com/oemof/oemof-thermal>`__.
+
+The precalculations are done passing the following input parameters with the file
+:ref:`stratTES_parameters`, which is located in the *pvcompare*'s iputs directory:
+
+    - ``height``
+    - ``diameter``
+    - ``temp_h``
+    - ``temp_c``
+    - ``s_iso``
+    - ``lamb_iso``
+    - ``alpha_inside``
+    - ``alpha_outside``
+
+Please see :ref:`stratTES_parameters` and the `documentation of oemof.thermal <https://oemof-thermal.readthedocs.io/en/latest/stratified_thermal_storage.html>`__
+for further explanations of these parameters. The assumptions made setting these parameters
+in *pvcompare*, based on a manufacturer's prototype of a stratified thermal storage, are summed up in
+:ref:`stratTES_parameters`.
+
+For further information on how the stratified thermal storage is modeled in the *MVS*, please see the
+`documentation of the MVS  <https://multi-vector-simulator.readthedocs.io/en/stable/Model_Assumptions.html#thermal-energy-storage>`__.
+
+2.1 Installed Capacity
+^^^^^^^^^^^^^^^^^^^^^^
+
+The calculations are implemented within :ref:`thermal_storage`. For an investment optimization
+the height of the storage should be left open and ``installedCap`` should be set to 0 or NaN.
+If you do a simulation with a fixed storage capacity, you can either
+
+* set a numeric for ``installedCap``:
+
+    .. code-block:: python
+
+            ,unit,storage capacity,input power,output power
+            installedCap,kWh,100,0,0
+
+
+    (In this example the installed capacity is provided as a numeric within :ref:`storage_02.csv`)
+
+
+* or use the precalculations with leaving ``installedCap`` open or set to NaN and passing a numeric with the ``height`` parameter:
+
+    .. code-block:: python
+
+            ,unit,storage capacity,input power,output power
+            installedCap,kWh,,0,0
+
+
+    (In this example the installed capacity is left open within :ref:`storage_02.csv`)
+
+    .. code-block:: python
+
+            var_name,var_value,var_unit
+            height,2.04,m
+            diameter,0.79,m
+            temp_h,40,degC
+            temp_c,34,degC
+            s_iso,100,mm
+            lamb_iso,0.03,W/(m*K)
+            alpha_inside,4.3,W/(m2*K)
+            alpha_outside,3.17,W/(m2*K)
+
+
+    (In this example the ``height`` is provided as a numeric within :ref:`stratTES_parameters`)
+
+
+The parameters ``U-value``, ``volume`` and ``surface`` of the storage, which are required to
+calculate ``installedCap``, are precalculated as well within :ref:`thermal_storage`.
+
+
+2.2 Efficiency
+^^^^^^^^^^^^^^
+
+The efficiency :math:`\eta` of the storage is calculated as follows:
+
+.. math::
+   \eta = 1 - loss{\_}rate
+
+with the parameter ``loss_rate``, which is calculated in :ref:`thermal_storage` using the
+function ``calculate_losses`` of *oemof.thermal*. Please see the
+`oemof.thermal` `examples <https://github.com/oemof/oemof-thermal/tree/dev/examples/stratified_thermal_storage>`__
+and the `documentation  <https://oemof-thermal.readthedocs.io/en/latest/stratified_thermal_storage.html>`__
+for further information.
+
+
+2.3 Fixed losses relative and absolute
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Besides the relative thermal loss of storage content within one timestep [-] expressed by the ``loss_rate``,
+fixed losses as share of nominal storage capacity [-] and fixed absolute losses independent of storage
+content or nominal storage capacity [kWh] can be passed as well (cf. `oemof.thermal's documentation on the stratified thermal storage  <https://oemof-thermal.readthedocs.io/en/latest/stratified_thermal_storage.html>`__).
+You can model the stratified thermal storage with fixed thermal losses by either providing
+
+* a numeric value:
+
+    .. code-block:: python
+
+            ,unit,storage capacity,input power,output power
+            fixed_thermal_losses_relative,factor,0.001,NA,NA
+            fixed_thermal_losses_absolute,kWh,0.00001,NA,NA
+
+
+    (In this example the fixed thermal losses are provided as a numeric within :ref:`storage_02.csv`)
+
+* your own time series with numeric values:
+
+    .. code-block:: python
+
+            ,unit,storage capacity,input power,output power
+            fixed_thermal_losses_relative,factor,"{'file_name': 'my_fixed_losses_relative.csv', 'header': 'no_unit', 'unit': ''}",,
+            fixed_thermal_losses_absolute,kWh,"{'file_name': 'my_fixed_losses_absolute.csv', 'header': 'kWh', 'unit': ''}",,
+
+    (In this example the fixed thermal losses are provided as an own time series using CSV files within :ref:`storage_02.csv` with *no_unit* as header of the column with the fixed losses relative and *kWh* as header of the column with the fixed losses absolute)
+
+* or using *pvcompare*'s precalculation as described above:
+
+    .. code-block:: python
+
+            ,unit,storage capacity,input power,output power
+            fixed_thermal_losses_relative,factor,"{'file_name': 'None', 'header': 'no_unit', 'unit': ''}",,
+            fixed_thermal_losses_absolute,kWh,"{'file_name': 'None', 'header': 'kWh', 'unit': ''}",,
+
+    (In this example the fixed thermal losses are calculated in :ref:`thermal_storage` and written to the field ``'file_name'`` in :ref:`storage_02.csv` with *no_unit* as header of the column with the fixed losses relative and *kWh* as header of the column with the fixed losses absolute)
+
+
+
