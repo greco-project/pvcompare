@@ -7,7 +7,7 @@ The *pvcompare* model evolved during the H2020 project `GRECO <https://www.greco
 analysing the integration of three innovative PV techologies, that are developed within the project, into energy systems
 in comparison to the state-of-the-art technologies. These three technologies are
 
-- contentrator-PV (CPV),
+- concentrator-PV (CPV),
 - a multi-junction of perovskite and silicon (PSI) and
 - PV powered heat pumps.
 
