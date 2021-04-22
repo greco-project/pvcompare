@@ -451,7 +451,7 @@ Heat pump and thermal storage modelling
 1. Heat pumps and chillers
 --------------------------
 
-Different types of heat pumps and chillers can be modelled by adjusting their parameters in ``heat_pumps_and_chillers.csv`` accordingly.
+Different types of heat pumps and chillers can be modelled by adjusting their parameters in :ref:`HP_parameters` accordingly.
 
 Parameters which can be adjusted and passed are:
 
