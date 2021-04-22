@@ -24,7 +24,7 @@ This way other use cases like detached houses (single-family houses) or industri
 
 The default energy system modelled with *pvcompare* has only one node, meaning that within the energy system, energy can be shared without restrictions through power connections between the buildings ("Coper Plate").
 An analysis of the interconnection of several buildings with restrictions in power lines or due to billing are not content of this model.
-However, a system with multiple nodes can be implemented with *pvcompare* by connecting single energy systems (e.g. of one building or a group of buildings) via two transfomer components.
+However, a system with multiple nodes can be implemented with *pvcompare* by connecting single energy systems (e.g. of one building or a group of buildings) via multiple transfomer components.
 The transmission capacity between the nodes can be restricted by either setting a maximum capacity constraint or an `installed capacity <https://multi-vector-simulator.readthedocs.io/en/v0.5.5/MVS_parameters.html#installedcap>`_, while setting `optimizeCap <https://multi-vector-simulator.readthedocs.io/en/v0.5.5/MVS_parameters.html#optimizecap>`_ to ``False``. This has not been tested, yet.
 
 As *pvcompare* builds on other packages, there are inherited limitations. Checkout the `limitations of the MVS <https://multi-vector-simulator.readthedocs.io/en/v0.5.5/Model_Assumptions.html#limitations>`_.
