@@ -25,6 +25,7 @@ setup(
             os.path.join("perosi", "Albedo", "*.dat"),
             os.path.join("perosi", "data", "CHEN_2020_EQE_curve_pero_corrected.csv"),
             os.path.join("perosi", "data", "CHEN_2020_EQE_curve_si_corrected.csv"),
+            os.path.join("../examples", ".csv"),
         ]
     },
     long_description=read("README.rst"),
