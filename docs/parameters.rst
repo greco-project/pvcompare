@@ -23,31 +23,34 @@ Some parameters can be calculated automatically by *pvcompare* and do not need t
 project_data.csv
 ----------------
     1. **country**: str, Spain (the country in which the project is located), * *auto_calc*
-    3. **latitude**: str, 45.641603 * *auto_calc*
-    4. **longitude**: str, 5.875387 * *auto_calc*
-    5. **project_id**: str, 1
-    6. **project_name**: str, net zero energy community
-    7. **scenario_id**,str,1
-    8. **scenario_name**,str, Scenario_A
-    9. **scenario_description**: str, Simulation of scenario scenario_name
+    2. **latitude**: str, 45.641603 * *auto_calc*
+    3. **longitude**: str, 5.875387 * *auto_calc*
+    4. **project_id**: str, 1
+    5. **project_name**: str, net zero energy community
+    6. **scenario_id**,str,1
+    7. **scenario_name**,str, Scenario_A
+    8. **scenario_description**: str, Simulation of scenario scenario_name
 
 economic_data.csv
 -----------------
     1. **curency**: str, EUR (stands for euro; can be replaced by SEK, if the system is located in Sweden, for instance).
-    2. **project_duration**: year, 25 (number of years)
+    2. **project_duration**: year, 25 (number of years).
     3. **discount_factor**: factor, 0.07 (most recent data is from 2018, as documented by this `discussion paper <http://bpie.eu/wp-content/uploads/2015/10/Discount_rates_in_energy_system-discussion_paper_2015_ISI_BPIE.pdf>`_.)
-    5. **tax**: factor, 0 (see `documentation of MVS <https://mvs-eland.readthedocs.io/en/latest/MVS_parameters.html>`_)
+    4. **tax**: factor, 0 (see `documentation of MVS <https://mvs-eland.readthedocs.io/en/latest/MVS_parameters.html>`_)
 
 simulation_settings.csv
 -----------------------
     1. **evaluated_period**: days, 365 (number of days),  * *auto_calc*
-    5. **start_date**: str, 2013-01-01 00:00:00,  * *auto_calc*
-    7. **timestep**: minutes, 60 (hourly time-steps, 60 minutes)
-    9. **output_lp_file**: bool ,False
+    2. **start_date**: str, 2013-01-01 00:00:00,  * *auto_calc*
+    3. **timestep**: minutes, 60 (hourly time-steps, 60 minutes)
+    4. **output_lp_file**: bool ,False
 
 fixcost.csv
 -----------
-By default no fixcosts are consideres in *pvcompare*. The lifetime of all assets is set to 1 because otherwise the MVS simulation fails.
+By default in *pvcompare* no fixcosts are considered. The lifetime of all assets is set to 1 only to prevent errors in MVS. This lifetime has no effect
+on the simulation unless costs are defined.
+
+
     +----------------------+-------------------+----------------------------------+------------------+-----------------------+
     |                      |        Unit       |        distribution_grid         | engineering      |       operation       |
     +======================+===================+==================================+==================+=======================+
@@ -164,15 +167,15 @@ energyProduction.csv
     4. **file_name**: str, * *auto_calc*
     5. **installedCap**: kWp, 0.0 (for all components)
     6. **maximumCap**: kWp,  * *auto_calc*
-    8. **lifetime**: year, 25 (for all the components)
-    9. **specific_costs_om**: currency/unit, 50 (same for all the components; 50 €/kWp is the value that is arrived at after accounting for the yearly inspection and cleaning. Here is the detailed `explanation <https://github.com/greco-project/pvcompare/issues/13>`_.)
-    10. **dispatch_price**: currency/kWh, 0 (this is because there are no fuel costs associated with photovoltaics)
-    11. **optimizeCap**: bool, True (for all components)
-    12. **outflow_direction**: str, PV bus1 (for all of the components)
-    13. **type_oemof**: str, source (for all of the components)
-    14. **unit**: str, kWp (for all of the components)
-    15. **energyVector**: str, Electricity (for all of the components)
-    16. **emission_factor**: kgCO2eq/unit, * *auto_calc*
+    7. **lifetime**: year, 25 (for all the components)
+    8. **specific_costs_om**: currency/unit, 50 (same for all the components; 50 €/kWp is the value that is arrived at after accounting for the yearly inspection and cleaning. Here is the detailed `explanation <https://github.com/greco-project/pvcompare/issues/13>`_.)
+    9. **dispatch_price**: currency/kWh, 0 (this is because there are no fuel costs associated with photovoltaics)
+    10. **optimizeCap**: bool, True (for all components)
+    11. **outflow_direction**: str, PV bus1 (for all of the components)
+    12. **type_oemof**: str, source (for all of the components)
+    13. **unit**: str, kWp (for all of the components)
+    14. **energyVector**: str, Electricity (for all of the components)
+    15. **emission_factor**: kgCO2eq/unit, * *auto_calc*
 
 energyProviders.csv
 -------------------
@@ -220,23 +223,23 @@ storage_01.csv
 * This storage example describes a battery storage
 
     1. **unit**, str, kWh
-    6. **installedCap**: unit, 0 (for all components)
-    2. **age_installed**: year, 0 (for all components)
-    8. **lifetime**: year, 20 (for all components), `Moosmoar S.3<https://iewt2019.eeg.tuwien.ac.at/download/contribution/presentation/112/112_presentation_20190215_102253.pdf>`_
-    2. **development_costs**: currency, 0 (for all components)
-    3. **specific_costs**: currency/unit
+    2. **installedCap**: unit, 0 (for all components)
+    3. **age_installed**: year, 0 (for all components)
+    4. **lifetime**: year, 20 (for all components), `Moosmoar S.3<https://iewt2019.eeg.tuwien.ac.at/download/contribution/presentation/112/112_presentation_20190215_102253.pdf>`_
+    5. **development_costs**: currency, 0 (for all components)
+    6. **specific_costs**: currency/unit
         a. **storage capacity**: 250 - 550 (`ZHB S.46 ff <https://www.zhb-flensburg.de/fileadmin/content/spezial-einrichtungen/zhb/dokumente/dissertationen/fluri/fluri-2019-wirtschaftlichkeit-dez-stromspeicher.pdf>`_)
         b. **input power** and **output power**: 0
-    9. **specific_costs_om**: currency/unit/year
+    7. **specific_costs_om**: currency/unit/year
         a. **storage capacity**: 0.2 (`energieheld <https://www.energieheld.de/solaranlage/photovoltaik/stromspeicher/kosten#preis-pro-kilowattstunde-berechnen>`_)
         b. **input power** and **output power**: 0
-    10. **dispatch_price**: currency/kWh
+    8. **dispatch_price**: currency/kWh
             a. **storage capacity**: NA (does not apply)
             b. **input power** and **output power**: 0
-    4. **c_rate**: factor of total capacity (kWh)
+    9. **c_rate**: factor of total capacity (kWh)
         a. **storage capacity**: NA (does not apply)
         b. **input power** and **output power**: 1 (this just means that the whole capacity of the battery would be used during charging and discharging cycles)
-    5. **efficiency**: factor
+    10. **efficiency**: factor
         a. **storage capacity**: 0.95
         b. **input power** and **output power**: 0.95 (Charging and discharging efficiency. The value has been sourced from `MVS efficiency <https://multi-vector-simulator.readthedocs.io/en/stable/MVS_parameters.html#efficiency-label>`_.)
     11. **soc_initial**: None or factor
@@ -336,24 +339,24 @@ building_parameters.csv
     *Parameters that describe the characteristics of the building that should be considered in the simulation. The default values are taken from [1].*
 
     1. **number of storeys**,int, 5
-    1. **number of houses**: int, 20
-    2. **population per storey**: int, 32 (number of habitants per storey)
-    3. **total storey area**: int, 1232 (total area of one storey, equal to the flat roof area in m²)
-    4. **length south facade**: int, 56 (length of the south facade in m)
-    5. **length eastwest facade**:int, 22 (length of the east/west facade in m)
-    6. **hight storey**: int, 3 (hight of each storey in m)
-    7. **room temperature**: int, 20 (average room temperature inside the building, default: 20 °C)
-    8. **heating limit temperature**: int, 15 (temperature limit for space heating in °C, default: `15 °C <http://wiki.energie-m.de/Heizgrenztemperatur>`_)
-    9. **include warm water**: bool, False (condition about whether warm water is considered in the heat demand, default: False. If False, the warm water demand is added to the electricty demand instead.)
-    10. **filename_total_consumption**: str, total_consumption_residential.xlsx (name of the csv file that contains the total electricity and heat consumption for EU countries from [2]) *
-    11. **filename_total_SH**: str, total_consumption_SH_residential.xlsx (name of the csv file that contains the total space heating for EU countries [2]) *
-    12. **filename_total_WH**: str, total_consumption_WH_residential.xlsx (name of the csv file that contains the total water heating for EU countries [2]) *
-    13. **filename_elect_SH**: str, electricity_consumption_SH_residential.xlsx (name of the csv file that contains the electrical space heatig for EU countries [2]) *
-    14. **filename_elect_WH**: str, electricity_consumption_WH_residential.xlsx (name of the csv file that contains the electrical water heating for EU countries[2]) *
-    15. **filename_residential_electricity_demand**: str, electricity_consumption_residential.xlsx (name of the csv file that contains the total residential electricity demand for EU countries [2]) *
-    16. **filename_total_cooking_consumption**: str,total_consumption_cooking_residential.xlsx (name of the csv file that contains the total residential cooking demand for EU countries [2])
-    17. **filename_electricity_cooking_consumption**: str,electricity_consumption_cooking_residential.xlsx (name of the csv file that contains the electrical residential cooking demand for EU countries [2])
-    18. **filename_country_population**: str ,EUROSTAT_population.csv (name of the csv with total population per country [2])
+    2. **number of houses**: int, 20
+    3. **population per storey**: int, 32 (number of habitants per storey)
+    4. **total storey area**: int, 1232 (total area of one storey, equal to the flat roof area in m²)
+    5. **length south facade**: int, 56 (length of the south facade in m)
+    6. **length eastwest facade**:int, 22 (length of the east/west facade in m)
+    7. **hight storey**: int, 3 (hight of each storey in m)
+    8. **room temperature**: int, 20 (average room temperature inside the building, default: 20 °C)
+    9. **heating limit temperature**: int, 15 (temperature limit for space heating in °C, default: `15 °C <http://wiki.energie-m.de/Heizgrenztemperatur>`_)
+    10. **include warm water**: bool, False (condition about whether warm water is considered in the heat demand, default: False. If False, the warm water demand is added to the electricty demand instead.)
+    11. **filename_total_consumption**: str, total_consumption_residential.xlsx (name of the csv file that contains the total electricity and heat consumption for EU countries from [2]) *
+    12. **filename_total_SH**: str, total_consumption_SH_residential.xlsx (name of the csv file that contains the total space heating for EU countries [2]) *
+    13. **filename_total_WH**: str, total_consumption_WH_residential.xlsx (name of the csv file that contains the total water heating for EU countries [2]) *
+    14. **filename_elect_SH**: str, electricity_consumption_SH_residential.xlsx (name of the csv file that contains the electrical space heatig for EU countries [2]) *
+    15. **filename_elect_WH**: str, electricity_consumption_WH_residential.xlsx (name of the csv file that contains the electrical water heating for EU countries[2]) *
+    16. **filename_residential_electricity_demand**: str, electricity_consumption_residential.xlsx (name of the csv file that contains the total residential electricity demand for EU countries [2]) *
+    17. **filename_total_cooking_consumption**: str,total_consumption_cooking_residential.xlsx (name of the csv file that contains the total residential cooking demand for EU countries [2])
+    18. **filename_electricity_cooking_consumption**: str,electricity_consumption_cooking_residential.xlsx (name of the csv file that contains the electrical residential cooking demand for EU countries [2])
+    19. **filename_country_population**: str ,EUROSTAT_population.csv (name of the csv with total population per country [2])
 
 .. _HP_parameters:
 
@@ -365,23 +368,23 @@ heat_pumps_and_chillers.csv
 
     1. **mode**: str, options: 'heat_pump' or 'chiller'
     2. **technology**: str, options: 'air-air', 'air-water' or 'brine-water' (These three technologies can be processed so far. Default: If missing or different the plant will be modeled as air source)
-    2. **quality_grade**: float, scale-down factor to determine the COP of a real machine (Can be calculated from COP provided by manufacturer under nominal conditions and nominal temperatures. Required equations can be found in the `oemof.thermal documentation of compression heat pump and chiller <https://oemof-thermal.readthedocs.io/en/latest/compression_heat_pumps_and_chillers.html>`_.)
+    3. **quality_grade**: float, scale-down factor to determine the COP of a real machine (Can be calculated from COP provided by manufacturer under nominal conditions and nominal temperatures. Required equations can be found in the `oemof.thermal documentation of compression heat pump and chiller <https://oemof-thermal.readthedocs.io/en/latest/compression_heat_pumps_and_chillers.html>`_.)
         a. **air-to-air heat pump**: default: 0.1852, Average quality grade of the following heat pump models: `RAC-50WXE Hitachi, Ltd.  <https://www.hitachi-hvac.co.uk/ranges/residential-air-conditioning/premium-s-series-wall-mounted>`_, `MSZ-GL50 Mitsubishi Electric Corporation <https://www.mitsubishi-electric.co.nz/materials/aircon/brochures/@MSZ-GL.pdf>`_ and `KIT-E18-PKEA of Panasonic Corporation <https://www.panasonicproclub.com/uploads/general/default_catalogues/enduser_leaflets_english/2014/Panasonic_PKEA_14.pdf>`_
         b. **air-to-water heat pump**: default: 0.4030, Average quality grade of the following heat pump models: `WPLS6.2 of Bosch Thermotechnik GmbH – Buderus <https://productsde.buderus.com/buderus/productsde.buderus.com/broschueren/buderus-broschuere-logatherm-wpls.2-110920.pdf>`_, `WPL 17 ICS classic of STIEBEL ELTRON GmbH & Co. KG <https://www.stiebel-eltron.de/de/home/produkte-loesungen/erneuerbare_energien/waermepumpe/luft-wasser-waermepumpen/wpl_09_17_ics_ikcsclassic/wpl_17_ikcs_classic/technische-daten.product.pdf>`_ and `221.A10 of Viessmann Climate Solutions SE <https://www.viessmann.de/de/wohngebaeude/waermepumpe/luft-wasser-waermepumpen/vitocal-222-a-mb.html>`_
         c. **brine-to-water heat pump**: default: 0.53, Average quality grade of the following heat pump models: `WPS 6K-1 of Bosch Thermotechnik GmbH – Buderus <https://productsde.buderus.com/buderus/productsde.buderus.com/broschueren/buderus-broschuere-logatherm-wps1-wpsk1-wsw196itts-110920.pdf>`_, `WPF 05 of STIEBEL ELTRON GmbH & Co. KG <https://www.stiebel-eltron.de/de/home/produkte-loesungen/erneuerbare_energien/waermepumpe/sole-wasser-waermepumpen/wpf_04_05_07_10_1316/wpf_16/technische-daten.product.pdf>`_ and `5008.5Ai of WATERKOTTE GmbH <https://www.waterkotte.de/fileadmin/data/editor/6_systempartner/Prospekt/EcoTouch_5029_Ai_D_0519.pdf>`_
         d. **air-to-air chiller**: 0.3 (Obtained from `monitored data <https://oemof-thermal.readthedocs.io/en/latest/validation_compression_heat_pumps_and_chillers.html>`_ of the GRECO project)
-    3. **temp_high**: float, temperature in °C of the sink (external outlet temperature at the condenser),
+    4. **temp_high**: float, temperature in °C of the sink (external outlet temperature at the condenser),
         a. **air-to-air heat pump**: 38, Internal condensor temperature assuming a room temperature of 20 °C, adding a dT of 2 K to heat exchange between air and external circuit, considering temperature spread of 6 K of the external medium [4] and assuming a 10 K temperature difference between external and internal condensor flow
         b. **air-to-water heat pump**: 50, Internal condensor temperature assuming a surface heating temperature of 40 °C (see for instance this `advisor of Vaillant <https://www.vaillant.de/heizung/heizung-verstehen/tipps-rund-um-ihre-heizung/vorlauf-rucklauftemperatur/>`_) and a 10 K temperature difference between external and internal condensor flow
         c. **brine-to-water heat pump**: 50, Internal condensor temperature assuming a surface heating temperature of 40 °C (see for instance this `advisor of Vaillant <https://www.vaillant.de/heizung/heizung-verstehen/tipps-rund-um-ihre-heizung/vorlauf-rucklauftemperatur/>`_) and a 10 K temperature difference between external and internal condensor flow
         d. **air-to-air chiller**: Passed empty or with *NaN* in order to model from ambient temperature
-    4. **temp_low**: float, temperature in °C of the source (external outlet temperature at the evaporator),
+    5. **temp_low**: float, temperature in °C of the source (external outlet temperature at the evaporator),
         a. **air source heat pump**: Passed empty or with *NaN* in order to model from ambient temperature
         b. **air-to-water heat pump**: Passed empty or with *NaN* in order to model from ambient temperature
         c. **brine-to-water heat pump**: Passed empty or with *NaN* in order to model from mean yearly ambient temperature as simplifying assumption of the ground temperature from depths of approximately 15 meters (see `brandl_energy_2006 <https://www.icevirtuallibrary.com/doi/full/10.1680/geot.2006.56.2.81>`_)
         d. **air-to-air chiller**: 15 (The low temperature has been set for now to 15° C, a temperature lower the comfort temperature of 20–22 °C. The chiller has not been implemented in the model yet. However, should it been done so in the future, these temperatures must be researched and adjusted.)
-    5. **factor_icing**: float or None, COP reduction caused by icing, only for `mode` 'heat_pump', default: None
-    6. **temp_threshold_icing**: float or None, Temperature below which icing occurs, only for `mode` 'heat_pump', default: None
+    6. **factor_icing**: float or None, COP reduction caused by icing, only for `mode` 'heat_pump', default: None
+    7. **temp_threshold_icing**: float or None, Temperature below which icing occurs, only for `mode` 'heat_pump', default: None
 
 .. _stratTES_parameters:
 
@@ -402,7 +405,7 @@ stratified_thermal_storage.csv
 
 list_of_workalendar_countries.csv
 ---------------------------------
-    *list of countries for which a python.workalendar [3] exists with the column name "country".*
+    * list of countries for which a python.workalendar [3] exists with the column name "country".*
 
 
 
