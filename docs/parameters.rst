@@ -5,79 +5,72 @@ Parameters of pvcompare: Definitions and Default Values
 
 Within the ``pvcompare/pvcompare/data/`` directory, two separate categories of inputs can be observed.
 
-1. *MVS* parameters (found in the CSVs within the ``data/mvs_inputs/csv_elements/`` directory)
-2. *pvcompare*-specific parameters (found in the CSVs within the ``data/inputs`` directory)
+1. *MVS* parameters (found in the CSVs within the ``data/user_inputs/mvs_inputs/csv_elements/`` directory)
+2. *pvcompare*-specific parameters (found in the CSVs within the ``data/user_inputs/pvcompare_inputs/`` directory)
+
+As *pvcompare* makes use of the `Multi-vector Simulation (MVS) <https://github.com/rl-institut/mvs_eland>`_ tool, the definitions of all the
+relevant parameters of *MVS* can be found in the `documentation of MVS <https://mvs-eland.readthedocs.io/en/latest/MVS_parameters.html>`_.
+The default values and it's sources are described below.
+
+The values used by default in *pvcompare* for the above parameters in each CSV, are detailed below.
 
 
 1. MVS Parameters
 =================
-
-As *pvcompare* makes use of the `Multi-vector Simulation (MVS) <https://github.com/rl-institut/mvs_eland>`_ tool, the definitions of all the
-relevant parameters of *MVS* can be found in the `documentation of MVS <https://mvs-eland.readthedocs.io/en/latest/MVS_parameters.html>`_.
-
-The values used by default in *pvcompare* for the above parameters in each CSV, are detailed below.
 Some parameters can be calculated automatically by *pvcompare* and do not need to be filled it by hand. These parameters are marked with * *auto_calc*.
+
 
 project_data.csv
 ----------------
     1. **country**: str, Spain (the country in which the project is located), * *auto_calc*
-    2. **label**: str, project_data
     3. **latitude**: str, 45.641603 * *auto_calc*
     4. **longitude**: str, 5.875387 * *auto_calc*
     5. **project_id**: str, 1
     6. **project_name**: str, net zero energy community
-    7. **scenario_description**: str, Simulation of scenario scenario_name
+    7. **scenario_id**,str,1
+    8. **scenario_name**,str, Scenario_A
+    9. **scenario_description**: str, Simulation of scenario scenario_name
 
 economic_data.csv
 -----------------
     1. **curency**: str, EUR (stands for euro; can be replaced by SEK, if the system is located in Sweden, for instance).
-    2. **discount_factor**: factor, 0.06 (most recent data is from 2018, as documented by this market `survey <https://www.grantthornton.co.uk/insights/renewable-energy-discount-rate-survey-2018/>`_.
-    3. **label**: str, economic_data
-    4. **project_duration**: year, 1 (number of years)
-    5. **tax**: factor, 0 (this feature has not been implemented yet, as per MVS documentation)
+    2. **project_duration**: year, 25 (number of years)
+    3. **discount_factor**: factor, 0.07 (most recent data is from 2018, as documented by this `discussion paper <http://bpie.eu/wp-content/uploads/2015/10/Discount_rates_in_energy_system-discussion_paper_2015_ISI_BPIE.pdf>`_.)
+    5. **tax**: factor, 0 (see `documentation of MVS <https://mvs-eland.readthedocs.io/en/latest/MVS_parameters.html>`_)
 
 simulation_settings.csv
 -----------------------
     1. **evaluated_period**: days, 365 (number of days),  * *auto_calc*
-    2. **label**: str, simulation_settings
-    3. **output_lp_file**: bool, False
-    4. **restore_from_oemof_file**: bool, False
     5. **start_date**: str, 2013-01-01 00:00:00,  * *auto_calc*
-    6. **store_oemof_results**: bool, True
     7. **timestep**: minutes, 60 (hourly time-steps, 60 minutes)
-    8. **display_nx_graph**: bool, False
-    9. **store_nx_graph**: bool ,True
+    9. **output_lp_file**: bool ,False
 
 fixcost.csv
 -----------
+By default no fixcosts are consideres in *pvcompare*. The lifetime of all assets is set to 1 because otherwise the MVS simulation fails.
     +----------------------+-------------------+----------------------------------+------------------+-----------------------+
     |                      |        Unit       |        distribution_grid         | engineering      |       operation       |
     +======================+===================+==================================+==================+=======================+
-    |  **age_installed**   | 	    year       |               10                 |         0        |           0           |
+    |  **age_installed**   | 	    year       |               0                  |         0        |           0           |
     +----------------------+-------------------+----------------------------------+------------------+-----------------------+
-    | **development_costs**|      currency     |               10                 |         0        |           0           |
+    | **development_costs**|      currency     |               0                  |         0        |           0           |
     +----------------------+-------------------+----------------------------------+------------------+-----------------------+
-    |  **specific_cost**   |      currency     |               10                 |         0        |         4600          |
+    |  **specific_cost**   |      currency     |               0                  |         0        |           0           |
     +----------------------+-------------------+----------------------------------+------------------+-----------------------+
-    |       **label**      |         str       | distribution grid infrastructure | R&D, engineering | Fix project operation |
+    |     **lifetime**     |        year       |               1                  |         1        |           1           |
     +----------------------+-------------------+----------------------------------+------------------+-----------------------+
-    |     **lifetime**     |        year       |               30                 |        20        |          20           |
-    +----------------------+-------------------+----------------------------------+------------------+-----------------------+
-    | **specific_cost_om** |    currency/year  |               10                 |         0        |           0           |
-    +----------------------+-------------------+----------------------------------+------------------+-----------------------+
-    |  **dispatch_price**  |    currency/kWh   |                0                 |         0        |           0           |
+    | **specific_cost_om** |    currency/year  |               0                  |         0        |           0           |
     +----------------------+-------------------+----------------------------------+------------------+-----------------------+
 
 energyConsumption.csv
 ---------------------
-    1. **dsm**: str, False (dsm stands for Demand Side Management. This feature has not been implement in MVS as of now.)
-    2. **file_name**: str, electricity_load.csv
-    3. **label**: str, Households
-    4. **type_asset**: str, demand
+    1. **unit**: str, kW
+    2. **inflow_direction**: str, Electricity
+    3. **file_name**: str, electricity_load_2017_Spain_8.csv, * *auto_calc*
+    4. **energyVector**: str, Electricity
     5. **type_oemof**: str, sink
-    6. **energyVector**: str, Electricity
-    7. **inflow_direction**: str, Electricity
-    8. **unit**: str, kW
+    6. **type_asset**: str, demand
+    7. **dsm**: str, False (dsm stands for Demand Side Management. This feature has not been implement in MVS as of now.)
 
 energyConversion.csv
 --------------------
@@ -166,54 +159,50 @@ energyConversion.csv
 energyProduction.csv
 --------------------
     1. **age_installed**: year, 0 (for all the components)
-    2. **development_costs**: currency, 0 (**TO BE DECIDED**)
-    3. **specific_costs**: currency/unit, (**TO BE DECIDED**)
-    4. **file_name**: str,  * *auto_calc*
-        a. **pv_plant_01**: si_180_31.csv
-        b. **pv_plant_02**: cpv_180_31.csv
-        c. **pv_plant_03**: cpv_90_90.csv
+    2. **development_costs**: currency, 0 (for all the components)
+    3. **specific_costs**: currency/unit, 934 (SI), 1019 (CPV) ,813 (PSI)
+    4. **file_name**: str, * *auto_calc*
     5. **installedCap**: kWp, 0.0 (for all components)
-    6. **maximumCap**: kWp  * *auto_calc*
-        a. **pv_plant_01**: 25454.87
-        b. **pv_plant_02**: 55835.702
-        c. **pv_plant_03**: 23929.586
-    7. **label**: str
-        a. **pv_plant_01**: PV si_180_31
-        b. **pv_plant_02**: PV cpv_180_31
-        c. **pv_plant_03**: PV cpv_90_90
+    6. **maximumCap**: kWp,  * *auto_calc*
     8. **lifetime**: year, 25 (for all the components)
     9. **specific_costs_om**: currency/unit, 50 (same for all the components; 50 €/kWp is the value that is arrived at after accounting for the yearly inspection and cleaning. Here is the detailed `explanation <https://github.com/greco-project/pvcompare/issues/13>`_.)
-    10. **dispatch_price**: currency/kWh, 0 (this is because there are no fuel costs associated with Photovoltaics)
+    10. **dispatch_price**: currency/kWh, 0 (this is because there are no fuel costs associated with photovoltaics)
     11. **optimizeCap**: bool, True (for all components)
     12. **outflow_direction**: str, PV bus1 (for all of the components)
     13. **type_oemof**: str, source (for all of the components)
     14. **unit**: str, kWp (for all of the components)
     15. **energyVector**: str, Electricity (for all of the components)
+    16. **emission_factor**: kgCO2eq/unit, * *auto_calc*
 
 energyProviders.csv
 -------------------
-    1. **energy_price**: currency/kWh,
-        a. **Electricity grid**: 0.24  * *auto_calc* (0.24 €/kWh is the average household electricity price of Spain for 2019S1. Obtained from `Eurostat <https://ec.europa.eu/eurostat/statistics-explained/images/d/d9/Electricity_prices%2C_first_semester_of_2017-2019_%28EUR_per_kWh%29.png>`_.)
-        b. **Gas plant**: 0.0598 * *auto_calc* (0,0598 €/kWh for Germany and 0.072 €/kWh for Spain (2019 / 2020) - Values read in depending on location obtained from `Eurostat's statistic of gas prices <https://ec.europa.eu/eurostat/databrowser/view/ten00118/default/table?lang=en>`_)
-    2. **feedin_tariff**: currency/kWh,
-        a. **Electricity grid**: (0.10 €/kWh is for Germany. We do not have data for Spain yet.)
+All default values for the energy_price, feed-in tariff, renewable share and emission factors of all European countries are stores in
+``data/static_inputs/local_grid_parameters.xlsx``
+
+    1. **unit**: str,kW
+    2. **optimizeCap**: bool, True (for all of the components)
+    3. **energy_price**: currency/kWh,
+        a. **Electricity grid**: * *auto_calc*, `EUROSTAT electricity, <https://ec.europa.eu/eurostat/databrowser/view/ten00117/default/table?lang=en>`_
+        b. **Gas plant**: * *auto_calc* `EUROSTAT Gas <https://ec.europa.eu/eurostat/databrowser/view/ten00118/default/table?lang=en>`_
+    4. **feedin_tariff**: currency/kWh,
+        a. **Electricity grid**: `feed-in tariff <https://www.pv-magazine.com/features/archive/solar-incentives-and-fits/feed-in-tariffs-in-europe/>`_
         b. **Gas plant**: 0
-    3. **inflow_direction**: str,
+    5. **peak_demand_pricing**: currency/kW, 0 (for all of the components)
+    6. **peak_demand_pricing_period**: 	times per year (1,2,3,4,6,12), 1 (for all of the components)
+    7. **renewable_share**,factor,`EUROSTAT renewable share <https://ec.europa.eu/eurostat/web/energy/data/shares>`_
+    8. **inflow_direction**: str,
         a. **Electricity grid**: Electricity
         b. **Gas plant**: Gas bus
-    4. **label**: str, Electricity grid feedin
-    5. **optimizeCap**: bool, True (for all of the components)
-    6. **outflow_direction**: str,
+    9. **outflow_direction**: str,
         a. **Electricity grid**: Electricity
         b. **Gas plant**: Heat bus
-    7. **peak_demand_pricing**: currency/kW, 0 (for all of the components)
-    8. **peak_demand_pricing_period**: 	times per year (1,2,3,4,6,12), 1 (for all of the components)
-    9. **type_oemof**: str, source (for all of the components)
     10. **energyVector**: str,
         a. **Electricity grid**: Electricity
         b. **Gas plant**: Heat
-    11. **emission factor**: kgCO2eq/kWh
-        a. **Electricity grid**: 0.338
+    11. **type_oemof**: str, source (for all of the components)
+
+    12. **emission factor**: kgCO2eq/kWh
+        a. **Electricity grid**: `EEA EUROPA <https://www.eea.europa.eu/data-and-maps/indicators/overview-of-the-electricity-production-3/assessment>`_
         b. **Gas plant**: 0.2 (Obtained from `Quaschning 06/2015 <https://www.volker-quaschning.de/datserv/CO2-spez/index_e.php>`_.)
 
 energyStorage.csv
@@ -228,50 +217,44 @@ energyStorage.csv
 
 storage_01.csv
 --------------
-    1. **age_installed**: year, 0 (for all components)
+* This storage example describes a battery storage
+
+    1. **unit**, str, kWh
+    6. **installedCap**: unit, 0 (for all components)
+    2. **age_installed**: year, 0 (for all components)
+    8. **lifetime**: year, 20 (for all components), `Moosmoar S.3<https://iewt2019.eeg.tuwien.ac.at/download/contribution/presentation/112/112_presentation_20190215_102253.pdf>`_
     2. **development_costs**: currency, 0 (for all components)
     3. **specific_costs**: currency/unit
-        a. **storage capacity**: 0.2 (Consult this reference `<https://www.energieheld.de/solaranlage/photovoltaik/kosten#vergleich>`_ for details.)
+        a. **storage capacity**: 250 - 550 (`ZHB S.46 ff <https://www.zhb-flensburg.de/fileadmin/content/spezial-einrichtungen/zhb/dokumente/dissertationen/fluri/fluri-2019-wirtschaftlichkeit-dez-stromspeicher.pdf>`_)
         b. **input power** and **output power**: 0
+    9. **specific_costs_om**: currency/unit/year
+        a. **storage capacity**: 0.2 (`energieheld <https://www.energieheld.de/solaranlage/photovoltaik/stromspeicher/kosten#preis-pro-kilowattstunde-berechnen>`_)
+        b. **input power** and **output power**: 0
+    10. **dispatch_price**: currency/kWh
+            a. **storage capacity**: NA (does not apply)
+            b. **input power** and **output power**: 0
     4. **c_rate**: factor of total capacity (kWh)
         a. **storage capacity**: NA (does not apply)
         b. **input power** and **output power**: 1 (this just means that the whole capacity of the battery would be used during charging and discharging cycles)
     5. **efficiency**: factor
-        a. **storage capacity**: 0
-        b. **input power** and **output power**: 0.9 (Charging and discharging efficiency. The value has been sourced from this `page <https://en.wikipedia.org/wiki/Lithium-ion_battery>`_.)
-    6. **installedCap**: unit, 0 (applies for all the parameters of the battery storage)
-    7. **label**: str, Same as the column headers (storage capacity, input power, output power)
-    8. **lifetime**: year, 10 (applies for all the parameters of the battery storage)
-    9. **specific_costs_om**: currency/unit/year, 0 (applies for all the parameters of the battery storage)
-    10. **dispatch_price**: currency/kWh
-
-        a. **storage capacity**: NA (does not apply)
-
-        b. **input power** and **output power**: 0
+        a. **storage capacity**: 0.95
+        b. **input power** and **output power**: 0.95 (Charging and discharging efficiency. The value has been sourced from `MVS efficiency <https://multi-vector-simulator.readthedocs.io/en/stable/MVS_parameters.html#efficiency-label>`_.)
     11. **soc_initial**: None or factor
-
         a. **storage capacity**: None
-
         b. **input power** and **output power**: NA
     12. **soc_max**: factor
-
-        a. **storage capacity**: 0.8 (Took the Fronius 4.5 battery which has a rated capacity 4.5 kW, but 3.6 kW is the usable capacity.So SoC max would be 80% or 0.8.)
-
+        a. **storage capacity**: 0.98 ( `Solar charge controllers <https://www.morningstarcorp.com/solar-charge-controllers>`_)
         b. **input power** and **output power**: NA
     13. **soc_min**: factor
-
-        a. **storage capacity**: 0.1 (Figure from this research `article <https://www.sciencedirect.com/science/article/pii/S0378775319310043>`_.)
-
+        a. **storage capacity**: 0.15 (Figure from this research `article <https://www.sciencedirect.com/science/article/pii/S0378775319310043>`_.)
         b. **input power** and **output power**: NA
-    14. **unit**: str
-        a. **storage capacity**: kWh
-
-        b. **input power** and **output power**: kW
 
 .. _storage_02.csv:
 
 storage_02.csv
 --------------
+* This storage example describes a stratified thermal storage
+
     1. **age_installed**: year, 0 (for all components of the stratified thermal storage)
     2. **development_costs**: currency, 0 (for all components of the stratified thermal storage)
     3. **specific_costs**: currency/unit
@@ -329,8 +312,11 @@ storage_02.csv
 2. pvcompare-specific parameters
 ================================
 
-In order to run *pvcompare*, a number of input parameters are needed; many of which are stored in csv files with default values in ``pvcompare/pvcompare/inputs/``.
+In order to run *pvcompare*, a number of input parameters are needed; many of which are stored in csv files with default values in ``data/user_inputs/pvcompare_inputs/``.
 The following list will give a brief introduction into the description of the csv files and the source of the given default parameters.
+
+Some parameters can be calculated automatically by *pvcompare* and do not need to be filled it by hand. These parameters are marked with * *auto_calc*.
+
 
 .. _pv_setup:
 
@@ -349,22 +335,25 @@ building_parameters.csv
 -----------------------
     *Parameters that describe the characteristics of the building that should be considered in the simulation. The default values are taken from [1].*
 
-    1. **number of storeys**: int
-    2. **population per storey**: int, number of habitants per storey
-    3. **total storey area**: int, total area of one storey, equal to the flat roof area in m²
-    4. **length south facade**: int, length of the south facade in m
-    5. **length eastwest facade**:int, length of the east/west facade in m
-    6. **hight storey**: int, hight of each storey in m
-    7. **room temperature**: int, average room temperature inside the building, default: 20 °C
-    8. **heating limit temperature**: int, temperature limit for space heating in °C, default: `15 °C <http://wiki.energie-m.de/Heizgrenztemperatur>`_
-    9. **include warm water**: bool, condition about whether warm water is considered or not, default: False
-    10. **filename_total_consumption**: str, name of the csv file that contains the total electricity and heat consumption for EU countries in different years from [2] *
-    11. **filename_total_SH**: str, name of the csv file that contains the total space heating for EU countries in different years [2] *
-    12. **filename_total_WH**: str, name of the csv file that contains the total water heating for EU countries in different years [2] *
-    13. **filename_elect_SH**: str, name of the csv file that contains the electrical space heatig for EU countries in different years [2] *
-    14. **filename_elect_WH**: str, name of the csv file that contains the electrical water heating for EU countries in different years [2] *
-    15. **filename_residential_electricity_demand**: str, name of the csv file that contains the total residential electricity demand for EU countries in different years [2] *
-    16. **filename_country_population**: str, name of the csv file that contains population for EU countries in different years [2] *
+    1. **number of storeys**,int, 5
+    1. **number of houses**: int, 20
+    2. **population per storey**: int, 32 (number of habitants per storey)
+    3. **total storey area**: int, 1232 (total area of one storey, equal to the flat roof area in m²)
+    4. **length south facade**: int, 56 (length of the south facade in m)
+    5. **length eastwest facade**:int, 22 (length of the east/west facade in m)
+    6. **hight storey**: int, 3 (hight of each storey in m)
+    7. **room temperature**: int, 20 (average room temperature inside the building, default: 20 °C)
+    8. **heating limit temperature**: int, 15 (temperature limit for space heating in °C, default: `15 °C <http://wiki.energie-m.de/Heizgrenztemperatur>`_)
+    9. **include warm water**: bool, False (condition about whether warm water is considered in the heat demand, default: False. If False, the warm water demand is added to the electricty demand instead.)
+    10. **filename_total_consumption**: str, total_consumption_residential.xlsx (name of the csv file that contains the total electricity and heat consumption for EU countries from [2]) *
+    11. **filename_total_SH**: str, total_consumption_SH_residential.xlsx (name of the csv file that contains the total space heating for EU countries [2]) *
+    12. **filename_total_WH**: str, total_consumption_WH_residential.xlsx (name of the csv file that contains the total water heating for EU countries [2]) *
+    13. **filename_elect_SH**: str, electricity_consumption_SH_residential.xlsx (name of the csv file that contains the electrical space heatig for EU countries [2]) *
+    14. **filename_elect_WH**: str, electricity_consumption_WH_residential.xlsx (name of the csv file that contains the electrical water heating for EU countries[2]) *
+    15. **filename_residential_electricity_demand**: str, electricity_consumption_residential.xlsx (name of the csv file that contains the total residential electricity demand for EU countries [2]) *
+    16. **filename_total_cooking_consumption**: str,total_consumption_cooking_residential.xlsx (name of the csv file that contains the total residential cooking demand for EU countries [2])
+    17. **filename_electricity_cooking_consumption**: str,electricity_consumption_cooking_residential.xlsx (name of the csv file that contains the electrical residential cooking demand for EU countries [2])
+    18. **filename_country_population**: str ,EUROSTAT_population.csv (name of the csv with total population per country [2])
 
 .. _HP_parameters:
 
