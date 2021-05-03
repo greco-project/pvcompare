@@ -50,12 +50,7 @@ setup(
         "Pyomo==5.7.2",
     ],
     extras_require={
-        "dev": [
-            "pytest==5.3.5",
-            "black==19.10b0",
-            "coverage==5.0.3",
-            "coveralls==1.11.0",
-            "sphinx_rtd_theme",
-        ]
+        "dev": ["pytest==5.3.5", "black==19.10b0", "coverage", "coveralls",],
+        "docs": ["sphinx_rtd_theme", "Sphinx>=1.4.3"],
     },
 )
