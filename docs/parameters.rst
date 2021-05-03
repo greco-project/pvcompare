@@ -168,7 +168,7 @@ energyProduction.csv
     5. **installedCap**: kWp, 0.0 (for all components)
     6. **maximumCap**: kWp,  * *auto_calc*
     7. **lifetime**: year, 25 (for all the components)
-    8. **specific_costs_om**: currency/unit, 50 (same for all the components; 50 €/kWp is the value that is arrived at after accounting for the yearly inspection and cleaning. Here is the detailed `explanation <https://github.com/greco-project/pvcompare/issues/13>`_.)
+    8. **specific_costs_om**: currency/unit, 20 (SI) ,15 (CPV), 17 (PSI)
     9. **dispatch_price**: currency/kWh, 0 (this is because there are no fuel costs associated with photovoltaics)
     10. **optimizeCap**: bool, True (for all components)
     11. **outflow_direction**: str, PV bus1 (for all of the components)
