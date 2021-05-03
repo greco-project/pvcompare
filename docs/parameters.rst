@@ -220,7 +220,7 @@ energyStorage.csv
 
 storage_01.csv
 --------------
-* This storage example describes a battery storage
+This storage example describes a battery storage
 
     1. **unit**, str, kWh
     2. **installedCap**: unit, 0 (for all components)
@@ -256,7 +256,7 @@ storage_01.csv
 
 storage_02.csv
 --------------
-* This storage example describes a stratified thermal storage
+This storage example describes a stratified thermal storage
 
     1. **age_installed**: year, 0 (for all components of the stratified thermal storage)
     2. **development_costs**: currency, 0 (for all components of the stratified thermal storage)
