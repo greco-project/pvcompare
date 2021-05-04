@@ -337,8 +337,15 @@ Electricity demand
 ------------------
 
 For the electricity demand, the BDEW load profile for households (H0) is scaled with the annual
-demand of a certain population.
-Therefore the annual electricity demand is calculated by the following procedure:
+demand of a certain population. It is assumed that the electricity demand covers all electrical
+demand used for lightning, home appliances,
+cooling and cooking. For the latter it is assumed that all cooking is based on electricity only.
+Therefore the electrical part of the cooking demand is substracted from the total electrical demand before the total
+cooking demand is added. The electricity
+demand does not cover space heating, nor warm water. Therefore the electrical fraction of space heating and
+warm water is substracted from the electricity demand.
+
+The annual electricity demand is calculated by the following procedure:
 
 1)  the national residential electricity consumption for a country is calculated
     with the following procedure. The data for the total electricity consumption
@@ -384,9 +391,13 @@ Heat demand
 -----------
 
 The heat demand of either space heating or space heating and warm water is calculated for a
-given number of houses with a given number of storeys, a certain country and year. In order
-to take heat demand from warm water into account the parameter ``include warm water`` in
+given number of houses with a given number of storeys, a certain country and year. By default only space heating
+is taken into account. In order
+to take heat demand from warm water into account it needs to be modeled separately. In order to do so, the parameter ``include warm water`` in
 *pvcompare*'s input file :ref:`building_parameters` is set to ``True``.
+
+@Marie: HIER NOCH MEHR INFOS WIE DIE MODELLIERUNG FUNKTIONIERT?
+
 To generate the heat demand profiles the BDEW standard load profile is used. This standard
 load profile is derived for german households. Because there is no other standard load profile
 available for other countries, the german standard load profile is used for all countries as
