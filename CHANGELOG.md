@@ -29,7 +29,7 @@ Here is a template for new release sections
 - Improved "scope and limitations" section of RTD with additional information and corrections (#286)
 - Add info on energy systems consisting of more than one node in RTD section "scope and limitations" (#293)
 - Added description of the implementation of the stratified thermal storage in pvcompare with a description of the possibilities modeling it (#291)
-- Dokumentation: Update on 'basic_usage', 'parameter description' and 'model assumptions'
+- Dokumentation: Update on 'basic_usage', 'parameter description' and 'model assumptions' (#106 #290 #277 #76 #165)
 
 ### Changed
 - The inlet temperatures of the heat pump and the stratified thermal storage have been revised in the pvcompare input parameters, adapting them in order to fit typical temperatures of the heating system. Also the pvcompare input parameters of the stratified thermal storage have been revised (#272)
