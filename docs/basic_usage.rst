@@ -13,7 +13,16 @@ You can easily run a simulation by executing one of the examples in ``examples/`
 There is three examples, one that accounts only for the electricity sector, one with sector coupling and heat pumps and one sector coupling scenario with a gas
 plant instead of heat pumps.
 
-If you want to set up your own scenario, you need to insert input files into the directory first. How to do this is described in the next paragraph :ref:`define_params`. Afterwards you can run a simulation by running the file ``run_pvcompare.py`` in the parent folder of *pvcompare*.
+If you want to set up your own scenario, you need to insert input files into the directory first. How to do this is described in the next paragraph :ref:`define_params`.
+Afterwards you can run a simulation by running the file ``run_pvcompare.py`` in the parent folder of *pvcompare*.
+In order to run a simulation you need to at least define the following parameters:
+
+- latitude: float
+- longitude: float
+- year: int
+- storeys: int
+- country: str
+- scenario_name: str
 
 .. _define_params:
 
