@@ -18,19 +18,17 @@ plant instead of heat pumps.
 Define your own components and parameters
 =========================================
 
-*pvcompare* provides you with templates and default parameters for your simulations. A full description of the parameters can be found in the section :ref:`parameters`.
+*pvcompare* provides you with templates and default parameters for your simulations. You can find three basic electricity sector and sector coupled scenarios in ``examples/example_user_inputs/``.
+A full description of the parameters and default values can be found in the section :ref:`parameters`.
 However, you can also define your own energy system, choose different parameters and/or change the settings.
 
-Please refer to `Simulating with the MVS <https://multi-vector-simulator.readthedocs.io/en/latest/simulating_with_the_mvs.html>`_ to learn
-how to work with the input csv files and how to provide your own time series.
-
-In *pvcompare* all user input files should be stored into the
-``data/user_inputs`` directory. It contains two subfolders ``mvs_inputs`` for all MVS parameters and ``pvcompare_inputs`` for *pvcompare* inputs parameters. You can define a different input directory by providing the parameters ``user_inputs_mvs_directory`` and ``user_inputs_pvcompare_directory`` to the :py:func:`~.main` and :py:func:`~.apply_mvs` functions.
+You can configure your own scenario by defining the parameters in ``data/user_inputs``. It contains two subfolders ``mvs_inputs`` for all MVS parameters and ``pvcompare_inputs`` for *pvcompare* inputs parameters. You can define a different input directory by providing the parameters ``user_inputs_mvs_directory`` and ``user_inputs_pvcompare_directory`` to the :py:func:`~.main` and :py:func:`~.apply_mvs` functions.
 Please note that *pvcompare* only works with csv files but not with `json files <https://multi-vector-simulator.readthedocs.io/en/latest/simulating_with_the_mvs.html#json-file-mvs-config-json>`_.
 
-You can configure your scenario by defining the parameters in ``data/user_inputs``. Because the ``data/user_inputs`` folder is an individual working directory, it is left empty in the beginning. The user is required to fill in the specific input files that fit to the specific energy system setup.
+. Because the ``data/user_inputs`` folder is an individual working directory, it is left empty in the beginning. The user is required to fill in the specific input files that fit to the specific energy system setup.
 The directory ``data/user_inputs_collection`` contains a broad collection of all kinds of possible asset definitions that have been used within the GRECO Project. Users are welcome to copy specific parts
-from this collections folder into the ``data/user_inputs`` files. The structure of the files should not be changed. There is also three example input folders in the ``examples/example_user_inputs/``directory that resemble specific scenario setups for
+from this collections folder into the ``data/user_inputs`` files. It is also possible to define new MVS assets (e.g. different powerplants, storages or energy providers, transformers etc.). For more informations see `MVS <https://multi-vector-simulator.readthedocs.io/en/latest/simulating_with_the_mvs.html>`_.
+When setting up your own input files, please make sure that your individual input folder contains *all* available files. Even though you can change the values of the parameters the files itself, their naming and their structure cannot change. As mentioned above, there is also three example input folders in the ``examples/example_user_inputs/`` directory that resemble specific scenario setups for
 sector coupled and electricity sector scenarios. For a start we recommend to study the example input files and set up your own inputs according to the example folders and by adding (or deleting) components from the ``data/user_inputs_collection`` directory.
 
 Here's a very short description of the different input files:
@@ -59,7 +57,7 @@ Here's a very short description of the different input files:
 
 Download ERA5 weather data
 ==========================
-If you run a simulation, *pvcompare* automatically tries to download the ERA5 weather data from `Climate Data Store (CDS) <https://cds.climate.copernicus.eu/>`_ and store it locally in ``data/static_inputs``, unless the
+If you run a simulation, *pvcompare* automatically downloads the ERA5 weather data from `Climate Data Store (CDS) <https://cds.climate.copernicus.eu/>`_ and store it locally in ``data/static_inputs``, unless the
 file already exists. In order to enable this download you first need to make an account at the `CDS <https://cds.climate.copernicus.eu/user/login?destination=%2F%23!%2Fhome>`_ and
 install the cdsapi package. `This page <https://cds.climate.copernicus.eu/api-how-to>`_ provides information about the installation. When using the API for a large about of data (e.g. a year for one location) the request gets queued and the download might take a while.
 
@@ -84,7 +82,7 @@ The following *pvcompare* parameters can be varied:
 - technology (PV technologies: si, cpv or psi
 - hp_temp (upper bound temperature for the heat pump (external outlet temperature at the condenser))
 
-Further, all *MVS* parameters can be veried, by defining the csv file, the column name and the paramer name that should be changed.
+Further, all *MVS* parameters can be vagried, by defining the csv file, the column name and the paramer name that should be changed.
 Please note that in each sensitivity analysis only *one* parameter can be varied.
 
 For more information see :py:func:`~.analysis.loop_mvs` and :py:func:`~.analysis.loop_pvcompare`.
