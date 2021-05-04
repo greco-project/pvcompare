@@ -68,4 +68,18 @@ toto: add more information here (IS)
 Add a sensitivy to your simulations
 ===================================
 
-Here follows a description of how to use the :py:func:`~.automated_loop` functionality.
+If you want to add a sensitivity to your simulation by varying one parameter, you can use the :py:func:`~.analysis.loop_mvs` or :py:func:`~.analysis.loop_pvcompare` functionality, depending
+on whether the parameter you want to vary is a *pvcompare* or a *MVS* parameter.
+
+The following *pvcompare* parameters can be varied:
+
+- location (country, lat, lon)
+- year
+- storeys (number of storeys of the buildings)
+- technology (PV technologies: si, cpv or psi
+- hp_temp (upper bound for the room temperature)
+
+Further, all *MVS* parameters can be veried, by defining the csv file, the column name and the paramer name that should be changed.
+Please note that in each sensitivity analysis only *one* parameter can be varied.
+
+For more information see :py:func:`~.analysis`.
