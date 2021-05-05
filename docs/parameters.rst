@@ -176,10 +176,11 @@ energyProduction.csv
     13. **unit**: str, kWp (for all of the components)
     14. **energyVector**: str, Electricity (for all of the components)
     15. **emission_factor**: kgCO2eq/unit, * *auto_calc*
+    16. **renewableAsset**: bool, True (for all of the components)
 
 energyProviders.csv
 -------------------
-All default values for the energy_price, feed-in tariff, renewable share and emission factors of all European countries are stores in
+All default values of the energy price, feed-in tariff, renewable share and emission factor of European countries are stored in
 ``data/static_inputs/local_grid_parameters.xlsx``
 
     1. **unit**: str,kW
@@ -188,11 +189,11 @@ All default values for the energy_price, feed-in tariff, renewable share and emi
         a. **Electricity grid**: * *auto_calc*, `EUROSTAT electricity, <https://ec.europa.eu/eurostat/databrowser/view/ten00117/default/table?lang=en>`_
         b. **Gas plant**: * *auto_calc* `EUROSTAT Gas <https://ec.europa.eu/eurostat/databrowser/view/ten00118/default/table?lang=en>`_
     4. **feedin_tariff**: currency/kWh,
-        a. **Electricity grid**: `feed-in tariff <https://www.pv-magazine.com/features/archive/solar-incentives-and-fits/feed-in-tariffs-in-europe/>`_
+        a. **Electricity grid**: * *auto_calc* `feed-in tariff <https://www.pv-magazine.com/features/archive/solar-incentives-and-fits/feed-in-tariffs-in-europe/>`_
         b. **Gas plant**: 0
     5. **peak_demand_pricing**: currency/kW, 0 (for all of the components)
     6. **peak_demand_pricing_period**: 	times per year (1,2,3,4,6,12), 1 (for all of the components)
-    7. **renewable_share**,factor,`EUROSTAT renewable share <https://ec.europa.eu/eurostat/web/energy/data/shares>`_
+    7. **renewable_share**,factor, * *auto_calc* `EUROSTAT renewable share <https://ec.europa.eu/eurostat/web/energy/data/shares>`_
     8. **inflow_direction**: str,
         a. **Electricity grid**: Electricity
         b. **Gas plant**: Gas bus
@@ -205,7 +206,7 @@ All default values for the energy_price, feed-in tariff, renewable share and emi
     11. **type_oemof**: str, source (for all of the components)
 
     12. **emission factor**: kgCO2eq/kWh
-        a. **Electricity grid**: `EEA EUROPA <https://www.eea.europa.eu/data-and-maps/indicators/overview-of-the-electricity-production-3/assessment>`_
+        a. **Electricity grid**: * *auto_calc* `EEA EUROPA <https://www.eea.europa.eu/data-and-maps/indicators/overview-of-the-electricity-production-3/assessment>`_
         b. **Gas plant**: 0.2 (Obtained from `Quaschning 06/2015 <https://www.volker-quaschning.de/datserv/CO2-spez/index_e.php>`_.)
 
 energyStorage.csv
@@ -240,13 +241,17 @@ This storage example describes a battery storage
         a. **storage capacity**: NA (does not apply)
         b. **input power** and **output power**: 1 (this just means that the whole capacity of the battery would be used during charging and discharging cycles)
     10. **efficiency**: factor
+
         a. **storage capacity**: 1
+
         b. **input power** and **output power**: 0.95 (Charging and discharging efficiency. The value has been sourced from `MVS efficiency <https://multi-vector-simulator.readthedocs.io/en/stable/MVS_parameters.html#efficiency-label>`_.)
     11. **soc_initial**: None or factor
         a. **storage capacity**: None
         b. **input power** and **output power**: NA
     12. **soc_max**: factor
+
         a. **storage capacity**: 0.98 ( `Solar charge controllers <https://www.morningstarcorp.com/solar-charge-controllers>`_)
+        
         b. **input power** and **output power**: NA
     13. **soc_min**: factor
         a. **storage capacity**: 0.2 (Figure from this research `article <https://www.sciencedirect.com/science/article/pii/S0378775319310043>`_.)
