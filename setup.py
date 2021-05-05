@@ -25,7 +25,10 @@ setup(
             os.path.join("perosi", "Albedo", "*.dat"),
             os.path.join("perosi", "data", "CHEN_2020_EQE_curve_pero_corrected.csv"),
             os.path.join("perosi", "data", "CHEN_2020_EQE_curve_si_corrected.csv"),
-            os.path.join(os.path.dirname(__file__), "examples", "*.csv"),
+            os.path.join(os.path.dirname(__file__), "examples", "example_user_inputs", "mvs_inputs_electricity_sector", "csv_elements", "*.csv"),
+            os.path.join(os.path.dirname(__file__), "examples", "example_user_inputs", "mvs_inputs_sector_coupling", "csv_elements", "*.csv"),
+            os.path.join(os.path.dirname(__file__), "examples", "example_user_inputs", "mvs_inputs_sector_coupling_gas", "csv_elements", "*.csv"),
+            os.path.join(os.path.dirname(__file__), "examples", "example_user_inputs", "pvcompare_inputs", "csv_elements", "*.csv"),
         ]
     },
     long_description=read("README.rst"),
