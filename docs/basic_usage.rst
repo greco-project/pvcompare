@@ -10,8 +10,7 @@ Run a simulation
 ================
 
 You can easily run a simulation by executing one of the examples in ``examples/``.
-There is three examples, one that accounts only for the electricity sector, one with sector coupling and heat pumps and one sector coupling scenario with a gas
-plant instead of heat pumps.
+There are three examples, one that accounts only for the electricity sector, one for sector coupling using heat pumps and one example covering heat demand with a gas plant as a reference scenario for the one with heat pumps.
 
 If you want to set up your own scenario, you need to insert input files into the directory first. How to do this is described in the next paragraph :ref:`define_params`.
 Afterwards you can run a simulation by running the file ``run_pvcompare.py`` in the parent folder of *pvcompare*.
