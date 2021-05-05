@@ -235,23 +235,19 @@ This storage example describes a battery storage
         a. **storage capacity**: 0.2 (`energieheld <https://www.energieheld.de/solaranlage/photovoltaik/stromspeicher/kosten#preis-pro-kilowattstunde-berechnen>`_)
         b. **input power** and **output power**: 0
     8. **dispatch_price**: currency/kWh
-            a. **storage capacity**: NA (does not apply)
-            b. **input power** and **output power**: 0
+        a. **storage capacity**: NA (does not apply)
+        b. **input power** and **output power**: 0
     9. **c_rate**: factor of total capacity (kWh)
         a. **storage capacity**: NA (does not apply)
         b. **input power** and **output power**: 1 (this just means that the whole capacity of the battery would be used during charging and discharging cycles)
     10. **efficiency**: factor
-
         a. **storage capacity**: 1
-
         b. **input power** and **output power**: 0.95 (Charging and discharging efficiency. The value has been sourced from `MVS efficiency <https://multi-vector-simulator.readthedocs.io/en/stable/MVS_parameters.html#efficiency-label>`_.)
     11. **soc_initial**: None or factor
         a. **storage capacity**: None
         b. **input power** and **output power**: NA
     12. **soc_max**: factor
-
         a. **storage capacity**: 0.98 ( `Solar charge controllers <https://www.morningstarcorp.com/solar-charge-controllers>`_)
-        
         b. **input power** and **output power**: NA
     13. **soc_min**: factor
         a. **storage capacity**: 0.2 (Figure from this research `article <https://www.sciencedirect.com/science/article/pii/S0378775319310043>`_.)
@@ -285,34 +281,22 @@ This storage example describes a stratified thermal storage
         a. **storage capacity**: NA (does not apply)
         b. **input power** and **output power**: 0
     10. **soc_initial**: None or factor
-
         a. **storage capacity**: None
-
         b. **input power** and **output power**: NA
     11. **soc_max**: factor
-
         a. **storage capacity**: 0.925 (7.5% unused volume see `European Commission study large-scale heating and cooling in EU [EUC_heat] <https://op.europa.eu/en/publication-detail/-/publication/312f0f62-dfbd-11e7-9749-01aa75ed71a1/language-en>`_ p.168 - This applies for large scale TES but could be validated for a small scale storage too.)
-
         b. **input power** and **output power**: NA
     12. **soc_min**: factor
-
         a. **storage capacity**: 0.075 (7.5% unused volume see [EUC_heat] p.168 - This applies for large scale TES but could be validated for a small scale storage too.)
-
         b. **input power** and **output power**: NA
     13. **unit**: str
-
         a. **storage capacity**: kWh
-
         b. **input power** and **output power**: kW
     14. **fixed_thermal_losses_relative**: factor
-
         a. **storage capacity**: "{'file_name': 'None', 'header': 'no_unit', 'unit': ''}", is calculated in pvcompare
-
         b. **input power** and **output power**: NA (does not apply)
     15. **fixed_thermal_losses_absolute**: kWh
-
         a. **storage capacity**: "{'file_name': 'None', 'header': 'no_unit', 'unit': ''}", is calculated in pvcompare
-
         b. **input power** and **output power**: NA (does not apply)
 
 
@@ -353,15 +337,14 @@ building_parameters.csv
     8. **room temperature**: int, 20 (average room temperature inside the building, default: 20 °C)
     9. **heating limit temperature**: int, 15 (temperature limit for space heating in °C, default: `15 °C <http://wiki.energie-m.de/Heizgrenztemperatur>`_)
     10. **include warm water**: bool, False (condition about whether warm water is considered in the heat demand, default: False. If False, the warm water demand is neglected in the simulation.)
-    11. **filename_total_consumption**: str, total_consumption_residential.xlsx (name of the csv file that contains the total electricity and heat consumption of countries in the European Union from [2]) *
-    12. **filename_total_SH**: str, total_consumption_SH_residential.xlsx (name of the csv file that contains the total energy consumption for space heating of countries in the European Union [2]) *
-    13. **filename_total_WH**: str, total_consumption_WH_residential.xlsx (name of the csv file that contains the total energy consumption for water heating of countries in the European Union [2]) *
-    14. **filename_elect_SH**: str, electricity_consumption_SH_residential.xlsx (name of the csv file that contains the electrical energy consumption of space heating of countries in the European Union countries [2]) *
-    15. **filename_elect_WH**: str, electricity_consumption_WH_residential.xlsx (name of the csv file that contains the electrical energy consumption of warm water heating of countries in the European Union [2]) *
-    16. **filename_residential_electricity_demand**: str, electricity_consumption_residential.xlsx (name of the csv file that contains the total electricity energy consumption in residential sector of countries in the European Union [2]) *
-    17. **filename_total_cooking_consumption**: str, total_consumption_cooking_residential.xlsx (name of the csv file that contains the total energy consumption for cooking in residential sector of countries in the European Union [2])
-    18. **filename_electricity_cooking_consumption**: str,electricity_consumption_cooking_residential.xlsx (name of the csv file that contains the electrical residential cooking demand of countries in the European Union [2])
-    19. **filename_country_population**: str, EUROSTAT_population.csv (name of the csv file with total population of each country in the European Union [2])
+    11. **filename_total_SH**: str, total_consumption_SH_residential.xlsx (name of the csv file that contains the total energy consumption for space heating of countries in the European Union [2]) *
+    12. **filename_total_WH**: str, total_consumption_WH_residential.xlsx (name of the csv file that contains the total energy consumption for water heating of countries in the European Union [2]) *
+    13. **filename_elect_SH**: str, electricity_consumption_SH_residential.xlsx (name of the csv file that contains the electrical energy consumption of space heating of countries in the European Union countries [2]) *
+    14. **filename_elect_WH**: str, electricity_consumption_WH_residential.xlsx (name of the csv file that contains the electrical energy consumption of warm water heating of countries in the European Union [2]) *
+    15. **filename_residential_electricity_demand**: str, electricity_consumption_residential.xlsx (name of the csv file that contains the total electricity energy consumption in residential sector of countries in the European Union [2]) *
+    16. **filename_total_cooking_consumption**: str, total_consumption_cooking_residential.xlsx (name of the csv file that contains the total energy consumption for cooking in residential sector of countries in the European Union [2])
+    17. **filename_electricity_cooking_consumption**: str,electricity_consumption_cooking_residential.xlsx (name of the csv file that contains the electrical residential cooking demand of countries in the European Union [2])
+    18. **filename_country_population**: str, EUROSTAT_population.csv (name of the csv file with total population of each country in the European Union [2])
 
 .. _HP_parameters:
 
