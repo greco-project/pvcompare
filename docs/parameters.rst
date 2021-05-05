@@ -189,7 +189,7 @@ All default values of the energy price, feed-in tariff, renewable share and emis
         a. **Electricity grid**: * *auto_calc*, `EUROSTAT electricity, <https://ec.europa.eu/eurostat/databrowser/view/ten00117/default/table?lang=en>`_
         b. **Gas plant**: * *auto_calc* `EUROSTAT Gas <https://ec.europa.eu/eurostat/databrowser/view/ten00118/default/table?lang=en>`_
     4. **feedin_tariff**: currency/kWh,
-        a. **Electricity grid**: `feed-in tariff <https://www.pv-magazine.com/features/archive/solar-incentives-and-fits/feed-in-tariffs-in-europe/>`_
+        a. **Electricity grid**: * *auto_calc* `feed-in tariff <https://www.pv-magazine.com/features/archive/solar-incentives-and-fits/feed-in-tariffs-in-europe/>`_
         b. **Gas plant**: 0
     5. **peak_demand_pricing**: currency/kW, 0 (for all of the components)
     6. **peak_demand_pricing_period**: 	times per year (1,2,3,4,6,12), 1 (for all of the components)
