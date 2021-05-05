@@ -217,7 +217,7 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
     )
     ax1.set_ylabel("lifetime in years")
     ax1.set_xlabel("specific_costs in EUR")
-    #    sns.lineplot(basis.columns, basis[0], ax = ax1)
+#    sns.lineplot(basis.columns, basis[0], ax = ax1)
     ax2 = ax1.twinx()
     ax2.plot(basis.index, basis["lifetime"], color="darkorange", label="SI")
     ax2.set_ylim(5, 25.5)
@@ -229,7 +229,7 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
     dy = 0 / 72.0
     offset = mpl.transforms.ScaledTranslation(dx, dy, f.dpi_scale_trans)
 
-    # apply offset transform to all x ticklabels.
+    #apply offset transform to all x ticklabels.
     for label in ax1.xaxis.get_majorticklabels():
         label.set_transform(label.get_transform() + offset)
     for label in ax2.xaxis.get_majorticklabels():
@@ -579,7 +579,7 @@ def plot_kpi_loop(
     output.sort_index(inplace=True)
 
     # plot
-    hight = len(kpi) * 2
+    hight = len(kpi) * 3
     fig = plt.figure(figsize=(7, hight))
     rows = len(kpi)
     num = (
@@ -632,11 +632,12 @@ def plot_kpi_loop(
                     ax.set_xlabel(variable_name)
                     ax.get_yaxis().set_label_coords(-0.13, 0.5)
                     ax.set_xticks(df.step)
-                    ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
+
                 except:
                     pass
+            ax.set_xlim(ax.get_xlim()[0] - 20, ax.get_xlim()[1] + 20)
 
-    plt.tight_layout(rect=(0.04, 0.13, 1, 1))
+    plt.tight_layout(rect=(0.0, 0.2, 1, 1))
 
     plt.xticks(rotation=45)
 
@@ -1330,10 +1331,10 @@ def plot_compare_technologies(
             for c in output_dict[scenario_name][key].columns:
                 if c.endswith("si"):
                     technology = "SI"
-                elif c.endswith("cpv"):
-                    technology = "CPV"
                 elif c.endswith("psi"):
                     technology = "PSI"
+                elif c.endswith("cpv"):
+                    technology = "CPV"
                 output_min[scenario_name][key].loc[
                     technology, str(c)[:-1]
                 ] = output_dict[scenario_name][key][c].min()
@@ -1404,7 +1405,11 @@ def plot_compare_technologies(
 
                 df_min.loc[scenario_name, pv] = df[pv].min()
                 df_max.loc[scenario_name, pv] = df[pv].max()
-
+#        df_max.sort_values(["PV si", "PV cpv", "PV psi"], inplace=True)
+#        df_min.sort_values(["PV si", "PV cpv", "PV psi"], inplace=True)
+        cols = ["PV psi", "PV cpv", "PV si"]
+        df_max = df_max[cols]
+        df_min = df_min[cols]
         df_max.plot(
             kind="bar",
             ax=ax,
@@ -1431,7 +1436,7 @@ def plot_compare_technologies(
         ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
         ax.grid(b=True, which="major", axis="both", color="w", linewidth=1.0)
         ax.grid(b=True, which="minor", axis="both", color="w", linewidth=0.5)
-    plt.tight_layout(rect=(0.02, 0.03, 1, 1))
+    plt.tight_layout(rect=(0.02, 0.1, 1, 1))
 
     #    plt.xticks(x_title.values(),rotation=40, ha="right")
     fig.legend(
@@ -1449,6 +1454,81 @@ def plot_compare_technologies(
         )
     )
 
+def plot_LCOE(outputs_directory=None):
+    """
+
+    :param outputs_directory:
+    :return:
+    """
+    if outputs_directory == None:
+        outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
+
+    si_data = {'Location': ['Berlin', 'Madrid'],
+               'Upper': [0.1003, 0.0674],
+               'Lower': [0.0903, 0.0624]}
+
+    si = pd.DataFrame(data=si_data)
+    si['Height'] = si['Upper'] - si['Lower']
+
+    cpv_data = {'Location': ['Berlin', 'Madrid'],
+               'Upper': [0.1679, 0.0906],
+               'Lower': [0.1453, 0.0804]}
+
+    cpv = pd.DataFrame(data=cpv_data)
+    cpv['Height'] = cpv['Upper'] - cpv['Lower']
+
+    psi_data = {'Location': ['Berlin', 'Madrid'],
+               'Upper': [0.1234, 0.0710],
+               'Lower': [0.1089, 0.0637]}
+
+    psi = pd.DataFrame(data=psi_data)
+    psi['Height'] = psi['Upper'] - psi['Lower']
+
+
+
+    # # data to plot
+    n_groups = len(si.columns)
+
+    # create plot
+    fig, ax = plt.subplots(figsize=(10, 8))
+    index = np.arange(n_groups)
+    bar_width = 0.15
+    opacity = 0.8
+
+    si.plot(kind='bar', y='Height', x='Location', bottom=si['Lower'],
+                 color="tab:green", legend=False, ax=ax, position=2, width=0.2, label = "si")
+    cpv.plot(kind='bar', y='Height', x='Location', bottom=cpv['Lower'],
+                 color="tab:orange", legend=False, ax=ax, position=1, width=0.2, label = "cpv")
+    psi.plot(kind='bar', y='Height', x='Location', bottom=psi['Lower'],
+                 color="tab:blue", legend=False, ax=ax, position=0, width=0.2, label = "psi")
+
+
+    plt.xlabel("Location")
+    plt.xticks(rotation=45)
+    ax.set_ylabel("LCOE in EUR/kWh")
+    # ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.1)
+    # # Put a legend to the right of the current axis
+    handles, labels = ax.get_legend_handles_labels()
+    by_label = dict(zip(labels, handles))
+    fig.legend(
+        handles=by_label.values(),
+        labels=by_label.keys(),
+        loc="lower left",
+        mode="expand",
+    )
+    ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.1)
+    ax.set_ylim(ax.get_ylim()[0] - 0.01, ax.get_ylim()[1] + 0.01)
+    plt.tight_layout(rect=(0.005, 0.13, 1, 1))
+    #
+    # save plot into output directory
+    plt.savefig(
+        os.path.join(
+            outputs_directory,
+            f"plot_LCOE.png"
+        ),
+        bbox_inches="tight",
+    )
+
 
 if __name__ == "__main__":
     scenario_name = "Scenario_A2"
@@ -1464,17 +1544,14 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    # scenario_dict = {"Scenario_E1": "si", "Scenario_E2": "psi", "Scenario_E3": "cpv"}
+    # scenario_dict = {"Scenario_A5": "CPV Berlin", "Scenario_A7": "Reference: SI Berlin", "Scenario_A6": "CPV Madrid", "Scenario_A8": "Reference: SI Madrid"}
     # plot_kpi_loop(
     #     scenario_dict=scenario_dict,
-    #     variable_name="storeys",
+    #     variable_name="specific_costs",
     #     kpi=[
-    #         "Total annual production",
-    #         "Degree of NZE",
-    #         "Total costs PV",
-    #         "Installed capacity PV",
-    #         "Self consumption",
-    #         "Degree of autonomy",
+    #         "LCOE PV",
+    #         "Total costs",
+    #         "Installed capacity PV"
     #     ],
     # )
     #
@@ -1533,23 +1610,27 @@ if __name__ == "__main__":
     #     ],
     #     scenario_list,
     # )
-    # scenario_list = [
-    #     "Scenario_H1",
-    #     "Scenario_H2",
-    #     "Scenario_H3",
-    #     "Scenario_H4",
-    #     "Scenario_H5",
-    #     "Scenario_H6",
-    #     "Scenario_H7",
-    #     "Scenario_H8",
-    #     "Scenario_H9",
-    #     "Scenario_H10",
-    #     "Scenario_H11",
-    #     "Scenario_H12",
-    # ]
-    # plot_compare_technologies(
-    #     variable_name="technology",
-    #     kpi=["Total annual production", "Degree of NZE"],
-    #     scenario_list=scenario_list,
-    #     outputs_directory=None,
-    # )
+    scenario_list = [
+        "Scenario_H1",
+        "Scenario_H2",
+        "Scenario_H3",
+        "Scenario_H4",
+        "Scenario_H5",
+        "Scenario_H6",
+        "Scenario_H7",
+        "Scenario_H8",
+        "Scenario_H9",
+        "Scenario_H10",
+        "Scenario_H11",
+        "Scenario_H12",
+    ]
+    plot_compare_technologies(
+        variable_name="technology",
+        kpi=["Total annual production", "Installed capacity PV", "Total emissions"],
+        scenario_list=scenario_list,
+        outputs_directory=None,
+    )
+    #scenario_dict= {"Scenario_B_500" : "500", "Scenario_B_600" : "600", "Scenario_B_700" : "700", "Scenario_B_800" : "800", "Scenario_B_900" : "900", "Scenario_B_1000" : "1000", "Scenario_B_1100" : "1100"}
+    #scenario_dict= {"Scenario_C_500" : "500", "Scenario_C_600" : "600", "Scenario_C_700" : "700", "Scenario_C_800" : "800", "Scenario_C_900" : "900", "Scenario_C_1000" : "1000", "Scenario_C_1100" : "1100"}
+    #plot_psi_matrix(scenario_dict=scenario_dict, variable_name="lifetime", basis_value=0.0957, outputs_directory=None)
+    #plot_LCOE(outputs_directory=None)
