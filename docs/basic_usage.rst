@@ -93,7 +93,7 @@ The following *pvcompare* parameters can be varied:
 - technology (PV technologies: si, cpv or psi
 - hp_temp (upper bound temperature for the heat pump (external outlet temperature at the condenser))
 
-Further, all *MVS* parameters can be vagried, by defining the csv file, the column name and the paramer name that should be changed.
+Further, all *MVS* parameters can be varied by specifying the csv file, the column name and the parameter name to be changed.
 Please note that in each sensitivity analysis only *one* parameter can be varied.
 
 For more information see :py:func:`~.analysis.loop_mvs` and :py:func:`~.analysis.loop_pvcompare`.
