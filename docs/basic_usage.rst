@@ -56,7 +56,7 @@ Here's a very short description of the different input files:
 - ``energyConsumption.csv``: Definition of the energy demand (e.g. electricity demand and/or heat demand with the filename of the demand time series)
 - ``energyConversion.csv``: Definition of transformers (e.g. solar inverter, charge controller, heat pumps etc.)
 - ``energyProduction.csv``: Definition of local generation (e.g. one or more PV plants with the maximal installable capacity and costs)
-- ``energyProviders.csv``: Definition of the energy Provider (e.g. a DSO or a Gas plant in a sectorcoupled scenario)
+- ``energyProviders.csv``: Definition of the energy Provider (e.g. a DSO or a gas plant in the reference sector coupled scenario)
 - ``energyStorage.csv``: Definition of storages (Li-Ion battery or thermal energy storage (TES) with the filename of the csv file that contains more precise information of each storage (e.g. ``storage_01.csv`` or ``storage_02.csv``))
 - ``fixcost.csv``: Definition of general fix costs of the project (disregarded by default)
 - ``project_data.csv``: Definition of the location and name of the simulation
