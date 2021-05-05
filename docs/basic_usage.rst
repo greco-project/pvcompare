@@ -45,8 +45,9 @@ Here's a very short description of the different input files:
 
 **pvcompare_inputs**
 - ``pv_setup.csv``: Definition of PV assets (technology, tilt angle, azimuth angle, roof-top or facade installation)
-- ``building_parameters.csv``: Definition of characteristics of the building type that should be considered in the simulation.
-- ``heat_pumps_and_chillers.csv``: Definition of characteristics of the heat pumps and chillers in the simulated energy system.
+- ``building_parameters.csv``: Definition of characteristics of the building type that should be considered in the simulation
+- ``heat_pumps_and_chillers.csv``: Definition of characteristics of the heat pump and chiller for the calculation of the COP/EER
+- ``stratified_thermal_storage.csv``: Definition of characteristics of the stratified thermal energy storage for the calculation of thermal energy losses from the storage to the environment
 
 **mvs_inputs/csv_elements**
 
