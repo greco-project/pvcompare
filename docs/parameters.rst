@@ -225,7 +225,7 @@ This storage example describes a battery storage
     1. **unit**, str, kWh
     2. **installedCap**: unit, 0 (for all components)
     3. **age_installed**: year, 0 (for all components)
-    4. **lifetime**: year, 20 (for all components), `Moosmoar S.3<https://iewt2019.eeg.tuwien.ac.at/download/contribution/presentation/112/112_presentation_20190215_102253.pdf>`_
+    4. **lifetime**: year, 20 (for all components), `Moosmoar S.3 <https://iewt2019.eeg.tuwien.ac.at/download/contribution/presentation/112/112_presentation_20190215_102253.pdf>`_
     5. **development_costs**: currency, 0 (for all components)
     6. **specific_costs**: currency/unit
         a. **storage capacity**: 250 - 550 (`ZHB S.46 ff <https://www.zhb-flensburg.de/fileadmin/content/spezial-einrichtungen/zhb/dokumente/dissertationen/fluri/fluri-2019-wirtschaftlichkeit-dez-stromspeicher.pdf>`_)
