@@ -337,8 +337,7 @@ Electricity demand
 ------------------
 
 For the electricity demand, the BDEW load profile for households (H0) is scaled with the annual
-demand of a certain population. It is assumed that the electricity demand covers all electrical
-demand used for lightning, home appliances,
+demand of a certain population. It is assumed that the demand of the population is equal to the national residential consumption scaled to the size of this population. Further it is assumed that the electricity demand covers not only all electrical demand for lightning and home appliances but also the energy demand for
 cooling and cooking. For the latter it is assumed that only electrical energy is used for cooking.
 Therefore, the share of electrical energy consumption for cooking is subtracted from the total electrical energy consumption before adding the total energy consumption for cooking. 
 Electricity demand does not cover space heating nor hot water. For this reason, the electrical share of space heating and hot water is subtracted from the electricity demand.
