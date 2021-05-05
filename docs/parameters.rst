@@ -35,7 +35,7 @@ economic_data.csv
 -----------------
     1. **curency**: str, EUR (stands for euro; can be replaced by SEK, if the system is located in Sweden, for instance).
     2. **project_duration**: year, 25 (number of years).
-    3. **discount_factor**: factor, 0.07 (most recent data is from 2018, as documented by this `discussion paper <http://bpie.eu/wp-content/uploads/2015/10/Discount_rates_in_energy_system-discussion_paper_2015_ISI_BPIE.pdf>`_.)
+    3. **discount_factor**: factor, 0.07 (see `discussion paper <http://bpie.eu/wp-content/uploads/2015/10/Discount_rates_in_energy_system-discussion_paper_2015_ISI_BPIE.pdf>`_.)
     4. **tax**: factor, 0 (see `documentation of MVS <https://mvs-eland.readthedocs.io/en/latest/MVS_parameters.html>`_)
 
 simulation_settings.csv
@@ -226,7 +226,7 @@ This storage example describes a battery storage
     1. **unit**, str, kWh
     2. **installedCap**: unit, 0 (for all components)
     3. **age_installed**: year, 0 (for all components)
-    4. **lifetime**: year, 20 (for all components), `Moosmoar S.3 <https://iewt2019.eeg.tuwien.ac.at/download/contribution/presentation/112/112_presentation_20190215_102253.pdf>`_
+    4. **lifetime**: year, 20 (for all components), (see `Moosmoar S.3 <https://iewt2019.eeg.tuwien.ac.at/download/contribution/presentation/112/112_presentation_20190215_102253.pdf>`_)
     5. **development_costs**: currency, 0 (for all components)
     6. **specific_costs**: currency/unit
         a. **storage capacity**: 250 - 550 (`ZHB S.46 ff <https://www.zhb-flensburg.de/fileadmin/content/spezial-einrichtungen/zhb/dokumente/dissertationen/fluri/fluri-2019-wirtschaftlichkeit-dez-stromspeicher.pdf>`_)
@@ -247,7 +247,7 @@ This storage example describes a battery storage
         a. **storage capacity**: None
         b. **input power** and **output power**: NA
     12. **soc_max**: factor
-        a. **storage capacity**: 0.98 ( `Solar charge controllers <https://www.morningstarcorp.com/solar-charge-controllers>`_)
+        a. **storage capacity**: 0.98 (`Solar charge controllers <https://www.morningstarcorp.com/solar-charge-controllers>`_)
         b. **input power** and **output power**: NA
     13. **soc_min**: factor
         a. **storage capacity**: 0.2 (Figure from this research `article <https://www.sciencedirect.com/science/article/pii/S0378775319310043>`_.)
@@ -262,7 +262,7 @@ This storage example describes a stratified thermal storage
     1. **age_installed**: year, 0 (for all components of the stratified thermal storage)
     2. **development_costs**: currency, 0 (for all components of the stratified thermal storage)
     3. **specific_costs**: currency/unit
-        a. **storage capacity**: 410, See `Danish energy agency's technology data of small-scale hot water tanks [dea_swt] <https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_energy_storage.pdf>`_ on p.66 - However investment costs of stratified TES could be higher.
+        a. **storage capacity**: 410, (see `Danish energy agency's technology data of small-scale hot water tanks [dea_swt] <https://ens.dk/sites/ens.dk/files/Analyser/technology_data_catalogue_for_energy_storage.pdf>`_ on p.66 - However investment costs of stratified TES could be higher.)
         b. **input power** and **output power**: 0
     4. **c_rate**: factor of total capacity (kWh)
         a. **storage capacity**: NA (does not apply)
@@ -275,7 +275,7 @@ This storage example describes a stratified thermal storage
         b. **input power** and **output power**: 0
     7. **lifetime**: year, 30 (applies for all the parameters of the stratified thermal energy storage)
     8. **specific_costs_om**: currency/unit/year
-        a. **storage capacity**: 16.67, [dea_swt] p.66 - however fix om costs of stratified TES could differ
+        a. **storage capacity**: 16.67, ([dea_swt] p.66 - however fix om costs of stratified TES could differ)
         b. **input power** and **output power**: 0
     9. **dispatch_price**: currency/kWh
         a. **storage capacity**: NA (does not apply)
@@ -357,9 +357,9 @@ heat_pumps_and_chillers.csv
     1. **mode**: str, options: 'heat_pump' or 'chiller'
     2. **technology**: str, options: 'air-air', 'air-water' or 'brine-water' (These three technologies can be processed so far. Default: If missing or different the plant will be modeled as air source)
     3. **quality_grade**: float, scale-down factor to determine the COP of a real machine (Can be calculated from COP provided by manufacturer under nominal conditions and nominal temperatures. Required equations can be found in the `oemof.thermal documentation of compression heat pump and chiller <https://oemof-thermal.readthedocs.io/en/latest/compression_heat_pumps_and_chillers.html>`_.)
-        a. **air-to-air heat pump**: default: 0.1852, Average quality grade of the following heat pump models: `RAC-50WXE Hitachi, Ltd.  <https://www.hitachi-hvac.co.uk/ranges/residential-air-conditioning/premium-s-series-wall-mounted>`_, `MSZ-GL50 Mitsubishi Electric Corporation <https://www.mitsubishi-electric.co.nz/materials/aircon/brochures/@MSZ-GL.pdf>`_ and `KIT-E18-PKEA of Panasonic Corporation <https://www.panasonicproclub.com/uploads/general/default_catalogues/enduser_leaflets_english/2014/Panasonic_PKEA_14.pdf>`_
-        b. **air-to-water heat pump**: default: 0.4030, Average quality grade of the following heat pump models: `WPLS6.2 of Bosch Thermotechnik GmbH – Buderus <https://productsde.buderus.com/buderus/productsde.buderus.com/broschueren/buderus-broschuere-logatherm-wpls.2-110920.pdf>`_, `WPL 17 ICS classic of STIEBEL ELTRON GmbH & Co. KG <https://www.stiebel-eltron.de/de/home/produkte-loesungen/erneuerbare_energien/waermepumpe/luft-wasser-waermepumpen/wpl_09_17_ics_ikcsclassic/wpl_17_ikcs_classic/technische-daten.product.pdf>`_ and `221.A10 of Viessmann Climate Solutions SE <https://www.viessmann.de/de/wohngebaeude/waermepumpe/luft-wasser-waermepumpen/vitocal-222-a-mb.html>`_
-        c. **brine-to-water heat pump**: default: 0.53, Average quality grade of the following heat pump models: `WPS 6K-1 of Bosch Thermotechnik GmbH – Buderus <https://productsde.buderus.com/buderus/productsde.buderus.com/broschueren/buderus-broschuere-logatherm-wps1-wpsk1-wsw196itts-110920.pdf>`_, `WPF 05 of STIEBEL ELTRON GmbH & Co. KG <https://www.stiebel-eltron.de/de/home/produkte-loesungen/erneuerbare_energien/waermepumpe/sole-wasser-waermepumpen/wpf_04_05_07_10_1316/wpf_16/technische-daten.product.pdf>`_ and `5008.5Ai of WATERKOTTE GmbH <https://www.waterkotte.de/fileadmin/data/editor/6_systempartner/Prospekt/EcoTouch_5029_Ai_D_0519.pdf>`_
+        a. **air-to-air heat pump**: default: 0.1852, Average quality grade of the following heat pump models: (`RAC-50WXE Hitachi, Ltd.  <https://www.hitachi-hvac.co.uk/ranges/residential-air-conditioning/premium-s-series-wall-mounted>`_, `MSZ-GL50 Mitsubishi Electric Corporation <https://www.mitsubishi-electric.co.nz/materials/aircon/brochures/@MSZ-GL.pdf>`_ and `KIT-E18-PKEA of Panasonic Corporation <https://www.panasonicproclub.com/uploads/general/default_catalogues/enduser_leaflets_english/2014/Panasonic_PKEA_14.pdf>`_)
+        b. **air-to-water heat pump**: default: 0.4030, Average quality grade of the following heat pump models: (`WPLS6.2 of Bosch Thermotechnik GmbH – Buderus <https://productsde.buderus.com/buderus/productsde.buderus.com/broschueren/buderus-broschuere-logatherm-wpls.2-110920.pdf>`_, `WPL 17 ICS classic of STIEBEL ELTRON GmbH & Co. KG <https://www.stiebel-eltron.de/de/home/produkte-loesungen/erneuerbare_energien/waermepumpe/luft-wasser-waermepumpen/wpl_09_17_ics_ikcsclassic/wpl_17_ikcs_classic/technische-daten.product.pdf>`_ and `221.A10 of Viessmann Climate Solutions SE <https://www.viessmann.de/de/wohngebaeude/waermepumpe/luft-wasser-waermepumpen/vitocal-222-a-mb.html>`_)
+        c. **brine-to-water heat pump**: default: 0.53, Average quality grade of the following heat pump models: (`WPS 6K-1 of Bosch Thermotechnik GmbH – Buderus <https://productsde.buderus.com/buderus/productsde.buderus.com/broschueren/buderus-broschuere-logatherm-wps1-wpsk1-wsw196itts-110920.pdf>`_, `WPF 05 of STIEBEL ELTRON GmbH & Co. KG <https://www.stiebel-eltron.de/de/home/produkte-loesungen/erneuerbare_energien/waermepumpe/sole-wasser-waermepumpen/wpf_04_05_07_10_1316/wpf_16/technische-daten.product.pdf>`_ and `5008.5Ai of WATERKOTTE GmbH <https://www.waterkotte.de/fileadmin/data/editor/6_systempartner/Prospekt/EcoTouch_5029_Ai_D_0519.pdf>`_)
         d. **air-to-air chiller**: 0.3 (Obtained from `monitored data <https://oemof-thermal.readthedocs.io/en/latest/validation_compression_heat_pumps_and_chillers.html>`_ of the GRECO project)
     4. **temp_high**: float, temperature in °C of the sink (external outlet temperature at the condenser),
         a. **air-to-air heat pump**: 38, Internal condensor temperature assuming a room temperature of 20 °C, adding a dT of 2 K to heat exchange between air and external circuit, considering temperature spread of 6 K of the external medium [4] and assuming a 10 K temperature difference between external and internal condensor flow
