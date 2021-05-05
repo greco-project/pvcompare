@@ -180,7 +180,7 @@ energyProduction.csv
 
 energyProviders.csv
 -------------------
-All default values for the energy_price, feed-in tariff, renewable share and emission factors of all European countries are stores in
+All default values of the energy price, feed-in tariff, renewable share and emission factor of European countries are stored in
 ``data/static_inputs/local_grid_parameters.xlsx``
 
     1. **unit**: str,kW
