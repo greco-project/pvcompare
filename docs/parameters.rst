@@ -193,7 +193,7 @@ All default values of the energy price, feed-in tariff, renewable share and emis
         b. **Gas plant**: 0
     5. **peak_demand_pricing**: currency/kW, 0 (for all of the components)
     6. **peak_demand_pricing_period**: 	times per year (1,2,3,4,6,12), 1 (for all of the components)
-    7. **renewable_share**,factor,`EUROSTAT renewable share <https://ec.europa.eu/eurostat/web/energy/data/shares>`_
+    7. **renewable_share**,factor, * *auto_calc* `EUROSTAT renewable share <https://ec.europa.eu/eurostat/web/energy/data/shares>`_
     8. **inflow_direction**: str,
         a. **Electricity grid**: Electricity
         b. **Gas plant**: Gas bus
