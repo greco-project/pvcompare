@@ -61,7 +61,7 @@ Here's a very short description of the different input files:
 - ``fixcost.csv``: Definition of general fixcosts for the project (disregarded by default)
 - ``project_data.csv``: Definition of the location and name of the simulation
 - ``simulation_settings.csv``: Definition of the year and the duration of the simulation (e.g. one year or less)
-- ``storage_01.csv``: Definition of more precise storage parameters (as an addition to ``energyStorage.csv``)
+- ``storage_**.csv``: Definition of more precise storage parameters (as an addition to ``energyStorage.csv``)
 
 
 
