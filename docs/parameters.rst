@@ -240,7 +240,7 @@ This storage example describes a battery storage
         a. **storage capacity**: NA (does not apply)
         b. **input power** and **output power**: 1 (this just means that the whole capacity of the battery would be used during charging and discharging cycles)
     10. **efficiency**: factor
-        a. **storage capacity**: 0.95
+        a. **storage capacity**: 1
         b. **input power** and **output power**: 0.95 (Charging and discharging efficiency. The value has been sourced from `MVS efficiency <https://multi-vector-simulator.readthedocs.io/en/stable/MVS_parameters.html#efficiency-label>`_.)
     11. **soc_initial**: None or factor
         a. **storage capacity**: None
