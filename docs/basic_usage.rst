@@ -58,7 +58,7 @@ Here's a very short description of the different input files:
 - ``energyProduction.csv``: Definition of local generation (e.g. one or more PV plants with the maximal installable capacity and costs)
 - ``energyProviders.csv``: Definition of the energy Provider (e.g. a DSO or a Gas plant in a sectorcoupled scenario)
 - ``energyStorage.csv``: Definition of storages (battery or TES storage with the filename of the csv file that contains more precise information for each storage (e.g. ``storage_01.csv`` or ``storage_02.csv``))
-- ``fixcost.csv``: Definition of general fixcosts for the project (disregarded by default)
+- ``fixcost.csv``: Definition of general fix costs of the project (disregarded by default)
 - ``project_data.csv``: Definition of the location and name of the simulation
 - ``simulation_settings.csv``: Definition of the year and the duration of the simulation (e.g. one year or less)
 - ``storage_**.csv``: Definition of more precise storage parameters (as an addition to ``energyStorage.csv``)
