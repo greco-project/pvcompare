@@ -347,7 +347,7 @@ building_parameters.csv
     7. **hight storey**: int, 3 (hight of each storey in m)
     8. **room temperature**: int, 20 (average room temperature inside the building, default: 20 °C)
     9. **heating limit temperature**: int, 15 (temperature limit for space heating in °C, default: `15 °C <http://wiki.energie-m.de/Heizgrenztemperatur>`_)
-    10. **include warm water**: bool, False (condition about whether warm water is considered in the heat demand, default: False. If False, the warm water demand is added to the electricty demand instead.)
+    10. **include warm water**: bool, False (condition about whether warm water is considered in the heat demand, default: False. If False, the warm water demand is neglected in the simulation.)
     11. **filename_total_consumption**: str, total_consumption_residential.xlsx (name of the csv file that contains the total electricity and heat consumption for EU countries from [2]) *
     12. **filename_total_SH**: str, total_consumption_SH_residential.xlsx (name of the csv file that contains the total space heating for EU countries [2]) *
     13. **filename_total_WH**: str, total_consumption_WH_residential.xlsx (name of the csv file that contains the total water heating for EU countries [2]) *
