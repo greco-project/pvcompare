@@ -393,10 +393,11 @@ Heat demand
 The heat demand of either space heating or space heating and warm water is calculated for a
 given number of houses with a given number of storeys, a certain country and year. By default only space heating
 is taken into account. In order
-to take heat demand from warm water into account it needs to be modeled separately. In order to do so, the parameter ``include warm water`` in
+to take heat demand from warm water into account the parameter ``include warm water`` in
 *pvcompare*'s input file :ref:`building_parameters` is set to ``True``.
+In this case, one heat demand profile is determined which includes the demand for warm water and space heating. 
 
-@Marie: HIER NOCH MEHR INFOS WIE DIE MODELLIERUNG FUNKTIONIERT?
+.. warning:: It is currently not possible to model these two demands separately with two heat demand profiles and, for example, to use different technologies to cover the respective demand. Contributions are very welcome to implement this feature in the future.
 
 To generate the heat demand profiles the BDEW standard load profile is used. This standard
 load profile is derived for german households. Because there is no other standard load profile
@@ -714,6 +715,5 @@ You can model the stratified thermal storage with fixed thermal losses by either
             fixed_thermal_losses_absolute,kWh,"{'file_name': 'None', 'header': 'kWh', 'unit': ''}",,
 
     (In this example the fixed thermal losses are calculated in :ref:`thermal_storage` and written to the field ``'file_name'`` in :ref:`storage_02.csv` with *no_unit* as header of the column with the fixed losses relative and *kWh* as header of the column with the fixed losses absolute)
-
 
 
