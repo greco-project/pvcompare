@@ -225,7 +225,7 @@ This storage example describes a battery storage
     1. **unit**, str, kWh
     2. **installedCap**: unit, 0 (for all components)
     3. **age_installed**: year, 0 (for all components)
-    4. **lifetime**: year, 20 (for all components), `Moosmoar S.3<https://iewt2019.eeg.tuwien.ac.at/download/contribution/presentation/112/112_presentation_20190215_102253.pdf>`_
+    4. **lifetime**: year, 20 (for all components), `Moosmoar S.3 <https://iewt2019.eeg.tuwien.ac.at/download/contribution/presentation/112/112_presentation_20190215_102253.pdf>`_
     5. **development_costs**: currency, 0 (for all components)
     6. **specific_costs**: currency/unit
         a. **storage capacity**: 250 - 550 (`ZHB S.46 ff <https://www.zhb-flensburg.de/fileadmin/content/spezial-einrichtungen/zhb/dokumente/dissertationen/fluri/fluri-2019-wirtschaftlichkeit-dez-stromspeicher.pdf>`_)
@@ -347,16 +347,16 @@ building_parameters.csv
     7. **hight storey**: int, 3 (hight of each storey in m)
     8. **room temperature**: int, 20 (average room temperature inside the building, default: 20 °C)
     9. **heating limit temperature**: int, 15 (temperature limit for space heating in °C, default: `15 °C <http://wiki.energie-m.de/Heizgrenztemperatur>`_)
-    10. **include warm water**: bool, False (condition about whether warm water is considered in the heat demand, default: False. If False, the warm water demand is added to the electricty demand instead.)
-    11. **filename_total_consumption**: str, total_consumption_residential.xlsx (name of the csv file that contains the total electricity and heat consumption for EU countries from [2]) *
-    12. **filename_total_SH**: str, total_consumption_SH_residential.xlsx (name of the csv file that contains the total space heating for EU countries [2]) *
-    13. **filename_total_WH**: str, total_consumption_WH_residential.xlsx (name of the csv file that contains the total water heating for EU countries [2]) *
-    14. **filename_elect_SH**: str, electricity_consumption_SH_residential.xlsx (name of the csv file that contains the electrical space heatig for EU countries [2]) *
-    15. **filename_elect_WH**: str, electricity_consumption_WH_residential.xlsx (name of the csv file that contains the electrical water heating for EU countries[2]) *
-    16. **filename_residential_electricity_demand**: str, electricity_consumption_residential.xlsx (name of the csv file that contains the total residential electricity demand for EU countries [2]) *
-    17. **filename_total_cooking_consumption**: str,total_consumption_cooking_residential.xlsx (name of the csv file that contains the total residential cooking demand for EU countries [2])
-    18. **filename_electricity_cooking_consumption**: str,electricity_consumption_cooking_residential.xlsx (name of the csv file that contains the electrical residential cooking demand for EU countries [2])
-    19. **filename_country_population**: str ,EUROSTAT_population.csv (name of the csv with total population per country [2])
+    10. **include warm water**: bool, False (condition about whether warm water is considered in the heat demand, default: False. If False, the warm water demand is neglected in the simulation.)
+    11. **filename_total_consumption**: str, total_consumption_residential.xlsx (name of the csv file that contains the total electricity and heat consumption of countries in the European Union from [2]) *
+    12. **filename_total_SH**: str, total_consumption_SH_residential.xlsx (name of the csv file that contains the total energy consumption for space heating of countries in the European Union [2]) *
+    13. **filename_total_WH**: str, total_consumption_WH_residential.xlsx (name of the csv file that contains the total energy consumption for water heating of countries in the European Union [2]) *
+    14. **filename_elect_SH**: str, electricity_consumption_SH_residential.xlsx (name of the csv file that contains the electrical energy consumption of space heating of countries in the European Union countries [2]) *
+    15. **filename_elect_WH**: str, electricity_consumption_WH_residential.xlsx (name of the csv file that contains the electrical energy consumption of warm water heating of countries in the European Union [2]) *
+    16. **filename_residential_electricity_demand**: str, electricity_consumption_residential.xlsx (name of the csv file that contains the total electricity energy consumption in residential sector of countries in the European Union [2]) *
+    17. **filename_total_cooking_consumption**: str, total_consumption_cooking_residential.xlsx (name of the csv file that contains the total energy consumption for cooking in residential sector of countries in the European Union [2])
+    18. **filename_electricity_cooking_consumption**: str,electricity_consumption_cooking_residential.xlsx (name of the csv file that contains the electrical residential cooking demand of countries in the European Union [2])
+    19. **filename_country_population**: str, EUROSTAT_population.csv (name of the csv file with total population of each country in the European Union [2])
 
 .. _HP_parameters:
 

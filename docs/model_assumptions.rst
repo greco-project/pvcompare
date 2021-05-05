@@ -337,13 +337,10 @@ Electricity demand
 ------------------
 
 For the electricity demand, the BDEW load profile for households (H0) is scaled with the annual
-demand of a certain population. It is assumed that the electricity demand covers all electrical
-demand used for lightning, home appliances,
-cooling and cooking. For the latter it is assumed that all cooking is based on electricity only.
-Therefore the electrical part of the cooking demand is substracted from the total electrical demand before the total
-cooking demand is added. The electricity
-demand does not cover space heating, nor warm water. Therefore the electrical fraction of space heating and
-warm water is substracted from the electricity demand.
+demand of a certain population. It is assumed that the demand of the population is equal to the national residential consumption scaled to the size of this population. Further it is assumed that the electricity demand covers not only all electrical demand for lightning and home appliances but also the energy demand for
+cooling and cooking. For the latter it is assumed that only electrical energy is used for cooking.
+Therefore, the share of electrical energy consumption for cooking is subtracted from the total electrical energy consumption before adding the total energy consumption for cooking. 
+Electricity demand does not cover space heating nor hot water. For this reason, the electrical share of space heating and hot water is subtracted from the electricity demand.
 
 The annual electricity demand is calculated by the following procedure:
 
@@ -393,10 +390,11 @@ Heat demand
 The heat demand of either space heating or space heating and warm water is calculated for a
 given number of houses with a given number of storeys, a certain country and year. By default only space heating
 is taken into account. In order
-to take heat demand from warm water into account it needs to be modeled separately. In order to do so, the parameter ``include warm water`` in
+to take heat demand from warm water into account the parameter ``include warm water`` in
 *pvcompare*'s input file :ref:`building_parameters` is set to ``True``.
+In this case, one heat demand profile is determined which includes the demand for warm water and space heating. 
 
-@Marie: HIER NOCH MEHR INFOS WIE DIE MODELLIERUNG FUNKTIONIERT?
+.. warning:: It is currently not possible to model these two demands separately with two heat demand profiles and, for example, to use different technologies to cover the respective demand. Contributions are very welcome to implement this feature in the future.
 
 To generate the heat demand profiles the BDEW standard load profile is used. This standard
 load profile is derived for german households. Because there is no other standard load profile
@@ -714,6 +712,3 @@ You can model the stratified thermal storage with fixed thermal losses by either
             fixed_thermal_losses_absolute,kWh,"{'file_name': 'None', 'header': 'kWh', 'unit': ''}",,
 
     (In this example the fixed thermal losses are calculated in :ref:`thermal_storage` and written to the field ``'file_name'`` in :ref:`storage_02.csv` with *no_unit* as header of the column with the fixed losses relative and *kWh* as header of the column with the fixed losses absolute)
-
-
-
