@@ -340,10 +340,8 @@ For the electricity demand, the BDEW load profile for households (H0) is scaled 
 demand of a certain population. It is assumed that the electricity demand covers all electrical
 demand used for lightning, home appliances,
 cooling and cooking. For the latter it is assumed that all cooking is based on electricity only.
-Therefore the electrical part of the cooking demand is substracted from the total electrical demand before the total
-cooking demand is added. The electricity
-demand does not cover space heating, nor warm water. Therefore the electrical fraction of space heating and
-warm water is substracted from the electricity demand.
+Therefore, the share of electrical energy consumption for cooking is subtracted from the total electrical energy consumption before adding the total energy consumption for cooking. 
+Electricity demand does not cover space heating nor hot water. For this reason, the electrical share of space heating and hot water is subtracted from the electricity demand.
 
 The annual electricity demand is calculated by the following procedure:
 
@@ -715,5 +713,4 @@ You can model the stratified thermal storage with fixed thermal losses by either
             fixed_thermal_losses_absolute,kWh,"{'file_name': 'None', 'header': 'kWh', 'unit': ''}",,
 
     (In this example the fixed thermal losses are calculated in :ref:`thermal_storage` and written to the field ``'file_name'`` in :ref:`storage_02.csv` with *no_unit* as header of the column with the fixed losses relative and *kWh* as header of the column with the fixed losses absolute)
-
 
