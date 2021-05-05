@@ -75,7 +75,7 @@ install the cdsapi package. `This page <https://cds.climate.copernicus.eu/api-ho
 
 As an alternative `oemof feedinlib <https://feedinlib.readthedocs.io/en/releases-0.1.0/load_era5_weather_data.html>`_ provides a jupyter notebook with instructuions on how to download data for a single coordinate or a region.
 
-toto: add more information here (IS)
+todo: add more information here (IS)
 
 
 
