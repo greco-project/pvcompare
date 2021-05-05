@@ -28,7 +28,7 @@ In order to run a simulation you need to at least define the following parameter
 Define your own components and parameters
 =========================================
 
-*pvcompare* provides you with templates and default parameters for your simulations. You can find three basic electricity sector and sector coupled scenarios in ``examples/example_user_inputs/``.
+*pvcompare* provides you with templates and default parameters for your simulations. You can find three basic scenarios (for the electricity sector, sector coupled system and a reference for the sector coupled system) in ``examples/example_user_inputs/``.
 A full description of the parameters and default values can be found in the section :ref:`parameters`.
 However, you can also define your own energy system, choose different parameters and/or change the settings.
 
