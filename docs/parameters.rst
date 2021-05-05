@@ -206,7 +206,7 @@ All default values of the energy price, feed-in tariff, renewable share and emis
     11. **type_oemof**: str, source (for all of the components)
 
     12. **emission factor**: kgCO2eq/kWh
-        a. **Electricity grid**: `EEA EUROPA <https://www.eea.europa.eu/data-and-maps/indicators/overview-of-the-electricity-production-3/assessment>`_
+        a. **Electricity grid**: * *auto_calc* `EEA EUROPA <https://www.eea.europa.eu/data-and-maps/indicators/overview-of-the-electricity-production-3/assessment>`_
         b. **Gas plant**: 0.2 (Obtained from `Quaschning 06/2015 <https://www.volker-quaschning.de/datserv/CO2-spez/index_e.php>`_.)
 
 energyStorage.csv
