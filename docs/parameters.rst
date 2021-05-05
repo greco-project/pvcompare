@@ -176,6 +176,7 @@ energyProduction.csv
     13. **unit**: str, kWp (for all of the components)
     14. **energyVector**: str, Electricity (for all of the components)
     15. **emission_factor**: kgCO2eq/unit, * *auto_calc*
+    16. **renewableAsset**: bool, True (for all of the components)
 
 energyProviders.csv
 -------------------
