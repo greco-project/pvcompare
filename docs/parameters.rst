@@ -249,7 +249,9 @@ This storage example describes a battery storage
         a. **storage capacity**: None
         b. **input power** and **output power**: NA
     12. **soc_max**: factor
+
         a. **storage capacity**: 0.98 ( `Solar charge controllers <https://www.morningstarcorp.com/solar-charge-controllers>`_)
+        
         b. **input power** and **output power**: NA
     13. **soc_min**: factor
         a. **storage capacity**: 0.2 (Figure from this research `article <https://www.sciencedirect.com/science/article/pii/S0378775319310043>`_.)
