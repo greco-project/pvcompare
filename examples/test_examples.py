@@ -58,9 +58,9 @@ class TestExamples:
     # this ensures that the test is only run if explicitly executed, i.e. not when the `pytest` command
     # alone is called
     @pytest.mark.skipif(
-       EXECUTE_TESTS_ON not in (TESTS_ON_MASTER),
-       reason="Test deactivated, set env variable "
-       "EXECUTE_TESTS_ON to 'master' to run this test",
+        EXECUTE_TESTS_ON not in (TESTS_ON_MASTER),
+        reason="Test deactivated, set env variable "
+        "EXECUTE_TESTS_ON to 'master' to run this test",
     )
     @mock.patch("argparse.ArgumentParser.parse_args", return_value=argparse.Namespace())
     def test_run_pvcompare_example_electricity_sector(self, margs):
@@ -104,9 +104,9 @@ class TestExamples:
     # this ensures that the test is only run if explicitly executed, i.e. not when the `pytest` command
     # alone is called
     @pytest.mark.skipif(
-       EXECUTE_TESTS_ON not in (TESTS_ON_MASTER),
-       reason="Test deactivated, set env variable "
-       "EXECUTE_TESTS_ON to 'master' to run this test",
+        EXECUTE_TESTS_ON not in (TESTS_ON_MASTER),
+        reason="Test deactivated, set env variable "
+        "EXECUTE_TESTS_ON to 'master' to run this test",
     )
     @mock.patch("argparse.ArgumentParser.parse_args", return_value=argparse.Namespace())
     def test_run_pvcompare_example_sector_coupling(self, margs):
@@ -150,9 +150,9 @@ class TestExamples:
     # this ensures that the test is only run if explicitly executed, i.e. not when the `pytest` command
     # alone is called
     @pytest.mark.skipif(
-       EXECUTE_TESTS_ON not in (TESTS_ON_MASTER),
-       reason="Test deactivated, set env variable "
-       "EXECUTE_TESTS_ON to 'master' to run this test",
+        EXECUTE_TESTS_ON not in (TESTS_ON_MASTER),
+        reason="Test deactivated, set env variable "
+        "EXECUTE_TESTS_ON to 'master' to run this test",
     )
     @mock.patch("argparse.ArgumentParser.parse_args", return_value=argparse.Namespace())
     def test_run_pvcompare_example_sector_coupling_gas(self, margs):
