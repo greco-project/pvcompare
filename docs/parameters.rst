@@ -205,13 +205,13 @@ energyProviders.csv
     5. **optimizeCap**: bool, True (for all of the components)
     6. **outflow_direction**: str,
         a. **Electricity grid**: Electricity
-        b. **Gas plant**: Heat bus
+        b. **Gas plant**: Gas bus
     7. **peak_demand_pricing**: currency/kW, 0 (for all of the components)
     8. **peak_demand_pricing_period**: 	times per year (1,2,3,4,6,12), 1 (for all of the components)
     9. **type_oemof**: str, source (for all of the components)
     10. **energyVector**: str,
         a. **Electricity grid**: Electricity
-        b. **Gas plant**: Heat
+        b. **Gas plant**: Gas
     11. **emission factor**: kgCO2eq/kWh
         a. **Electricity grid**: 0.338
         b. **Gas plant**: 0.2 (Obtained from `Quaschning 06/2015 <https://www.volker-quaschning.de/datserv/CO2-spez/index_e.php>`_.)
