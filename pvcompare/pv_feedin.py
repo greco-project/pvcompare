@@ -587,7 +587,6 @@ def create_psi_time_series(
 
 
 def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type):
-
     """
     calculates the maximum installed capacity for each pv module.
 
