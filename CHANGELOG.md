@@ -38,6 +38,7 @@ Here is a template for new release sections
 - Move coverage badge of `coveralls.io` from deprecated to valid section in `README.rst` (#289)
 - Update code documentation in RTD: add missing functions and modules and delete outdated ones (#287)
 - Update RTD's section `Electricity and heat demand modeling` and `Heat pump and thermal storage modelling` in `model_assumptions.rst` (#291)
+- Changed order of checks in github actions workflow - linting with black is last check now, to prevent failing due to black before pytest are run. (#298)
 
 ### Removed
 -
@@ -50,6 +51,7 @@ Here is a template for new release sections
 # Hot fixes
 - Hot fix: install MVS with option `[report]` to install missing packages (#270)
 - Hot fix: remove build for python 3.6 from `main.yml` github actions workflow (#270)
+- Hot fix: Move `test_examples.py` to examples folder to make tests work in CI (#298)
 
 ## [0.0.2] - 2021-03-24
 
