@@ -43,8 +43,8 @@ jobs:
           echo "EXECUTE_TESTS_ON=master" >> $GITHUB_ENV
 
       - name: Set env for release branches
-          if: endsWith(github.ref, 'release-*')
-          run: |
+        if: startsWith(github.ref, 'release')
+        run: |
             echo "EXECUTE_TESTS_ON=master" >> $GITHUB_ENV
 
       - name: Set up Python ${{ matrix.python-version }}
