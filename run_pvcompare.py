@@ -8,7 +8,7 @@ longitude = 13.4105300
 year = 2017
 storeys = 5
 country = "Germany"
-scenario_name = "Scenario_Test"
+scenario_name = "My_Scenario"
 
 # FOR DEFAULT PARAMETERS SEE pvcompare/constants.py
 user_inputs_pvcompare_directory = None
