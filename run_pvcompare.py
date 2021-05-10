@@ -2,7 +2,7 @@ from pvcompare import main
 
 
 # DEFINE USER INPUTS
-# the following values are only example values
+# the following parameters are needed to run pvcompare, you can adapt them to your needs
 latitude = 52.5243700
 longitude = 13.4105300
 year = 2017
