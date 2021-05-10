@@ -69,7 +69,7 @@ Here's a very short description of the different input files:
 Download ERA5 weather data
 ==========================
 If you run a simulation, *pvcompare* automatically downloads the ERA5 weather data from `Climate Data Store (CDS) <https://cds.climate.copernicus.eu/>`_ and store it locally in ``data/static_inputs``, unless the
-file already exists. In order to enable this download you first need to make an account at the `CDS <https://cds.climate.copernicus.eu/user/login?destination=%2F%23!%2Fhome>`_ and
+file already exists. In order to enable this download you first need to create an account at the `CDS <https://cds.climate.copernicus.eu/user/login?destination=%2F%23!%2Fhome>`_ and
 install the *cdsapi* package. `This page <https://cds.climate.copernicus.eu/api-how-to>`_ provides information about the installation. When using the API for a large amount of data (e.g. a year for one location) the request gets queued and the download might take a while.
 
 **Provide your own weather data**
