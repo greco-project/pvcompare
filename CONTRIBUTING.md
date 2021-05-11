@@ -3,12 +3,11 @@
 ### Prerequisites
 
 - [Git](https://git-scm.com/)
-- Clone https://github.com/greco-project/pvcompare.git or `git@github.com:greco-project/pvcompare.git` (SSH) and install the cloned repository using pip with the developer extras:
+- Clone https://github.com/greco-project/pvcompare.git or `git@github.com:greco-project/pvcompare.git` (SSH) and install the cloned repository using pip with the developer and documentation extras:
 
 ```bash
 cd pvcompare
-pip install -r requirements.txt
-pip install -e .[dev]
+pip install -e .[dev, docs]
 ```
 
 ### Philosophy
@@ -79,10 +78,10 @@ Once you are satisfied with your PR you should ask someone to review it. Before 
 ## Documentation on Readthedocs
 
 The documentation of pvcompare is compiled with the content of the folder "docs". 
-You need to install the requirements:
+Make sure you have installed the documentation extras:
 
 ```bash
-pip install -r docs/docs_requirements.txt
+pip install -e .[docs]
 ```
 
 After editing, build the documentation locally by running
