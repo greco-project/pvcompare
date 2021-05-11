@@ -60,7 +60,7 @@ def calculate_load_profiles(
     Calculates electricity and heat load profiles for `country`, `storeys`, and `year`.
 
     The electricity and heat load profiles are generated with the help of oemof.demandlib.
-    For these calculations the electricity demand is calculated with the `calculate_power_demand()` functionality and
+    For these calculations the electricity demand is calculated with the :py:func:`~.calculate_power_demand` functionality and
     the heat demand with the `calculate_heat_demand()` functionality.
 
     Parameters
@@ -158,7 +158,8 @@ def calculate_power_demand(
     For the electricity demand, the BDEW load profile for households (H0) is scaled with
     the annual demand of a certain population.
     For further information regarding the assumptions made for the electricty demand modeling
-    see `Electricity demand<https://pvcompare.readthedocs.io/en/latest/model_assumptions.html#electricity-demand>`_.
+    see `Electricity demand <https://pvcompare.readthedocs.io/en/latest/model_assumptions.html#electricity-demand>`_.
+The  electricity demand profile is saved to the folder `time_series` in `user_inputs_mvs_directory`.
 
     Parameters
     ----------
@@ -185,7 +186,7 @@ def calculate_power_demand(
 
     Returns
     -------
-    :pandas:`pandas.DataFrame<frame>` TODO: please check (df or series? It is saved as csv)
+    shifted_elec_demand: :pandas:`pandas.DataFrame<frame>`
         hourly time series of the electrical demand
     """
 
@@ -330,9 +331,9 @@ def calculate_heat_demand(
     is calculated for a given number of houses with a given
     number of storeys in a certain country and year.
     In order to take heat demand from warm water into account the parameter `include warm water`
-    in pvcompare’s input file building_parameters.csv is set to `True`.
+    in pvcompare’s input file 'building_parameters.csv' is set to `True`.
 
-    For further information regarding the  calculation of the heat demand modeling
+    For further information regarding the  calculation of the heat demand profile
     see `Heat demand <https://pvcompare.readthedocs.io/en/latest/model_assumptions.html#heat-demand>`_.
 
     Parameters
@@ -360,7 +361,7 @@ def calculate_heat_demand(
 
     Returns
     -------
-    shifted_heat_demand : :pandas:`pandas.DataFrame<frame>` TODO: please check (df or series? It is saved as csv)
+    shifted_heat_demand : :pandas:`pandas.DataFrame<frame>` 
         Hourly heat demand time series.
     """
 
@@ -567,7 +568,7 @@ def shift_working_hours(
 
     Since the energy demand for domestic hot water depends strongly on
     behaviour, the demand profile is adjusted for the different EU countries.
-    For further inforamtion regarding the hour shifting method
+    For further information regarding the hour shifting method
     see p.127 in `HOTMAPS<https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_.
     The statistics are received from `Eurostat <https://ec.europa.eu/eurostat/web/products-manuals-and-guidelines/-/KS-RA-08-014>`_.
 
