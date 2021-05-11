@@ -1366,22 +1366,23 @@ def plot_compare_technologies(
     x_title = {
         "Scenario_H1": "Helsinki, Finland",
         "Scenario_H2": "Riga, Latvia",
-        "Scenario_H3": "Sevilla, Spain",
-        "Scenario_H4": "Paris, France",
-        "Scenario_H5": "Budapest, Hungary",
-        "Scenario_H6": "Warsaw, Poland",
-        "Scenario_H7": "Bukarest, Romania",
+        "Scenario_H3": "Bukarest, Romania",
+        "Scenario_H4": "Budapest, Hungary",
+        "Scenario_H5": "Warsaw, Poland",
+        "Scenario_H6": "Manchester, UK",
+        "Scenario_H7": "Paris, France",
         "Scenario_H8": "Rome, Italy",
-        "Scenario_H9": "Athens, Greece",
-        "Scenario_H10": "Manchester, UK",
-        "Scenario_H11": "Berlin, Germany",
+        "Scenario_H9": "Berlin, Germany",
+        "Scenario_H10": "Athens, Greece",
+        "Scenario_H11": "Sevilla, Spain",
         "Scenario_H12": "Madrid, Spain",
+
     }
 
     #    output.sort_index(inplace=True)
     # plot
-    hight = len(kpi) * 4
-    fig = plt.figure(figsize=(15, hight))
+    hight = len(kpi) * 3
+    fig = plt.figure(figsize=(12, hight))
     fig.subplots_adjust(bottom=0.2)
     rows = len(kpi)
     num = (
@@ -1431,12 +1432,12 @@ def plot_compare_technologies(
         )
         ax.set_xticklabels(x_title.values(), rotation=40, ha="right")
         ax.set_ylabel(y_title[i])
-        ax.set_xlabel("technology")
-        ax.get_yaxis().set_label_coords(-0.04, 0.5)
+        #ax.set_xlabel("technology")
+        ax.get_yaxis().set_label_coords(-0.06, 0.5)
         ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
         ax.grid(b=True, which="major", axis="both", color="w", linewidth=1.0)
         ax.grid(b=True, which="minor", axis="both", color="w", linewidth=0.5)
-    plt.tight_layout(rect=(0.02, 0.1, 1, 1))
+    plt.tight_layout(rect=(0.01, 0.08, 1, 1))
 
     #    plt.xticks(x_title.values(),rotation=40, ha="right")
     fig.legend(
@@ -1626,7 +1627,7 @@ if __name__ == "__main__":
     ]
     plot_compare_technologies(
         variable_name="technology",
-        kpi=["Total annual production", "Installed capacity PV", "Total emissions"],
+        kpi=["Total annual production", "Installed capacity PV", "Total costs", "Total emissions"],
         scenario_list=scenario_list,
         outputs_directory=None,
     )
