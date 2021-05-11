@@ -9,11 +9,11 @@ Basic usage of pvcompare
 Run a simulation
 ================
 
-You can easily run a simulation by executing one of the examples in ``examples/``.
+You can easily run a simulation by executing one of the examples in `examples/ <https://github.com/greco-project/pvcompare/tree/master/examples>`_.
 There are three examples, one that accounts only for the electricity sector, one for sector coupling using heat pumps and one example covering heat demand with a gas plant as a reference scenario for the one with heat pumps.
 
 If you want to set up your own scenario, you need to insert input files into the directory first. How to do this is described in the next paragraph :ref:`define_params`.
-Afterwards you can run a simulation by running the file ``run_pvcompare.py`` in the parent folder of *pvcompare*.
+Afterwards you can run a simulation by running the file `run_pvcompare.py <https://github.com/greco-project/pvcompare/blob/master/run_pvcompare.py>`_ in the parent folder of *pvcompare*.
 In order to run a simulation you need to at least define the following parameters:
 
 - latitude: float
@@ -72,11 +72,12 @@ If you run a simulation, *pvcompare* automatically downloads the ERA5 weather da
 file already exists. In order to enable this download you first need to create an account at the `CDS <https://cds.climate.copernicus.eu/user/login?destination=%2F%23!%2Fhome>`_ and
 install the *cdsapi* package. `This page <https://cds.climate.copernicus.eu/api-how-to>`_ provides information about the installation. When using the API for a large amount of data (e.g. a year for one location) the request gets queued and the download might take a while.
 
+One example year for Berlin, Germany 2017 is already added to ``data/static_inputs``.
+
 **Provide your own weather data**
 
 As an alternative `oemof feedinlib <https://feedinlib.readthedocs.io/en/releases-0.1.0/load_era5_weather_data.html>`_ provides a jupyter notebook with instructuions on how to download data for a single coordinate or a region.
 
-todo: add more information here (IS)
 
 
 

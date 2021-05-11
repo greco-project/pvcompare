@@ -21,17 +21,17 @@ Local energy sytem
 
 Building assumptions
 --------------------
-
 The analyzed local energy system is assumed to belong to an urban neighbourhood with a specific
-number of buildings. A minimum amount of buildings is required when using the functionalities
-for calculating demand profiles of *pvcompare*, which are introdcued in :ref:`demand`. They are based on standard load
-profiles that are generated for around 500-1000 households. These load profiles are therefore flattened compared to load profiles of
-single households.
+number of buildings. The calculation of the demand profiles are based on standard load profiles
+that are typically generated for 500-100 hoseholds. The functionalities for calculating the
+demand profiles of *pvcompare*, which are introdcued in :ref:`demand`.
+These load profiles are flattened,
+compared to profiles of single households. In order to meet the required number of households,
+we assume a number of 20 houses by default for our simulations with variable number of storeys and a fixed
+number of 8 flats per storey. For 5 storey buildings this counts up to 800 households while for
+3 storey buildings this counts up to 480 households.\\
 The amount of buildings, households per storey, number of people per household and further parameters
-can be adjusted in the inputs file :ref:`building_parameters`; the default is a number of 20 buildings.
-
-In general we assume an urban environment that allows high solar exposure without shading
-from surrounding buildings or trees.
+can be adjusted in the inputs file :ref:`building_parameters`.
 
 The stardard building is constructed with defined building parameters, such as
 
@@ -55,7 +55,8 @@ All building parameters can be adjusted in the inputs file :ref:`building_parame
 
 Exploitation for PV Installation
 --------------------------------
-
+In general we assume an urban environment that allows high solar exposure without shading
+from surrounding buildings or trees.\\
 It is assumed that PV systems can cover "50% of the south façade
 area, starting from the third floor up, and 80% of the east and west
 façades." (`Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_.)

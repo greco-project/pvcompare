@@ -221,7 +221,7 @@ energyStorage.csv
 
 storage_01.csv
 --------------
-This storage example describes a battery storage
+*This storage example describes a battery storage*
 
     1. **unit**, str, kWh
     2. **installedCap**: unit, 0 (for all components)
@@ -257,7 +257,7 @@ This storage example describes a battery storage
 
 storage_02.csv
 --------------
-This storage example describes a stratified thermal storage
+*This storage example describes a stratified thermal storage*
 
     1. **age_installed**: year, 0 (for all components of the stratified thermal storage)
     2. **development_costs**: currency, 0 (for all components of the stratified thermal storage)
@@ -337,11 +337,11 @@ building_parameters.csv
     8. **room temperature**: int, 20 (average room temperature inside the building, default: 20 °C)
     9. **heating limit temperature**: int, 15 (temperature limit for space heating in °C, default: `15 °C <http://wiki.energie-m.de/Heizgrenztemperatur>`_)
     10. **include warm water**: bool, False (condition about whether warm water is considered in the heat demand, default: False. If False, the warm water demand is neglected in the simulation.)
-    11. **filename_total_SH**: str, total_consumption_SH_residential.xlsx (name of the csv file that contains the total energy consumption for space heating of countries in the European Union [2]) *
-    12. **filename_total_WH**: str, total_consumption_WH_residential.xlsx (name of the csv file that contains the total energy consumption for water heating of countries in the European Union [2]) *
-    13. **filename_elect_SH**: str, electricity_consumption_SH_residential.xlsx (name of the csv file that contains the electrical energy consumption of space heating of countries in the European Union countries [2]) *
-    14. **filename_elect_WH**: str, electricity_consumption_WH_residential.xlsx (name of the csv file that contains the electrical energy consumption of warm water heating of countries in the European Union [2]) *
-    15. **filename_residential_electricity_demand**: str, electricity_consumption_residential.xlsx (name of the csv file that contains the total electricity energy consumption in residential sector of countries in the European Union [2]) *
+    11. **filename_total_SH**: str, total_consumption_SH_residential.xlsx (name of the csv file that contains the total energy consumption for space heating of countries in the European Union [2])
+    12. **filename_total_WH**: str, total_consumption_WH_residential.xlsx (name of the csv file that contains the total energy consumption for water heating of countries in the European Union [2])
+    13. **filename_elect_SH**: str, electricity_consumption_SH_residential.xlsx (name of the csv file that contains the electrical energy consumption of space heating of countries in the European Union countries [2])
+    14. **filename_elect_WH**: str, electricity_consumption_WH_residential.xlsx (name of the csv file that contains the electrical energy consumption of warm water heating of countries in the European Union [2])
+    15. **filename_residential_electricity_demand**: str, electricity_consumption_residential.xlsx (name of the csv file that contains the total electricity energy consumption in residential sector of countries in the European Union [2])
     16. **filename_total_cooking_consumption**: str, total_consumption_cooking_residential.xlsx (name of the csv file that contains the total energy consumption for cooking in residential sector of countries in the European Union [2])
     17. **filename_electricity_cooking_consumption**: str,electricity_consumption_cooking_residential.xlsx (name of the csv file that contains the electrical residential cooking demand of countries in the European Union [2])
     18. **filename_country_population**: str, EUROSTAT_population.csv (name of the csv file with total population of each country in the European Union [2])
@@ -393,7 +393,7 @@ stratified_thermal_storage.csv
 
 list_of_workalendar_countries.csv
 ---------------------------------
-    * list of countries for which a python.workalendar [3] exists with the column name "country".*
+    * list of countries for which a python.workalendar [3] exists with the column name "country".
 
 
 
@@ -406,6 +406,5 @@ list_of_workalendar_countries.csv
 [4] Felix Ziegler, Dr. Ing, 1997: Sorptionswärmepumpen. Erding, Forschungsberichte des Deutschen Kälte- und Klimatechnischen Vereins Nr. 57, habilitation
 
 [5] Beikircher, Thomas & Buttinger, Frank & Rottmann, Matthias & Herzog, Fabian & Konrad, Martin & Reuß, Manfred & Beikircher, Redaktion, 2013: Superisolierter Heißwasser-Langzeitwärmespeicher : Abschlussbericht zu BMU-Projekt Förderkennzeichen 0325964A, Projektlaufzeit: 01.05.2010 - 31.10.2012. 10.2314/GBV:749701188.
-\* the described csv files are to be added to the input folder accordingly.
 
 [6] In:Klan, H, 2002: Wärmeübergang durch freie Konvektion an umströmten Körpern. Berlin, Heidelberg: Springer Berlin Heidelberg, ISBN 978-3-662-10743-0, 567-591
