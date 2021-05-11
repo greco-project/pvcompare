@@ -56,15 +56,23 @@ def calculate_load_profiles(
     user_inputs_pvcompare_directory=None,
     user_inputs_mvs_directory=None,
 ):
-    """
-    Calculates electricity and heat load profiles and saves them to csv.
+    r"""
+    Calculates electricity and heat load profiles for `country`, `storeys`, and `year`.
+
+    The electricity and heat load profiles are generated with the help of oemof.demandlib.
+    For these calculations the electricity demand is calculated with the `calculate_power_demand()` functionality and
+    the heat demand with the `calculate_heat_demand()` functionality.
 
     Parameters
     ---------
     country: str
         The country's name has to be in English and with capital first letter.
-    population: int
-        The district population.
+    lat : float
+        Latitude of country location in 'country'.
+    lon : float
+        Longitude of country location in 'country'.
+    storeys: int
+        The number of storeys of a building.
     year: int
         Year for which power demand time series is calculated, needs to be between 2011 - 2015.
     weather: :pandas:`pandas.DataFrame<frame>`
@@ -144,36 +152,28 @@ def calculate_power_demand(
     user_inputs_pvcompare_directory=None,
     user_inputs_mvs_directory=None,
 ):
-    """
-    Calculates electricity demand profile for `population` and `country`.
+    r"""
+    Calculates electricity demand profile for `country`, `storeys`, and `year`.
 
-    The electricity demand is calculated for a given population in a certain
-    country and year. The annual electricity demand is calculated by the
-    following procedure:
-
-    1) the residential electricity consumption for a country is requested from
-       [2].
-       electricity_consumption = total_electricity_consumption -
-       electricity_consumption_SH - electricity_consumption_WH +
-       (total_consumption_cooking - electricity_consumption_cooking)
-    2) the population of the country is requested from EUROSTAT_population
-    3) the total residential demand is divided by the countries population and
-       multiplied by the districts population that is calulated by the number of
-       storeys and the number of people per storey
-    4) The load profile is shifted due to country specific behaviour
-
-    [2] https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use
+    For the electricity demand, the BDEW load profile for households (H0) is scaled with
+    the annual demand of a certain population.
+    For further information regarding the assumptions made for the electricty demand modeling
+    see `Electricity demand<https://pvcompare.readthedocs.io/en/latest/model_assumptions.html#electricity-demand>`_.
 
     Parameters
     ----------
     country: str
         The country's name has to be in English and with capital first letter.
     storeys: int
-        The number of storeys of the houses.
+        The number of storeys of the buildings.
     year: int
         Year for which power demand time series is calculated. # todo needs to be between 2011 - 2015 like above?
     column: str
         name of the demand column
+    static_inputs_directory: str or None
+        Directory of the static inputs. If None
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
+        Default: None.
     user_inputs_pvcompare_directory: str or None
         Directory of the user inputs. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
@@ -185,7 +185,7 @@ def calculate_power_demand(
 
     Returns
     -------
-    :pandas:`pandas.Series<series>`
+    :pandas:`pandas.DataFrame<frame>` TODO: please check (df or series? It is saved as csv)
         hourly time series of the electrical demand
     """
 
@@ -323,21 +323,17 @@ def calculate_heat_demand(
     user_inputs_pvcompare_directory=None,
     user_inputs_mvs_directory=None,
 ):
-    """
-    Calculates heat demand profile for `storeys` and `country`.
+    r"""
+    Calculates heat demand profile for `storeys`, `country`, `year`.
 
-    The heat demand is calculated for a given number of houses with a given
-    number of storeys in a certain country
-    and year. The annual heat demand is calculated by the following procedure:
+    The heat demand of either space heating or space heating and warm water
+    is calculated for a given number of houses with a given
+    number of storeys in a certain country and year.
+    In order to take heat demand from warm water into account the parameter `include warm water`
+    in pvcompare’s input file building_parameters.csv is set to `True`.
 
-    1) the residential heat demand for a country is requested from [2].
-    2) the population of the country is requested from EUROSTAT_population
-    3) the total residential demand is devided by the countries population and
-       multiplied by the districts population that is calculated by the storeys
-       of the house and the number of people in one storey
-    4) The load profile is shifted due to countrys specific behaviour
-
-    [2] https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use
+    For further information regarding the  calculation of the heat demand modeling
+    see `Heat demand <https://pvcompare.readthedocs.io/en/latest/model_assumptions.html#heat-demand>`_.
 
     Parameters
     ----------
@@ -358,14 +354,13 @@ def calculate_heat_demand(
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
         Default: None.
 
-
     Returns
     -------
-    shifted_heat_demand : :pandas:`pandas.Series<series>`
+    shifted_heat_demand : :pandas:`pandas.DataFrame<frame>` TODO: please check (df or series? It is saved as csv)
         Hourly heat demand time series.
     """
 
@@ -512,12 +507,16 @@ def calculate_heat_demand(
     return shifted_heat_demand
 
 
-def adjust_heat_demand(temperature, heating_limit_temp, demand):
-    """
-    Adjust the hourly heat demand setting a limit to the temperature of heating
+def adjust_heat_demand(
+        temperature,
+        heating_limit_temp,
+        demand
+):
+    r"""
+    Adjust the hourly heat demands exceeding the heating limit temperature.
 
-    Heat demand above the heating limit temperature is set to zero
-    Excess heat demand is then distributed equally over the remaining hourly heat demand
+    Heat demand above the heating limit temperature is set to zero.
+    Excess heat demand is then distributed equally over the remaining hourly heat demand.
 
     Parameters
     -----------
@@ -559,18 +558,18 @@ def adjust_heat_demand(temperature, heating_limit_temp, demand):
     return demand
 
 
-def shift_working_hours(country, ts):
-    """
+def shift_working_hours(
+        country,
+        ts
+):
+    r"""
     Shift the demand time series with regard to country's customs.
 
     Since the energy demand for domestic hot water depends strongly on
     behaviour, the demand profile is adjusted for the different EU countries.
-    (see [3] HOTMAPS report p. 127). The statistics are received from [4].
-
-    [3] `Hotmaps <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_
-
-    [4] `Eurostat <https://ec.europa.eu/eurostat/web/products-manuals-and-guidelines/-/KS-RA-08-014>`_
-
+    For further inforamtion regarding the hour shifting method
+    see p.127 in `HOTMAPS<https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_.
+    The statistics are received from `Eurostat <https://ec.europa.eu/eurostat/web/products-manuals-and-guidelines/-/KS-RA-08-014>`_.
 
     Parameters
     -----------
@@ -583,7 +582,6 @@ def shift_working_hours(country, ts):
     -------
     ts: :pandas:`pandas.DataFrame<frame>`
         Shifted time series.
-
     """
 
     # check if time series contains more than 24 h
@@ -663,7 +661,7 @@ def shift_working_hours(country, ts):
 
 
 def get_workalendar_class(country):
-    """
+    r"""
     Loads workalender for a given country.
 
     Parameters
@@ -673,8 +671,7 @@ def get_workalendar_class(country):
 
     Returns
     ------
-     str
-        class of the country specific workalender
+    None
     """
     country_name = country
     for finder, name, ispkg in iter_modules(workalendar.__path__):
