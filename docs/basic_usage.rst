@@ -44,6 +44,7 @@ sector coupled and electricity sector scenarios. For a start we recommend to stu
 Here's a very short description of the different input files:
 
 **pvcompare_inputs**
+
 - ``pv_setup.csv``: Definition of PV assets (technology, tilt angle, azimuth angle, roof-top or facade installation)
 - ``building_parameters.csv``: Definition of characteristics of the building type that should be considered in the simulation
 - ``heat_pumps_and_chillers.csv``: Definition of characteristics of the heat pump and chiller for the calculation of the COP/EER
