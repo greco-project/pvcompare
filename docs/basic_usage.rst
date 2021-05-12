@@ -36,12 +36,14 @@ You can configure your own scenario by defining the parameters in ``data/user_in
 Please note that *pvcompare* only works with csv files but not with `json files <https://multi-vector-simulator.readthedocs.io/en/latest/simulating_with_the_mvs.html#json-file-mvs-config-json>`_.
 
 Because the ``data/user_inputs`` folder is an individual working directory, it is left empty in the initial state of *pvcompare*. The user is required to fill in the specific input files that fit to the according energy system setup.
-The directory ``data/user_inputs_collection`` contains a broad collection of all kinds of possible asset definitions that have been used within the GRECO Project. Users are welcome to copy specific parts
+The directory ``data/user_inputs_collection`` contains a collection of all kinds of possible asset definitions that have been used within the GRECO Project. Users are welcome to copy specific parts
 from this collection folder into the ``data/user_inputs`` files. It is also possible to define new MVS assets (e.g. different power plants, storages or energy providers, transformers etc.). Please see the `MVS documentation on simulating with the MVS <https://multi-vector-simulator.readthedocs.io/en/latest/simulating_with_the_mvs.html>`_ for more information.
-When setting up your own input files, please make sure that your individual input folder contains *all* available files. Even though you can change the values of the parameters, the files themselves, their naming and structure cannot be changed. As mentioned above, there are also three input folders  (one for each example) in the ``examples/example_user_inputs/`` directory that resemble specific scenario setups for
-sector coupled and electricity sector scenarios. For a start we recommend to study the example input files and then to set up your own input files orientating on the example folders and by adding (or deleting) components from the ``data/user_inputs_collection`` directory.
+When setting up your input files, make sure that your individual input folder contains *all* available files. Even though you can change the values of the parameters, the files themselves, their naming and structure cannot be changed.
 
-Here's a very short description of the different input files:
+There are three input folders  (one for each example) in the ``examples/example_user_inputs/`` directory that resemble specific scenario setups for
+sector coupled and electricity sector scenarios. For a start we recommend to study the example input files and then set up your own input files accordingly by adding (or removing) components from the ``data/user_inputs_collection`` directory.
+
+The following list gives an overview over all user input files. See section :ref:`parameters` for more information.
 
 **pvcompare_inputs**
 
@@ -69,15 +71,15 @@ Here's a very short description of the different input files:
 
 Download ERA5 weather data
 ==========================
-If you run a simulation, *pvcompare* automatically downloads the ERA5 weather data from `Climate Data Store (CDS) <https://cds.climate.copernicus.eu/>`_ and stores it locally in ``data/static_inputs``, unless the
+When running a simulation, *pvcompare* automatically downloads the ERA5 weather data from `Climate Data Store (CDS) <https://cds.climate.copernicus.eu/>`_ and stores it locally in ``data/static_inputs``, unless the
 file already exists. In order to enable this download you first need to create an account at the `CDS <https://cds.climate.copernicus.eu/user/login?destination=%2F%23!%2Fhome>`_ and
 install the *cdsapi* package. `This page <https://cds.climate.copernicus.eu/api-how-to>`_ provides information about the installation. When using the API for a large amount of data (e.g. a year for one location) the request gets queued and the download might take a while.
 
-Two example weather years for Berlin, Germany 2017 and Madrid, Spain 2017 are already added to ``data/static_inputs``.
+Two example weather years for Berlin, Germany, 2017 and Madrid, Spain, 2017 are already added to ``data/static_inputs``.
 
 **Provide your own weather data**
 
-As an alternative `oemof feedinlib <https://feedinlib.readthedocs.io/en/releases-0.1.0/load_era5_weather_data.html>`_ provides a jupyter notebook with instructuions on how to download data for a single coordinate or a region.
+As an alternative `oemof feedinlib <https://feedinlib.readthedocs.io/en/releases-0.1.0/load_era5_weather_data.html>`_ provides a jupyter notebook with instructions on how to download data for a single coordinate or a region.
 
 
 
@@ -93,10 +95,10 @@ The following *pvcompare* parameters can be varied:
 - location (country, lat, lon)
 - year (e.g. 2018)
 - storeys (number of storeys of the buildings)
-- technology (PV technologies: si, cpv or psi
+- technology (PV technologies: si, cpv or psi)
 - hp_temp (upper bound temperature of the heat pump (external outlet temperature at the condenser))
 
-Further, all *MVS* parameters can be varied by specifying the csv file, the column name and the parameter name to be changed.
+Further, all *MVS* parameters can be varied by specifying the csv file, the column name and the parameter name to be changed in :py:func:`~.analysis.loop_mvs` .
 Please note that in each sensitivity analysis only *one* parameter can be varied.
 
 For more information see :py:func:`~.analysis.loop_mvs` and :py:func:`~.analysis.loop_pvcompare`.
