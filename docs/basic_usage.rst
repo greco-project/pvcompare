@@ -32,7 +32,7 @@ Define your own components and parameters
 A full description of the parameters and default values can be found in the section :ref:`parameters`.
 However, you can also define your own energy system, choose different parameters and/or change the settings.
 
-You can configure your own scenario by defining the parameters in ``data/user_inputs``. It contains two subfolders ``mvs_inputs`` for all MVS parameters and ``pvcompare_inputs`` for *pvcompare* inputs parameters. You can define a different input directory by providing the parameters ``user_inputs_mvs_directory`` and ``user_inputs_pvcompare_directory`` to the :py:func:`~.main` and :py:func:`~.apply_mvs` functions.
+You can configure your own scenario by defining the parameters in ``data/user_inputs``. It contains two subfolders ``mvs_inputs`` for all MVS parameters and ``pvcompare_inputs`` for *pvcompare* inputs parameters. You can define a different input directory by providing the parameters ``user_inputs_mvs_directory`` and ``user_inputs_pvcompare_directory`` to the :py:func:`~.apply_pvcompare` and :py:func:`~.apply_mvs` functions.
 Please note that *pvcompare* only works with csv files but not with `json files <https://multi-vector-simulator.readthedocs.io/en/latest/simulating_with_the_mvs.html#json-file-mvs-config-json>`_.
 
 Because the ``data/user_inputs`` folder is an individual working directory, it is left empty in the initial state of *pvcompare*. The user is required to fill in the specific input files that fit to the according energy system setup.
