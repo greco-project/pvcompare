@@ -29,6 +29,7 @@ Here is a template for new release sections
 - Improved "scope and limitations" section of RTD with additional information and corrections (#286)
 - Add info on energy systems consisting of more than one node in RTD section "scope and limitations" (#293)
 - Added description of the implementation of the stratified thermal storage in pvcompare with a description of the possibilities modeling it (#291)
+- Dokumentation: Update on 'basic_usage', 'parameter description' and 'model assumptions' (#302)
 
 ### Changed
 - The inlet temperatures of the heat pump and the stratified thermal storage have been revised in the pvcompare input parameters, adapting them in order to fit typical temperatures of the heating system. Also the pvcompare input parameters of the stratified thermal storage have been revised (#272)
@@ -38,6 +39,11 @@ Here is a template for new release sections
 - Move coverage badge of `coveralls.io` from deprecated to valid section in `README.rst` (#289)
 - Update code documentation in RTD: add missing functions and modules and delete outdated ones (#287)
 - Update RTD's section `Electricity and heat demand modeling` and `Heat pump and thermal storage modelling` in `model_assumptions.rst` (#291)
+- The parameters `inflow_direction` and `outflow_direction` of the gas plant have been changed from `Heat bus` to `Gas bus` in `energyProviders.csv` (#299)
+- The parameter `energyVector` of the gas plant has been changed from `Heat` to `Gas` in `energyProviders.csv` (#299)
+- All parameters in `fixcost.csv` have been set to zero except for the lifetime, which has been set to one for all in order to avoid ZeroDivisionError (#299)
+- Corrected description of installation requirements in contributing.md (#306)
+- Changed order of checks in github actions workflow - linting with black is last check now, to prevent failing due to black before pytest are run. (#298)
 
 ### Removed
 -
@@ -46,11 +52,14 @@ Here is a template for new release sections
 - fix PV costs parameters and PSI lifetime (#273)
 - fix number of houses to 20 (8 flats per storey makes 40 flats per house with 5 storeys, makes 800 in total (and 480 for 3 storeys)) (#273)
 - Test coverage is now automatically checked with github actions and [coveralls](https://coveralls.io/github/greco-project/pvcompare) (#283)
+- In github actions workflow, add release branches to push events and correct name of `dev` branch (#305)
+- In github actions workflow, set `EXECUTE_TEST_ON` to `"master"` for release branches (#305)
 
 # Hot fixes
 - Hot fix: install MVS with option `[report]` to install missing packages (#270)
 - Hot fix: remove build for python 3.6 from `main.yml` github actions workflow (#270)
 - Hot fix: correct parameter `overwrite_grid_parameters` in `run_pvcompare.py` (#294)
+- Hot fix: Move `test_examples.py` to `examples` directory to make tests work in CI and add `__init__.py` to `examples` (#298)
 
 ## [0.0.2] - 2021-03-24
 
