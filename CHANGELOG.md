@@ -19,7 +19,7 @@ Here is a template for new release sections
 -
 ```
 
-## [0.0.3] - 2021-04-22
+## [0.0.3] - 2021-05-13
 
 ### Added
 - Add config file for RTD `readthedocs.yml` (#276)
