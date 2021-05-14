@@ -801,7 +801,7 @@ class Scenarios:
             storeys=self.storeys,
             country=self.country_germany,
             loop_type="storeys",
-            loop_dict = {"start": 4, "stop": 8, "step": 1},
+            loop_dict = {"start": 1, "stop": 8, "step": 1},
             user_inputs_mvs_directory=None,
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
@@ -828,7 +828,7 @@ class Scenarios:
             storeys=self.storeys,
             country=self.country_germany,
             loop_type="storeys",
-            loop_dict = {"start": 3, "stop": 8, "step": 1},
+            loop_dict = {"start": 1, "stop": 8, "step": 1},
             user_inputs_mvs_directory=None,
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
@@ -855,7 +855,7 @@ class Scenarios:
             storeys=self.storeys,
             country=self.country_germany,
             loop_type="storeys",
-            loop_dict = {"start": 3, "stop": 8, "step": 1},
+            loop_dict = {"start": 1, "stop": 8, "step": 1},
             user_inputs_mvs_directory=None,
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
@@ -882,7 +882,7 @@ class Scenarios:
             storeys=self.storeys,
             country=self.country_spain,
             loop_type="storeys",
-            loop_dict = {"start": 3, "stop": 8, "step": 1},
+            loop_dict = {"start": 1, "stop": 8, "step": 1},
             user_inputs_mvs_directory=None,
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
@@ -910,7 +910,7 @@ class Scenarios:
             storeys=self.storeys,
             country=self.country_spain,
             loop_type="storeys",
-            loop_dict = {"start": 3, "stop": 8, "step": 1},
+            loop_dict = {"start": 1, "stop": 8, "step": 1},
             user_inputs_mvs_directory=None,
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
@@ -938,7 +938,7 @@ class Scenarios:
             storeys=self.storeys,
             country=self.country_spain,
             loop_type="storeys",
-            loop_dict = {"start": 3, "stop": 8, "step": 1},
+            loop_dict = {"start": 1, "stop": 8, "step": 1},
             user_inputs_mvs_directory=None,
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
@@ -957,7 +957,7 @@ class Scenarios:
             pv_setup.at[i, "technology"] = str("si")
         pv_setup.to_csv(data_path, index=False)
 
-        scenario_name = "Scenario_G1_25R"
+        scenario_name = "Scenario_G1"
 
         outputs.loop_pvcompare(
             scenario_name=scenario_name,
@@ -967,7 +967,7 @@ class Scenarios:
             storeys=self.storeys,
             country=self.country_germany,
             loop_type="storeys",
-            loop_dict = {"start": 3, "stop": 8, "step": 1},
+            loop_dict = {"start": 1, "stop": 8, "step": 1},
             user_inputs_mvs_directory=None,
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
@@ -1932,10 +1932,10 @@ if __name__ == "__main__":
 #    scenarios.run_scenario_F2()
 #    scenarios.run_scenario_F3()
 #    scenarios.run_scenario_F4()
-    scenarios.run_scenario_F5()
-#    scenarios.run_scenario_F6()
+#    scenarios.run_scenario_F5()
+    scenarios.run_scenario_F6()
 
-    # scenarios.run_scenario_G1()
+#    scenarios.run_scenario_G1()
     # scenarios.run_scenario_G2()
     # scenarios.run_scenario_G3()
     # scenarios.run_scenario_G4()

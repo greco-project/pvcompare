@@ -579,7 +579,7 @@ def plot_kpi_loop(
     output.sort_index(inplace=True)
 
     # plot
-    hight = len(kpi) * 3
+    hight = len(kpi) * 2
     fig = plt.figure(figsize=(7, hight))
     rows = len(kpi)
     num = (
@@ -614,9 +614,10 @@ def plot_kpi_loop(
                         label=str(key),
                         legend=False,
                         sharex=True,
+
                     )
                 counter += 1
-            else:
+            elif "facades" in key:
                 try:
                     df.plot(
                         x="step",
@@ -627,17 +628,33 @@ def plot_kpi_loop(
                         legend=False,
                         sharex=True,
                         xticks=df.step,
+                        alpha = 0.7
                     )
                     ax.set_ylabel(y_title[i])
                     ax.set_xlabel(variable_name)
                     ax.get_yaxis().set_label_coords(-0.13, 0.5)
                     ax.set_xticks(df.step)
-
                 except:
                     pass
-            ax.set_xlim(ax.get_xlim()[0] - 20, ax.get_xlim()[1] + 20)
+            else:
+                df.plot(
+                    x="step",
+                    y=i,
+                    style=".",
+                    ax=ax,
+                    label=key,
+                    legend=False,
+                    sharex=True,
+                    xticks=df.step,
+                    alpha=0.7
+                )
+                ax.set_ylabel(y_title[i])
+                ax.set_xlabel(variable_name)
+                ax.get_yaxis().set_label_coords(-0.13, 0.5)
+                ax.set_xticks(df.step)
+            ax.set_xlim(ax.get_xlim()[0] - 1, ax.get_xlim()[1] + 1)
 
-    plt.tight_layout(rect=(0.0, 0.2, 1, 1))
+    plt.tight_layout(rect=(0.0, 0.09, 1, 1))
 
     plt.xticks(rotation=45)
 
@@ -1167,7 +1184,7 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
 
 
 def plot_compare_technologies(
-    variable_name, kpi, scenario_list, outputs_directory=None
+    variable_name, kpi, scenario_list, outputs_directory=None, user_inputs_pvcompare_directory=None, static_inputs_directory=None
 ):
     """
     kpi: list of str
@@ -1199,9 +1216,47 @@ def plot_compare_technologies(
     """
     # height = len(kpi) * 2
     # fig = plt.figure(figsize=(7, height))
+    if user_inputs_pvcompare_directory == None:
+        user_inputs_pvcompare_directory = (
+            constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY
+        )
+    if static_inputs_directory == None:
+        static_inputs_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
+
 
     output_dict = {}
     for scenario_name in scenario_list:
+        # hack to load populations
+        if scenario_name == "Scenario_H1" or scenario_name == "Scenario_I1":
+            country = "Finland"
+        elif scenario_name == "Scenario_H2" or scenario_name == "Scenario_I2":
+            country = "Latvia"
+        elif scenario_name == "Scenario_H3" or scenario_name == "Scenario_I3":
+            country = "Romania"
+        elif scenario_name == "Scenario_H4" or scenario_name == "Scenario_I4":
+            country = "Hungary"
+        elif scenario_name == "Scenario_H5" or scenario_name == "Scenario_I5":
+            country = "Poland"
+        elif scenario_name == "Scenario_H6" or scenario_name == "Scenario_I6":
+            country = "United Kingdom"
+        elif scenario_name == "Scenario_H7" or scenario_name == "Scenario_I7":
+            country = "France"
+        elif scenario_name == "Scenario_H8" or scenario_name == "Scenario_I8":
+            country = "Italy"
+        elif scenario_name == "Scenario_H9" or scenario_name == "Scenario_I9":
+            country = "Germany"
+        elif scenario_name == "Scenario_H10" or scenario_name == "Scenario_I10":
+            country = "Greece"
+        elif scenario_name == "Scenario_H11" or scenario_name == "Scenario_I11":
+            country = "Spain"
+        elif scenario_name == "Scenario_H12" or scenario_name == "Scenario_I12":
+            country = "Spain"
+
+        bp = pd.read_csv(
+            os.path.join(user_inputs_pvcompare_directory,
+                         "building_parameters.csv"),
+            index_col=0,
+        )
         if outputs_directory == None:
             outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
             scenario_folder = os.path.join(outputs_directory, scenario_name)
@@ -1264,19 +1319,25 @@ def plot_compare_technologies(
                 "inputs",
                 "csv_elements",
             )
+            # load population
+            filename_population = bp.at["filename_country_population", "value"]
+            filename1 = os.path.join(static_inputs_directory,
+                                     filename_population)
+            populations = pd.read_csv(filename1, index_col=0, sep=",")
+            poputlation = float(populations.at[country, str(year)])
+
             energyProduction = pd.read_csv(
                 os.path.join(csv_directory, "energyProduction.csv"), index_col=0
             )
             energyProduction = energyProduction.drop(["unit"], axis=1)
             pv_labels = energyProduction.columns
             # get total costs pv and installed capacity
-
             index = str(year)  # + "_" + str(step)
 
             for pv in pv_labels:
                 output_dict[scenario_name]["Total costs"].loc[
                     index, pv
-                ] = file_sheet3.at["costs_total", 0]
+                ] = file_sheet3.at["costs_total", 0]/poputlation
                 output_dict[scenario_name]["Total costs PV"].loc[
                     index, pv
                 ] = file_sheet1.at[pv, "costs_total"]
@@ -1309,7 +1370,7 @@ def plot_compare_technologies(
                 ] = file_sheet3.at["Degree of autonomy", 0]
                 output_dict[scenario_name]["Total emissions"].loc[
                     index, pv
-                ] = file_sheet3.at["Total emissions", 0]
+                ] = file_sheet3.at["Total emissions", 0]/poputlation
                 output_dict[scenario_name]["Total non-renewable energy"].loc[
                     index, pv
                 ] = file_sheet3.at["Total non-renewable energy use", 0]
@@ -1545,14 +1606,15 @@ if __name__ == "__main__":
     #     ),
     # )
 
-    # scenario_dict = {"Scenario_A5": "CPV Berlin", "Scenario_A7": "Reference: SI Berlin", "Scenario_A6": "CPV Madrid", "Scenario_A8": "Reference: SI Madrid"}
+    # scenario_dict = {"Scenario_E1": "SI rooftop & facades", "Scenario_E2": "PSI rooftop & facades", "Scenario_E3": "CPV rooftop & facades", "Scenario_D1": "SI rooftop", "Scenario_D2": "PSI rooftop", "Scenario_D3": "CPV rooftop"}
     # plot_kpi_loop(
     #     scenario_dict=scenario_dict,
-    #     variable_name="specific_costs",
+    #     variable_name="storeys",
     #     kpi=[
-    #         "LCOE PV",
-    #         "Total costs",
-    #         "Installed capacity PV"
+    #         "Installed capacity PV",
+    #         "Degree of NZE",
+    #         "Degree of autonomy",
+    #         "Self consumption",
     #     ],
     # )
     #
@@ -1612,18 +1674,18 @@ if __name__ == "__main__":
     #     scenario_list,
     # )
     scenario_list = [
-        "Scenario_H1",
-        "Scenario_H2",
-        "Scenario_H3",
-        "Scenario_H4",
-        "Scenario_H5",
-        "Scenario_H6",
-        "Scenario_H7",
-        "Scenario_H8",
-        "Scenario_H9",
-        "Scenario_H10",
-        "Scenario_H11",
-        "Scenario_H12",
+        "Scenario_I1",
+        "Scenario_I2",
+        "Scenario_I3",
+        "Scenario_I4",
+        "Scenario_I5",
+        "Scenario_I6",
+        "Scenario_I7",
+        "Scenario_I8",
+        "Scenario_I9",
+        "Scenario_I10",
+        "Scenario_I11",
+        "Scenario_I12",
     ]
     plot_compare_technologies(
         variable_name="technology",
