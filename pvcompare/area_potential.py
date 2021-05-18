@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-
+TODO: is it possible to omit this comment?
 calculating the available area potential for PV-modules on the rooftop and facades
 
 """
@@ -15,9 +15,13 @@ except ImportError:
     plt = None
 
 
-def calculate_area_potential(storeys, user_inputs_pvcompare_directory, surface_type):
+def calculate_area_potential(
+        storeys,
+        user_inputs_pvcompare_directory,
+        surface_type
+):
 
-    """
+    r"""
     Calculates the area potential.
 
     Calculates the area potential of the rooftop, south and east/west
@@ -25,14 +29,12 @@ def calculate_area_potential(storeys, user_inputs_pvcompare_directory, surface_t
 
     Due to shading, the area potential for a flat roof is estimated to be 40%
     of the whole usable roof area.
-    For more information see [1].
-
-    [1] https://energieatlas.berlin.de/Energieatlas_Be/Docs/Datendokumentation-Solarkataster_BLN.pdf
+    For more information see [1]_.
 
     Parameters
     ----------
-    population: int
-        the population of the district
+    storeys: int
+        The number of storeys of a building.
     user_inputs_pvcompare_directory: str or None
         Directory of the user inputs. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
@@ -43,9 +45,12 @@ def calculate_area_potential(storeys, user_inputs_pvcompare_directory, surface_t
 
     Returns
     --------
-    int
-        area
+    area: int
+        Area potential of the rooftop.
 
+    References
+    ----------
+    .. [1] Business Location Center: "Solarpotentialanalyse Berlin – Datendokumentation". Report, 2011
     """
 
     # read building parameters
