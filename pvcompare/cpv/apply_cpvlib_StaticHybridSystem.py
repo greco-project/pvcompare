@@ -9,33 +9,39 @@ import pvcompare.constants as constants
 
 
 def create_cpv_time_series(
-    lat, lon, weather, surface_azimuth, surface_tilt, plot=False
+        lat,
+        lon,
+        weather,
+        surface_azimuth,
+        surface_tilt,
+        plot=False
 ):
-
-    """
+    r"""
     creates a time series for a cpv module.
 
-    notice: right now only module parameters for the hybrid INSOLIGHT module is
-    provided. If you want to add you own module data please add it to `cpv/inputs.py`.
+    Notice: Right now only module parameters for the hybrid INSOLIGHT module is
+    provided. If you want to add your own module data please add it to `cpv/inputs.py`.
+    Location is defined with the use of `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_.
 
     Parameters
     ----------
     lat: float
-        latitude
+        Latitude of the module.
     lon: float
-        longitude
+        Longitude of the module.
     weather: :pandas:`pandas.DataFrame<frame>`
-        weather dataframe according to pvlib standards
-    surface_azimuth: int
-        surface azimuth
-    surface_tilt: int
-        surface tilt
+        Weather dataframe according to pvlib standards.
+    surface_azimuth: float
+        surface azimuth of the module.
+    surface_tilt: float
+        surface tilt of the module.
     plot: bool
-        default: False
+        Default: False.
 
     Returns
     --------
-    :pandas:`pandas.DataFrame<frame>`
+    total: :pandas:`pandas.DataFrame<frame>`
+        Total time series of a cpv module.
     """
 
     location = pvlib.location.Location(latitude=lat, longitude=lon, tz="utc")
@@ -156,7 +162,9 @@ def create_cpv_time_series(
 
 def calculate_efficiency_ref():
 
-    """
+    r"""
+    Calculates P_mp, efficiency for cpv and flatplate.
+
     This function calculates the P_mp and efficiency for the cpv and the
     flatplate module at its reference conditions.
 
@@ -165,12 +173,13 @@ def calculate_efficiency_ref():
     DII = 900 W/m² for cpv
     POA = 950 W/m² for flatplate
 
-    :return:
-        None
-        prints efficiency and p_mp for the flatplate and the cpv module and total
-        efficiency
+    Returns
+    ------
+    None
+    Prints efficiency and p_mp for the flatplate and the cpv
+    module and total efficiency.
 
-    Notice: todo: is this needed? if not, remove this function
+    TODO: is this needed? if not, remove this function
     """
 
     surface_tilt = 30

@@ -30,7 +30,7 @@ def calculate_cops_and_eers(
     Calculates the COPs of a heat pump or EERs of a chiller depending on `mode`.
 
     Temperature dependency is taken into consideration.
-    For these calculations the oemof.thermal `calc_cops()` functionality is
+    For these calculations the oemof.thermal :py:func:`~.calc_cops` functionality is
     used. Data like quality grade and factor icing is read from the file
     `heat_pumps_and_chillers.csv` in the `input_directory`.
     Negative values, which might occur due to high ambient temperatures in summer are
@@ -55,17 +55,16 @@ def calculate_cops_and_eers(
         Directory of the user inputs. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
-    user_inputs_mvs_directory: str or None
-        Path to input directory containing files that describe the energy
-        system and that are an input to MVS. Default:
-        DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`.
+    user_inputs_mvs_directory : str or None
+        Path to mvs input directory. If None: DEFAULT_USER_INPUTS_MVS_DIRECTORY
+        (see :py:func:`~.pvcompare.constants`).
+        Default: None.
 
     Returns
     -------
-    efficiency_series : :pandas:`pandas.Series<series>`
-        COP or EER time series of heat pump or chiller depending on `mode`.
-
+    None
     """
+
     # read parameters from file
     if user_inputs_pvcompare_directory == None:
         user_inputs_pvcompare_directory = (
@@ -86,30 +85,41 @@ def calculate_cops_and_eers(
         )
     # prepare parameters for calc_cops
 
-    def process_temperatures(temperature, level, mode, technology):
-        """
-        Temperature can be passed in the following way:
+    def process_temperatures(
+            temperature,
+            level,
+            mode,
+            technology
+    ):
+        r"""
+        Processes temperatures for specific `level`, `mode`, and `technology`.
+
+        `Temperature` can be passed in the following way:
         1. As NaN - The lower/higher temperature of the heat pump/chiller equals the ambient temperature time series
         2. As single value (float or int) - The temperature is constant
         3. As time series - The temperature is not constant or differs from ambient temperature (eg. ground source)
 
         Parameters
         ----------
-        temperature : float, int, np.nan, pd.Series 
-        Passed temperature which was written from input data
-
+        temperature : float, int, np.nan, :pandas:`pandas.Series<series>
+            Passed temperature which was written from input data.
         level : str
-        Defines whether high or low temperature has been passed.
-
+            Defines whether high or low temperature has been passed.
         mode : str
-        Defines whether COPs of heat pump ("heat_pump") or EERs of chiller
-        ("chiller") are calculated.
+            Defines whether COPs of heat pump ("heat_pump") or EERs of chiller
+            ("chiller") are calculated.
+        technology: str
+            Defines whether technology is a "brine-water", "air-air"
+            or "air-water".
 
         Returns
         -------
-        temperature : list
-        Temperature adjusted to use case of plant
+        temperature: list
+            Temperature adjusted to use case of plant.
+        efficiency_series : :pandas:`pandas.Series<series>`
+            COP or EER time series of heat pump or chiller depending on `mode`.
         """
+
         if isinstance(temperature, float):
             if pd.isna(temperature):
                 # In case of NaN
@@ -311,8 +321,8 @@ def add_sector_coupling(
     user_inputs_mvs_directory=None,
     overwrite_hp_parameters=None,
 ):
-    """
-    Add heat sector if heat pump or chiller in 'energyConversion.csv'.
+    r"""
+    Add heat sector if heat pump or chiller are in `energyConversion.csv`.
 
     COPs or EERS are calculated automatically as long as the parameters
     `inflow_direction` and `outflow_direction` give a hint that the respective asset is
@@ -328,13 +338,13 @@ def add_sector_coupling(
     lon : float
         Longitude of ambient temperature location in `weather`.
     user_inputs_pvcompare_directory: str or None
-        Path to user input directory of pvcompare containing file
-        `heat_pumps_and_chillers.csv` that specifies heat pump and/or chiller
-        data. Default: DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY (see :func:`~pvcompare.constants`.
+        Directory of the user inputs. If None,
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
+        Default: None.
     user_inputs_mvs_directory: str or None
-        Path to input directory containing files that describe the energy
-        system and that are an input to MVS. Default:
-        DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`).
+        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
     overwrite_hp_parameters: bool
         Default: True. If true, existing COP time series of the heat pump will be
         overwritten with calculated time series of COP.
@@ -348,10 +358,11 @@ def add_sector_coupling(
 
     Returns
     -------
-    Depending on the case, updates energyConversion.csv and saves calculated cops to
+    None
+    Depending on the case, updates `energyConversion.csv` and saves calculated cops to
     'data/mvs_inputs/time_series'.
-
     """
+
     # read energyConversion.csv file
     if user_inputs_pvcompare_directory == None:
         user_inputs_pvcompare_directory = (

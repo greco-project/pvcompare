@@ -323,11 +323,11 @@ def set_up_system(
     Parameters
     ----------
     technology: str
-        possible technologies are: si, cpv or psi
+        Possible technologies are: si, cpv or psi.
     surface_azimuth: float
-        surface azimuth of the module
+        Surface azimuth of the module.
     surface_tilt: float
-        surface tilt of the module
+        Surface tilt of the module.
 
     Returns
     -------
@@ -402,14 +402,14 @@ def create_si_time_series(
     Parameters
     ----------
     lat: float
-        Latitude of the technology
+        Latitude of the technology.
     lon: float
-        Longitude of the technology
+        Longitude of the technology.
     weather: :pandas:`pandas.DataFrame<frame>`
     surface_azimuth: float
-        Surface azimuth of the modules
+        Surface azimuth of the modules.
     surface_tilt: float
-        Surface tilt of the modules
+        Surface tilt of the modules.
     normalization: bool
         If True: Time series is normalized. Otherwise absolute time series is
         returned.
