@@ -37,7 +37,7 @@ def apply_pvcompare(
     overwrite_pv_parameters=True,
     overwrite_heat_parameters=True,
 ):
-    """
+    r"""
     Runs the main functionalities of pvcompare.
 
     Loads weather data for the given year and location, calculates pv feed-in time
@@ -48,13 +48,13 @@ def apply_pvcompare(
     Parameters
     ----------
     storeys: int
-        number of storeys for which the demand is calculated.
+        Number of storeys for which the demand is calculated.
     country:
         Country of the location. Default: None.
     latitude: float or None
-        Latitude of the location. Default: None.
+        Latitude of country location in 'country'. Default: None.
     longitude: float or None
-        Longitude of the location. Default: None.
+        Longitude of country location in 'country'. Default: None.
     year: int
         Year of the simulation. Default: None.
     static_inputs_directory: str or None
@@ -62,13 +62,13 @@ def apply_pvcompare(
         `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
         Default: None.
     user_inputs_pvcompare_directory: str or None
-        If None, `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used
-        as  user_inputs_pvcompare_directory.
+        Directory of the user inputs. If None,
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
-    user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
-        Default: None.
+    user_inputs_mvs_directory : str or None
+        Path to mvs input directory. If None: DEFAULT_USER_INPUTS_MVS_DIRECTORY. Default: None.
+    collections_mvs_inputs_directory: TODO: Parameter missing in pvcompare as well
+        ...
     plot: bool
         If True, plots of the PV feed-in time series are created in
         :py:func:`~.pv_feedin.create_pv_components`. Default: False.
@@ -80,24 +80,27 @@ def apply_pvcompare(
         If `pv_setup` is None, it is loaded from the `user_inputs_pvcompare_directory/pv_setup.cvs`.
         Default: None.
     overwrite_grid_parameters: bool
-        Default: True. If True, the following grid parameters are inserted into the
+        If True, the following grid parameters are inserted into the
         mvs input csv'S automatically: electricity price, feed-in tariff,
-        CO2 emissions, renewable share, gas price
+        CO2 emissions, renewable share, gas price.
+        Default: True.
     overwrite_pv_parameters: bool
-        Default: True. If true, the pv components in energyProduction.csv are
+        If True, the pv components in energyProduction.csv are
         overwritten with default values from 'data/user_inputs_collection/'
         according to the pv plants defined in 'pv_setup'.
+        Default: True.
     overwrite_heat_parameters: bool
-        Default: True. If true, existing COP time series of the heat pump will be
+        If True, existing COP time series of the heat pump will be
         overwritten with calculated time series of COP and existing fixed thermal losses
         absolute and relative will be overwritten with calculated time series of fixed thermal
         losses relative and absolute.
+        Default: True.
 
     Returns
     -------
+    weather: :pandas:`pandas.DataFrame<frame>` TODO: Please check if correct file
     Saves calculated time series to `timeseries` folder in `user_inputs_mvs_directory and
     updates csv files in `csv_elements` folder.
-
     """
 
     if static_inputs_directory == None:
@@ -226,8 +229,8 @@ def apply_mvs(
 
     Returns
     -------
+    Simulation: png TODO: Please check
     Stores simulation results in `mvs_output_directory`.
-
     """
     if user_inputs_mvs_directory is None:
         user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
