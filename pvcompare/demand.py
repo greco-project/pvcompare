@@ -42,8 +42,7 @@ except ImportError:
     workalendar = None
 
 
-# todo (nice to have): add function that writes name of demand.csv into energyConsumption.csv
-
+# TODO:(nice to have): add function that writes name of demand.csv into energyConsumption.csv'
 
 def calculate_load_profiles(
     country,
@@ -59,9 +58,11 @@ def calculate_load_profiles(
     r"""
     Calculates electricity and heat load profiles for `country`, `storeys`, and `year`.
 
-    The electricity and heat load profiles are generated with the help of oemof.demandlib.
-    For these calculations the electricity demand is calculated with the :py:func:`~.calculate_power_demand` functionality and
-    the heat demand with the `calculate_heat_demand()` functionality.
+    The electricity and heat load profiles are generated with the help of
+    `oemof.demandlib <https://github.com/oemof/demandlib>`_.
+    For these calculations the electricity demand is calculated with the
+    :py:func:`~.calculate_power_demand` functionality and the heat demand with the
+    :py:func:`~.calculate_heat_demand` functionality.
 
     Parameters
     ---------
@@ -74,7 +75,7 @@ def calculate_load_profiles(
     storeys: int
         The number of storeys of a building.
     year: int
-        Year for which power demand time series is calculated, needs to be between 2011 - 2015.
+        Year for which power demand time series is calculated TODO: needs to be between 2011 - 2015 like above?
     weather: :pandas:`pandas.DataFrame<frame>`
         hourly weather data frame with the columns:
         time, latitude, longitude, wind_speed, temp_air, ghi, dhi, dni,
@@ -157,9 +158,9 @@ def calculate_power_demand(
 
     For the electricity demand, the BDEW load profile for households (H0) is scaled with
     the annual demand of a certain population.
-    For further information regarding the assumptions made for the electricty demand modeling
+    For further information regarding the assumptions made for the electricty demand profile
     see `Electricity demand <https://pvcompare.readthedocs.io/en/latest/model_assumptions.html#electricity-demand>`_.
-The  electricity demand profile is saved to the folder `time_series` in `user_inputs_mvs_directory`.
+    The electricity demand profile is saved to the folder `time_series` in `user_inputs_mvs_directory`.
 
     Parameters
     ----------
@@ -168,7 +169,7 @@ The  electricity demand profile is saved to the folder `time_series` in `user_in
     storeys: int
         The number of storeys of the buildings.
     year: int
-        Year for which power demand time series is calculated. # todo needs to be between 2011 - 2015 like above?
+        Year for which power demand time series is calculated. TODO: needs to be between 2011 - 2015 like above?
     column: str
         name of the demand column
     static_inputs_directory: str or None
@@ -187,7 +188,7 @@ The  electricity demand profile is saved to the folder `time_series` in `user_in
     Returns
     -------
     shifted_elec_demand: :pandas:`pandas.DataFrame<frame>`
-        hourly time series of the electrical demand
+        Hourly time series of the electrical demand.
     """
 
     if static_inputs_directory == None:
@@ -343,7 +344,7 @@ def calculate_heat_demand(
     storeys: int
         Number of storeys of the houses.
     year: int
-        Year for which heat demand time series is calculated. # todo needs to be between 2011 - 2015 like above?
+        Year for which heat demand time series is calculated. # TODO: needs to be between 2011 - 2015 like above?
     column: str
         name of the demand
     weather: :pandas:`pandas.DataFrame<frame>`
@@ -516,13 +517,14 @@ def adjust_heat_demand(
     r"""
     Adjust the hourly heat demands exceeding the heating limit temperature.
 
-    Heat demand above the heating limit temperature is set to zero.
+    Heat demand is generated with the help of `oemof.demandlib <https://github.com/oemof/demandlib>`_.
+    The heat demand above the heating limit temperature is set to zero.
     Excess heat demand is then distributed equally over the remaining hourly heat demand.
 
     Parameters
     -----------
     temperature : :pandas:`pandas.Series<series>`
-        Ambient temperature data frame
+        Ambient temperature time series
     heating_limit_temp : int
         Temperature limit for heating
     demand : :pandas:`pandas.Series<series>`
@@ -569,8 +571,8 @@ def shift_working_hours(
     Since the energy demand for domestic hot water depends strongly on
     behaviour, the demand profile is adjusted for the different EU countries.
     For further information regarding the hour shifting method
-    see p.127 in `HOTMAPS<https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_.
-    The statistics are received from `Eurostat <https://ec.europa.eu/eurostat/web/products-manuals-and-guidelines/-/KS-RA-08-014>`_.
+    see HOTMAPS [1]_.
+    The statistics are received from Eurostat [2]_.
 
     Parameters
     -----------
@@ -583,6 +585,11 @@ def shift_working_hours(
     -------
     ts: :pandas:`pandas.DataFrame<frame>`
         Shifted time series.
+
+    References
+    ----------
+    .. [1] Pezzutto S. et al.: "D2.3 WP2 Report –Open Data Set for the EU28". Report, 2019, p.127
+    .. [2] Eurostat: "Harmonised European time use surveys". Manuals and Guidelines, 2009
     """
 
     # check if time series contains more than 24 h
