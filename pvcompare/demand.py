@@ -42,8 +42,6 @@ except ImportError:
     workalendar = None
 
 
-# TODO:(nice to have): add function that writes name of demand.csv into energyConsumption.csv'
-
 def calculate_load_profiles(
     country,
     lat,
@@ -75,7 +73,8 @@ def calculate_load_profiles(
     storeys: int
         The number of storeys of a building.
     year: int
-        Year for which power demand time series is calculated TODO: needs to be between 2011 - 2015 like above?
+        Year for which power demand time series is calculated. Year can be
+         chosen between 2008 and 2018.
     weather: :pandas:`pandas.DataFrame<frame>`
         hourly weather data frame with the columns:
         time, latitude, longitude, wind_speed, temp_air, ghi, dhi, dni,
@@ -169,7 +168,8 @@ def calculate_power_demand(
     storeys: int
         The number of storeys of the buildings.
     year: int
-        Year for which power demand time series is calculated. TODO: needs to be between 2011 - 2015 like above?
+        Year for which power demand time series is calculated.
+        Year can be chosen between 2008 and 2018.
     column: str
         name of the demand column
     static_inputs_directory: str or None
