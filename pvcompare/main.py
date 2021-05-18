@@ -232,6 +232,7 @@ def apply_mvs(
     Simulation: png TODO: Please check
     Stores simulation results in `mvs_output_directory`.
     """
+
     if user_inputs_mvs_directory is None:
         user_inputs_mvs_directory = constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY
     if outputs_directory is None:
