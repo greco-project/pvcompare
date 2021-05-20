@@ -303,7 +303,11 @@ class TestTES:
         strat_tes_file_path = os.path.join(
             TEST_USER_INPUTS_PVCOMPARE, "stratified_thermal_storage.csv"
         )
-        strat_tes_original = pd.read_csv(strat_tes_file_path, header=0, index_col=0,)
+        strat_tes_original = pd.read_csv(
+            strat_tes_file_path,
+            header=0,
+            index_col=0,
+        )
         strat_tes = strat_tes_original.copy()
         strat_tes.at["temp_h", "var_value"] = 90
         strat_tes.to_csv(strat_tes_file_path, na_rep="NaN")

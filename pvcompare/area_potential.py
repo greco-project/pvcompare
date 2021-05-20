@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-TODO: is it possible to omit this comment?
 calculating the available area potential for PV-modules on the rooftop and facades
 
 """
@@ -15,11 +14,7 @@ except ImportError:
     plt = None
 
 
-def calculate_area_potential(
-        storeys,
-        user_inputs_pvcompare_directory,
-        surface_type
-):
+def calculate_area_potential(storeys, user_inputs_pvcompare_directory, surface_type):
 
     r"""
     Calculates the area potential.

@@ -50,7 +50,8 @@ class TestExamples:
         # Delete example output directories of all tests they existing
         for scenario in scenarios:
             dir_name = os.path.join(
-                self.outputs_directory, scenario + "_test_run_through",
+                self.outputs_directory,
+                scenario + "_test_run_through",
             )
             if os.path.exists(dir_name):
                 shutil.rmtree(dir_name, ignore_errors=True)

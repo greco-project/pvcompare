@@ -1,3 +1,14 @@
+"""
+The module runs the main functionalities of pvcompare. These include the calculation
+of the pv feed-in time series and the nominal values /installation capacities based on the building
+parameters. By adding the heat pump to the energy system, COPs will be calculated as well.
+Furthermore, energy system simulation of different scenarios with MVS are calculated and saved.
+
+Functions this module contains:
+- apply_pvcompare
+- apply_mvs
+"""
+
 # imports
 import pandas as pd
 import logging
@@ -138,7 +149,10 @@ def apply_pvcompare(
         static_inputs_directory, f"weatherdata_{latitude}_{longitude}_{year}.csv"
     )
     if os.path.isfile(weather_file):
-        weather = pd.read_csv(weather_file, index_col=0,)
+        weather = pd.read_csv(
+            weather_file,
+            index_col=0,
+        )
     else:
         # if era5 import works this line can be used
         weather = era5.load_era5_weatherdata(lat=latitude, lon=longitude, year=year)

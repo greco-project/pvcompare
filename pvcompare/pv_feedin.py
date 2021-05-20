@@ -7,7 +7,7 @@ pvlib:
  * ghi - global horizontal irradiation [W/m2]
  * dni - direct normal irradiation [W/m2]
  * dhi - diffuse horizontal irradiation [W/m2]
- * temp_air - ambient temperature [�C]
+ * temp_air - ambient temperature [°C]
  * wind_speed - wind speed [m/s]
 """
 
@@ -308,10 +308,7 @@ def get_optimal_pv_angle(lat):
     return round(lat - 15)
 
 
-def set_up_system(
-        technology,
-        surface_azimuth,
-        surface_tilt):
+def set_up_system(technology, surface_azimuth, surface_tilt):
 
     r"""
     Sets up pvlibPVSystems.
@@ -383,12 +380,7 @@ def set_up_system(
 
 
 def create_si_time_series(
-        lat,
-        lon,
-        weather,
-        surface_azimuth,
-        surface_tilt,
-        normalization
+    lat, lon, weather, surface_azimuth, surface_tilt, normalization
 ):
 
     r"""
@@ -450,12 +442,7 @@ def create_si_time_series(
 
 
 def create_cpv_time_series(
-        lat,
-        lon,
-        weather,
-        surface_azimuth,
-        surface_tilt,
-        normalization
+    lat, lon, weather, surface_azimuth, surface_tilt, normalization
 ):
     r"""
     Creates power time series of a CPV module.
@@ -592,7 +579,9 @@ def create_psi_time_series(
             import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
         peak = get_peak(
-            technology="psi", module_parameters_1=param1, module_parameters_2=param2,
+            technology="psi",
+            module_parameters_1=param1,
+            module_parameters_2=param2,
         )
         output = pvcompare.perosi.perosi.create_pero_si_timeseries(
             year,
@@ -610,13 +599,7 @@ def create_psi_time_series(
         return (output / peak).clip(0)
 
 
-def nominal_values_pv(
-        technology,
-        area,
-        surface_azimuth,
-        surface_tilt,
-        psi_type
-):
+def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type):
     r"""
     calculates the maximum installed capacity for each pv module.
 
@@ -652,7 +635,9 @@ def nominal_values_pv(
             surface_tilt=surface_tilt,
         )
         peak = get_peak(
-            technology, module_parameters_1=module_parameters, module_parameters_2=None,
+            technology,
+            module_parameters_1=module_parameters,
+            module_parameters_2=None,
         )
         module_size = module_parameters["A_c"]
         nominal_value = round((area / module_size) * peak) / 1000
@@ -679,7 +664,9 @@ def nominal_values_pv(
 
         # calculate peak power with 5 % CTM losses nad 5 % cell connection losses
         peak = get_peak(
-            technology, module_parameters_1=param1, module_parameters_2=param2,
+            technology,
+            module_parameters_1=param1,
+            module_parameters_2=param2,
         )
         module_size = param1.A / 10000  # in m^2
         nominal_value = round((area / module_size) * peak) / 1000
@@ -693,11 +680,7 @@ def nominal_values_pv(
     return nominal_value
 
 
-def get_peak(
-        technology,
-        module_parameters_1,
-        module_parameters_2
-):
+def get_peak(technology, module_parameters_1, module_parameters_2):
     r"""
     This function returns the peak value for the given technology.
 

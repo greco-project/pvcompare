@@ -9,12 +9,7 @@ import pvcompare.constants as constants
 
 
 def create_cpv_time_series(
-        lat,
-        lon,
-        weather,
-        surface_azimuth,
-        surface_tilt,
-        plot=False
+    lat, lon, weather, surface_azimuth, surface_tilt, plot=False
 ):
     r"""
     creates a time series for a cpv module.

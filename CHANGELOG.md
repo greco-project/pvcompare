@@ -59,6 +59,15 @@ Here is a template for new release sections
 - Hot fix: remove build for python 3.6 from `main.yml` github actions workflow (#270)
 - Hot fix: Move `test_examples.py` to `examples` directory to make tests work in CI and add `__init__.py` to `examples` (#298)
 
+## [0.0.3] - 2021-05-20
+
+### Added
+- General description of module is added for `main.py`. (#303)
+
+### Changed
+- Description for the functions in the modules of file perosi were updated and formatted. (#303)
+- "Year for which power demand time series is calculated" is set between 2008-2018. (#303)
+
 ## [0.0.2] - 2021-03-24
 
 ### Added

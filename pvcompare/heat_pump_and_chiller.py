@@ -85,12 +85,7 @@ def calculate_cops_and_eers(
         )
     # prepare parameters for calc_cops
 
-    def process_temperatures(
-            temperature,
-            level,
-            mode,
-            technology
-    ):
+    def process_temperatures(temperature, level, mode, technology):
         r"""
         Processes temperatures for specific `level`, `mode`, and `technology`.
 

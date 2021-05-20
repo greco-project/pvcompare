@@ -445,7 +445,9 @@ class TestCalculateCopsAndEers:
 
         # Weather data for chiller
         hot_weather = pd.DataFrame(
-            [32, 31.5, 30, 34, 32, 33], columns=["temp_air"], index=self.date_range,
+            [32, 31.5, 30, 34, 32, 33],
+            columns=["temp_air"],
+            index=self.date_range,
         )
 
         # (1) temp_low is passed as numeric
@@ -587,7 +589,9 @@ class TestCalculateCopsAndEers:
 
         # Weather data for chiller
         hot_weather = pd.DataFrame(
-            [32, 31.5, 30, 34, 32, 33], columns=["temp_air"], index=self.date_range,
+            [32, 31.5, 30, 34, 32, 33],
+            columns=["temp_air"],
+            index=self.date_range,
         )
 
         filename = os.path.join(
@@ -807,7 +811,9 @@ class TestCalculateCopsAndEers:
         """
         # Weather data for chiller
         hot_weather = pd.DataFrame(
-            [32, 31.5, 30, 34, 32, 33], columns=["temp_air"], index=self.date_range,
+            [32, 31.5, 30, 34, 32, 33],
+            columns=["temp_air"],
+            index=self.date_range,
         )
 
         filename = os.path.join(
@@ -1037,7 +1043,9 @@ class TestAddSectorCoupling:
     def test_add_sector_coupling_multiple_heat_pumps(self):
         pass
 
-    def test_add_sector_coupling_warning_no_heat_demand_in_energy_consumption(self,):
+    def test_add_sector_coupling_warning_no_heat_demand_in_energy_consumption(
+        self,
+    ):
         pass
 
     def test_add_sector_coupling_no_warning(self):

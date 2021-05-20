@@ -282,7 +282,11 @@ def add_strat_tes(
         user_inputs_pvcompare_directory, "stratified_thermal_storage.csv"
     )
     if os.path.isfile(storage_file_path):
-        storage_input_data = pd.read_csv(storage_file_path, header=0, index_col=0,)
+        storage_input_data = pd.read_csv(
+            storage_file_path,
+            header=0,
+            index_col=0,
+        )
         temp_high = storage_input_data.at["temp_h", "var_value"]
 
     # 6. Read heat_pumps_and_chillers.csv
@@ -290,7 +294,11 @@ def add_strat_tes(
         user_inputs_pvcompare_directory, "heat_pumps_and_chillers.csv"
     )
     if os.path.isfile(hp_file_path):
-        hp_input_data = pd.read_csv(hp_file_path, header=0, index_col=0,)
+        hp_input_data = pd.read_csv(
+            hp_file_path,
+            header=0,
+            index_col=0,
+        )
 
     # Create add on to filename (year, lat, lon, temp_high)
     year = maya.parse(weather.index[int(len(weather) / 2)]).datetime().year

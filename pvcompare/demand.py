@@ -362,7 +362,7 @@ def calculate_heat_demand(
 
     Returns
     -------
-    shifted_heat_demand : :pandas:`pandas.DataFrame<frame>` 
+    shifted_heat_demand : :pandas:`pandas.DataFrame<frame>`
         Hourly heat demand time series.
     """
 
@@ -509,11 +509,7 @@ def calculate_heat_demand(
     return shifted_heat_demand
 
 
-def adjust_heat_demand(
-        temperature,
-        heating_limit_temp,
-        demand
-):
+def adjust_heat_demand(temperature, heating_limit_temp, demand):
     r"""
     Adjust the hourly heat demands exceeding the heating limit temperature.
 
@@ -561,10 +557,7 @@ def adjust_heat_demand(
     return demand
 
 
-def shift_working_hours(
-        country,
-        ts
-):
+def shift_working_hours(country, ts):
     r"""
     Shift the demand time series with regard to country's customs.
 
