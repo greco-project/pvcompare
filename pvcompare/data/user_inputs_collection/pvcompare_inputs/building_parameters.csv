@@ -9,7 +9,6 @@ hight storey,3
 room temperature,20
 heating limit temperature,15
 include warm water,False
-filename_total_consumption,total_consumption_residential.xlsx
 filename_total_SH,total_consumption_SH_residential.xlsx
 filename_total_WH,total_consumption_WH_residential.xlsx
 filename_elect_SH,electricity_consumption_SH_residential.xlsx
