@@ -1,4 +1,4 @@
-|badge_docs| |badge_CI| |badge_coverage|
+|badge_docs| |badge_CI| |badge_coverage| |binder|
 
 Deprecated: |badge_travis| 
 
@@ -17,6 +17,8 @@ Deprecated: |badge_travis|
 .. |badge_travis| image:: https://travis-ci.com/greco-project/pvcompare.svg?branch=dev
     :target: https://travis-ci.com/greco-project/pvcompare
 
+.. |binder| image:: https://mybinder.org/badge_logo.svg
+ :target: https://mybinder.org/v2/gh/greco-project/pvcompare/dev?filepath=https%3A%2F%2Fgithub.com%2Fgreco-project%2Fpvcompare%2Ftree%2Fdev%2Fexamples
 
 pvcompare
 ~~~~~~~~~
