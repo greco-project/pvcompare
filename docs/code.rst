@@ -106,8 +106,8 @@ Functions for implementing a sector-coupled system (electricity, heat) and for c
 .. autosummary::
     :toctree: temp/
 
-    heat_pump_and_chiller.add_sector_coupling
     heat_pump_and_chiller.calculate_cops_and_eers
+    heat_pump_and_chiller.add_sector_coupling
 
 .. _thermal_storage:
 
