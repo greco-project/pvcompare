@@ -185,9 +185,13 @@ def apply_pvcompare(
 
     # check if add_pv_time_series is True
     if add_pv_timeseries is not None:
-        pv_feedin.add_pv_timeseries(add_pv_timeseries=add_pv_timeseries, pv_setup=pv_setup, storeys= storeys,
-        user_inputs_mvs_directory=user_inputs_mvs_directory,
-        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory)
+        pv_feedin.add_pv_timeseries(
+            add_pv_timeseries=add_pv_timeseries,
+            pv_setup=pv_setup,
+            storeys=storeys,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
+            user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+        )
 
     else:
         # check energyProduction.csv file for the correct pv technology
@@ -210,7 +214,7 @@ def apply_pvcompare(
             user_inputs_mvs_directory=user_inputs_mvs_directory,
             year=year,
             normalization=True,
-            add_sam_si_module=add_sam_si_module
+            add_sam_si_module=add_sam_si_module,
         )
 
     # add sector coupling in case heat pump or chiller exists in energyConversion.csv
@@ -234,8 +238,8 @@ def apply_pvcompare(
         user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
         user_inputs_mvs_directory=user_inputs_mvs_directory,
         weather=weather,
-        add_electricity_demand= add_electricity_demand,
-        add_heat_demand=add_heat_demand
+        add_electricity_demand=add_electricity_demand,
+        add_heat_demand=add_heat_demand,
     )
 
     stratified_thermal_storage.add_strat_tes(
@@ -335,13 +339,20 @@ if __name__ == "__main__":
         year=year,
         storeys=storeys,
         country=country,
-        add_pv_timeseries={"PV1": {"filename":"/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/user_inputs/mvs_inputs/time_series/cpv_90_0_2013_40.416775_-3.70379.csv",
-                           "module_size": 1, "module_peak_power":50, "surface_type" : "flat_roof"},
-                           "PV2": {
-                               "filename": "/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/user_inputs/mvs_inputs/time_series/cpv_90_0_2013_40.416775_-3.70379.csv",
-                               "module_size": 1, "module_peak_power": 50,
-                               "surface_type": "flat_roof"}
-                           }
+        add_pv_timeseries={
+            "PV1": {
+                "filename": "/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/user_inputs/mvs_inputs/time_series/cpv_90_0_2013_40.416775_-3.70379.csv",
+                "module_size": 1,
+                "module_peak_power": 50,
+                "surface_type": "flat_roof",
+            },
+            "PV2": {
+                "filename": "/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/user_inputs/mvs_inputs/time_series/cpv_90_0_2013_40.416775_-3.70379.csv",
+                "module_size": 1,
+                "module_peak_power": 50,
+                "surface_type": "flat_roof",
+            },
+        },
     )
 
     # apply_mvs(

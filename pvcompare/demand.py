@@ -56,7 +56,7 @@ def calculate_load_profiles(
     user_inputs_pvcompare_directory=None,
     user_inputs_mvs_directory=None,
     add_electricity_demand=None,
-    add_heat_demand= None
+    add_heat_demand=None,
 ):
     """
     Calculates electricity and heat load profiles and saves them to csv.
@@ -115,7 +115,7 @@ def calculate_load_profiles(
             if energyConsumption.at["energyVector", column] == "Heat":
 
                 if add_heat_demand is not None:
-                    #check if file exists
+                    # check if file exists
                     if os.path.isfile(add_heat_demand):
                         # save the file name of the time series
                         # mvs_inputs/elements/csv/energyProduction.csv
@@ -125,10 +125,12 @@ def calculate_load_profiles(
                             user_inputs_mvs_directory=user_inputs_mvs_directory,
                         )
                     else:
-                        logging.warning("The heat demand time series"
-                                        " you have entered does not exist. It is"
-                                        " thus calculated according to the default"
-                                        " method of pvcompare.")
+                        logging.warning(
+                            "The heat demand time series"
+                            " you have entered does not exist. It is"
+                            " thus calculated according to the default"
+                            " method of pvcompare."
+                        )
                 else:
                     calculate_heat_demand(
                         country=country,
@@ -155,10 +157,12 @@ def calculate_load_profiles(
                             user_inputs_mvs_directory=user_inputs_mvs_directory,
                         )
                     else:
-                        logging.warning("The electricity demand time series"
-                                        " you have entered does not exist. It is"
-                                        " thus calculated according to the default"
-                                        " method of pvcompare.")
+                        logging.warning(
+                            "The electricity demand time series"
+                            " you have entered does not exist. It is"
+                            " thus calculated according to the default"
+                            " method of pvcompare."
+                        )
                 else:
                     calculate_power_demand(
                         country=country,

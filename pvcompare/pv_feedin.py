@@ -52,7 +52,7 @@ def create_pv_components(
     user_inputs_mvs_directory=None,
     psi_type="Chen",
     normalization=True,
-    add_sam_si_module=None
+    add_sam_si_module=None,
 ):
     """
     Creates feed-in time series for all surface types in `pv_setup` or 'pv_setup.csv'.
@@ -168,7 +168,7 @@ def create_pv_components(
                     surface_azimuth=j,
                     surface_tilt=k,
                     normalization=normalization,
-                    add_sam_si_module=add_sam_si_module
+                    add_sam_si_module=add_sam_si_module,
                 )
             elif row["technology"] == "cpv":
                 time_series = create_cpv_time_series(
@@ -415,7 +415,10 @@ def create_si_time_series(
     """
 
     system, module_parameters = set_up_system(
-        technology="si", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt, add_sam_si_module=add_sam_si_module
+        technology="si",
+        surface_azimuth=surface_azimuth,
+        surface_tilt=surface_tilt,
+        add_sam_si_module=add_sam_si_module,
     )
     location = Location(latitude=lat, longitude=lon)
 
@@ -712,9 +715,13 @@ def get_peak(technology, module_parameters_1, module_parameters_2):
         )
         return peak
 
-def add_pv_timeseries(add_pv_timeseries, storeys,
-        user_inputs_mvs_directory,
-        user_inputs_pvcompare_directory):
+
+def add_pv_timeseries(
+    add_pv_timeseries,
+    storeys,
+    user_inputs_mvs_directory,
+    user_inputs_pvcompare_directory,
+):
     """
     This function calculates the maximal capacity and inserts the time series filename
     and the maximum capacity into 'user_inputs/mvs_inputs/csv_elements/energyProduction.csv'.
@@ -750,21 +757,29 @@ def add_pv_timeseries(add_pv_timeseries, storeys,
     for key in add_pv_timeseries.keys():
         # check if PV timeseries exists
         if not os.path.isfile(add_pv_timeseries[key]["filename"]):
-            logging.error("The PV time series you have specified does not exist. "
-                          "Please check your input or set 'add_pv_timeseries' to None "
-                          "in order to use the default pvcompare methods.")
+            logging.error(
+                "The PV time series you have specified does not exist. "
+                "Please check your input or set 'add_pv_timeseries' to None "
+                "in order to use the default pvcompare methods."
+            )
             return
-        pv_timeseries=pd.read_csv(add_pv_timeseries[key]["filename"], index_col=0, header=None)
+        pv_timeseries = pd.read_csv(
+            add_pv_timeseries[key]["filename"], index_col=0, header=None
+        )
         # add "evaluated_period" to simulation_settings.csv
         check_inputs.add_evaluated_period_to_simulation_settings(
-            time_series=pv_timeseries, user_inputs_mvs_directory=user_inputs_mvs_directory
+            time_series=pv_timeseries,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
         )
         area = area_potential.calculate_area_potential(
             storeys,
             user_inputs_pvcompare_directory,
             surface_type=add_pv_timeseries[key]["surface_type"],
         )
-        nominal_value = round((area / add_pv_timeseries[key]["module_size"]) * add_pv_timeseries[key]["module_peak_power"])
+        nominal_value = round(
+            (area / add_pv_timeseries[key]["module_size"])
+            * add_pv_timeseries[key]["module_peak_power"]
+        )
 
         check_inputs.add_parameters_to_energy_production_file(
             technology=key,
