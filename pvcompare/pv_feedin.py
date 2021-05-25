@@ -117,7 +117,7 @@ def create_pv_components(
 
         data_path = os.path.join(user_inputs_pvcompare_directory, "pv_setup.csv")
         pv_setup = pd.read_csv(data_path)
-        logging.info("setup conditions successfully loaded.")
+        logging.info("Pv setup conditions successfully loaded.")
 
     # check if all required columns are in pv_setup
     if not all(
@@ -711,3 +711,37 @@ def get_peak(technology, module_parameters_1, module_parameters_2):
             - (module_parameters_1.p_mp + module_parameters_2.p_mp) * 0.1
         )
         return peak
+
+def add_pv_timeseries(add_pv_timeseries, pv_setup, storeys,
+        user_inputs_mvs_directory,
+        user_inputs_pvcompare_directory):
+    """
+    
+    :return: 
+    """
+
+    for key in add_pv_timeseries.keys():
+        # check if PV timeseries exists
+        if not os.path.isfile(add_pv_timeseries[key]["filename"]):
+            logging.error("The PV time series you have specified does not exist. "
+                          "Please check your input or set 'add_pv_timeseries' to None "
+                          "in order to use the default pvcompare methods.")
+            return
+        pv_timeseries=pd.read_csv(add_pv_timeseries[key]["filename"], index_col=0, header=None)
+        # add "evaluated_period" to simulation_settings.csv
+        check_inputs.add_evaluated_period_to_simulation_settings(
+            time_series=pv_timeseries, user_inputs_mvs_directory=user_inputs_mvs_directory
+        )
+        area = area_potential.calculate_area_potential(
+            storeys,
+            user_inputs_pvcompare_directory,
+            surface_type=add_pv_timeseries[key]["surface_type"],
+        )
+        nominal_value = round((area / add_pv_timeseries[key]["module_size"]) * add_pv_timeseries[key]["module_peak_power"])
+
+        check_inputs.add_parameters_to_energy_production_file(
+            technology=key,
+            ts_filename=add_pv_timeseries[key]["filename"],
+            nominal_value=nominal_value,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
+        )

@@ -40,6 +40,7 @@ def apply_pvcompare(
     add_sam_si_module=None,
     add_electricity_demand=None,
     add_heat_demand=None,
+    add_pv_timeseries=None,
 ):
     """
     Runs the main functionalities of pvcompare.
@@ -96,25 +97,37 @@ def apply_pvcompare(
         overwritten with calculated time series of COP and existing fixed thermal losses
         absolute and relative will be overwritten with calculated time series of fixed thermal
         losses relative and absolute.
-    add_weather_data: str
+    add_weather_data: str or None
         Path to hourly csv weather time series with columns: [time, latitude, longitude
         ,ghi, wind_speed, temp_air, precipitable_water, dni, dhi]
         Default: None. If None, the ERA5 data is used instead.
-    add_sam_si_module: dict
-        with library (’CECMod’  or "SandiaMod") as key and module name as value.
+    add_sam_si_module: dict or None
+        Dictionary with library (’CECMod’  or "SandiaMod") as key and module name as value.
         E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}.
         Note that the SI module is only considered if there is the technology "SI" in
         'user_inputs/mvs_inputs/pvcompare_inputs/pv_setup.csv'
-    add_electricity_demand: str
+    add_electricity_demand: str or None
         Path to precalculated hourly electricity demand time series for one year (or the same period
         of a precalculated PV timeseries)
         Note that that the demand is only considered is a column "Electricity demand" is added to
         'user_inputs/mvs_inputs/csv_elements/energyConsumption.csv'
-    add_heat_demand: str
+    add_heat_demand: str or None
         Path to precalculated hourly heat demand time series for one year (or the same period
         of a precalculated PV timeseries)
         Note that that the demand is only considered is a column "Heat demand" is added to
         'user_inputs/mvs_inputs/csv_elements/energyConsumption.csv'
+    add_pv_timeseries: dict or None
+        Dictionary with {"PV1" : ["filename": >path_to_time_series< , "module_size": >module_size in m²<,
+        "module_peak_power": >peak power of the module in kWp<, "surface_type": >surface_type for PV installation<],
+        "PV2" : [...], ...}. If you want to consider more PV time series, more PV keys can be added.
+        The PV time series itself needs to be be an normalized hourly time series in kW/kWp
+        (normalized by the peak power of the module). The facades can be one of: [
+            "flat_roof", "gable_roof", "south_facade", "east_facade", "west_facade"].
+        Note that you need to add more specific PV parameters of your module (name, costs, lifetime etc.) in
+        'user_inputs/mvs_inputs/csv_elements/energyProduction.csv'. The columns in energyProduction.csv
+        should be named "PV"+ key (e.g. "PV SI1")
+         When providing your own time series, overwrite_pv_parameters should be
+        set to false. When add_pv_timeseries is used, the pv_setup.csv is disregarded.
 
     Returns
     -------
@@ -170,27 +183,35 @@ def apply_pvcompare(
     # add datetimeindex
     weather.index = pd.to_datetime(weather.index)
 
-    # check energyProduction.csv file for the correct pv technology
-    check_inputs.overwrite_mvs_energy_production_file(
-        pv_setup=pv_setup,
+    # check if add_pv_time_series is True
+    if add_pv_timeseries is not None:
+        pv_feedin.add_pv_timeseries(add_pv_timeseries=add_pv_timeseries, pv_setup=pv_setup, storeys= storeys,
         user_inputs_mvs_directory=user_inputs_mvs_directory,
-        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
-        collections_mvs_inputs_directory=collections_mvs_inputs_directory,
-        overwrite_pv_parameters=overwrite_pv_parameters,
-    )
-    pv_feedin.create_pv_components(
-        lat=latitude,
-        lon=longitude,
-        weather=weather,
-        storeys=storeys,
-        pv_setup=pv_setup,
-        plot=plot,
-        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
-        user_inputs_mvs_directory=user_inputs_mvs_directory,
-        year=year,
-        normalization=True,
-        add_sam_si_module=add_sam_si_module
-    )
+        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory)
+
+    else:
+        # check energyProduction.csv file for the correct pv technology
+        check_inputs.overwrite_mvs_energy_production_file(
+            pv_setup=pv_setup,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
+            user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+            collections_mvs_inputs_directory=collections_mvs_inputs_directory,
+            overwrite_pv_parameters=overwrite_pv_parameters,
+        )
+
+        pv_feedin.create_pv_components(
+            lat=latitude,
+            lon=longitude,
+            weather=weather,
+            storeys=storeys,
+            pv_setup=pv_setup,
+            plot=plot,
+            user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
+            year=year,
+            normalization=True,
+            add_sam_si_module=add_sam_si_module
+        )
 
     # add sector coupling in case heat pump or chiller exists in energyConversion.csv
     # note: chiller was not tested, yet.
@@ -314,6 +335,13 @@ if __name__ == "__main__":
         year=year,
         storeys=storeys,
         country=country,
+        add_pv_timeseries={"PV1": {"filename":"/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/user_inputs/mvs_inputs/time_series/cpv_90_0_2013_40.416775_-3.70379.csv",
+                           "module_size": 1, "module_peak_power":50, "surface_type" : "flat_roof"},
+                           "PV2": {
+                               "filename": "/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/user_inputs/mvs_inputs/time_series/cpv_90_0_2013_40.416775_-3.70379.csv",
+                               "module_size": 1, "module_peak_power": 50,
+                               "surface_type": "flat_roof"}
+                           }
     )
 
     # apply_mvs(
