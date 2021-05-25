@@ -36,6 +36,7 @@ def apply_pvcompare(
     overwrite_grid_parameters=True,
     overwrite_pv_parameters=True,
     overwrite_heat_parameters=True,
+    add_weather_file=None
 ):
     """
     Runs the main functionalities of pvcompare.
@@ -92,6 +93,10 @@ def apply_pvcompare(
         overwritten with calculated time series of COP and existing fixed thermal losses
         absolute and relative will be overwritten with calculated time series of fixed thermal
         losses relative and absolute.
+    add_weather_data: str
+        Path to hourly csv weather time series with columns: [time, latitude, longitude
+        ,ghi, wind_speed, temp_air, precipitable_water, dni, dhi]
+        Default: None. If None, the ERA5 data is used instead.
 
     Returns
     -------
@@ -130,16 +135,20 @@ def apply_pvcompare(
             user_inputs_mvs_directory=user_inputs_mvs_directory,
         )
 
-    # check if weather data already exists
-    weather_file = os.path.join(
-        static_inputs_directory, f"weatherdata_{latitude}_{longitude}_{year}.csv"
-    )
-    if os.path.isfile(weather_file):
-        weather = pd.read_csv(weather_file, index_col=0,)
+    if add_weather_file is not None:
+        weather = pd.read_csv(add_weather_file, index_col=0,)
     else:
-        # if era5 import works this line can be used
-        weather = era5.load_era5_weatherdata(lat=latitude, lon=longitude, year=year)
-        weather.to_csv(weather_file)
+        # check if weather data already exists
+        weather_file = os.path.join(
+            static_inputs_directory, f"weatherdata_{latitude}_{longitude}_{year}.csv"
+        )
+        if os.path.isfile(weather_file):
+            weather = pd.read_csv(weather_file, index_col=0,)
+        else:
+            # download ERA5 weather data
+            weather = era5.load_era5_weatherdata(lat=latitude, lon=longitude, year=year)
+            # save to csv
+            weather.to_csv(weather_file)
     # add datetimeindex
     weather.index = pd.to_datetime(weather.index)
 
@@ -276,7 +285,7 @@ if __name__ == "__main__":
     year = 2018
     storeys = 5
     country = "Spain"
-    scenario_name = "Scenario_B2"
+    scenario_name = "Scenario_TEST_weatherdata"
 
     apply_pvcompare(
         latitude=latitude,
@@ -284,6 +293,7 @@ if __name__ == "__main__":
         year=year,
         storeys=storeys,
         country=country,
+        add_weather_file="/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/static_inputs/own_weatherdata.csv"
     )
 
     # apply_mvs(
