@@ -52,6 +52,7 @@ def create_pv_components(
     user_inputs_mvs_directory=None,
     psi_type="Chen",
     normalization=True,
+    add_sam_si_module=None
 ):
     """
     Creates feed-in time series for all surface types in `pv_setup` or 'pv_setup.csv'.
@@ -165,6 +166,7 @@ def create_pv_components(
                     surface_azimuth=j,
                     surface_tilt=k,
                     normalization=normalization,
+                    add_sam_si_module=add_sam_si_module
                 )
             elif row["technology"] == "cpv":
                 time_series = create_cpv_time_series(
@@ -294,7 +296,7 @@ def get_optimal_pv_angle(lat):
     return round(lat - 15)
 
 
-def set_up_system(technology, surface_azimuth, surface_tilt):
+def set_up_system(technology, surface_azimuth, surface_tilt, add_sam_si_module=None):
 
     """
     Sets up pvlibPVSystems.
@@ -320,8 +322,14 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
 
     if technology == "si":
 
-        sandia_modules = pvlib.pvsystem.retrieve_sam("cecmod")
-        sandia_module = sandia_modules["Aleo_Solar_S59y280"]
+        if add_sam_si_module is None:
+            library = "cecmod"
+            module = "Aleo_Solar_S59y280"
+        else:
+            library, module = next(iter(add_sam_si_module.items()))
+        sandia_modules = pvlib.pvsystem.retrieve_sam(library)
+        sandia_module = sandia_modules[module]
+        # note that the inverter is not accounted for  in the calculation of PV timeseries
         cec_inverters = pvlib.pvsystem.retrieve_sam("cecinverter")
         cec_inverter = cec_inverters["ABB__MICRO_0_25_I_OUTD_US_208__208V_"]
         system = PVSystem(
@@ -366,7 +374,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
 
 
 def create_si_time_series(
-    lat, lon, weather, surface_azimuth, surface_tilt, normalization
+    lat, lon, weather, surface_azimuth, surface_tilt, normalization, add_sam_si_module
 ):
 
     """
@@ -399,7 +407,7 @@ def create_si_time_series(
     """
 
     system, module_parameters = set_up_system(
-        technology="si", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt
+        technology="si", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt, add_sam_si_module=add_sam_si_module
     )
     location = Location(latitude=lat, longitude=lon)
 

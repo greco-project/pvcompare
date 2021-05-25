@@ -36,7 +36,8 @@ def apply_pvcompare(
     overwrite_grid_parameters=True,
     overwrite_pv_parameters=True,
     overwrite_heat_parameters=True,
-    add_weather_file=None
+    add_weather_file=None,
+    add_sam_si_module={"cecmod":'Canadian_Solar_Inc__CS5P_220M'}
 ):
     """
     Runs the main functionalities of pvcompare.
@@ -97,6 +98,9 @@ def apply_pvcompare(
         Path to hourly csv weather time series with columns: [time, latitude, longitude
         ,ghi, wind_speed, temp_air, precipitable_water, dni, dhi]
         Default: None. If None, the ERA5 data is used instead.
+    add_sam_si_module: dict
+        with library (’CECMod’  or "SandiaMod") as key and module name
+        (e.g. 'Canadian_Solar_Inc__CS5P_220M') as value.
 
     Returns
     -------
@@ -171,6 +175,7 @@ def apply_pvcompare(
         user_inputs_mvs_directory=user_inputs_mvs_directory,
         year=year,
         normalization=True,
+        add_sam_si_module=add_sam_si_module
     )
 
     # add sector coupling in case heat pump or chiller exists in energyConversion.csv
@@ -293,7 +298,6 @@ if __name__ == "__main__":
         year=year,
         storeys=storeys,
         country=country,
-        add_weather_file="/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/static_inputs/own_weatherdata.csv"
     )
 
     # apply_mvs(
