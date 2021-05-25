@@ -37,7 +37,9 @@ def apply_pvcompare(
     overwrite_pv_parameters=True,
     overwrite_heat_parameters=True,
     add_weather_file=None,
-    add_sam_si_module={"cecmod":'Canadian_Solar_Inc__CS5P_220M'}
+    add_sam_si_module={"cecmod":'Canadian_Solar_Inc__CS5P_220M'},
+    add_electricity_demand="/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/user_inputs/mvs_inputs/time_series/electricity_load_2017_Spain_5_own.csv",
+    add_heat_demand=None,
 ):
     """
     Runs the main functionalities of pvcompare.
@@ -101,6 +103,12 @@ def apply_pvcompare(
     add_sam_si_module: dict
         with library (’CECMod’  or "SandiaMod") as key and module name
         (e.g. 'Canadian_Solar_Inc__CS5P_220M') as value.
+    add_electricity_demand: str
+        Path to precalculated hourly electricity demand time series for one year (or the same period
+        of a precalculated PV timeseries)
+    add_heat_demand: str
+        Path to precalculated hourly heat demand time series for one year (or the same period
+        of a precalculated PV timeseries)
 
     Returns
     -------
@@ -199,6 +207,8 @@ def apply_pvcompare(
         user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
         user_inputs_mvs_directory=user_inputs_mvs_directory,
         weather=weather,
+        add_electricity_demand= add_electricity_demand,
+        add_heat_demand=add_heat_demand
     )
 
     stratified_thermal_storage.add_strat_tes(
