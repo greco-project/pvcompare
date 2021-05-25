@@ -59,6 +59,15 @@ Here is a template for new release sections
 - Hot fix: remove build for python 3.6 from `main.yml` github actions workflow (#270)
 - Hot fix: Move `test_examples.py` to `examples` directory to make tests work in CI and add `__init__.py` to `examples` (#298)
 
+## [0.0.4] - 2021-05-20
+
+### Added
+- Added general information for `era5.py`
+
+### Changed
+- Changed docstrings for modules `era5.py`, `check_inputs.py`, and `stratified_thermal_storage.py`.
+
+
 ## [0.0.3] - 2021-05-20
 
 ### Added

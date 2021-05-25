@@ -87,8 +87,10 @@ def calculate_load_profiles(
         Directory of the user inputs. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
-    user_inputs_mvs_directory : str or None
-        Path to mvs input directory. If None: DEFAULT_USER_INPUTS_MVS_DIRECTORY. Default: None.
+    user_inputs_mvs_directory: str or None
+        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
 
     Returns
     ------

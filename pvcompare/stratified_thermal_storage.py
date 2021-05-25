@@ -37,7 +37,9 @@ def calc_strat_tes_param(
     4. fixed_losses_absolute
 
     from the storage's input data provided in `stratified_thermal_storage.csv`
-    and using functions implemented in oemof.thermal (github.com/oemof/oemof-thermal).
+    and using functions implemented in oemof.thermal (https://github.com/oemof/oemof-thermal).
+
+    `oemof.demandlib <https://github.com/oemof/demandlib>`_.
 
     Parameters
     ----------
@@ -52,9 +54,9 @@ def calc_strat_tes_param(
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
     user_inputs_mvs_directory: str or None
-        Path to input directory containing files that describe the energy
-        system and that are an input to MVS. Default:
-        DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`.
+        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
 
     Returns
     -------
@@ -208,9 +210,9 @@ def add_strat_tes(
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
     user_inputs_mvs_directory: str or None
-        Path to input directory containing files that describe the energy
-        system and that are an input to MVS. Default:
-        DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`.
+        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
     overwrite_tes_parameters: bool
         Default: True. If true, existing fixed thermal losses absolute and relative will be
         overwritten with calculated time series of fixed thermal losses relative and absolute.

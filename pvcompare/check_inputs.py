@@ -14,8 +14,8 @@ functions this module contains:
 - add_parameter_to_mvs_file
 - load_parameter_from_mvs_file
 - add_parameters_to_storage_xx_file
-
 """
+
 import pandas as pd
 import os
 import logging
@@ -27,28 +27,32 @@ except ImportError:
     plt = None
 
 
-def add_scenario_name_to_project_data(user_inputs_mvs_directory, scenario_name):
+def add_scenario_name_to_project_data(
+        user_inputs_mvs_directory,
+        scenario_name
+):
+    r"""
+    Matches user input `scenario_name` with `scenario_name` in 'project_data.csv'.
 
-    """
-    Matches user input 'scenario_name' with 'scenario_name' in 'project_data.csv'.
-
-    If user input 'scenario_name' is different to the parameter in
+    If user input `scenario_name` is different to the parameter in
     'project_data.csv', a warning is returned and 'project_data.csv' is
     overwritten.
 
     Parameters
     ----------
-    user_inputs_mvs_directory: str
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+    user_inputs_mvs_directory: str or None
+        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
     scenario_name: str
         Name of the Scenario. The name should follow the scheme:
         "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
 
     Returns
     -------
-
+    None
     """
+
     add_parameter_to_mvs_file(
         user_inputs_mvs_directory=user_inputs_mvs_directory,
         mvs_filename="project_data.csv",
@@ -68,7 +72,7 @@ def add_location_and_year_to_project_data(
     year,
 ):
 
-    """
+    r"""
     Matches user input for year, latitude, longitude and yountry with mvs_inputs.
 
     If location (latitude, longitude, country) and year are entered as user
@@ -80,8 +84,9 @@ def add_location_and_year_to_project_data(
     Parameters
     ----------
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
     static_inputs_directory: str or None
         Directory of the pvcompare static inputs. If None,
         `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
@@ -235,8 +240,9 @@ def add_local_grid_parameters(static_inputs_directory, user_inputs_mvs_directory
     Parameters
     -----------
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
     static_inputs_directory: str or None
         Directory of the pvcompare static inputs. If None,
         `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
@@ -337,8 +343,9 @@ def overwrite_mvs_energy_production_file(
         Dictionary that contains the surface types with technology and
         orientation
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
 
     Returns
     ---------
@@ -436,9 +443,9 @@ def add_parameters_to_energy_production_file(
     nominal_value: float
         maximum value of installable capacity
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
-
+        Default: None.
     Returns
     -------
     None
@@ -478,8 +485,9 @@ def add_file_name_to_energy_consumption_file(
     ts_filename: str
         file name of the demand time series
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
 
     Returns
     -------
@@ -538,8 +546,9 @@ def add_parameter_to_mvs_file(
     Parameters
     ----------
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
     mvs_filename: str
         name of the mvs-csv file
     mvs_row: str
@@ -588,8 +597,9 @@ def load_parameter_from_mvs_file(
     Parameters
     ----------
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
     mvs_filename: str
         name of the mvs-csv file
     mvs_row: str

@@ -1,3 +1,8 @@
+"""
+This module loads ERA5 weather data and preprocesses the data into the correct
+format for the pvlib's ModelChain.
+"""
+
 import numpy as np
 import xarray as xr
 import pandas as pd
@@ -7,31 +12,42 @@ import pvlib
 from feedinlib.cds_request_tools import get_cds_data_from_datespan_and_position
 
 
-def load_era5_weatherdata(lat, lon, year):
-    """
-    Loads era5 weather data and converts it into format required by pvlib.
+def load_era5_weatherdata(
+        lat,
+        lon,
+        year
+):
+    r"""
+    Loads ERA5 weather data.
+
+    Loads ERA5 weather data and converts it into format required by
+    `pvlib <https://pvlib-python.readthedocs.io/en/stable/>`_.
+    For these calculations the Climate Data Store (CDS) is retrieved
+    with the :py:func:`~.get_era5_data_from_datespan_and_position`
+    functionality.
 
     Parameters
     ----------
     lat: float or int
-        latitude in the range [-90, 90] relative to the
+        Latitude in the range [-90, 90] relative to the
         equator, north corresponds to positive latitude.
     lon: float or int
-        longitude in the range [-180, 180] relative to
+        Longitude in the range [-180, 180] relative to
         Greenwich Meridian, east relative to the meridian corresponds to
         positive longitude.
     year: str
-        year
+        Weather data of ERA5 for a specific year.
 
     Returns
     ---------
-    :pandas:`pandas.DataFrame<frame>`
+    weather_df: :pandas:`pandas.DataFrame<frame>`
+        Weather data Dataframe formatted for the pvlib.
     """
 
     start_date = str(year) + "-01-01"
     end_date = str(year) + "-12-31"
 
-    logging.info("loading era5 weatherdata for the year %s" % year)
+    logging.info("loading ERA5 weather data for the year %s" % year)
 
     weather_xarray = get_era5_data_from_datespan_and_position(
         start_date=start_date,
@@ -44,7 +60,7 @@ def load_era5_weatherdata(lat, lon, year):
         chunks=None,
         cds_client=None,
     )
-    logging.info("era5 weatherdata successfully loaded.")
+    logging.info("ERA5 weatherdata successfully loaded.")
     weather_df = format_pvcompare(weather_xarray)
 
     spa = pvlib.solarposition.spa_python(
@@ -74,39 +90,43 @@ def get_era5_data_from_datespan_and_position(
     chunks=None,
     cds_client=None,
 ):
-    """
-    Send request for era5 data to the Climate Data Store (CDS)
+    r"""
+    Send request for ERA5 data to the Climate Data Store (CDS).
 
     Parameters
     ----------
-    variable: (str or list of str) ERA5 variables to download. If you
+    variable: str or list of str
+        ERA5 variables to download. If you
         want to download all variables necessary to use the pvlib, set
         `variable` to 'pvlib'. If you want to download all variables necessary
-        to use the windpowerlib, set `variable` to 'windpowerlib'. To download
-        both variable sets for pvlib and windpowerlib, set `variable` to
-        'feedinlib'.
+        to use the windpowerlib, set `variable` to 'windpowerlib'.
+        To download both variable sets for pvlib and windpowerlib,
+        set `variable` to 'feedinlib'.
+        Default: 'pvcompare'.
     start_date: str
-        start date of the date span in YYYY-MM-DD format
+        Start date of the date span in YYYY-MM-DD format
     end_date: str
-        end date of the date span in YYYY-MM-DD format
-    latitude: number
-        latitude in the range [-90, 90] relative to the
+        End date of the date span in YYYY-MM-DD format
+    latitude: float
+        Latitude in the range [-90, 90] relative to the
         equator, north corresponds to positive latitude.
-    longitude: number
-        longitude in the range [-180, 180] relative to
+    longitude: float
+        Longitude in the range [-180, 180] relative to
         Greenwich Meridian, east relative to the meridian corresponds to
         positive longitude.
     grid: list of float
-        provide the latitude and longitude grid resolutions in deg. It needs to
-         be an integer fraction of 90 deg.
+        Provide the latitude and longitude grid resolutions in deg. It needs to
+        be an integer fraction of 90 deg.
     target_file: str
-        name of the file in which to store downloaded data locally
+        Name of the file in which to store downloaded data locally
     chunks: dict
-    cds_client: handle to CDS client (if none is provided, then it is created)
+    cds_client: None
+        Handle to CDS client (if none is provided, then it is created)
 
     Returns
     ---------
-    CDS data in an xarray format
+    get_cds_data_from_datespan_and_position: xarray
+        CDS data in an xarray format.
     """
 
     if variable == "pvcompare":
@@ -118,15 +138,14 @@ def get_era5_data_from_datespan_and_position(
 
 
 def format_pvcompare(ds):
-    """
-    Format dataset to dataframe as required by the pvlib's ModelChain.
+    r"""
+    Format weather data to dataframe as required by the pvlib's ModelChain.
 
-    The pvlib's ModelChain requires a weather DataFrame with time series for
-    - wind speed `wind_speed` in m/s,
-    - temperature `temp_air` in C,
-    - direct irradiation 'dni' in W/m² (calculated later),
-    - global horizontal irradiation 'ghi' in W/m²,
-    - diffuse horizontal irradiation 'dhi' in W/m²
+    The `pvlib's <https://pvlib-python.readthedocs.io/en/stable/>`_.
+    ModelChain requires a weather DataFrame with time series for
+    wind speed `wind_speed` in m/s, temperature `temp_air` in C,
+    direct irradiation 'dni' in W/m² (calculated later),
+    global horizontal irradiation 'ghi' in W/m².
 
     Parameters
     ----------
@@ -135,7 +154,7 @@ def format_pvcompare(ds):
 
     Returns
     --------
-    :pandas:`pandas.DataFrame<frame>`
+    df: :pandas:`pandas.DataFrame<frame>`
         Dataframe formatted for the pvlib.
     """
 
@@ -193,39 +212,39 @@ def format_pvcompare(ds):
     return df
 
 
-def weather_df_from_era5(era5_netcdf_filename, lib, start=None, end=None):
-    """
+def weather_df_from_era5(
+        era5_netcdf_filename,
+        lib,
+        start=None,
+        end=None
+):
+    r"""
+    Converts ERA5 weather data to :pandas:`pandas.DataFrame<frame>`.
+
     Gets ERA5 weather data from netcdf file and converts it to a pandas
-    dataframe as required by the spcified lib.
+    dataframe as required by the specified lib.
+    If the lib is 'pvcompare', weather data is formatted with the
+    :py:func:`~.format_pvcompare` functionality.
 
     Parameters
     -----------
     era5_netcdf_filename : str
         Filename including path of netcdf file containing ERA5 weather data
         for specified time span and area.
+    lib: str
+        Choose between 'pvcompare' or 'windpowerlib'.
     start : None or anything `pandas.to_datetime` can convert to a timestamp
         Get weather data starting from this date. Defaults to None in which
         case start is set to first time step in the dataset.
     end : None or anything `pandas.to_datetime` can convert to a timestamp
-        Get weather data upto this date.
+        Get weather data up to this date.
         Defaults to None in which case the end date is set to the last time
         step in the dataset.
-    area : shapely compatible geometry object (i.e. Polygon,  Multipolygon, etc...) or list(float) or list(tuple)
-        Area specifies for which geographic area to return weather data. Area
-        can either be a single location or an area.
-        In case you want data for a single location provide a list in the
-        form [lon, lat].
-        If you want data for an area you can provide a shape of this area or
-        specify a rectangular area giving a list of the
-        form [(lon west, lon east), (lat south, lat north)].
 
     Returns
     -------
-    :pandas:`pandas.DataFrame<frame>`
-        Dataframe with ERA5 weather data in format required by the lib. In
-        case a single location is provided in parameter `area` index of the
-        dataframe is a datetime index. Otherwise the index is a multiindex
-        with time, latitude and longitude levels.
+    df: :pandas:`pandas.DataFrame<frame>`
+        Dataframe with ERA5 weather data in format required by the lib.
     """
 
     ds = xr.open_dataset(era5_netcdf_filename)
@@ -235,7 +254,7 @@ def weather_df_from_era5(era5_netcdf_filename, lib, start=None, end=None):
     else:
         raise ValueError(
             "Unknown value for `lib`. "
-            "It must be either 'pvcopare' or 'windpowerlib'."
+            "It must be either 'pvcompare' or 'windpowerlib'."
         )
 
     # drop latitude and longitude from index in case a single location
