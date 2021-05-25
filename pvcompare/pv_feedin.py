@@ -252,6 +252,7 @@ def create_pv_components(
             surface_azimuth=j,
             surface_tilt=k,
             psi_type=psi_type,
+            add_sam_si_module=add_sam_si_module
         )
         # save the file name of the time series and the nominal value to
         # mvs_inputs/elements/csv/energyProduction.csv
@@ -379,7 +380,7 @@ def set_up_system(technology, surface_azimuth, surface_tilt, add_sam_si_module=N
 
 
 def create_si_time_series(
-    lat, lon, weather, surface_azimuth, surface_tilt, normalization, add_sam_si_module
+    lat, lon, weather, surface_azimuth, surface_tilt, normalization, add_sam_si_module=None
 ):
 
     """
@@ -605,7 +606,7 @@ def create_psi_time_series(
         return (output / peak).clip(0)
 
 
-def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type):
+def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type, add_sam_si_module):
     """
     calculates the maximum installed capacity for each pv module.
 
@@ -636,6 +637,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
             technology=technology,
             surface_azimuth=surface_azimuth,
             surface_tilt=surface_tilt,
+            add_sam_si_module=add_sam_si_module
         )
         peak = get_peak(
             technology, module_parameters_1=module_parameters, module_parameters_2=None,
@@ -750,7 +752,9 @@ def add_pv_timeseries(
         If None, `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used
         as  user_inputs_pvcompare_directory.
         Default: None.
-    :return:
+
+    Return
+    -------
         None
     """
 
