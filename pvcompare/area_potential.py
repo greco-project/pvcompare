@@ -20,7 +20,7 @@ def calculate_area_potential(storeys, user_inputs_pvcompare_directory, surface_t
     Calculates the area potential.
 
     Calculates the area potential of the rooftop, south and east/west
-    facades for a given population.
+    facade  depending on `surface_type`.
 
     Due to shading, the area potential for a flat roof is estimated to be 40%
     of the whole usable roof area.
