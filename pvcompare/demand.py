@@ -55,6 +55,8 @@ def calculate_load_profiles(
     static_inputs_directory=None,
     user_inputs_pvcompare_directory=None,
     user_inputs_mvs_directory=None,
+    add_electricity_demand=None,
+    add_heat_demand= None
 ):
     """
     Calculates electricity and heat load profiles and saves them to csv.
@@ -81,6 +83,12 @@ def calculate_load_profiles(
         Default: None.
     user_inputs_mvs_directory : str or None
         Path to mvs input directory. If None: DEFAULT_USER_INPUTS_MVS_DIRECTORY. Default: None.
+    add_electricity_demand: str
+        Path to precalculated hourly electricity demand time series for one year (or the same period
+        of a precalculated PV timeseries)
+    add_heat_demand: str
+        Path to precalculated hourly heat demand time series for one year (or the same period
+        of a precalculated PV timeseries)
 
     Returns
     ------
@@ -105,28 +113,62 @@ def calculate_load_profiles(
     for column in energyConsumption:
         if column != "unit":
             if energyConsumption.at["energyVector", column] == "Heat":
-                calculate_heat_demand(
-                    country=country,
-                    lat=lat,
-                    lon=lon,
-                    storeys=storeys,
-                    year=year,
-                    weather=weather,
-                    static_inputs_directory=static_inputs_directory,
-                    user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
-                    user_inputs_mvs_directory=user_inputs_mvs_directory,
-                    column=column,
-                )
+
+                if add_heat_demand is not None:
+                    #check if file exists
+                    if os.path.isfile(add_heat_demand):
+                        # save the file name of the time series
+                        # mvs_inputs/elements/csv/energyProduction.csv
+                        check_inputs.add_file_name_to_energy_consumption_file(
+                            column=column,
+                            ts_filename=add_heat_demand,
+                            user_inputs_mvs_directory=user_inputs_mvs_directory,
+                        )
+                    else:
+                        logging.warning("The heat demand time series"
+                                        " you have entered does not exist. It is"
+                                        " thus calculated according to the default"
+                                        " method of pvcompare.")
+                else:
+                    calculate_heat_demand(
+                        country=country,
+                        lat=lat,
+                        lon=lon,
+                        storeys=storeys,
+                        year=year,
+                        weather=weather,
+                        static_inputs_directory=static_inputs_directory,
+                        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+                        user_inputs_mvs_directory=user_inputs_mvs_directory,
+                        column=column,
+                    )
             elif energyConsumption.at["energyVector", column] == "Electricity":
-                calculate_power_demand(
-                    country=country,
-                    storeys=storeys,
-                    year=year,
-                    static_inputs_directory=static_inputs_directory,
-                    user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
-                    user_inputs_mvs_directory=user_inputs_mvs_directory,
-                    column=column,
-                )
+
+                if add_electricity_demand is not None:
+
+                    if os.path.isfile(add_electricity_demand):
+                        # save the file name of the time series
+                        # mvs_inputs/elements/csv/energyProduction.csv
+                        check_inputs.add_file_name_to_energy_consumption_file(
+                            column=column,
+                            ts_filename=add_electricity_demand,
+                            user_inputs_mvs_directory=user_inputs_mvs_directory,
+                        )
+                    else:
+                        logging.warning("The electricity demand time series"
+                                        " you have entered does not exist. It is"
+                                        " thus calculated according to the default"
+                                        " method of pvcompare.")
+                else:
+                    calculate_power_demand(
+                        country=country,
+                        storeys=storeys,
+                        year=year,
+                        static_inputs_directory=static_inputs_directory,
+                        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+                        user_inputs_mvs_directory=user_inputs_mvs_directory,
+                        column=column,
+                    )
             else:
                 logging.warning(
                     "the given energyVector in energyConsumption.csv "
@@ -300,7 +342,7 @@ def calculate_power_demand(
     filename = os.path.join(timeseries_directory, el_demand_csv)
     shifted_elec_demand.to_csv(filename, index=False)
 
-    # save the file name of the time series and the nominal value to
+    # save the file name of the time series
     # mvs_inputs/elements/csv/energyProduction.csv
     check_inputs.add_file_name_to_energy_consumption_file(
         column=column,
@@ -502,7 +544,7 @@ def calculate_heat_demand(
     filename = os.path.join(timeseries_directory, h_demand_csv)
 
     shifted_heat_demand.to_csv(filename, index=False)
-    # save the file name of the time series and the nominal value to
+    # save the file name of the time series
     # mvs_inputs/elements/csv/energyProduction.csv
     check_inputs.add_file_name_to_energy_consumption_file(
         column=column,
