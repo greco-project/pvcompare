@@ -97,7 +97,9 @@ def create_pv_components(
     normalization: bool
         If True: Time series is normalized. Otherwise absolute time series is
         returned. Default: True.
-
+    add_sam_si_module: dict
+        with library (’CECMod’  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}
 
     Returns
     -------
@@ -313,6 +315,9 @@ def set_up_system(technology, surface_azimuth, surface_tilt, add_sam_si_module=N
         surface azimuth of the module
     surface_tilt: float
         surface tilt of the module
+    add_sam_si_module: dict
+        with library (’CECMod’  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}
 
     Returns
     -------
@@ -400,6 +405,9 @@ def create_si_time_series(
     normalization: bool
         If True: Time series is normalized. Otherwise absolute time series is
         returned.
+    add_sam_si_module: dict
+        with library (’CECMod’  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}
 
     Returns
     -------

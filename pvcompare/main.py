@@ -37,8 +37,8 @@ def apply_pvcompare(
     overwrite_pv_parameters=True,
     overwrite_heat_parameters=True,
     add_weather_file=None,
-    add_sam_si_module={"cecmod":'Canadian_Solar_Inc__CS5P_220M'},
-    add_electricity_demand="/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/user_inputs/mvs_inputs/time_series/electricity_load_2017_Spain_5_own.csv",
+    add_sam_si_module=None,
+    add_electricity_demand=None,
     add_heat_demand=None,
 ):
     """
@@ -101,8 +101,8 @@ def apply_pvcompare(
         ,ghi, wind_speed, temp_air, precipitable_water, dni, dhi]
         Default: None. If None, the ERA5 data is used instead.
     add_sam_si_module: dict
-        with library (’CECMod’  or "SandiaMod") as key and module name
-        (e.g. 'Canadian_Solar_Inc__CS5P_220M') as value.
+        with library (’CECMod’  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}
     add_electricity_demand: str
         Path to precalculated hourly electricity demand time series for one year (or the same period
         of a precalculated PV timeseries)
