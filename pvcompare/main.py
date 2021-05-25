@@ -102,13 +102,19 @@ def apply_pvcompare(
         Default: None. If None, the ERA5 data is used instead.
     add_sam_si_module: dict
         with library (’CECMod’  or "SandiaMod") as key and module name as value.
-        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}
+        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}.
+        Note that the SI module is only considered if there is the technology "SI" in
+        'user_inputs/mvs_inputs/pvcompare_inputs/pv_setup.csv'
     add_electricity_demand: str
         Path to precalculated hourly electricity demand time series for one year (or the same period
         of a precalculated PV timeseries)
+        Note that that the demand is only considered is a column "Electricity demand" is added to
+        'user_inputs/mvs_inputs/csv_elements/energyConsumption.csv'
     add_heat_demand: str
         Path to precalculated hourly heat demand time series for one year (or the same period
         of a precalculated PV timeseries)
+        Note that that the demand is only considered is a column "Heat demand" is added to
+        'user_inputs/mvs_inputs/csv_elements/energyConsumption.csv'
 
     Returns
     -------
