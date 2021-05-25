@@ -187,7 +187,6 @@ def apply_pvcompare(
     if add_pv_timeseries is not None:
         pv_feedin.add_pv_timeseries(
             add_pv_timeseries=add_pv_timeseries,
-            pv_setup=pv_setup,
             storeys=storeys,
             user_inputs_mvs_directory=user_inputs_mvs_directory,
             user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
@@ -339,24 +338,25 @@ if __name__ == "__main__":
         year=year,
         storeys=storeys,
         country=country,
-        add_pv_timeseries={
-            "PV1": {
-                "filename": "/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/user_inputs/mvs_inputs/time_series/cpv_90_0_2013_40.416775_-3.70379.csv",
-                "module_size": 1,
-                "module_peak_power": 50,
-                "surface_type": "flat_roof",
-            },
-            "PV2": {
-                "filename": "/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/user_inputs/mvs_inputs/time_series/cpv_90_0_2013_40.416775_-3.70379.csv",
-                "module_size": 1,
-                "module_peak_power": 50,
-                "surface_type": "flat_roof",
-            },
-        },
+        # add_pv_timeseries={
+        #     "PV1": {
+        #         "filename": "/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/user_inputs/mvs_inputs/time_series/cpv_90_0_2013_40.416775_-3.70379.csv",
+        #         "module_size": 1,
+        #         "module_peak_power": 50,
+        #         "surface_type": "flat_roof",
+        #     },
+        #     "PV2": {
+        #         "filename": "/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/user_inputs/mvs_inputs/time_series/cpv_90_0_2013_40.416775_-3.70379.csv",
+        #         "module_size": 1,
+        #         "module_peak_power": 50,
+        #         "surface_type": "flat_roof",
+        #     },
+        # },
+        add_sam_si_module={"cecmod": "Advance_Solar_Hydro_Wind_Power_API_180"},
     )
-
-    # apply_mvs(
-    #     scenario_name=scenario_name,
-    #     outputs_directory=None,
-    #     user_inputs_mvs_directory=None,
-    # )
+#    'Canadian_Solar_CS5P_220M___2009_']
+# apply_mvs(
+#     scenario_name=scenario_name,
+#     outputs_directory=None,
+#     user_inputs_mvs_directory=None,
+# )
