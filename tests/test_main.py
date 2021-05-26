@@ -39,7 +39,9 @@ class TestMain:
             os.path.dirname(__file__), "data_test_main/user_inputs/pvcompare_inputs/"
         )
         self.static_inputs_directory = constants.DEFAULT_STATIC_INPUTS_DIRECTORY
-        self.test_static_inputs_directory = "data/static_inputs/"
+        self.test_static_inputs_directory = os.path.join(
+            os.path.dirname(__file__), "data/static_inputs/"
+        )
         self.user_inputs_mvs_directory = os.path.join(
             os.path.dirname(__file__), "data_test_main/user_inputs/mvs_inputs/"
         )

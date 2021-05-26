@@ -316,9 +316,9 @@ def set_up_system(technology, surface_azimuth, surface_tilt, add_sam_si_module=N
         surface azimuth of the module
     surface_tilt: float
         surface tilt of the module
-    add_sam_si_module: dict
-        with library (’CECMod’  or "SandiaMod") as key and module name as value.
-        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}
+        Dictionary with library (’CECMod’  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}.
+        Note that the SI module is only considered if there is the technology "SI" in
 
     Returns
     -------
@@ -413,8 +413,9 @@ def create_si_time_series(
         If True: Time series is normalized. Otherwise absolute time series is
         returned.
     add_sam_si_module: dict
-        with library (’CECMod’  or "SandiaMod") as key and module name as value.
-        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}
+        Dictionary with library (’CECMod’  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}.
+        Note that the SI module is only considered if there is the technology "SI" in
 
     Returns
     -------
@@ -613,7 +614,7 @@ def create_psi_time_series(
 
 
 def nominal_values_pv(
-    technology, area, surface_azimuth, surface_tilt, psi_type, add_sam_si_module
+    technology, area, surface_azimuth, surface_tilt, psi_type, add_sam_si_module=None
 ):
     """
     calculates the maximum installed capacity for each pv module.
@@ -633,6 +634,10 @@ def nominal_values_pv(
         surface azimuth of the modules
     surface_tilt: float
         surface tilt of the modules
+    add_sam_si_module: dict or None
+        Dictionary with library (’CECMod’  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}.
+        Note that the SI module is only considered if there is the technology "SI" in
 
     Returns
     -------
