@@ -1,8 +1,8 @@
 
 .. _scenarios-results:
 
-GRECO Results
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Selected results of the GRECO project
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 Results of PV modeling
@@ -15,7 +15,7 @@ The generated hourly time series over one year are normalized by the peak power
 of each module. Figure `Normalized time series`_ shows an exemplary time series for all
 three technologies in the year 2014 in Madrid.
 
-.. _PV time series:
+.. _Normalized time series:
 
 .. figure:: ./images/pv_timeseries_madrid_2014.png
     :width: 90%
