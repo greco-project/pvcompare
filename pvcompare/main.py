@@ -109,7 +109,7 @@ def apply_pvcompare(
     add_electricity_demand: str or None
         Path to precalculated hourly electricity demand time series for one year (or the same period
         of a precalculated PV timeseries)
-        Note that that the demand is only considered is a column "Electricity demand" is added to
+        Note that that the demand is only considered if a column "Electricity demand" is added to
         'user_inputs/mvs_inputs/csv_elements/energyConsumption.csv'
     add_heat_demand: str or None
         Path to precalculated hourly heat demand time series for one year (or the same period
