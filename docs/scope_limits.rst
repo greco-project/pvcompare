@@ -5,7 +5,7 @@ Scope and limitations
 
 The *pvcompare* model evolved during the H2020 project `GRECO <https://www.greco-project.eu/>`_ with the purpose of
 analysing the integration of three innovative PV techologies, that are developed within the project, into energy systems
-in comparison to the state-of-the-art technologies. These three technologies are
+in comparison to the state of the art technologies. These three technologies are
 
 - concentrator-PV (CPV),
 - a multi-junction of perovskite and silicon (PSI) and
@@ -17,7 +17,7 @@ Concerning the components of the energy system, you can use any of the component
 There you also find information on packages for calculating feed-in time series of other fluctuating renewable energies than PV.
 Checkout :ref:`define_params` for information on how to include more components into the simulated energy system.
 
-*pvcompare* further focusses on residential areas in cities (also see :ref:`local_energy_system`).
+*pvcompare* further focuses on residential areas in cities (also see :ref:`local_energy_system`).
 Therefore, assumptions for demand and buildings (available area for PV on façades) are based on this use case.
 However, users can provide their own demand time series, adjust the building assumptions (see :ref:`building_parameters`) or only allow roof-top PV (see :ref:`pv_setup`) in their simulations.
 This way other use cases like detached houses (single-family houses) or industrial areas can be analyzed, as well.

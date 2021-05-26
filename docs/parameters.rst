@@ -8,7 +8,7 @@ Within the ``pvcompare/pvcompare/data/`` directory, two separate categories of i
 1. *MVS* parameters (found in the CSVs within the ``data/user_inputs/mvs_inputs/csv_elements/`` directory)
 2. *pvcompare*-specific parameters (found in the CSVs within the ``data/user_inputs/pvcompare_inputs/`` directory)
 
-As *pvcompare* makes use of the `Multi-vector Simulation (MVS) <https://github.com/rl-institut/mvs_eland>`_ tool, the definitions of all the
+As *pvcompare* imports the `Multi-vector Simulation (MVS) <https://github.com/rl-institut/mvs_eland>`_ tool, the definitions of all the
 relevant parameters of *MVS* can be found in the `documentation of MVS <https://mvs-eland.readthedocs.io/en/latest/MVS_parameters.html>`_.
 The default values and it's sources are described below.
 
@@ -17,7 +17,7 @@ The values used by default in *pvcompare* for the above parameters in each CSV, 
 
 1. MVS Parameters
 =================
-Some parameters can be calculated automatically by *pvcompare* and do not need to be filled it by hand. These parameters are marked with * *auto_calc*.
+Some parameters can be calculated automatically by *pvcompare* and do not need to be filled in by hand. These parameters are marked with * *auto_calc*.
 
 
 project_data.csv

@@ -1,22 +1,21 @@
 
 .. _scenarios-results:
 
-GRECO Results
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Selected results of the GRECO project
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here we will publish selected scenarios that we simulated for the H2020 Project GRECO and their results, which will also serve as examples.
 
 Results of PV modeling
 -----------------------
-In :ref:`pv-feedin` the models used to generate feed-in time series for SI, CPV and
-PSI technologies are presented. This section will show some results of the
-calculated time series and discuss model assumptions.
+In section :ref:`pv-feedin` the models used to generate feed-in time series for SI, CPV and
+PSI technologies are presented. This section shows selected results of the
+calculated time series and discusses model assumptions.
 
 The generated hourly time series over one year are normalized by the peak power
-of each module. Figure `PV time series`_ shows an exemplary time series for all
-three technologies in year 2014 in Madrid.
+of each module. Figure `Normalized time series`_ shows an exemplary time series for all
+three technologies in the year 2014 in Madrid.
 
-.. _PV time series:
+.. _Normalized time series:
 
 .. figure:: ./images/pv_timeseries_madrid_2014.png
     :width: 90%
@@ -47,15 +46,15 @@ The size and efficiency of the three modules used age given in `table1`_.
 
 .. _table1:
 
-+------------+-----------------+---------------+
++------------+------------------+---------------+
 | Technology | Module Size (m²) | Efficiency (%)|
-+============+=================+===============+
-| SI         | 1.6434          | 17            |
-+------------+-----------------+---------------+
-| CPV        | 0.1             | 32            |
-+------------+-----------------+---------------+
-| PSI        | 1.219           | 24.5          |
-+------------+-----------------+---------------+
++============+==================+===============+
+| SI         | 1.6434           | 17            |
++------------+------------------+---------------+
+| CPV        | 0.1              | 32            |
++------------+------------------+---------------+
+| PSI        | 1.219            | 24.5          |
++------------+------------------+---------------+
 
 Figure `energy yield`_ shows the yearly energy yield per kWp on the left-hand side and the
 yearly energy yield per m² on the right-hand side. The plot shows that the production
