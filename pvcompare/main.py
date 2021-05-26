@@ -121,7 +121,7 @@ def apply_pvcompare(
         "module_peak_power": >peak power of the module in kWp<, "surface_type": >surface_type for PV installation<],
         "PV2" : [...], ...}. If you want to consider more PV time series, more PV keys can be added.
         The PV time series itself needs to be be an normalized hourly time series in kW/kWp
-        (normalized by the peak power of the module). The facades can be one of: [
+        (normalized by the peak power of the module). The surface_types can be one of: [
             "flat_roof", "gable_roof", "south_facade", "east_facade", "west_facade"].
         Note that you need to add more specific PV parameters of your module (name, costs, lifetime etc.) in
         'user_inputs/mvs_inputs/csv_elements/energyProduction.csv'. The columns in energyProduction.csv
