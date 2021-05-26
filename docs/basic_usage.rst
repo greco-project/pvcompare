@@ -77,11 +77,62 @@ install the *cdsapi* package. `This page <https://cds.climate.copernicus.eu/api-
 
 Two example weather years for Berlin, Germany, 2017 and Madrid, Spain, 2017 are already added to ``data/static_inputs``.
 
-**Provide your own weather data**
+Provide your own input time series
+==================================
 
-As an alternative `oemof feedinlib <https://feedinlib.readthedocs.io/en/releases-0.1.0/load_era5_weather_data.html>`_ provides a jupyter notebook with instructions on how to download data for a single coordinate or a region.
+*pvcompare* provides functionalities to automatically download weather data ad well as calculate demand and pv time series.
+If you want to use your own input time series, you
+can do so by defining them in the :py:func:`~.main.apply_pvcompare` function. The followning section gives you an overwiew
+on how to provide your time series.
 
+**Weather data**
 
+In oder to provide your own weather data, you need to insert the path
+to your weather file to the parameter ``add_weather_data`` in the :py:func:`~.main.apply_pvcompare` function. The file
+should contain an hourly time series in *csv* format with the columns: [time, latitude, longitude
+,ghi, dni, dhi, wind_speed, temp_air, precipitable_water].
+
+You can also download ERA5 data yourself. `oemof feedinlib <https://feedinlib.readthedocs.io/en/releases-0.1.0/load_era5_weather_data.html>`_ provides a jupyter notebook with instructions on how to download data for a single coordinate or a region.
+
+**Demand time series**
+
+In order to add your own heat and/or electricity time series add the path to the file to ``add_electricity_demand`` or ``add_heat_demand``
+in :py:func:`~.main.apply_pvcompare`. Note that the respective demand is only considered, if a column "Electricity demand" or "Heat demand"
+exists in ``data/user_inputs/mvs_inputs/csv_elements/energyConsumption.csv``.
+The demand time series should be given as an hourly time series in kW.
+
+**PV time series**
+
+You can add your own PV time series by defining ``add_pv_timeseries`` in :py:func:`~.main.apply_pvcompare`.
+Instead of just providing the path to the file, you need to define a dictionary with additional information
+on the PV module you are considering, in order to allow the calculation of the area potential for your module.
+The dictionary should be given as follows:
+    {"PV1" : ["filename": >path_to_time_series< , "module_size": >module_size in m²<,
+    "module_peak_power": >peak power of the module in kWp<, "surface_type": >surface_type for PV installation<],
+    "PV2" : [...], ...}
+You can add more than one module time series by defining more PV-keys.
+The PV time series itself needs to be be an normalized hourly time series in kW/kWp
+(normalized by the peak power of the module). The surface_types can be one of: [
+"flat_roof", "gable_roof", "south_facade", "east_facade", "west_facade"].
+
+Note that you need to add more specific PV parameters of your module (name, costs, lifetime etc.) in
+``user_inputs/mvs_inputs/csv_elements/energyProduction.csv``. The columns in ``energyProduction.csv``
+should be named "PV"+ key (e.g. "PV SI1") if your key is "SI1".
+
+When providing your own time series, ``overwrite_pv_parameters`` in :py:func:`~.main.apply_pvcompare` should be
+set to false. When ``add_pv_timeseries`` is used, the ``pv_setup.csv`` is disregarded.
+
+**Add a different SI module**
+
+By default, the module "Aleo_Solar_S59y280" is loaded from `cec module <https://github.com/NREL/SAM/tree/develop/deploy/libraries>`_ database.
+But you can add another module from sandia or cec `libraries <https://github.com/NREL/SAM/tree/develop/deploy/libraries>`_.
+
+To do so, you need to define the parameter ``add_sam_si_module`` in :py:func:`~.main.apply_pvcompare`.
+You should define a dictionary with the library ("CECMod"  or "SandiaMod") as key and module name as value.
+E.g. {"cecmod":"Canadian_Solar_Inc__CS5P_220M"}.
+
+Note that the SI module is only considered if a module with the technology "SI" is provided in
+``user_inputs/mvs_inputs/pvcompare_inputs/pv_setup.csv``
 
 
 Add a sensitivy to your simulations
