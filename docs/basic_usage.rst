@@ -12,6 +12,15 @@ Run a simulation
 You can easily run a simulation by executing one of the examples in `examples/ <https://github.com/greco-project/pvcompare/tree/master/examples>`_.
 There are three examples, one that accounts only for the electricity sector, one for sector coupling using heat pumps and one example covering heat demand with a gas plant as a reference scenario for the one with heat pumps.
 
+Here's an example energy system graph of a sector coupled scenario of the simulation provided in ``examples/run_pvcompare_example_sector_coupling.py``.
+
+.. figure:: ./images/basic_usage_energy_system_graph.png
+    :width: 100%
+    :alt: energy system graph.
+    :align: center
+
+    Energy system graph of an examplary sector coupled energy system.
+
 If you want to set up your own scenario, you need to insert input files into the directory first. How to do this is described in the next paragraph :ref:`define_params`.
 Afterwards you can run a simulation by running the file `run_pvcompare.py <https://github.com/greco-project/pvcompare/blob/master/run_pvcompare.py>`_ in the parent folder of *pvcompare*.
 In order to run a simulation you need to at least define the following parameters:
