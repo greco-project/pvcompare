@@ -4,17 +4,16 @@
 GRECO Results
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here we will publish selected scenarios that we simulated for the H2020 Project GRECO and their results, which will also serve as examples.
 
 Results of PV modeling
 -----------------------
-In :ref:`pv-feedin` the models used to generate feed-in time series for SI, CPV and
-PSI technologies are presented. This section will show some results of the
-calculated time series and discuss model assumptions.
+In section :ref:`pv-feedin` the models used to generate feed-in time series for SI, CPV and
+PSI technologies are presented. This section shows selected results of the
+calculated time series and discusses model assumptions.
 
 The generated hourly time series over one year are normalized by the peak power
-of each module. Figure `PV time series`_ shows an exemplary time series for all
-three technologies in year 2014 in Madrid.
+of each module. Figure `Normalized time series`_ shows an exemplary time series for all
+three technologies in the year 2014 in Madrid.
 
 .. _PV time series:
 

@@ -15,7 +15,7 @@ pip install -e .[dev, docs]
 Development of a feature for this repository should be aligned with the workflow described 
 by [Vincent Driessen](https://nvie.com/posts/a-successful-git-branching-model/).
 
-Here is the minimal procedure you should follow : 
+Here is the minimal procedure you should follow: 
 
 #### Step 1: Create an issue.
  
