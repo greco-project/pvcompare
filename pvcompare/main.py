@@ -98,7 +98,7 @@ def apply_pvcompare(
         absolute and relative will be overwritten with calculated time series of fixed thermal
         losses relative and absolute.
     add_weather_data: str or None
-        Path to hourly csv weather time series with columns: [time, latitude, longitude
+        Path to csv containing hourly weather time series with columns: [time, latitude, longitude
         ,ghi, wind_speed, temp_air, precipitable_water, dni, dhi]
         Default: None. If None, the ERA5 data is used instead.
     add_sam_si_module: dict or None
