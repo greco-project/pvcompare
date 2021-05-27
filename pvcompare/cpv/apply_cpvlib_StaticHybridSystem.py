@@ -12,18 +12,19 @@ def create_cpv_time_series(
     lat, lon, weather, surface_azimuth, surface_tilt, plot=False
 ):
     r"""
-    creates a time series for a cpv module.
+    Calculates time series for a CPV module.
 
-    Notice: Right now only module parameters for the hybrid INSOLIGHT module is
+    Notice: Right now only module parameters for the hybrid INSOLIGHT module are
     provided. If you want to add your own module data please add it to `cpv/inputs.py`.
-    Location is defined with the use of `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_.
+    The CPV module is modelled with the `cpvlib <https://cpvlib.readthedocs.io/en/latest/>`_.
+    The solar position is defined with the use of `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_.
 
     Parameters
     ----------
     lat: float
-        Latitude of the module.
+        Latitude of the location.
     lon: float
-        Longitude of the module.
+        Longitude of the location.
     weather: :pandas:`pandas.DataFrame<frame>`
         Weather dataframe according to pvlib standards.
     surface_azimuth: float
@@ -31,12 +32,13 @@ def create_cpv_time_series(
     surface_tilt: float
         surface tilt of the module.
     plot: bool
+        If True, the time series is plotted and saved to `constants.DEFAULT_MVS_OUTPUT_DIRECTORY`.
         Default: False.
 
     Returns
     --------
     total: :pandas:`pandas.DataFrame<frame>`
-        Total time series of a cpv module.
+        Time series of a CPV module.
     """
 
     location = pvlib.location.Location(latitude=lat, longitude=lon, tz="utc")
@@ -156,12 +158,10 @@ def create_cpv_time_series(
 
 
 def calculate_efficiency_ref():
-
     r"""
-    Calculates P_mp, efficiency for cpv and flatplate.
+    Calculates maximum power output and efficiency for the CPV cells and flat plate module.
 
-    This function calculates the P_mp and efficiency for the cpv and the
-    flatplate module at its reference conditions.
+    The P_mp and efficiency are calculated at its reference conditions
 
     The reference conditions are:
     Temp_air = 20 ° C
@@ -171,10 +171,9 @@ def calculate_efficiency_ref():
     Returns
     ------
     None
-    Prints efficiency and p_mp for the flatplate and the cpv
-    module and total efficiency.
+        Prints efficiency and p_mp for the flatplate and the cpv
+        module and total efficiency.
 
-    TODO: is this needed? if not, remove this function
     """
 
     surface_tilt = 30
