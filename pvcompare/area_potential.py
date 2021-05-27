@@ -102,13 +102,3 @@ def calculate_area_potential(storeys, user_inputs_pvcompare_directory, surface_t
         + " qm for the surface type %s" % surface_type
     )
     return area
-
-
-if __name__ == "__main__":
-
-    area = calculate_area_potential(
-        storeys=5,
-        user_inputs_pvcompare_directory=constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY,
-        surface_type="flat_roof",
-    )
-    print(area)

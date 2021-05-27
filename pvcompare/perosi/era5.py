@@ -285,13 +285,3 @@ def weather_df_from_era5(era5_netcdf_filename, lib, start=None, end=None):
     if end is None:
         end = df.index[-1]
     return df[start:end]
-
-
-if __name__ == "__main__":
-
-    latitude = 40.3
-    longitude = 5.4
-
-    df = load_era5_weatherdata(
-        lat=latitude, lon=longitude, year=2015, variable="perosi"
-    )

@@ -457,13 +457,3 @@ def add_sector_coupling(
             + "containing EERs into `data/mvs_inputs/time_series` directory."
         )
     return None
-
-
-if __name__ == "__main__":
-    weather = pd.read_csv("./data/inputs/weatherdata.csv").set_index("time")
-
-    cops = calculate_cops_and_eers(
-        weather=weather, mode="heat_pump", lat=53.2, lon=13.2
-    )
-    print(cops)
-    print(f"Min: {round(min(cops), 2)}, Max: {round(max(cops), 2)}")
