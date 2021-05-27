@@ -106,16 +106,6 @@ def create_pv_components(
     Returns
     -------
     None
-        Time series: :pandas:`pandas.DataFrame<frame>`
-            Time series are normalized with the method specified in
-            `normalization` and stored in `user_inputs_mvs_directory/time_series`.
-        Area potential: float
-            Area potential of the `surface_type` with regard to the building
-            parameters defined in 'building_parameters.csv' in `input_directory` is calculated
-            and stored into `user_inputs_mvs_directory/csv_elements/energyProduction.csv`
-        Maximum installed capacity (nominal value): float
-            The maximum installed capacity (nominal value) is calculated
-            and stored into `user_inputs_mvs_directory/csv_elements/energyProduction.csv`.
     """
 
     if pv_setup is None:
