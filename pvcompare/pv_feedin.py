@@ -744,17 +744,20 @@ def add_pv_timeseries(
     Parameter
     ----------
     add_pv_timeseries: dict or None
-        Dictionary with {"PV1" : ["filename": >path_to_time_series< , "module_size": >module_size in m²<,
+        Dictionary in the following format:
+        {"SI1" : ["filename": >path_to_time_series< , "module_size": >module_size in m²<,
         "module_peak_power": >peak power of the module in kWp<, "surface_type": >surface_type for PV installation<],
-        "PV2" : [...], ...}. If you want to consider more PV time series, more PV keys can be added.
-        The PV time series itself needs to be be an normalized hourly time series in kW/kWp
-        (normalized by the peak power of the module). The facades can be one of: [
-            "flat_roof", "gable_roof", "south_facade", "east_facade", "west_facade"].
+        "SI2" : [...], ...}.
+        If you want to consider more PV time series, more PV keys can be added.
+        The PV time series itself needs to be a normalized hourly time series in kW/kWp
+        (normalized by the peak power of the module). The surface_type can be one of the
+        following: "flat_roof", "gable_roof", "south_facade", "east_facade", "west_facade".
         Note that you need to add more specific PV parameters of your module (name, costs, lifetime etc.) in
-        'user_inputs/mvs_inputs/csv_elements/energyProduction.csv'. The columns in energyProduction.csv
-        should be named "PV"+ key (e.g. "PV SI1")
-         When providing your own time series, overwrite_pv_parameters should be
-        set to false. When add_pv_timeseries is used, the pv_setup.csv is disregarded.
+        'user_inputs_mvs_directory/csv_elements/energyProduction.csv'. The columns in 'energyProduction.csv'
+        should be named "PV"+ key used in your dictionary (e.g. "PV SI1").
+        When providing your own time series, `overwrite_pv_parameters` should be
+        set to false. When `add_pv_timeseries` is used, the 'pv_setup.csv' is disregarded.
+        Default: None.
     storeys: int
         number of storeys for which the demand is calculated.
     user_inputs_mvs_directory: str or None
