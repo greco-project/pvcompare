@@ -30,7 +30,8 @@ def calculate_cops_and_eers(
     Calculates the COPs of a heat pump or EERs of a chiller depending on `mode`.
 
     Temperature dependency is taken into consideration.
-    For these calculations the ``calc_cops()` <functionality>`_ functionality of `oemof.thermal <https://oemof-thermal.readthedocs.io/en/stable/>`_  is
+    For these calculations the ``calc_cops()` <functionality>`_ functionality of
+    `oemof.thermal <https://oemof-thermal.readthedocs.io/en/stable/>`_  is
     used. Data like quality grade and factor icing is read from the file
     `heat_pumps_and_chillers.csv` in the `input_directory`.
     Negative values, which might occur due to high ambient temperatures in summer are
@@ -55,10 +56,10 @@ def calculate_cops_and_eers(
         Directory of the user inputs. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
-    user_inputs_mvs_directory : str or None
-        Path to mvs input directory. If None: DEFAULT_USER_INPUTS_MVS_DIRECTORY
-        (see :py:func:`~.pvcompare.constants`).
-        Default: None.
+    user_inputs_mvs_directory: str or None
+        Path to input directory containing files that describe the energy
+        system and that are an input to MVS. Default:
+        DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`).
 
     Returns
     -------
