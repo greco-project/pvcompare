@@ -56,7 +56,6 @@ def plot_all_flows(
     Returns
     -------
     None
-    Figure: png
         Saves figure into outputs_directory.
     """
 
@@ -291,9 +290,9 @@ def compare_weather_years(
     Parameters
     ----------
     latitude : float
-        Latitude of country location in 'country'.
+        Latitude of country location in `country`.
     longitude : float
-        Longitude of country location in 'country'.
+        Longitude of country location in `country`.
     country: str
         The country's name of simualtion
     static_inputs_directory: str or None
@@ -312,7 +311,6 @@ def compare_weather_years(
     Returns
     -------
     None
-    Figure: png
         The plot is saved into the `output_directory`.
     """
 
@@ -450,7 +448,7 @@ def plot_kpi_loop(
     outputs_directory=None,
 ):
     r"""
-    Plots list of KPI's of a 'mvs_output/scalars_**.xlsx' file. TODO: What does the abbreviation KPI mean?
+    Plots list of key performance indicators (KPIs) of a 'mvs_output/scalars_**.xlsx' file.
 
     Plots KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs`
     for a loop over one variable.
@@ -490,7 +488,6 @@ def plot_kpi_loop(
     Returns
     -------
     None
-    Figure: png
         Saves figure into `loop_output_directory`.
     """
 
@@ -745,7 +742,6 @@ def plot_facades(
     Returns
     -------
     None
-    Figure: png
         Saves figure into `loop_output_directory`.
     """
 
@@ -956,7 +952,6 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
     Returns
     -------
     None
-    Figure: png
         Saves figure into `loop_output_directory`.
     """
 
@@ -1262,7 +1257,6 @@ def plot_compare_technologies(
     Returns
     -------
     None
-    Figure: png
         Saves figure into `loop_output_directory`.
     """
 
