@@ -65,6 +65,9 @@ def create_pv_components(
     and the maximum installed capacity (nominal value) is calculated. Both parameters
     are stored into `user_inputs_mvs_directory/csv_elements/energyProduction.csv`.
 
+    Further information for the cell parameter efficiency for "Chen" and "Korte" see
+    `psi_type <https://pvcompare.readthedocs.io/en/latest/model_assumptions.html#input-data>`_.
+
     Parameters
     ----------
     lat: float
@@ -94,7 +97,7 @@ def create_pv_components(
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
         Default: None.
     psi_type: str
-        "Korte" or "Chen" TODO: Is there more information for terms Korte and Chen?
+        "Korte" or "Chen".
         Default: "Chen"
     normalization: bool
         If True: Time series is normalized. Otherwise absolute time series is
@@ -103,16 +106,16 @@ def create_pv_components(
     Returns
     -------
     None
-    Time series: :pandas:`pandas.DataFrame<frame>`
-        Time series are normalized with the method specified in
-        `normalization` and stored in `user_inputs_mvs_directory/time_series`.
-    Area potential: float
-        Area potential of the `surface_type` with regard to the building
-        parameters defined in 'building_parameters.csv' in `input_directory` is calculated
-        and stored into `user_inputs_mvs_directory/csv_elements/energyProduction.csv`
-    Maximum installed capacity (nominal value): float
-        The maximum installed capacity (nominal value) is calculated
-        and stored into `user_inputs_mvs_directory/csv_elements/energyProduction.csv`.
+        Time series: :pandas:`pandas.DataFrame<frame>`
+            Time series are normalized with the method specified in
+            `normalization` and stored in `user_inputs_mvs_directory/time_series`.
+        Area potential: float
+            Area potential of the `surface_type` with regard to the building
+            parameters defined in 'building_parameters.csv' in `input_directory` is calculated
+            and stored into `user_inputs_mvs_directory/csv_elements/energyProduction.csv`
+        Maximum installed capacity (nominal value): float
+            The maximum installed capacity (nominal value) is calculated
+            and stored into `user_inputs_mvs_directory/csv_elements/energyProduction.csv`.
     """
 
     if pv_setup is None:
@@ -457,7 +460,7 @@ def create_cpv_time_series(
         Longitude of the location for which the time series is calculated.
     weather : :pandas:`pandas.DataFrame<frame>`
         DataFrame with time series for temperature `temp_air` in C°, wind speed
-        `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m².
+        'wind_speed' in m/s, 'dni', 'dhi', and 'ghi' in W/m².
     surface_azimuth : float
         Surface azimuth of the modules (180° for south, 270° for west, etc.).
     surface_tilt: float
@@ -517,6 +520,9 @@ def create_psi_time_series(
     The PSI time series is created for a given weather data frame
     `weather`. If `normalization` is True the time series is normalized.
 
+    Further information for the cell parameter efficiency for "Chen" and "Korte" see
+    `psi_type <https://pvcompare.readthedocs.io/en/latest/model_assumptions.html#input-data>`_.
+
     Parameters
     ----------
     lat : float
@@ -524,8 +530,8 @@ def create_psi_time_series(
     lon : float
         Longitude of the location for which the time series is calculated.
     weather : :pandas:`pandas.DataFrame<frame>`
-        DataFrame with time series for temperature `temp_air` in C°, wind speed
-        `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m².
+        DataFrame with time series for temperature 'temp_air' in C°, wind speed
+        'wind_speed' in m/s, 'dni', 'dhi' and 'ghi' in W/m².
     surface_azimuth : float
         Surface azimuth of the modules (180° for south, 270° for west, etc.).
     surface_tilt: float
@@ -596,7 +602,13 @@ def create_psi_time_series(
         return (output / peak).clip(0)
 
 
-def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type):
+def nominal_values_pv(
+        technology,
+        area,
+        surface_azimuth,
+        surface_tilt,
+        psi_type
+):
     r"""
     calculates the maximum installed capacity for each pv module.
 
@@ -604,6 +616,9 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
     the module, its peak power and the total available area. It is given in
     the unit of kWp. The nominal value functions as a limit for the potential
     maximum installed capacity of PV in the energy system optimization.
+
+    Further information for the cell parameter efficiency for "Chen" and "Korte" see
+    `psi_type <https://pvcompare.readthedocs.io/en/latest/model_assumptions.html#input-data>`_.
 
     Parameters
     ----------
