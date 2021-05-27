@@ -74,7 +74,7 @@ def calculate_load_profiles(
         The number of storeys of a building.
     year: int
         Year for which power demand time series is calculated. Year can be
-         chosen between 2008 and 2018.
+        chosen between 2008 and 2018.
     weather: :pandas:`pandas.DataFrame<frame>`
         hourly weather data frame with the columns:
         time, latitude, longitude, wind_speed, temp_air, ghi, dhi, dni,
@@ -513,7 +513,6 @@ def adjust_heat_demand(temperature, heating_limit_temp, demand):
     r"""
     Adjust the hourly heat demands exceeding the heating limit temperature.
 
-    Heat demand is generated with the help of `oemof.demandlib <https://github.com/oemof/demandlib>`_.
     The heat demand above the heating limit temperature is set to zero.
     Excess heat demand is then distributed equally over the remaining hourly heat demand.
 
@@ -559,7 +558,7 @@ def adjust_heat_demand(temperature, heating_limit_temp, demand):
 
 def shift_working_hours(country, ts):
     r"""
-    Shift the demand time series with regard to country's customs.
+    Shift the demand time series `ts`depending `country`.
 
     Since the energy demand for domestic hot water depends strongly on
     behaviour, the demand profile is adjusted for the different EU countries.
