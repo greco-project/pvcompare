@@ -344,7 +344,8 @@ def calculate_heat_demand(
     storeys: int
         Number of storeys of the houses.
     year: int
-        Year for which heat demand time series is calculated. # TODO: needs to be between 2011 - 2015 like above?
+        Year for which heat demand time series is calculated. Year can be
+        chosen between 2008 and 2018.
     column: str
         name of the demand
     weather: :pandas:`pandas.DataFrame<frame>`
