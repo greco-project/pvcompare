@@ -66,7 +66,7 @@ Here is a template for new release sections
 - General description of module is added for `main.py`. (#303)
 
 ### Changed
-- Description for the functions in the modules of file perosi were updated and formatted. (#303)
+- Description for multiple functions in the modules `area_potential`, `check_inputs`, `demand`, `cpv/apply_cpvlib_StaticHybridSystem`, `heat_pump_and_chiller`, `main`, `plots` were updated and corrected. (#303)
 - "Year for which power demand time series is calculated" is set between 2008-2018. (#303)
 
 ## [0.0.2] - 2021-03-24
