@@ -226,8 +226,7 @@ def apply_mvs(
     Parameters
     ----------
     scenario_name: str
-        Name of the Scenario. The name should follow the scheme:
-        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+        Name of the Scenario.
     user_inputs_mvs_directory: str or None
         Directory of the mvs inputs; where 'csv_elements/' is located. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
@@ -236,10 +235,9 @@ def apply_mvs(
         Path to output directory.
         Default: constants.DEFAULT_OUTPUTS_DIRECTORY
     mvs_output_directory: str or None
-        This parameter should be set to None. It is filled filled in automatically
-        according to 'outputs_directory' and 'scenario_name':
-        'pvcompare/data/outputs/scenario_name/mvs_output'.
-        Default: None.
+        Path to input directory containing files that describe the energy
+        system and that are an input to MVS. Default:
+        DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`).
 
     Returns
     -------
