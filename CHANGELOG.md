@@ -46,11 +46,11 @@ Here is a template for new release sections
 - Changed order of checks in github actions workflow - linting with black is last check now, to prevent failing due to black before pytest are run. (#298)
 - Renamed "GRECO Results" section in RTD to "Selected results of the GRECO project" (#316)
 - Minor changes and corrections in RTD (#316)
-- Remove `greco_technologies` from `setup.py` (#323)
 
 ### Removed
--
-
+- Delete `if __name__ == "__main__"` statements of modules (#323)
+- Remove `greco_technologies` from `setup.py` (#323)
+- 
 ### Fixed
 - fix PV costs parameters and PSI lifetime (#273)
 - fix number of houses to 20 (8 flats per storey makes 40 flats per house with 5 storeys, makes 800 in total (and 480 for 3 storeys)) (#273)
