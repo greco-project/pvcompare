@@ -45,6 +45,8 @@ Here is a template for new release sections
 - All parameters in `fixcost.csv` have been set to zero except for the lifetime, which has been set to one for all in order to avoid ZeroDivisionError (#299)
 - Corrected description of installation requirements in contributing.md (#306)
 - Changed order of checks in github actions workflow - linting with black is last check now, to prevent failing due to black before pytest are run. (#298)
+- Renamed "GRECO Results" section in RTD to "Selected results of the GRECO project" (#316)
+- Minor changes and corrections in RTD (#316)
 
 ### Removed
 - Remove lines that add gas bus in `test_raiseError_temperature_match_hp()` as this is not needed anymore (#314)
