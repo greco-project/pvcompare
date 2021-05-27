@@ -30,9 +30,9 @@ easily be enhanced to analyse other conversion technologies.
 
 The functionalities include
 
-* calculation of an area potential for PV on roof-tops and façades based on building parameters,
-* calculation of heat and electricity demand profiles for a specific amount of people living in these buildings,
-* calculation of PV feed-in time series for a set of PV installations on roof-tops and façades incl. different technologies,
+* calculation of an area potential for PV on rooftops and façades based on building parameters,
+* calculation of heat and electricity demand time series for a specific amount of people living in these buildings,
+* calculation of PV feed-in time series for a set of PV installations on rooftops and façades incl. different technologies,
 
     * all technologies in the database of `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_,
     * a specific concentrator-PV module (`CPV <https://pvcompare.readthedocs.io/en/latest/model_assumptions.html#cpv>`_) and
@@ -77,7 +77,7 @@ To install *pvcompare* follow these steps:
 Examples and basic usage
 ========================
 The basic usage of *pvcompare* is explained in the documentation in section `Basic usage of pvcompare <https://pvcompare.readthedocs.io/en/latest/basic_usage.html>`_.
-
+Examples are provided on github in the directory `examples/ <https://github.com/greco-project/pvcompare/tree/master/examples>`_.
 
 Contributing
 ============

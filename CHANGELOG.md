@@ -30,6 +30,7 @@ Here is a template for new release sections
 - Add info on energy systems consisting of more than one node in RTD section "scope and limitations" (#293)
 - Added description of the implementation of the stratified thermal storage in pvcompare with a description of the possibilities modeling it (#291)
 - Dokumentation: Update on 'basic_usage', 'parameter description' and 'model assumptions' (#302)
+- Add gas bus to `energyBusses.csv` in  `tests/data/user_inputs/mvs_inputs_sector_coupling/csv_elements` (#314)
 
 ### Changed
 - The inlet temperatures of the heat pump and the stratified thermal storage have been revised in the pvcompare input parameters, adapting them in order to fit typical temperatures of the heating system. Also the pvcompare input parameters of the stratified thermal storage have been revised (#272)
@@ -44,9 +45,11 @@ Here is a template for new release sections
 - All parameters in `fixcost.csv` have been set to zero except for the lifetime, which has been set to one for all in order to avoid ZeroDivisionError (#299)
 - Corrected description of installation requirements in contributing.md (#306)
 - Changed order of checks in github actions workflow - linting with black is last check now, to prevent failing due to black before pytest are run. (#298)
+- Renamed "GRECO Results" section in RTD to "Selected results of the GRECO project" (#316)
+- Minor changes and corrections in RTD (#316)
 
 ### Removed
--
+- Remove lines that add gas bus in `test_raiseError_temperature_match_hp()` as this is not needed anymore (#314)
 
 ### Fixed
 - fix PV costs parameters and PSI lifetime (#273)
