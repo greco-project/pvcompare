@@ -1,7 +1,7 @@
 """
 The module runs the main functionalities of pvcompare. These include the calculation
-of the pv feed-in time series and the nominal values /installation capacities based on the building
-parameters. By adding the heat pump to the energy system, COPs will be calculated as well.
+of the pv generation time series and the nominal values /installation capacities based on the building
+parameters. By adding a heat pump to the energy system, COPs will be calculated as well.
 Furthermore, energy system simulation of different scenarios with MVS are calculated and saved.
 
 Functions this module contains:
@@ -63,9 +63,9 @@ def apply_pvcompare(
     country:
         Country of the location. Default: None.
     latitude: float or None
-        Latitude of country location in 'country'. Default: None.
+        Latitude of country location in `country`. Default: None.
     longitude: float or None
-        Longitude of country location in 'country'. Default: None.
+        Longitude of country location in `country`. Default: None.
     year: int
         Year of the simulation. Default: None.
     static_inputs_directory: str or None
@@ -92,11 +92,11 @@ def apply_pvcompare(
         Default: None.
     overwrite_grid_parameters: bool
         If True, the following grid parameters are inserted into the
-        mvs input csv'S automatically: electricity price, feed-in tariff,
+        MVS input csvs automatically: electricity price, feed-in tariff,
         CO2 emissions, renewable share, gas price.
         Default: True.
     overwrite_pv_parameters: bool
-        If True, the pv components in energyProduction.csv are
+        If True, the pv components in 'energyProduction.csv' are
         overwritten with default values from 'data/user_inputs_collection/'
         according to the pv plants defined in 'pv_setup'.
         Default: True.
@@ -109,9 +109,9 @@ def apply_pvcompare(
 
     Returns
     -------
-    weather: :pandas:`pandas.DataFrame<frame>` TODO: Please check if correct file
-    Saves calculated time series to `timeseries` folder in `user_inputs_mvs_directory and
-    updates csv files in `csv_elements` folder.
+    None
+        Saves calculated time series to `timeseries` folder in `user_inputs_mvs_directory` and
+        updates csv files in `csv_elements` folder.
     """
 
     if static_inputs_directory == None:
@@ -243,8 +243,7 @@ def apply_mvs(
 
     Returns
     -------
-    Simulation: png TODO: Please check
-    Stores simulation results in `mvs_output_directory`.
+        Stores simulation results in directory according to `outputs_directory` and `scenario_name` in 'outputs_directory/scenario_name/mvs_outputs'.
     """
 
     if user_inputs_mvs_directory is None:
