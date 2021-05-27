@@ -537,7 +537,7 @@ def create_psi_time_series(
     Returns
     -------
     :pandas:`pandas.Series<series>`
-        Power output of PSI module in W (if parameter `normalized` is False) or TODO: check unit.
+        Power output of PSI module in W (if parameter `normalized` is False) or
         normalized power output of CPV module (if parameter `normalized` is
         False).
     """
@@ -572,9 +572,7 @@ def create_psi_time_series(
             import pvcompare.perosi.data.cell_parameters_Chen_2020_4T_si as param2
 
         peak = get_peak(
-            technology="psi",
-            module_parameters_1=param1,
-            module_parameters_2=param2,
+            technology="psi", module_parameters_1=param1, module_parameters_2=param2,
         )
         output = pvcompare.perosi.perosi.create_pero_si_timeseries(
             year,
@@ -631,9 +629,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
             surface_tilt=surface_tilt,
         )
         peak = get_peak(
-            technology,
-            module_parameters_1=module_parameters,
-            module_parameters_2=None,
+            technology, module_parameters_1=module_parameters, module_parameters_2=None,
         )
         module_size = module_parameters["A_c"]
         nominal_value = round((area / module_size) * peak) / 1000
@@ -660,9 +656,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
 
         # calculate peak power with 5 % CTM losses nad 5 % cell connection losses
         peak = get_peak(
-            technology,
-            module_parameters_1=param1,
-            module_parameters_2=param2,
+            technology, module_parameters_1=param1, module_parameters_2=param2,
         )
         module_size = param1.A / 10000  # in m^2
         nominal_value = round((area / module_size) * peak) / 1000

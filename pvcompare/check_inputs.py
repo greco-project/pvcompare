@@ -653,11 +653,7 @@ def add_parameters_to_storage_xx_file(
     storage_xx_path = os.path.join(
         user_inputs_mvs_directory, "csv_elements", storage_csv
     )
-    storage_xx = pd.read_csv(
-        storage_xx_path,
-        header=0,
-        index_col=0,
-    )
+    storage_xx = pd.read_csv(storage_xx_path, header=0, index_col=0,)
 
     parameters = {"installedCap": nominal_storage_capacity, "efficiency": 1 - loss_rate}
 

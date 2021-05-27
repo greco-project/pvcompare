@@ -266,12 +266,7 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
 
     plt.tight_layout()
 
-    f.savefig(
-        os.path.join(
-            outputs_directory,
-            f"plot_{scenario_name}_matrix.png",
-        )
-    )
+    f.savefig(os.path.join(outputs_directory, f"plot_{scenario_name}_matrix.png",))
 
 
 def compare_weather_years(
@@ -442,10 +437,7 @@ def compare_weather_years(
 
 
 def plot_kpi_loop(
-    variable_name,
-    kpi,
-    scenario_dict,
-    outputs_directory=None,
+    variable_name, kpi, scenario_dict, outputs_directory=None,
 ):
     r"""
     Plots list of key performance indicators (KPIs) of a 'mvs_output/scalars_**.xlsx' file.
@@ -707,10 +699,7 @@ def plot_kpi_loop(
 
 
 def plot_facades(
-    variable_name,
-    kpi,
-    scenario_name,
-    outputs_directory=None,
+    variable_name, kpi, scenario_name, outputs_directory=None,
 ):
 
     r"""
@@ -906,9 +895,7 @@ def plot_facades(
 
     plt.xticks(rotation=45)
     fig.legend(
-        df_min.columns,
-        loc="lower left",
-        mode="expand",
+        df_min.columns, loc="lower left", mode="expand",
     )
 
     fig.savefig(
@@ -1210,10 +1197,7 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
 
     handles, labels = ax.get_legend_handles_labels()
     fig.legend(
-        handles,
-        labels,
-        loc="lower left",
-        mode="expand",
+        handles, labels, loc="lower left", mode="expand",
     )
 
     name = ""
@@ -1499,9 +1483,7 @@ def plot_compare_technologies(
 
     #    plt.xticks(x_title.values(),rotation=40, ha="right")
     fig.legend(
-        df_min.columns,
-        loc="lower left",
-        mode="expand",
+        df_min.columns, loc="lower left", mode="expand",
     )
 
     fig.savefig(

@@ -149,10 +149,7 @@ def apply_pvcompare(
         static_inputs_directory, f"weatherdata_{latitude}_{longitude}_{year}.csv"
     )
     if os.path.isfile(weather_file):
-        weather = pd.read_csv(
-            weather_file,
-            index_col=0,
-        )
+        weather = pd.read_csv(weather_file, index_col=0,)
     else:
         # if era5 import works this line can be used
         weather = era5.load_era5_weatherdata(lat=latitude, lon=longitude, year=year)
