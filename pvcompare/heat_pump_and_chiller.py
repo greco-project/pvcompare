@@ -30,7 +30,7 @@ def calculate_cops_and_eers(
     Calculates the COPs of a heat pump or EERs of a chiller depending on `mode`.
 
     Temperature dependency is taken into consideration.
-    For these calculations the oemof.thermal :py:func:`~.calc_cops` functionality is
+    For these calculations the ``calc_cops()` <functionality>`_ functionality of `oemof.thermal <https://oemof-thermal.readthedocs.io/en/stable/>`_  is
     used. Data like quality grade and factor icing is read from the file
     `heat_pumps_and_chillers.csv` in the `input_directory`.
     Negative values, which might occur due to high ambient temperatures in summer are
@@ -89,7 +89,7 @@ def calculate_cops_and_eers(
         r"""
         Processes temperatures for specific `level`, `mode`, and `technology`.
 
-        `Temperature` can be passed in the following way:
+        `temperature` can be passed in the following way:
         1. As NaN - The lower/higher temperature of the heat pump/chiller equals the ambient temperature time series
         2. As single value (float or int) - The temperature is constant
         3. As time series - The temperature is not constant or differs from ambient temperature (eg. ground source)
@@ -111,8 +111,6 @@ def calculate_cops_and_eers(
         -------
         temperature: list
             Temperature adjusted to use case of plant.
-        efficiency_series : :pandas:`pandas.Series<series>`
-            COP or EER time series of heat pump or chiller depending on `mode`.
         """
 
         if isinstance(temperature, float):
@@ -354,8 +352,8 @@ def add_sector_coupling(
     Returns
     -------
     None
-    Depending on the case, updates `energyConversion.csv` and saves calculated cops to
-    'data/mvs_inputs/time_series'.
+        Depending on the case, updates `energyConversion.csv` and saves calculated cops to
+        'data/mvs_inputs/time_series'.
     """
 
     # read energyConversion.csv file
