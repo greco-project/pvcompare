@@ -105,7 +105,7 @@ You can also download ERA5 weather data yourself. `oemof feedinlib <https://feed
 
 **Demand time series**
 
-In order to add your own heat and/or electricity time series add the path to the file to ``add_electricity_demand`` or ``add_heat_demand``
+In order to add your own heat and/or electricity demand time series provide the path to the file(s) with ``add_electricity_demand`` and/or ``add_heat_demand``
 in :py:func:`~.main.apply_pvcompare`. Note that the respective demand is only considered, if a column "Electricity demand" or "Heat demand"
 exists in ``data/user_inputs/mvs_inputs/csv_elements/energyConsumption.csv``.
 The demand time series should be given as an hourly time series in kW.
