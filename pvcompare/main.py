@@ -108,26 +108,26 @@ def apply_pvcompare(
         'user_inputs/mvs_inputs/pvcompare_inputs/pv_setup.csv'
     add_electricity_demand: str or None
         Path to precalculated hourly electricity demand time series for one year (or the same period
-        of a precalculated PV timeseries)
+        of a precalculated PV timeseries). Default: None
         Note that that the demand is only considered if a column "Electricity demand" is added to
         'user_inputs/mvs_inputs/csv_elements/energyConsumption.csv'
     add_heat_demand: str or None
         Path to precalculated hourly heat demand time series for one year (or the same period
-        of a precalculated PV timeseries)
+        of a precalculated PV timeseries). Default: None
         Note that that the demand is only considered is a column "Heat demand" is added to
         'user_inputs/mvs_inputs/csv_elements/energyConsumption.csv'
     add_pv_timeseries: dict or None
         Dictionary with {"PV1" : ["filename": >path_to_time_series< , "module_size": >module_size in m²<,
         "module_peak_power": >peak power of the module in kWp<, "surface_type": >surface_type for PV installation<],
-        "PV2" : [...], ...}. If you want to consider more PV time series, more PV keys can be added.
-        The PV time series itself needs to be be an normalized hourly time series in kW/kWp
-        (normalized by the peak power of the module). The surface_types can be one of: [
-            "flat_roof", "gable_roof", "south_facade", "east_facade", "west_facade"].
+        "PV2" : [...], ...}. You can add more than one module time series by defining more PV-keys.
+        The PV time series itself needs to be a normalized hourly time series in kW/kWp
+        (normalized by the peak power of the module). The surface_type can be one of: [
+        "flat_roof", "gable_roof", "south_facade", "east_facade", "west_facade"].
         Note that you need to add more specific PV parameters of your module (name, costs, lifetime etc.) in
-        'user_inputs/mvs_inputs/csv_elements/energyProduction.csv'. The columns in energyProduction.csv
-        should be named "PV"+ key (e.g. "PV SI1")
-         When providing your own time series, overwrite_pv_parameters should be
-        set to false. When add_pv_timeseries is used, the pv_setup.csv is disregarded.
+        ``user_inputs_mvs_directory/csv_elements/energyProduction.csv``. The columns in ``energyProduction.csv``
+        should be named "PV"+ key (e.g. "PV SI1" if your key is "SI1").
+        When providing your own time series, ``overwrite_pv_parameters`` in :py:func:`~.main.apply_pvcompare` should be
+        set to ``False``. When ``add_pv_timeseries`` is used, the ``pv_setup.csv`` is disregarded.
 
     Returns
     -------

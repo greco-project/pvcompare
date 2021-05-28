@@ -83,12 +83,12 @@ def calculate_load_profiles(
         Default: None.
     user_inputs_mvs_directory : str or None
         Path to mvs input directory. If None: DEFAULT_USER_INPUTS_MVS_DIRECTORY. Default: None.
-    add_electricity_demand: str
+    add_electricity_demand: str or None
         Path to precalculated hourly electricity demand time series for one year (or the same period
-        of a precalculated PV timeseries)
-    add_heat_demand: str
+        of a precalculated PV timeseries). Default: None.
+    add_heat_demand: str or None
         Path to precalculated hourly heat demand time series for one year (or the same period
-        of a precalculated PV timeseries)
+        of a precalculated PV timeseries). Default: None.
 
     Returns
     ------

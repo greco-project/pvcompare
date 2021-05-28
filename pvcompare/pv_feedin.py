@@ -99,7 +99,7 @@ def create_pv_components(
         returned. Default: True.
     add_sam_si_module: dict
         Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
-        E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}
+        E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}.
 
     Returns
     -------
@@ -319,6 +319,9 @@ def set_up_system(technology, surface_azimuth, surface_tilt, add_sam_si_module=N
         Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
         E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}.
         Note that the SI module is only considered if there is the technology "SI" in
+    add_sam_si_module: dict
+        Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}.
 
     Returns
     -------
@@ -415,7 +418,6 @@ def create_si_time_series(
     add_sam_si_module: dict
         Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
         E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}.
-        Note that the SI module is only considered if there is the technology "SI" in
 
     Returns
     -------
@@ -740,7 +742,7 @@ def add_pv_timeseries(
     r"""
     Adds PV time series of user to the simulations inputs.
     
-    This function calculates the maximal capacity and inserts the time series filename
+    This function calculates the maximum capacity and inserts the time series filename
     and the maximum capacity into 'user_inputs_mvs_directory/csv_elements/energyProduction.csv'.
 
     Parameter
@@ -748,15 +750,15 @@ def add_pv_timeseries(
     add_pv_timeseries: dict or None
         Dictionary with {"PV1" : ["filename": >path_to_time_series< , "module_size": >module_size in m²<,
         "module_peak_power": >peak power of the module in kWp<, "surface_type": >surface_type for PV installation<],
-        "PV2" : [...], ...}. If you want to consider more PV time series, more PV keys can be added.
-        The PV time series itself needs to be be an normalized hourly time series in kW/kWp
-        (normalized by the peak power of the module). The facades can be one of: [
-            "flat_roof", "gable_roof", "south_facade", "east_facade", "west_facade"].
+        "PV2" : [...], ...}. You can add more than one module time series by defining more PV-keys.
+        The PV time series itself needs to be a normalized hourly time series in kW/kWp
+        (normalized by the peak power of the module). The surface_type can be one of: [
+        "flat_roof", "gable_roof", "south_facade", "east_facade", "west_facade"].
         Note that you need to add more specific PV parameters of your module (name, costs, lifetime etc.) in
-        'user_inputs/mvs_inputs/csv_elements/energyProduction.csv'. The columns in energyProduction.csv
-        should be named "PV"+ key (e.g. "PV SI1")
-         When providing your own time series, overwrite_pv_parameters should be
-        set to false. When add_pv_timeseries is used, the pv_setup.csv is disregarded.
+        ``user_inputs_mvs_directory/csv_elements/energyProduction.csv``. The columns in ``energyProduction.csv``
+        should be named "PV"+ key (e.g. "PV SI1" if your key is "SI1").
+        When providing your own time series, ``overwrite_pv_parameters`` in :py:func:`~.main.apply_pvcompare` should be
+        set to ``False``. When ``add_pv_timeseries`` is used, the ``pv_setup.csv`` is disregarded.
     storeys: int
         number of storeys for which the demand is calculated.
     user_inputs_mvs_directory: str or None
