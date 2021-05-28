@@ -28,26 +28,25 @@ except ImportError:
 
 
 def add_scenario_name_to_project_data(user_inputs_mvs_directory, scenario_name):
+    r"""
+    Matches user input `scenario_name` with `scenario_name` in 'project_data.csv'.
 
-    """
-    Matches user input 'scenario_name' with 'scenario_name' in 'project_data.csv'.
-
-    If user input 'scenario_name' is different to the parameter in
+    If user input `scenario_name` is different to the parameter in
     'project_data.csv', a warning is returned and 'project_data.csv' is
     overwritten.
 
     Parameters
     ----------
-    user_inputs_mvs_directory: str
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+    user_inputs_mvs_directory: str or None
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
+        Default: None.
     scenario_name: str
-        Name of the Scenario. The name should follow the scheme:
-        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+        Name of the Scenario.
 
     Returns
     -------
-
+    None
     """
     add_parameter_to_mvs_file(
         user_inputs_mvs_directory=user_inputs_mvs_directory,
@@ -67,12 +66,11 @@ def add_location_and_year_to_project_data(
     country,
     year,
 ):
-
-    """
-    Matches user input for year, latitude, longitude and yountry with mvs_inputs.
+    r"""
+    Matches user input for year, latitude, longitude and country with mvs_inputs.
 
     If location (latitude, longitude, country) and year are entered as user
-    input, the accorting porameters in 'mvs_inputs/csv_elements' are overwritten.
+    input, the according parameters in 'mvs_inputs/csv_elements' are overwritten.
     If one of the location elements is None, an error is returned. If location
     or year is None, the according parameter is loaded from 'mvs_inputs/csv_elements'.
     Finally, it is checked whether country and year are valid.
@@ -80,23 +78,31 @@ def add_location_and_year_to_project_data(
     Parameters
     ----------
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
     static_inputs_directory: str or None
-        Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
+        Path to pvcompare static inputs. If None,
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used.
+        Default: None.
     latitude: float
-        latitude of the location
+        Latitude of the location.
     longitude: float
-        longitude of the location
+        Longitude of the location.
     country: str
-        country of the location
+        Country of the location.
     year: int
-        year of the simulation
+        Year of the simulation.
 
     Returns
     -------
-
+    Latitude: float
+        Latitude of the location.
+    Longitude: float
+        Longitude of the location.
+    country: str
+        Country of the location.
+    year: int
+        Year of the simulation.
     """
     params = {"latitude": latitude, "longitude": longitude, "country": country}
     if all(value is None for value in params.values()):
@@ -152,9 +158,10 @@ def add_location_and_year_to_project_data(
 
 
 def check_for_valid_country_year(country, year, static_inputs_directory):
-    """
-    Checks static input files for valid countries and years and returns error
-    if the country or year of the simulation is not valid.
+    r"""
+    Checks static input files for valid countries and years.
+
+    Returns error if the country or year of the simulation is not valid.
     Static input files that are checked: 'EUROSTAT_population.csv',
     'list_of_workalender_countries.csv', 'total_electricity_consumption_residential.csv'
 
@@ -165,12 +172,13 @@ def check_for_valid_country_year(country, year, static_inputs_directory):
     year: int
         year of simulation
     static_inputs_directory: str or None
-        Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
+        Path to pvcompare static inputs. If None,
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used.
+        Default: None.
 
     Returns
     -------
-
+    None
     """
     pop = pd.read_csv(
         os.path.join(static_inputs_directory, "EUROSTAT_population.csv"),
@@ -220,12 +228,12 @@ def check_for_valid_country_year(country, year, static_inputs_directory):
 
 
 def add_local_grid_parameters(static_inputs_directory, user_inputs_mvs_directory):
-    """
-    Adds grid parameters such as electricity price or feed-in tariff to energyProviders.csv.
+    r"""
+    Adds grid parameters such as electricity price or feed-in tariff to 'energyProviders.csv'.
 
     This function adds the grid parameters (electricity price, feed-in tariff, CO2 emissions,
-    renewable share, gas price) from local_grid_parameters.xlsx to energyProviders.csv.
-    The gas_price is only inserted if a column that starts with "Gas plant" exists in energProviders.csv.
+    renewable share, gas price) from 'local_grid_parameters.xlsx' to 'energyProviders.csv'.
+    The gas_price is only inserted if a column that starts with "Gas plant" exists in 'energProviders.csv'.
 
     If the value is already provided in the 'energyProviders.csv' and this value
     differs from the one in 'electricity_prices.csv' a warning is returned. If
@@ -235,11 +243,13 @@ def add_local_grid_parameters(static_inputs_directory, user_inputs_mvs_directory
     Parameters
     -----------
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
+        Default: None.
     static_inputs_directory: str or None
-        Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
+        Path to pvcompare static inputs. If None,
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used.
+        Default: None.
 
     Returns
     --------
@@ -323,22 +333,22 @@ def overwrite_mvs_energy_production_file(
     overwrite_pv_parameters,
     collections_mvs_inputs_directory=None,
 ):
-    """
-    Inserts default values for PV technologies defined in pv_setup.csv
+    r"""
+    Inserts default values for PV technologies defined in 'pv_setup.csv'.
 
-    This function compares the number of powerplants in energyProduction.csv
-    with the number of rows in pv_setup.csv. If the number differs the process
+    This function compares the number of powerplants in 'energyProduction.csv'
+    with the number of rows in 'pv_setup.csv'. If the number differs the process
     throws an error.
-
 
     Parameters
     ----------
     pv_setup: dict
         Dictionary that contains the surface types with technology and
-        orientation
+        orientation.
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
+        Default: None.
 
     Returns
     ---------
@@ -423,21 +433,21 @@ def overwrite_mvs_energy_production_file(
 def add_parameters_to_energy_production_file(
     technology, ts_filename, nominal_value, user_inputs_mvs_directory=None
 ):
-
-    """
-    enters new parameters into energyProduction.csv
+    r"""
+    Enters new parameters into 'energyProduction.csv'.
 
     Parameters
     ---------
     technology: str
-        technology of the pv plant. Should equal column name in energyProduction.csv.
+        Technology of the pv plant. Should equal column name in 'energyProduction.csv'.
     ts_filename: str
-        file name of the pv time series
+        File name of the pv time series.
     nominal_value: float
-        maximum value of installable capacity
+        Maximum value of installable capacity.
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
+        Default: None.
 
     Returns
     -------
@@ -467,8 +477,7 @@ def add_parameters_to_energy_production_file(
 def add_file_name_to_energy_consumption_file(
     column, ts_filename, user_inputs_mvs_directory=None
 ):
-
-    """
+    r"""
     Enters demand time series file name to 'energyProduction.csv'.
 
     Parameters
@@ -478,8 +487,9 @@ def add_file_name_to_energy_consumption_file(
     ts_filename: str
         file name of the demand time series
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
+        Default: None.
 
     Returns
     -------
@@ -497,16 +507,17 @@ def add_file_name_to_energy_consumption_file(
 
 
 def add_evaluated_period_to_simulation_settings(time_series, user_inputs_mvs_directory):
-    """
-    Adds number of days of the time series into simulation_settings.csv
+    r"""
+    Adds number of days of the time series into 'simulation_settings.csv'.
 
     Parameters
     ----------
     time_series: :pandas:`pandas.DataFrame<frame>`
-        pv time series
+        Pv time series.
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
+        Default: None.
 
     Returns
     ------
@@ -532,25 +543,26 @@ def add_parameter_to_mvs_file(
     pvcompare_parameter,
     warning=True,
 ):
-    """
+    r"""
     Overwrites a value from a file in 'mvs_inputs/csv_elements' with a user input.
 
     Parameters
     ----------
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
+        Default: None.
     mvs_filename: str
-        name of the mvs-csv file
+        Name of the mvs-csv file.
     mvs_row: str
-        row name of the value in 'mvs_filename'
+        Row name of the value in `mvs_filename`.
     mvs_column: str
-        column name of the value in 'mvs_filename'
+        Column name of the value in `mvs_filename`.
     pvcompare_parameter: str
-        parameter that should be added to the mvs_csv file
+        Parameter that should be added to the mvs_csv file.
     warning: bool
-        if True, a waring is returned that the parameter with the name
-        'mvs_row' is overwritten
+        If True, a warning is returned that the parameter with the name
+        `mvs_row` is overwritten.
 
     Returns
     ------
@@ -582,25 +594,26 @@ def add_parameter_to_mvs_file(
 def load_parameter_from_mvs_file(
     user_inputs_mvs_directory, mvs_filename, mvs_row, mvs_column
 ):
-    """
+    r"""
     Loads a value from a file in 'mvs_inputs/csv_elements'.
 
     Parameters
     ----------
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
+        Default: None.
     mvs_filename: str
-        name of the mvs-csv file
+        Name of the mvs-csv file.
     mvs_row: str
-        row name of the value in 'mvs_filename'
+        Row name of the value in `mvs_filename`.
     mvs_column: str
-        column name of the value in 'mvs_filename'
+        Column name of the value in `mvs_filename`.
 
     Returns
     ------
-    str
-        parameter that is loaded from mvs_file
+    pvcompare_parameter: str, float, int
+        Parameter that is loaded from mvs_file.
     """
 
     if user_inputs_mvs_directory == None:
@@ -622,24 +635,22 @@ def load_parameter_from_mvs_file(
 def add_parameters_to_storage_xx_file(
     nominal_storage_capacity, loss_rate, storage_csv, user_inputs_mvs_directory=None
 ):
-
-    """
-    Enters new parameters into storage_xx.csv
+    r"""
+    Enters new parameters into 'storage_xx.csv'.
 
     Parameters
     ---------
-    nominal_storage_capacity : numeric
-        Maximum amount of stored thermal energy [MWh]
-
-    loss_rate : numeric (sequence or scalar)
+    nominal_storage_capacity : float
+        Maximum amount of stored thermal energy [MWh].
+    loss_rate : float (sequence or scalar)
         The relative loss of the storage capacity between two consecutive
-        timesteps [-]
-
+        timesteps [-].
     storage_csv: str
-        Name of the storage specific file
-
-    mvs_input_directory : str
-        directory to "mvs_inputs/"
+        Name of the storage specific file.
+    user_inputs_mvs_directory: str or None
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
+        Default: None.
 
     Returns
     -------

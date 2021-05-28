@@ -23,18 +23,17 @@ def plot_all_flows(
     calendar_week=None,
     weekday=None,
 ):
-    """
+    r"""
     Plots all flows of the energy system for a given period of time.
 
     Parameters
     ----------
     scenario_name: str
-        Name of the Scenario. The name should follow the scheme:
-        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+        Name of the Scenario.
     outputs_directory: str or None
         Path to the directory in which the plot should be saved.
+        If None: `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
         Default: None.
-        If None: `outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY`
     timeseries_directory: str or None
         Path to the timeseries directory.
         If None: `timeseries_directory = outputs_directory`.
@@ -55,15 +54,15 @@ def plot_all_flows(
 
     Returns
     -------
-        None
-        Saves figure into outputs_directory
-    -------
+    None
+        Saves figure into outputs_directory.
     """
+
     # check if weekday is a valid day
     if weekday not in range(0, 6, 1):
         logging.error(
             "The weekday is not valid. Please choose a number "
-            "between 0-6 with 0:Monaday and 6:Sunday."
+            "between 0-6 with 0:Monday and 6:Sunday."
         )
 
     # read timeseries
@@ -143,9 +142,30 @@ def plot_all_flows(
 
 
 def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value):
-    """
-    :param scenario_dict:
-    :return:
+    r"""
+    Plots scenario matrix.
+
+    Parameters
+    ----------
+    scenario_dict: dict
+        Dictionary with the scenario names that should be compared as keys and
+        a label for the scenario as value. e.g.: {"Scenario_A1" : "si", "Scenario_A2": "cpv"}
+        Notice: all scenarios you want to compare, need to include the
+        loop-outputs for the same variable / steps. The scenario names
+        should follow the scheme: "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+    variable_name: str
+        Name of the variable.
+    outputs_directory: str or None
+        Path to the directory in which the plot should be saved.
+        If None: `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
+        Default: None.
+    basis_value: int
+
+    Returns
+    -------
+    None
+    Figure: png
+        Saves figure into outputs_directory.
     """
     LCOE = pd.DataFrame()
     INSTCAP = pd.DataFrame()
@@ -255,30 +275,35 @@ def compare_weather_years(
     outputs_directory=None,
     user_inputs_mvs_directory=None,
 ):
-    """
+    r"""
     Bar plot that shows yearly aggregated weather parameters: ghi, dni, dhi and temperature.
 
     Parameters
     ----------
-    latitude: float
-        latitude of the location
-    longitude: float
-        longitude of the location
+    latitude : float
+        Latitude of country location in `country`.
+    longitude : float
+        Longitude of country location in `country`.
     country: str
-        country of simulation
-    static_inputs_directory: str
-        if None: 'constants.DEFAULT_STATIC_INPUTS_DIRECTORY'
-    outputs_directory: str
-        if None: 'constants.DEFAULT_OUTPUTS_DIRECTORY
-    user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        The country's name of simualtion
+    static_inputs_directory: str or None
+        Path to pvcompare static inputs. If None,
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used.
         Default: None.
+    outputs_directory: str or None
+        Path to the directory in which the plot should be saved.
+        If None: `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
+        Default: None.
+    user_inputs_mvs_directory: str or None
+        Path to input directory containing files that describe the energy
+        system and that are an input to MVS. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
+        Default: None.
+
     Returns
     -------
-        None
+    None
         The plot is saved into the `output_directory`.
-    -------
     """
 
     if static_inputs_directory == None:
@@ -411,11 +436,13 @@ def compare_weather_years(
 def plot_kpi_loop(
     variable_name, kpi, scenario_dict, outputs_directory=None,
 ):
+    r"""
+    Plots list of key performance indicators (KPIs) of a 'mvs_output/scalars_**.xlsx' file.
 
-    """
     Plots KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs`
     for a loop over one variable.
     The plot is saved into the `loop_output_directory`.
+
     Parameters
     ----------
     variable_name: str
@@ -436,21 +463,23 @@ def plot_kpi_loop(
             "Total non-renewable energy use",
             "Total costs",
             "Total annual production"
-    scenario_dict: dictionary
-        dictionary with the scenario names that should be compared as keys and
+    scenario_dict: dict
+        Dictionary with the scenario names that should be compared as keys and
         a label for the scenario as value. e.g.: {"Scenario_A1" : "si", "Scenario_A2": "cpv"}
-         Notice: all scenarios you want to compare, need to include the
-         loop-outputs for the same variable / steps. The scenario names
-         should follow the scheme: "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
-    outputs_directory: str
-        Path to output directory.
-        Default: constants.DEFAULT_OUTPUTS_DIRECTORY
+        Notice: all scenarios you want to compare, need to include the
+        loop-outputs for the same variable / steps. The scenario names
+        should follow the scheme: "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+    outputs_directory: str or None
+        Path to the directory in which the plot should be saved.
+        If None: `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
+        Default: None.
+
     Returns
     -------
-        None
-        saves figure into `loop_output_directory`
-    -------
+    None
+        Saves figure into `loop_output_directory`.
     """
+
     output_dict = {}
     for scenario_name in scenario_dict.keys():
         if outputs_directory == None:
@@ -669,11 +698,11 @@ def plot_kpi_loop(
 def plot_facades(
     variable_name, kpi, scenario_name, outputs_directory=None,
 ):
+    r"""
+    Plots KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs` for a loop over one variable.
 
-    """
-    Plots KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs`
-    for a loop over one variable.
     The plot is saved into the `loop_output_directory`.
+
     Parameters
     ----------
     variable_name: str
@@ -686,17 +715,18 @@ def plot_facades(
             "LCOE PV",
             "Installed capacity PV",
     scenario_name: str
-        The scenario names
-         should follow the scheme: "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
-    outputs_directory: str
-        Path to output directory.
-        Default: constants.DEFAULT_OUTPUTS_DIRECTORY
+        Name of the Scenario.
+    outputs_directory: str or None
+        Path to the directory in which the plot should be saved.
+        If None: `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
+        Default: None.
+
     Returns
     -------
-        None
-        saves figure into `loop_output_directory`
-    -------
+    None
+        Saves figure into `loop_output_directory`.
     """
+
     if outputs_directory == None:
         outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY
         scenario_folder = os.path.join(outputs_directory, scenario_name)
@@ -870,7 +900,12 @@ def plot_facades(
 
 
 def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=None):
-    """
+    r"""
+    Comparison of scenarios for specific KPI's.
+
+    variable_name: str
+        Name of the variable that is changed each loop. Please do not enter
+        white spaces within the string.
     kpi: list of str
         List of KPI's to be plotted.
         Possible entries:
@@ -886,18 +921,20 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
             "Total non-renewable energy use"
     scenario_list: list
         List with the scenario names that should be compared
-         Notice: all scenarios you want to compare, need to include the
-         loop-outputs for the same variable / steps. The scenario names
-         should follow the scheme: "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
-    outputs_directory: str
-        Path to output directory.
-        Default: constants.DEFAULT_OUTPUTS_DIRECTORY
+        Notice: all scenarios you want to compare, need to include the
+        loop-outputs for the same variable / steps. The scenario names
+        should follow the scheme: "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+    outputs_directory: str or None
+        Path to the directory in which the plot should be saved.
+        If None: `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
+        Default: None.
+
     Returns
     -------
-        None
-        saves figure into `loop_output_directory`
-    -------
+    None
+        Saves figure into `loop_output_directory`.
     """
+
     # height = len(kpi) * 2
     # fig = plt.figure(figsize=(7, height))
 
@@ -1168,7 +1205,9 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
 def plot_compare_technologies(
     variable_name, kpi, scenario_list, outputs_directory=None
 ):
-    """
+    r"""
+    Comparison of different technologies for specific KPI's.
+
     kpi: list of str
         List of KPI's to be plotted.
         Possible entries:
@@ -1184,18 +1223,20 @@ def plot_compare_technologies(
             "Total non-renewable energy use"
     scenario_list: list
         List with the scenario names that should be compared
-         Notice: all scenarios you want to compare, need to include the
-         loop-outputs for the same variable / steps. The scenario names
-         should follow the scheme: "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
-    outputs_directory: str
-        Path to output directory.
-        Default: constants.DEFAULT_OUTPUTS_DIRECTORY
+        Notice: all scenarios you want to compare, need to include the
+        loop-outputs for the same variable / steps. The scenario names
+        should follow the scheme: "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+    outputs_directory: str or None
+        Path to the directory in which the plot should be saved.
+        If None: `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
+        Default: None.
+
     Returns
     -------
-        None
-        saves figure into `loop_output_directory`
-    -------
+    None
+        Saves figure into `loop_output_directory`.
     """
+
     # height = len(kpi) * 2
     # fig = plt.figure(figsize=(7, height))
 
