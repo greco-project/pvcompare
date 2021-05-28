@@ -69,15 +69,17 @@ def apply_pvcompare(
     year: int
         Year of the simulation. Default: None.
     static_inputs_directory: str or None
-        Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
+        Path to pvcompare static inputs. If None,
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used.
         Default: None.
     user_inputs_pvcompare_directory: str or None
-        Directory of the user inputs. If None,
-        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
+        Path to user input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used.
         Default: None.
-    user_inputs_mvs_directory: str or None
-        Path to mvs input directory. If None: DEFAULT_USER_INPUTS_MVS_DIRECTORY. Default: None.
+    user_inputs_mvs_directory : str or None
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
+        Default: None.
     collections_mvs_inputs_directory: str or None
         Path to input data collection. Used in
         :py:func:`~.check_inputs.overwrite_mvs_energy_production_file`, there
@@ -220,23 +222,24 @@ def apply_mvs(
     mvs_output_directory=None,
 ):
     r"""
-    Starts the energy system simulation with MVS and stores results.
+    Starts the energy system optimization with MVS and stores results.
 
     Parameters
     ----------
     scenario_name: str
         Name of the Scenario.
-    user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+    user_inputs_mvs_directory : str or None
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
         Default: None.
     outputs_directory: str
-        Path to output directory.
-        Default: constants.DEFAULT_OUTPUTS_DIRECTORY
+        Path to output directory where results are saved. If None,
+        `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
+        Default: None.
     mvs_output_directory: str or None
-        Path to input directory containing files that describe the energy
-        system and that are an input to MVS. Default:
-        DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`).
+        Path to mvs output directory where specific results are saved.If None,
+        `constants.DEFAULT_MVS_OUTPUT_DIRECTORY` is used.
+        Default: None.
 
     Returns
     -------
