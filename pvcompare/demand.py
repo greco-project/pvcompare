@@ -355,6 +355,10 @@ def calculate_heat_demand(
         hourly weather data frame with the columns:
         time, latitude, longitude, wind_speed, temp_air, ghi, dhi, dni,
         precipitable_water.
+    static_inputs_directory: str or None
+        Directory of the pvcompare static inputs. If None,
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used.
+        Default: None.
     user_inputs_pvcompare_directory: str or None
         Path to user input directory. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used.
