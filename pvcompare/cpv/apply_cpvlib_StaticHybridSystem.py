@@ -159,7 +159,7 @@ def create_cpv_time_series(
 
 def calculate_efficiency_ref():
     r"""
-    Calculates maximum power output and efficiency for the CPV cells and flat plate module.
+    Calculates maximum power output and efficiency for the CPV and flat plate module.
 
     The P_mp and efficiency are calculated at its reference conditions
 
