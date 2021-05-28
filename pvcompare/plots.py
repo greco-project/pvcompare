@@ -147,7 +147,6 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
 
     Parameters
     ----------
-    TODO: No further information on pvcompare, please check parameter format
     scenario_dict: dict
         Dictionary with the scenario names that should be compared as keys and
         a label for the scenario as value. e.g.: {"Scenario_A1" : "si", "Scenario_A2": "cpv"}
@@ -278,8 +277,6 @@ def compare_weather_years(
 ):
     r"""
     Bar plot that shows yearly aggregated weather parameters: ghi, dni, dhi and temperature.
-
-    TODO: What do the abbreviations ghi, dhi, dni mean?
 
     Parameters
     ----------
@@ -701,7 +698,6 @@ def plot_facades(
     variable_name, kpi, scenario_name, outputs_directory=None,
 ):
     r"""
-    TODO: KPI is not used in function
     Plots KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs` for a loop over one variable.
 
     The plot is saved into the `loop_output_directory`.
