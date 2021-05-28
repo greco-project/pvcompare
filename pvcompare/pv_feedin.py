@@ -305,9 +305,8 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
     r"""
     Sets up pvlibPVSystems.
 
-    Initializes the pvlib.PVSystem for the given type of technology and returns
-    the system and the module parameters as a dictionary.
-    TODO: Reference to the pvlibPVSystems?
+    Initializes the `pvlib.PVSystem <https://pvlib-python.readthedocs.io/en/stable/pvsystem.html>`_
+    for the given type of technology and returns the system and the module parameters as a dictionary
 
     Parameters
     ----------
@@ -320,8 +319,8 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
 
     Returns
     -------
-    PVSystem: :pandas:`pandas.Series<series>`
-        Initialized PV system and module parameters.
+    Depending on `technology` returns the system and the module parameters
+
     """
 
     if technology == "si":
@@ -377,8 +376,8 @@ def create_si_time_series(
     r"""
     Calculates feed-in time series for a silicon PV module.
 
-    The cpv time series is created for a given weather data frame, at a given
-    orientation for the flat plate module 'Canadian_Solar_CS5P_220M___2009_'.
+    The si time series is created for a given weather data frame at a given
+    orientation for the flat plate module 'Aleo_Solar_S59y280'.
     If `normalization` is True the time series is normalized.
 
     Parameters
@@ -436,7 +435,7 @@ def create_cpv_time_series(
     lat, lon, weather, surface_azimuth, surface_tilt, normalization
 ):
     r"""
-    Creates power time series of a CPV module.
+    Creates power time series of a hybrid CPV module.
 
     The CPV time series is created for a given weather data frame `weather`
     for the INSOLIGHT CPV module. If `normalization` is True the time

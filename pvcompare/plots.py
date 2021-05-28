@@ -29,8 +29,7 @@ def plot_all_flows(
     Parameters
     ----------
     scenario_name: str
-        Name of the Scenario. The name should follow the scheme:
-        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+        Name of the Scenario.
     outputs_directory: str or None
         Path to the directory in which the plot should be saved.
         If None: `outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY`
@@ -701,12 +700,10 @@ def plot_kpi_loop(
 def plot_facades(
     variable_name, kpi, scenario_name, outputs_directory=None,
 ):
-
     r"""
     TODO: KPI is not used in function
+    Plots KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs` for a loop over one variable.
 
-    Plots KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs`
-    for a loop over one variable.
     The plot is saved into the `loop_output_directory`.
 
     Parameters
@@ -721,8 +718,7 @@ def plot_facades(
             "LCOE PV",
             "Installed capacity PV",
     scenario_name: str
-        Name of the Scenario. The name should follow the scheme:
-        "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
+        Name of the Scenario.
     outputs_directory: str or None
         Path to the directory in which the plot should be saved.
         If None: `outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY`

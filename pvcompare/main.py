@@ -76,10 +76,12 @@ def apply_pvcompare(
         Directory of the user inputs. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
-    user_inputs_mvs_directory : str or None
+    user_inputs_mvs_directory: str or None
         Path to mvs input directory. If None: DEFAULT_USER_INPUTS_MVS_DIRECTORY. Default: None.
-    collections_mvs_inputs_directory: TODO: Parameter missing in pvcompare as well
-        ...
+    collections_mvs_inputs_directory: str or None
+        Path to input data collection. Used in
+        :py:func:`~.check_inputs.overwrite_mvs_energy_production_file`, there
+        if None, it is set to `constants.DEFAULT_COLLECTION_MVS_INPUTS_DIRECTORY`.
     plot: bool
         If True, plots of the PV feed-in time series are created in
         :py:func:`~.pv_feedin.create_pv_components`. Default: False.
