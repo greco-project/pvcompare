@@ -28,8 +28,7 @@ except ImportError:
 
 
 def add_scenario_name_to_project_data(user_inputs_mvs_directory, scenario_name):
-
-    """
+    r"""
     Matches user input `scenario_name` with `scenario_name` in 'project_data.csv'.
 
     If user input `scenario_name` is different to the parameter in
@@ -41,12 +40,13 @@ def add_scenario_name_to_project_data(user_inputs_mvs_directory, scenario_name):
     user_inputs_mvs_directory: str or None
         Path to MVS specific input directory. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
+        Default: None.
     scenario_name: str
         Name of the Scenario.
 
     Returns
     -------
-
+    None
     """
     add_parameter_to_mvs_file(
         user_inputs_mvs_directory=user_inputs_mvs_directory,
@@ -66,8 +66,7 @@ def add_location_and_year_to_project_data(
     country,
     year,
 ):
-
-    """
+    r"""
     Matches user input for year, latitude, longitude and country with mvs_inputs.
 
     If location (latitude, longitude, country) and year are entered as user
@@ -242,6 +241,7 @@ def add_local_grid_parameters(static_inputs_directory, user_inputs_mvs_directory
     user_inputs_mvs_directory: str or None
         Path to MVS specific input directory. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
+        Default: None.
     static_inputs_directory: str or None
         Path to pvcompare static inputs. If None,
         `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used.
@@ -329,7 +329,7 @@ def overwrite_mvs_energy_production_file(
     overwrite_pv_parameters,
     collections_mvs_inputs_directory=None,
 ):
-    """
+    r"""
     Inserts default values for PV technologies defined in 'pv_setup.csv'.
 
     This function compares the number of powerplants in 'energyProduction.csv'
@@ -340,7 +340,7 @@ def overwrite_mvs_energy_production_file(
     ----------
     pv_setup: dict
         Dictionary that contains the surface types with technology and
-        orientation
+        orientation.
     user_inputs_mvs_directory: str or None
         Path to MVS specific input directory. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
@@ -631,7 +631,6 @@ def load_parameter_from_mvs_file(
 def add_parameters_to_storage_xx_file(
     nominal_storage_capacity, loss_rate, storage_csv, user_inputs_mvs_directory=None
 ):
-
     r"""
     Enters new parameters into 'storage_xx.csv'.
 
