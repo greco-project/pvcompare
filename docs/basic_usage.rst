@@ -99,7 +99,7 @@ on how to provide your time series.
 In oder to provide your own weather data, you need to insert the path
 to your weather file to the parameter ``add_weather_data`` in the :py:func:`~.main.apply_pvcompare` function. The file
 should be a csv file with the columns: [time, latitude, longitude,
-,ghi, dni, dhi, wind_speed, temp_air, precipitable_water].
+ghi, dni, dhi, wind_speed, temp_air, precipitable_water] and contain hourly time series.
 
 You can also download ERA5 data yourself. `oemof feedinlib <https://feedinlib.readthedocs.io/en/releases-0.1.0/load_era5_weather_data.html>`_ provides a jupyter notebook with instructions on how to download data for a single coordinate or a region.
 
