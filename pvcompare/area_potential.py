@@ -33,6 +33,7 @@ def calculate_area_potential(storeys, user_inputs_pvcompare_directory, surface_t
     user_inputs_pvcompare_directory: str or None
         Path to user input directory. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used.
+        Default: None._USER_INPUTS_MVS_DIRECTORY` is used.
         Default: None.
     surface_type: str
         possible values: "flat_roof", "gable_roof", "east_facade",

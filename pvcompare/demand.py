@@ -80,14 +80,14 @@ def calculate_load_profiles(
         time, latitude, longitude, wind_speed, temp_air, ghi, dhi, dni,
         precipitable_water.
     static_inputs_directory: str or None
-        Directory of the pvcompare static inputs. If None,
+        Path to pvcompare static inputs. If None,
         `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used.
         Default: None.
     user_inputs_pvcompare_directory: str or None
         Path to user input directory. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used.
         Default: None.
-    user_inputs_mvs_directory : str or None
+    user_inputs_mvs_directory: str or None
         Path to MVS specific input directory. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
         Default: None.
@@ -175,18 +175,18 @@ def calculate_power_demand(
     column: str
         name of the demand column
     static_inputs_directory: str or None
-        Directory of the pvcompare static inputs. If None,
+        Path to pvcompare static inputs. If None,
         `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used.
         Default: None.
     user_inputs_pvcompare_directory: str or None
         Path to user input directory. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used.
         Default: None.
-    user_inputs_mvs_directory : str or None
-        Path to MVS specific input directory. If None,
+    user_inputs_mvs_directory: str or None
+        Path to input directory containing files that describe the energy
+        system and that are an input to MVS. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
         Default: None.
-
 
     Returns
     -------
@@ -363,8 +363,9 @@ def calculate_heat_demand(
         Path to user input directory. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used.
         Default: None.
-    user_inputs_mvs_directory : str or None
-        Path to MVS specific input directory. If None,
+    user_inputs_mvs_directory: str or None
+        Path to input directory containing files that describe the energy
+        system and that are an input to MVS. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
         Default: None.
 

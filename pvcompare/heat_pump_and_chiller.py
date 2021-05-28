@@ -53,13 +53,14 @@ def calculate_cops_and_eers(
         Defines whether COPs of heat pump ("heat_pump") or EERs of chiller
         ("chiller") are calculated. Default: "heat_pump".
     user_inputs_pvcompare_directory: str or None
-        Directory of the user inputs. If None,
-        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
+        Path to user input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used.
         Default: None.
     user_inputs_mvs_directory: str or None
         Path to input directory containing files that describe the energy
-        system and that are an input to MVS. Default:
-        DEFAULT_MVS_OUTPUT_DIRECTORY (see :func:`~pvcompare.constants`).
+        system and that are an input to MVS. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
+        Default: None.
 
     Returns
     -------
