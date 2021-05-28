@@ -30,6 +30,7 @@ Here is a template for new release sections
 - Add info on energy systems consisting of more than one node in RTD section "scope and limitations" (#293)
 - Added description of the implementation of the stratified thermal storage in pvcompare with a description of the possibilities modeling it (#291)
 - Dokumentation: Update on 'basic_usage', 'parameter description' and 'model assumptions' (#302)
+- Add gas bus to `energyBusses.csv` in  `tests/data/user_inputs/mvs_inputs_sector_coupling/csv_elements` (#314)
 
 ### Changed
 - The inlet temperatures of the heat pump and the stratified thermal storage have been revised in the pvcompare input parameters, adapting them in order to fit typical temperatures of the heating system. Also the pvcompare input parameters of the stratified thermal storage have been revised (#272)
@@ -48,9 +49,10 @@ Here is a template for new release sections
 - Minor changes and corrections in RTD (#316)
 
 ### Removed
+- Remove lines that add gas bus in `test_raiseError_temperature_match_hp()` as this is not needed anymore (#314)
 - Delete `if __name__ == "__main__"` statements of modules (#323)
 - Remove `greco_technologies` from `setup.py` (#323)
-- 
+
 ### Fixed
 - fix PV costs parameters and PSI lifetime (#273)
 - fix number of houses to 20 (8 flats per storey makes 40 flats per house with 5 storeys, makes 800 in total (and 480 for 3 storeys)) (#273)

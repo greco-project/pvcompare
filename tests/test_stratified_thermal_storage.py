@@ -324,16 +324,6 @@ class TestTES:
                 overwrite_pv_parameters=True,
             )
 
-        # Add gas bus
-        energy_busses = self.energy_busses_original.copy()
-        energy_bus_gas = pd.DataFrame(data={"": ["energyVector"], "Gas bus": ["Heat"]})
-        energy_busses.reset_index(drop=True, inplace=False)
-        energy_busses = energy_busses.join(energy_bus_gas, how="right")
-        energy_busses = energy_busses.set_index("")
-        energy_busses.to_csv(
-            os.path.join(self.mvs_csv_inputs_path, "energyBusses.csv"), na_rep="NaN"
-        )
-
         # Add gas provider
         energy_providers = self.energy_providers_original.copy()
         providers_index = energy_providers.index
@@ -408,7 +398,7 @@ class TestTES:
 
         assert result == 0
 
-        # Revert changes made in mvs csv input files
+        # Revert changes made in mvs and pvcompare csv input files
         strat_tes_original.to_csv(strat_tes_file_path, na_rep="NaN")
 
         self.storage_xx_original.to_csv(
