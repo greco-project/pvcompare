@@ -1013,25 +1013,3 @@ def _smartsAll(
         print("")
 
     return data
-
-
-if __name__ == "__main__":
-    # def SMARTSSpectra(IOUT, YEAR, MONTH, DAY, HOUR, LATIT, LONGIT, WLMN, 'WLMX', 'TAIR', 'TDAY', 'SEASON', 'ZONE', 'TILT', and 'WAZIM')
-    df = SMARTSSpectra(
-        "2 3",
-        "2010",
-        "6",
-        "1",
-        "12",
-        "40.",
-        "-3.703790",
-        "400",
-        "1200",
-        "15",
-        "10",
-        "SUMMER",
-        "1",
-        "30",
-        "180",
-    )
-    print(df["Direct_normal_irradiance"].sum())

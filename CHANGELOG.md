@@ -30,6 +30,7 @@ Here is a template for new release sections
 - Add info on energy systems consisting of more than one node in RTD section "scope and limitations" (#293)
 - Added description of the implementation of the stratified thermal storage in pvcompare with a description of the possibilities modeling it (#291)
 - Dokumentation: Update on 'basic_usage', 'parameter description' and 'model assumptions' (#302)
+- Add gas bus to `energyBusses.csv` in  `tests/data/user_inputs/mvs_inputs_sector_coupling/csv_elements` (#314)
 
 ### Changed
 - The inlet temperatures of the heat pump and the stratified thermal storage have been revised in the pvcompare input parameters, adapting them in order to fit typical temperatures of the heating system. Also the pvcompare input parameters of the stratified thermal storage have been revised (#272)
@@ -44,9 +45,13 @@ Here is a template for new release sections
 - All parameters in `fixcost.csv` have been set to zero except for the lifetime, which has been set to one for all in order to avoid ZeroDivisionError (#299)
 - Corrected description of installation requirements in contributing.md (#306)
 - Changed order of checks in github actions workflow - linting with black is last check now, to prevent failing due to black before pytest are run. (#298)
+- Renamed "GRECO Results" section in RTD to "Selected results of the GRECO project" (#316)
+- Minor changes and corrections in RTD (#316)
 
 ### Removed
--
+- Remove lines that add gas bus in `test_raiseError_temperature_match_hp()` as this is not needed anymore (#314)
+- Delete `if __name__ == "__main__"` statements of modules (#323)
+- Remove `greco_technologies` from `setup.py` (#323)
 
 ### Fixed
 - fix PV costs parameters and PSI lifetime (#273)
@@ -60,6 +65,15 @@ Here is a template for new release sections
 - Hot fix: remove build for python 3.6 from `main.yml` github actions workflow (#270)
 - Hot fix: correct parameter `overwrite_grid_parameters` in `run_pvcompare.py` (#294)
 - Hot fix: Move `test_examples.py` to `examples` directory to make tests work in CI and add `__init__.py` to `examples` (#298)
+
+## [0.0.3] - 2021-05-20
+
+### Added
+- General description of module is added for `main.py`. (#303)
+
+### Changed
+- Description for multiple functions in the modules `area_potential`, `check_inputs`, `demand`, `cpv/apply_cpvlib_StaticHybridSystem`, `heat_pump_and_chiller`, `main`, `plots` were updated and corrected. (#303)
+- "Year for which power demand time series is calculated" is set between 2008-2018. (#303)
 
 ## [0.0.2] - 2021-03-24
 

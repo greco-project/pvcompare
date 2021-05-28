@@ -42,7 +42,6 @@ setup(
         "maya~=0.6.1",
         "workalendar < 7.0.0",
         "multi_vector_simulator[report]==0.5.5",
-        "greco_technologies @ git+https://github.com/greco-project/greco_technologies.git@dev#egg=greco_technologies-0",
         "cpvlib @ git+https://github.com/isi-ies-group/cpvlib.git@2020-11#egg=cpvlib-0",
         "mock>=3.0.5",
         "plotly==4.14.2",
