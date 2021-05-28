@@ -50,6 +50,8 @@ Here is a template for new release sections
 
 ### Removed
 - Remove lines that add gas bus in `test_raiseError_temperature_match_hp()` as this is not needed anymore (#314)
+- Delete `if __name__ == "__main__"` statements of modules (#323)
+- Remove `greco_technologies` from `setup.py` (#323)
 
 ### Fixed
 - fix PV costs parameters and PSI lifetime (#273)

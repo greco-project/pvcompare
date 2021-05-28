@@ -495,7 +495,3 @@ def run_stratified_thermal_storage():
         print(name)
         print(param)
         print(dash)
-
-
-if __name__ == "__main__":
-    run_stratified_thermal_storage()
