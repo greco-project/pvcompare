@@ -766,7 +766,7 @@ def add_pv_timeseries(
         as  user_inputs_pvcompare_directory.
         Default: None.
 
-    Return
+    Returns
     -------
         None
     """
