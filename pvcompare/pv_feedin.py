@@ -778,7 +778,7 @@ def add_pv_timeseries(
     for key in add_pv_timeseries.keys():
         # check if PV timeseries exists
         if not os.path.isfile(add_pv_timeseries[key]["filename"]):
-            logging.error(
+            raise ValueError(
                 "The PV time series you have specified does not exist. "
                 "Please check your input or set `add_pv_timeseries` to None "
                 "in order to use the default pvcompare methods."

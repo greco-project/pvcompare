@@ -161,6 +161,47 @@ class TestMain:
             == filename_electricity_demand
         )
 
+    def test_apply_pvcompare_add_demand_does_not_exist(self):
+        # delete file
+        directory = os.path.join(self.user_inputs_mvs_directory, "time_series")
+        filelist = glob.glob(os.path.join(directory, "*.csv"))
+        for f in filelist:
+            os.remove(f)
+
+        filename_electricity_demand = os.path.join(
+            self.user_inputs_mvs_directory, "predefined_time_series/not_available.csv",
+        )
+
+        main.apply_pvcompare(
+            storeys=self.storeys,
+            country=self.country,
+            latitude=self.latitude,
+            longitude=self.longitude,
+            year=self.year,
+            static_inputs_directory=self.static_inputs_directory,
+            user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+            user_inputs_mvs_directory=self.user_inputs_mvs_directory,
+            collections_mvs_inputs_directory=self.user_inputs_collection_mvs,
+            plot=False,
+            pv_setup=None,
+            overwrite_grid_parameters=True,
+            overwrite_pv_parameters=True,
+            add_heat_demand=None,
+            add_electricity_demand=filename_electricity_demand,
+        )
+
+        energyConsumption = pd.read_csv(
+            os.path.join(
+                self.user_inputs_mvs_directory, "csv_elements/energyConsumption.csv"
+            ),
+            index_col=0,
+            header=0,
+        )
+        assert (
+            energyConsumption.at["file_name", "Electricity demand"]
+            == "electricity_load_2017_Germany_5.csv"
+        )
+
     def test_apply_pvcompare_add_pv_timeseries(self):
 
         filename_pv_timeseries = os.path.join(
@@ -200,6 +241,36 @@ class TestMain:
             header=0,
         )
         assert energyProduction.at["file_name", "PV si"] == filename_pv_timeseries
+
+    def test_apply_pvcompare_add_pv_timeseries_does_not_exist(self):
+        filename_pv_timeseries = os.path.join(
+            self.user_inputs_mvs_directory, "predefined_time_series/not_available.csv",
+        )
+
+        with pytest.raises(ValueError):
+            main.apply_pvcompare(
+                storeys=self.storeys,
+                country=self.country,
+                latitude=self.latitude,
+                longitude=self.longitude,
+                year=self.year,
+                static_inputs_directory=self.static_inputs_directory,
+                user_inputs_pvcompare_directory=self.user_inputs_pvcompare_directory,
+                user_inputs_mvs_directory=self.user_inputs_mvs_directory,
+                collections_mvs_inputs_directory=self.user_inputs_collection_mvs,
+                plot=False,
+                pv_setup=None,
+                overwrite_grid_parameters=True,
+                overwrite_pv_parameters=False,
+                add_pv_timeseries={
+                    "si": {
+                        "filename": filename_pv_timeseries,
+                        "module_size": 1,
+                        "module_peak_power": 50,
+                        "surface_type": "flat_roof",
+                    }
+                },
+            )
 
     def test_apply_pvcompare_add_sam_si_module(self):
 
