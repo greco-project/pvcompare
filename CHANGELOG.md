@@ -50,6 +50,7 @@ Here is a template for new release sections
 - Changed order of checks in github actions workflow - linting with black is last check now, to prevent failing due to black before pytest are run. (#298)
 - Renamed "GRECO Results" section in RTD to "Selected results of the GRECO project" (#316)
 - Minor changes and corrections in RTD (#316)
+- Adaptions to docstring of `apply_pvcompare()` and `add_pv_timeseries()` ( #322)
 
 ### Removed
 - Remove lines that add gas bus in `test_raiseError_temperature_match_hp()` as this is not needed anymore (#314)
