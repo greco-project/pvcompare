@@ -237,8 +237,9 @@ def apply_mvs(
         `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
         Default: None.
     mvs_output_directory: str or None
-        Path to mvs output directory where specific results are saved.If None,
-        `constants.DEFAULT_MVS_OUTPUT_DIRECTORY` is used.
+        This parameter should be set to None. It is filled in automatically
+        according to `outputs_directory` and `scenario_name`:
+        'outputs_directory/scenario_name/mvs_output'.
         Default: None.
 
     Returns
