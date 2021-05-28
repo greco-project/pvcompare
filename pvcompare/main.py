@@ -76,8 +76,9 @@ def apply_pvcompare(
         Path to user input directory. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used.
         Default: None.
-    user_inputs_mvs_directory : str or None
-        Path to MVS specific input directory. If None,
+    user_inputs_mvs_directory: str or None
+        Path to input directory containing files that describe the energy
+        system and that are an input to MVS. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
         Default: None.
     collections_mvs_inputs_directory: str or None
@@ -228,8 +229,9 @@ def apply_mvs(
     ----------
     scenario_name: str
         Name of the Scenario.
-    user_inputs_mvs_directory : str or None
-        Path to MVS specific input directory. If None,
+    user_inputs_mvs_directory: str or None
+        Path to input directory containing files that describe the energy
+        system and that are an input to MVS. If None,
         `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
         Default: None.
     outputs_directory: str

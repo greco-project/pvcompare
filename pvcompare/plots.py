@@ -32,7 +32,7 @@ def plot_all_flows(
         Name of the Scenario.
     outputs_directory: str or None
         Path to the directory in which the plot should be saved.
-        If None: `outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY`
+        If None: `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
         Default: None.
     timeseries_directory: str or None
         Path to the timeseries directory.
@@ -157,7 +157,7 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
         Name of the variable.
     outputs_directory: str or None
         Path to the directory in which the plot should be saved.
-        If None: `outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY`
+        If None: `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
         Default: None.
     basis_value: int
 
@@ -287,16 +287,17 @@ def compare_weather_years(
     country: str
         The country's name of simualtion
     static_inputs_directory: str or None
-        Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
+        Path to pvcompare static inputs. If None,
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used.
         Default: None.
     outputs_directory: str or None
         Path to the directory in which the plot should be saved.
-        If None: `outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY`
+        If None: `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
         Default: None.
     user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Path to input directory containing files that describe the energy
+        system and that are an input to MVS. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
         Default: None.
 
     Returns
@@ -470,7 +471,7 @@ def plot_kpi_loop(
         should follow the scheme: "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
     outputs_directory: str or None
         Path to the directory in which the plot should be saved.
-        If None: `outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY`
+        If None: `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
         Default: None.
 
     Returns
@@ -717,7 +718,7 @@ def plot_facades(
         Name of the Scenario.
     outputs_directory: str or None
         Path to the directory in which the plot should be saved.
-        If None: `outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY`
+        If None: `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
         Default: None.
 
     Returns
@@ -925,7 +926,7 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
         should follow the scheme: "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
     outputs_directory: str or None
         Path to the directory in which the plot should be saved.
-        If None: `outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY`
+        If None: `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
         Default: None.
 
     Returns
@@ -1227,7 +1228,7 @@ def plot_compare_technologies(
         should follow the scheme: "Scenario_A1", "Scenario_A2", "Scenario_B1" etc.
     outputs_directory: str or None
         Path to the directory in which the plot should be saved.
-        If None: `outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY`
+        If None: `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
         Default: None.
 
     Returns
