@@ -175,8 +175,6 @@ The utilization factors are defined as follows:
     :width: 60%
     :align: center
 
-    ".."
-
 The overall model for the hybrid system is illustrated in the next figure.
 
 
