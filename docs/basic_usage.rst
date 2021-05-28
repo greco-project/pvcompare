@@ -14,7 +14,7 @@ There are three examples, one that accounts only for the electricity sector, one
 
 Here's an example energy system graph of a sector coupled scenario of the simulation provided in ``examples/run_pvcompare_example_sector_coupling.py``.
 
-.. figure:: ./images/basic_usage_energy_system_graph.png
+.. figure:: ./images/energy_system_graph.png
     :width: 100%
     :alt: energy system graph.
     :align: center
