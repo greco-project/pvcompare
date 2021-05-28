@@ -98,8 +98,8 @@ def create_pv_components(
         If True: Time series is normalized. Otherwise absolute time series is
         returned. Default: True.
     add_sam_si_module: dict
-        with library (’CECMod’  or "SandiaMod") as key and module name as value.
-        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}
+        Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}
 
     Returns
     -------
@@ -316,8 +316,8 @@ def set_up_system(technology, surface_azimuth, surface_tilt, add_sam_si_module=N
         surface azimuth of the module
     surface_tilt: float
         surface tilt of the module
-        Dictionary with library (’CECMod’  or "SandiaMod") as key and module name as value.
-        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}.
+        Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}.
         Note that the SI module is only considered if there is the technology "SI" in
 
     Returns
@@ -413,8 +413,8 @@ def create_si_time_series(
         If True: Time series is normalized. Otherwise absolute time series is
         returned.
     add_sam_si_module: dict
-        Dictionary with library (’CECMod’  or "SandiaMod") as key and module name as value.
-        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}.
+        Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}.
         Note that the SI module is only considered if there is the technology "SI" in
 
     Returns
@@ -635,8 +635,8 @@ def nominal_values_pv(
     surface_tilt: float
         surface tilt of the modules
     add_sam_si_module: dict or None
-        Dictionary with library (’CECMod’  or "SandiaMod") as key and module name as value.
-        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}.
+        Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}.
         Note that the SI module is only considered if there is the technology "SI" in
 
     Returns
@@ -737,9 +737,11 @@ def add_pv_timeseries(
     user_inputs_mvs_directory,
     user_inputs_pvcompare_directory,
 ):
-    """
+    r"""
+    Adds PV time series of user to the simulations inputs.
+    
     This function calculates the maximal capacity and inserts the time series filename
-    and the maximum capacity into 'user_inputs/mvs_inputs/csv_elements/energyProduction.csv'.
+    and the maximum capacity into 'user_inputs_mvs_directory/csv_elements/energyProduction.csv'.
 
     Parameter
     ----------

@@ -183,7 +183,7 @@ def apply_pvcompare(
     # add datetimeindex
     weather.index = pd.to_datetime(weather.index)
 
-    # check if add_pv_time_series is True
+    # check if add_pv_time_series is provided
     if add_pv_timeseries is not None:
         pv_feedin.add_pv_timeseries(
             add_pv_timeseries=add_pv_timeseries,

@@ -106,30 +106,33 @@ You can also download ERA5 weather data yourself. `oemof feedinlib <https://feed
 **Demand time series**
 
 In order to add your own heat and/or electricity demand time series provide the path to the file(s) with ``add_electricity_demand`` and/or ``add_heat_demand``
-in :py:func:`~.main.apply_pvcompare`. Note that the respective demand is only considered, if a column "Electricity demand" or "Heat demand"
-exists in ``data/user_inputs/mvs_inputs/csv_elements/energyConsumption.csv``.
-The demand time series should be given as an hourly time series in kW.
+in :py:func:`~.main.apply_pvcompare`. Note that the respective demand is only considered, if you add a column with the ``energy_vector`` "Heat" or "Electricity"
+to ``energyConsumption.csv`` in ``user_inputs_mvs_directory/csv_elements``.
+To match the unit of calculated time series (e.g. of PV production), the demand time series should be given as an hourly time series in kW.
 
-**PV time series**
+**PV generation time series**
 
-You can add your own PV time series by defining ``add_pv_timeseries`` in :py:func:`~.main.apply_pvcompare`.
+You can add your own PV generation time series by defining ``add_pv_timeseries`` in :py:func:`~.main.apply_pvcompare`.
 Instead of just providing the path to the file, you need to define a dictionary with additional information
 on the PV module you are considering, in order to allow the calculation of the area potential for your module.
 The dictionary should be given as follows:
+.. code-block:: python
+
     {"PV1" : ["filename": >path_to_time_series< , "module_size": >module_size in m²<,
     "module_peak_power": >peak power of the module in kWp<, "surface_type": >surface_type for PV installation<],
     "PV2" : [...], ...}
+    
 You can add more than one module time series by defining more PV-keys.
-The PV time series itself needs to be be an normalized hourly time series in kW/kWp
-(normalized by the peak power of the module). The surface_types can be one of: [
+The PV time series itself needs to be a normalized hourly time series in kW/kWp
+(normalized by the peak power of the module). The surface_type can be one of: [
 "flat_roof", "gable_roof", "south_facade", "east_facade", "west_facade"].
 
 Note that you need to add more specific PV parameters of your module (name, costs, lifetime etc.) in
-``user_inputs/mvs_inputs/csv_elements/energyProduction.csv``. The columns in ``energyProduction.csv``
-should be named "PV"+ key (e.g. "PV SI1") if your key is "SI1".
+``user_inputs_mvs_directory/csv_elements/energyProduction.csv``. The columns in ``energyProduction.csv``
+should be named "PV"+ key (e.g. "PV SI1" if your key is "SI1").
 
 When providing your own time series, ``overwrite_pv_parameters`` in :py:func:`~.main.apply_pvcompare` should be
-set to false. When ``add_pv_timeseries`` is used, the ``pv_setup.csv`` is disregarded.
+set to ``False``. When ``add_pv_timeseries`` is used, the ``pv_setup.csv`` is disregarded.
 
 **Add a different SI module**
 
@@ -138,10 +141,10 @@ But you can add another module from sandia or cec `libraries <https://github.com
 
 To do so, you need to define the parameter ``add_sam_si_module`` in :py:func:`~.main.apply_pvcompare`.
 You should define a dictionary with the library ("CECMod"  or "SandiaMod") as key and module name as value.
-E.g. {"cecmod":"Canadian_Solar_Inc__CS5P_220M"}.
+E.g. ``{"cecmod": "Canadian_Solar_Inc__CS5P_220M"}``.
 
 Note that the SI module is only considered if a module with the technology "SI" is provided in
-``user_inputs/mvs_inputs/pvcompare_inputs/pv_setup.csv``
+``user_inputs_pvcompare_directory/pv_setup.csv``
 
 
 Add a sensitivy to your simulations
