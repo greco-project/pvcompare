@@ -91,7 +91,7 @@ Provide your own input time series
 
 *pvcompare* provides functionalities to automatically download weather data as well as calculate demand and PV time series.
 If you want to use your own input time series, you
-can do so by defining them in the :py:func:`~.main.apply_pvcompare` function. The followning section gives you an overwiew
+can do so by defining them in the :py:func:`~.main.apply_pvcompare` function. The following section gives you an overview
 on how to provide your time series.
 
 **Weather data**
