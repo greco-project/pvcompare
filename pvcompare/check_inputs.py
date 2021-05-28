@@ -640,9 +640,9 @@ def add_parameters_to_storage_xx_file(
 
     Parameters
     ---------
-    nominal_storage_capacity : float
+    nominal_storage_capacity : numeric
         Maximum amount of stored thermal energy [MWh].
-    loss_rate : float (sequence or scalar)
+    loss_rate : numeric (sequence or scalar)
         The relative loss of the storage capacity between two consecutive
         timesteps [-].
     storage_csv: str
