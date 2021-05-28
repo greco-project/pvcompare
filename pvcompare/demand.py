@@ -81,14 +81,16 @@ def calculate_load_profiles(
         precipitable_water.
     static_inputs_directory: str or None
         Directory of the pvcompare static inputs. If None,
-        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used.
         Default: None.
     user_inputs_pvcompare_directory: str or None
-        Directory of the user inputs. If None,
-        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
+        Path to user input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used.
         Default: None.
     user_inputs_mvs_directory : str or None
-        Path to mvs input directory. If None: DEFAULT_USER_INPUTS_MVS_DIRECTORY. Default: None.
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
+        Default: None.
 
     Returns
     ------
@@ -173,17 +175,18 @@ def calculate_power_demand(
     column: str
         name of the demand column
     static_inputs_directory: str or None
-        Directory of the static inputs. If None
-        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used as static_inputs_directory.
+        Directory of the pvcompare static inputs. If None,
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used.
         Default: None.
     user_inputs_pvcompare_directory: str or None
-        Directory of the user inputs. If None,
-        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
+        Path to user input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used.
         Default: None.
-    user_inputs_mvs_directory: str or None
-        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+    user_inputs_mvs_directory : str or None
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
         Default: None.
+
 
     Returns
     -------
@@ -352,13 +355,17 @@ def calculate_heat_demand(
         hourly weather data frame with the columns:
         time, latitude, longitude, wind_speed, temp_air, ghi, dhi, dni,
         precipitable_water.
-    user_inputs_pvcompare_directory: str or None
-        Directory of the user inputs. If None,
-        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
+    static_inputs_directory: str or None
+        Directory of the pvcompare static inputs. If None,
+        `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used.
         Default: None.
-    user_inputs_mvs_directory: str or None
-        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+    user_inputs_pvcompare_directory: str or None
+        Path to user input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used.
+        Default: None.
+    user_inputs_mvs_directory : str or None
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
         Default: None.
 
     Returns
