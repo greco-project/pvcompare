@@ -85,20 +85,24 @@ def add_location_and_year_to_project_data(
         `constants.DEFAULT_STATIC_INPUTS_DIRECTORY` is used.
         Default: None.
     latitude: float
-        latitude of the location
+        Latitude of the location.
     longitude: float
-        longitude of the location
+        Longitude of the location.
     country: str
-        country of the location
+        Country of the location.
     year: int
-        year of the simulation
+        Year of the simulation.
 
     Returns
     -------
     Latitude: float
+        Latitude of the location.
     Longitude: float
+        Longitude of the location.
     country: str
+        Country of the location.
     year: int
+        Year of the simulation.
     """
     params = {"latitude": latitude, "longitude": longitude, "country": country}
     if all(value is None for value in params.values()):
@@ -608,7 +612,7 @@ def load_parameter_from_mvs_file(
 
     Returns
     ------
-    pvcompare_parameter: str
+    pvcompare_parameter: str, float, int
         Parameter that is loaded from mvs_file.
     """
 
