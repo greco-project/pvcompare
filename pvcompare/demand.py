@@ -131,6 +131,18 @@ def calculate_load_profiles(
                             " thus calculated according to the default"
                             " method of pvcompare."
                         )
+                        calculate_heat_demand(
+                            country=country,
+                            lat=lat,
+                            lon=lon,
+                            storeys=storeys,
+                            year=year,
+                            weather=weather,
+                            static_inputs_directory=static_inputs_directory,
+                            user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+                            user_inputs_mvs_directory=user_inputs_mvs_directory,
+                            column=column,
+                        )
                 else:
                     calculate_heat_demand(
                         country=country,
@@ -162,6 +174,15 @@ def calculate_load_profiles(
                             " you have entered does not exist. It is"
                             " thus calculated according to the default"
                             " method of pvcompare."
+                        )
+                        calculate_power_demand(
+                            country=country,
+                            storeys=storeys,
+                            year=year,
+                            static_inputs_directory=static_inputs_directory,
+                            user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+                            user_inputs_mvs_directory=user_inputs_mvs_directory,
+                            column=column,
                         )
                 else:
                     calculate_power_demand(
