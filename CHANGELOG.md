@@ -53,6 +53,8 @@ Here is a template for new release sections
 
 ### Removed
 - Remove lines that add gas bus in `test_raiseError_temperature_match_hp()` as this is not needed anymore (#314)
+- Delete `if __name__ == "__main__"` statements of modules (#323)
+- Remove `greco_technologies` from `setup.py` (#323)
 
 ### Fixed
 - fix PV costs parameters and PSI lifetime (#273)
@@ -65,6 +67,15 @@ Here is a template for new release sections
 - Hot fix: install MVS with option `[report]` to install missing packages (#270)
 - Hot fix: remove build for python 3.6 from `main.yml` github actions workflow (#270)
 - Hot fix: Move `test_examples.py` to `examples` directory to make tests work in CI and add `__init__.py` to `examples` (#298)
+
+## [0.0.3] - 2021-05-20
+
+### Added
+- General description of module is added for `main.py`. (#303)
+
+### Changed
+- Description for multiple functions in the modules `area_potential`, `check_inputs`, `demand`, `cpv/apply_cpvlib_StaticHybridSystem`, `heat_pump_and_chiller`, `main`, `plots` were updated and corrected. (#303)
+- "Year for which power demand time series is calculated" is set between 2008-2018. (#303)
 
 ## [0.0.2] - 2021-03-24
 

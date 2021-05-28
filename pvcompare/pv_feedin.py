@@ -7,7 +7,7 @@ pvlib:
  * ghi - global horizontal irradiation [W/m2]
  * dni - direct normal irradiation [W/m2]
  * dhi - diffuse horizontal irradiation [W/m2]
- * temp_air - ambient temperature [�C]
+ * temp_air - ambient temperature [°C]
  * wind_speed - wind speed [m/s]
 """
 
@@ -54,7 +54,7 @@ def create_pv_components(
     normalization=True,
     add_sam_si_module=None,
 ):
-    """
+    r"""
     Creates feed-in time series for all surface types in `pv_setup` or 'pv_setup.csv'.
 
     Reads 'pv_setup.csv', for each `surface_type` listed in `pv_setup`,
@@ -66,18 +66,21 @@ def create_pv_components(
     and the maximum installed capacity (nominal value) is calculated. Both parameters
     are stored into `user_inputs_mvs_directory/csv_elements/energyProduction.csv`.
 
+    Further information for the cell parameter efficiency for "Chen" and "Korte" see
+    `psi_type <https://pvcompare.readthedocs.io/en/latest/model_assumptions.html#input-data>`_.
+
     Parameters
     ----------
     lat: float
-        latitude
+        Latitude of location
     lon: float
-        longitude
+        Longitude of location
     weather: :pandas:`pandas.DataFrame<frame>`
-        hourly weather data frame with the columns:
+        Hourly weather data frame with the columns:
         time, latitude, longitude, wind_speed, temp_air, ghi, dhi, dni,
         precipitable_water.
-    storeys: num
-        number of storeys
+    storeys: int
+        The number of storeys of a building.
     pv_setup: dict or None
         Specifies the PV technologies and their installation details used in the
         simulation. The dictionary contains columns: surface_type, technology,
@@ -90,16 +93,20 @@ def create_pv_components(
         Directory of the user inputs. If None,
         `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
         Default: None.
-    user_inputs_mvs_directory: str
-        if None: ./data/mvs_inputs/
+    user_inputs_mvs_directory: str or None
+        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
     psi_type: str
-        "Korte" or "Chen"
+        "Korte" or "Chen".
+        Default: "Chen"
     normalization: bool
         If True: Time series is normalized. Otherwise absolute time series is
         returned. Default: True.
     add_sam_si_module: dict
         Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
         E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}.
+
 
     Returns
     -------
@@ -278,11 +285,12 @@ def create_pv_components(
 
 def get_optimal_pv_angle(lat):
 
-    """
+    r"""
     Calculates the optimal tilt angle depending on the latitude.
 
-    e.G. about 27° to 34° from ground in Germany.
-    The pvlib uses tilt angles horizontal=90° and up=0°. Therefore 90° minus
+    e.g. about 27° to 34° from ground in Germany.
+    The `pvlib <https://pvlib-python.readthedocs.io/en/stable/index.html>`_. uses
+    tilt angles horizontal=90° and up=0°. Therefore 90° minus
     the angle from the horizontal.
 
     Parameters
@@ -293,40 +301,36 @@ def get_optimal_pv_angle(lat):
     Returns
     -------
     int
-        rounded angle for surface tilt
-
+        Angle for optimal surface tilt of `lat`, rounded to zero decimal places.
     """
+
     return round(lat - 15)
 
 
 def set_up_system(technology, surface_azimuth, surface_tilt, add_sam_si_module=None):
 
-    """
+    r"""
     Sets up pvlibPVSystems.
 
-    Initializes the pvlib.PVSystem for the given type of technology and returns
-    the system and the module parameters as a dictionary.
-
+    Initializes the `pvlib.PVSystem <https://pvlib-python.readthedocs.io/en/stable/pvsystem.html>`_
+    for the given type of technology and returns the system and the module parameters as a dictionary
 
     Parameters
     ----------
     technology: str
-        possible technologies are: si, cpv or psi
+        Possible technologies are: si, cpv or psi.
     surface_azimuth: float
-        surface azimuth of the module
+        Surface azimuth of the module.
     surface_tilt: float
-        surface tilt of the module
-        Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
-        E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}.
-        Note that the SI module is only considered if there is the technology "SI" in
+        Surface tilt of the module.
     add_sam_si_module: dict
         Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
         E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}.
 
     Returns
     -------
-    PVSystem: :pandas:`pandas.Series<series>`
-        Initialized PV system and module parameters.
+    Depending on `technology` returns the system and the module parameters
+
     """
 
     if technology == "si":
@@ -391,27 +395,24 @@ def create_si_time_series(
     normalization,
     add_sam_si_module=None,
 ):
-
-    """
+    r"""
     Calculates feed-in time series for a silicon PV module.
 
-    The cpv time series is created for a given weather data frame, at a given
-    orientation for the flat plate module 'Canadian_Solar_CS5P_220M___2009_'.
-    If `normalization`is not None the time
-    series is normalized according to the normalization method
-
+    The si time series is created for a given weather data frame at a given
+    orientation for the flat plate module 'Aleo_Solar_S59y280'.
+    If `normalization` is True the time series is normalized.
 
     Parameters
     ----------
     lat: float
-        latitude
+        Latitude of the location.
     lon: float
-        longitude
+        Longitude of the location.
     weather: :pandas:`pandas.DataFrame<frame>`
     surface_azimuth: float
-        surface azimuth of the modules
+        Surface azimuth of the modules.
     surface_tilt: float
-        surface tilt of the modules
+        Surface tilt of the modules.
     normalization: bool
         If True: Time series is normalized. Otherwise absolute time series is
         returned.
@@ -422,6 +423,7 @@ def create_si_time_series(
     Returns
     -------
     :pandas:`pandas.Series<series>`
+        Feed-in time series of silicon module.
     """
 
     system, module_parameters = set_up_system(
@@ -460,13 +462,12 @@ def create_si_time_series(
 def create_cpv_time_series(
     lat, lon, weather, surface_azimuth, surface_tilt, normalization
 ):
-    """
-    Creates power time series of a CPV module.
+    r"""
+    Creates power time series of a hybrid CPV module.
 
-    The CPV time series is created for a given weather data frame (`weather`)
-    for the INSOLIGHT CPV module. If `normalization`is not None the time
-    series is normalized according to the normalization method
-
+    The CPV time series is created for a given weather data frame `weather`
+    for the INSOLIGHT CPV module. If `normalization` is True the time
+    series is normalized.
 
     Parameters
     ----------
@@ -476,11 +477,11 @@ def create_cpv_time_series(
         Longitude of the location for which the time series is calculated.
     weather : :pandas:`pandas.DataFrame<frame>`
         DataFrame with time series for temperature `temp_air` in C°, wind speed
-        `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m²
+        'wind_speed' in m/s, 'dni', 'dhi', and 'ghi' in W/m².
     surface_azimuth : float
         Surface azimuth of the modules (180° for south, 270° for west, etc.).
     surface_tilt: float
-        Surface tilt of the modules. (horizontal=90° and vertical=0°)
+        Surface tilt of the modules (horizontal=90° and vertical=0°).
     normalization: bool
         If True: Time series is normalized. Otherwise absolute time series is
         returned.
@@ -488,8 +489,7 @@ def create_cpv_time_series(
     Returns
     -------
     :pandas:`pandas.Series<series>`
-        Power output of CPV module in W.
-
+        Power output time series of CPV module in W.
     """
 
     system, mod_params_cpv, mod_params_flatplate = set_up_system(
@@ -531,13 +531,14 @@ def create_psi_time_series(
     psi_type="Chen",
 ):
 
-    """
-    Creates power time series of a Perovskite-Silicone module.
+    r"""
+    Creates power time series of a perovskite-silicone (PSI) module.
 
     The PSI time series is created for a given weather data frame
-    (`weather`). If `normalization`is not None the time
-    series is normalized according to the normalization method.
+    `weather`. If `normalization` is True the time series is normalized.
 
+    Further information for the cell parameter efficiency for "Chen" and "Korte" see
+    `psi_type <https://pvcompare.readthedocs.io/en/latest/model_assumptions.html#input-data>`_.
 
     Parameters
     ----------
@@ -546,15 +547,16 @@ def create_psi_time_series(
     lon : float
         Longitude of the location for which the time series is calculated.
     weather : :pandas:`pandas.DataFrame<frame>`
-        DataFrame with time series for temperature `temp_air` in C°, wind speed
-        `wind_speed` in m/s, `dni`, `dhi` and `ghi` in W/m^2
+        DataFrame with time series for temperature 'temp_air' in C°, wind speed
+        'wind_speed' in m/s, 'dni', 'dhi' and 'ghi' in W/m².
     surface_azimuth : float
         Surface azimuth of the modules (180° for south, 270° for west, etc.).
     surface_tilt: float
         Surface tilt of the modules. (horizontal=90° and vertical=0°)
     psi_type  : str
         Defines the type of module of which the time series is calculated.
-        Options: "Korte", "Chen"
+        Options: "Korte", "Chen".
+        Default: "Chen".
     normalization: bool
         If True: Time series is normalized. Otherwise absolute time series is
         returned.
@@ -562,11 +564,11 @@ def create_psi_time_series(
     Returns
     -------
     :pandas:`pandas.Series<series>`
-        Power output of PSI module in W (if parameter `normalized` is False) or todo check unit.
+        Power output of PSI module in W (if parameter `normalized` is False) or
         normalized power output of CPV module (if parameter `normalized` is
         False).
-
     """
+
     atmos_data = weather[
         ["ghi", "dhi", "dni", "wind_speed", "temp_air", "precipitable_water"]
     ]
@@ -615,36 +617,45 @@ def create_psi_time_series(
         return (output / peak).clip(0)
 
 
+
 def nominal_values_pv(
     technology, area, surface_azimuth, surface_tilt, psi_type, add_sam_si_module=None
 ):
     """
+
     calculates the maximum installed capacity for each pv module.
 
     The nominal value for each PV technology is constructed by the size of
     the module, its peak power and the total available area. It is given in
     the unit of kWp. The nominal value functions as a limit for the potential
-    installed capacity of pv in oemof.
+    maximum installed capacity of PV in the energy system optimization.
+
+    Further information for the cell parameter efficiency for "Chen" and "Korte" see
+    `psi_type <https://pvcompare.readthedocs.io/en/latest/model_assumptions.html#input-data>`_.
 
     Parameters
     ----------
     technology: str
-        possible values are: si, cpv or psi
+        Possible values are: si, cpv or psi.
     area: float
-        total available surface area
+        total available surface area.
     surface_azimuth: float
-        surface azimuth of the modules
+        Surface azimuth of the modules.
     surface_tilt: float
-        surface tilt of the modules
+        Surface tilt of the modules.
+    psi_type  : str
+        Defines the type of module of which the time series is calculated.
+        Options: "Korte", "Chen".
     add_sam_si_module: dict or None
         Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
         E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}.
         Note that the SI module is only considered if there is the technology "SI" in
 
+
     Returns
     -------
-    int
-        the rounded possible installed capacity for an area
+    nominal_value: int
+        The rounded possible installed capacity for an area.
     """
 
     if technology == "si":
@@ -697,24 +708,22 @@ def nominal_values_pv(
 
 
 def get_peak(technology, module_parameters_1, module_parameters_2):
-    """
-    This function returns the peak value for the given technology.
+    r"""
+    This function returns the peak value for the given `technology`.
 
     Parameter
     ---------
     technology: str
-        "si", "cpv" or "psi"
+        Possible values are: si, cpv or psi.
     module_parameters_1: dict
-        module parameters of cell 1 or module
+        Module parameters of cell 1 or module.
     module_parameters_2: dict
-        if technology == si, set parameter to None
-    psi_type: str
-        "Korte" or "Chen"
+        If `technology` is 'si', set parameter to None
 
     Returns
     --------
-    numeric
-        peak value used for normalization
+    peak: float
+        Peak value of the `technology`.
     """
 
     if technology == "si":
