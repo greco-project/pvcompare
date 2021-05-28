@@ -89,7 +89,7 @@ Two example weather years for Berlin, Germany, 2017 and Madrid, Spain, 2017 are 
 Provide your own input time series
 ==================================
 
-*pvcompare* provides functionalities to automatically download weather data ad well as calculate demand and pv time series.
+*pvcompare* provides functionalities to automatically download weather data as well as calculate demand and PV time series.
 If you want to use your own input time series, you
 can do so by defining them in the :py:func:`~.main.apply_pvcompare` function. The followning section gives you an overwiew
 on how to provide your time series.
