@@ -24,7 +24,8 @@ Here is a template for new release sections
 ### Added
 -
 ### Changed
--
+- Improved release protocol while releasing v0.0.3 (#295)
+
 ### Removed
 -
 ### Fixed
