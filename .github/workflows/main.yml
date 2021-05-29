@@ -43,7 +43,7 @@ jobs:
           echo "EXECUTE_TESTS_ON=master" >> $GITHUB_ENV
 
       - name: Set env for release branches
-        if: startsWith(github.ref, 'greco-project/pvcompare/release')
+        if: startsWith(github.ref, 'refs/heads/release')
         run: |
             echo "EXECUTE_TESTS_ON=master" >> $GITHUB_ENV
 
