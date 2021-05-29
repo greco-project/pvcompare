@@ -19,7 +19,7 @@ Here is a template for new release sections
 -
 ```
 
-## [0.0.3] - 2021-05-28
+## [0.0.3] - 2021-05-29
 
 ### Added
 - General description of module is added for `main.py`. (#303)
