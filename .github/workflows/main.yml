@@ -45,7 +45,7 @@ jobs:
       - name: Set env for release branches
         if: contains(github.ref, 'release')
         run: |
-            echo "EXECUTE_TESTS_ON=master" >> $GITHUB_ENV
+          echo "EXECUTE_TESTS_ON=master" >> $GITHUB_ENV
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
