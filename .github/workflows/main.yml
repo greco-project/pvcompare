@@ -71,7 +71,7 @@ jobs:
 
       - name: Test with pytest
         run: |
-          coverage run -m pytest tests/
+          coverage run -m pytest tests/ examples/
 
       - name: Check test coverage
         run: |
