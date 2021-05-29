@@ -8,6 +8,6 @@ peak_demand_pricing_period,"times per year (1,2,3,4,6,12)",1,1
 renewable_share,factor,0.1,0
 inflow_direction,str,Electricity bus,Gas bus
 outflow_direction,str,Electricity bus,Gas bus
-energyVector,str,Electricity,Heat
+energyVector,str,Electricity,Gas
 type_oemof,str,source,source
 emission_factor,kgCO2eq/kWh,0.338,0.2
