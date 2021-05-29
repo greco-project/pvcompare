@@ -69,7 +69,7 @@ Here is a template for new release sections
 - Hot fix: remove build for python 3.6 from `main.yml` github actions workflow (#270)
 - Hot fix: correct parameter `overwrite_grid_parameters` in `run_pvcompare.py` (#294)
 - Hot fix: Move `test_examples.py` to `examples` directory to make tests work in CI and add `__init__.py` to `examples` (#298)
-
+- Hot fix: Fix installation of MVS packages: now installed without extra requirement `report`. `psutil` and `kaleido` installed separately instead (#325)
 
 ## [0.0.2] - 2021-03-24
 
