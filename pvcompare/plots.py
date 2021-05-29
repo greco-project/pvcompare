@@ -538,7 +538,7 @@ def plot_kpi_loop(
                 )
                 output.loc[index, "Installed capacity PV"] = (
                     output.loc[index, "Installed capacity PV"]
-                    + file_sheet2.at[pv, "optimizedAddCap"]
+                    + file_sheet2.at[pv, "optimizedAddCap"]/20
                 )
                 output.loc[index, "Total renewable energy"] = file_sheet3.at[
                     "Total renewable energy use", 0
@@ -601,7 +601,7 @@ def plot_kpi_loop(
 
     output.sort_index(inplace=True)
     # plot
-    hight = len(kpi) * 2
+    hight = len(kpi) * 2.7
     fig = plt.figure(figsize=(5, hight))
     fig.subplots_adjust(bottom=0.5)
     rows = len(kpi)
@@ -651,12 +651,12 @@ def plot_kpi_loop(
 
                     )
                 counter += 1
-            elif "facades" in key:
+            elif "Germany" in key:
                 try:
                     df.plot(
                         x="step",
                         y=i,
-                        style=".",
+                        style="^",
                         ax=ax,
                         label=key,
                         legend=False,
@@ -667,8 +667,9 @@ def plot_kpi_loop(
                     )
                     ax.set_ylabel(y_title[i])
                     ax.set_xlabel(variable_name)
-                    ax.get_yaxis().set_label_coords(-0.15, 0.5)
-                    ax.set_xticks(df.step)
+                    ax.get_yaxis().set_label_coords(-0.2, 0.5)
+      #              ax.set_xticks(df.step)
+                    ax.set_xticks([1,2,3,4,5,6,7,8])
                 except:
                     pass
             else:
@@ -684,10 +685,11 @@ def plot_kpi_loop(
                     alpha=0.7,
                 )
                 ax.set_ylabel(y_title[i])
+ #               ax.set_ylim(0, 30000000)
                 ax.set_xlabel("number of storeys")
                 ax.get_yaxis().set_label_coords(-0.2, 0.5)
- #               ax.set_xticks([3,4,5,6,7,8])
-                ax.set_xticks(df.step)
+                ax.set_xticks([1,2,3,4,5,6,7,8])
+#                ax.set_xticks(df.step)
             counter2 +=1
 
             # if i == "Installed capacity PV":
@@ -699,7 +701,7 @@ def plot_kpi_loop(
             #                label="maximum capacity CPV")
             ax.set_xlim(ax.get_xlim()[0] - 0.5, ax.get_xlim()[1] + 0.5)
 
-    plt.tight_layout(rect=(0.0, 0.09, 1, 1))
+    plt.tight_layout(rect=(0.0, 0.15, 1, 1))
 
 #    plt.xticks(rotation=45)
 
@@ -843,8 +845,8 @@ def plot_facades(
                 d["Degree of autonomy"] = pd.DataFrame()
                 d["Installed capacity Storage"] = pd.DataFrame()
 
-            d["Installed capacity PV"].loc[index, pv] = file_sheet2.at[pv, "optimizedAddCap"]
-            d["production"].loc[index, pv] = file_sheet2.at[pv, "annual_total_flow"]
+            d["Installed capacity PV"].loc[index, pv] = file_sheet2.at[pv, "optimizedAddCap"]/20
+            d["production"].loc[index, pv] = file_sheet2.at[pv, "annual_total_flow"]/20
  #           d["costs_total"].loc[index, pv] = int(year)
  #           d["Total costs PV"].loc[index, pv] = file_sheet1.at[pv, "costs_total"]
             d["LCOE"].loc[index, pv] = file_sheet1.at[
@@ -855,7 +857,7 @@ def plot_facades(
                     "Degree of autonomy", 0
                 ]
             d["Installed capacity Storage"].loc[index, pv] = \
-                file_sheet2.at["ESS Li-Ion storage capacity", "optimizedAddCap"]
+                file_sheet2.at["ESS Li-Ion storage capacity", "optimizedAddCap"]/20
 
 
         i += 1
@@ -1729,9 +1731,10 @@ if __name__ == "__main__":
 #    scenario_dict = {"Scenario_E2": "PSI rooftop & facades", "Scenario_E3": "CPV rooftop & facades", "Scenario_E1": "SI rooftop & facades", "Scenario_D2": "PSI rooftop", "Scenario_D3": "CPV rooftop", "Scenario_D1": "SI rooftop"}
 #    scenario_dict = {"Scenario_F2": "PSI Germany", "Scenario_F3": "CPV Germany", "Scenario_F1": "SI Germany", "Scenario_F5": "PSI Spain", "Scenario_F6": "CPV Spain", "Scenario_F4": "SI Spain"}
 #    scenario_dict = {"Scenario_J1": "Berlin", "Scenario_J3": "Madrid"}
-#    scenario_dict = {"Scenario_E2": "PSI", "Scenario_E3": "CPV", "Scenario_E1": "SI"} #"Scenario_E1": "SI", "Scenario_E2": "PSI", "Scenario_E3": "CPV"} # "Scenario_E4": "SI - Madrid", "Scenario_E5": "PSI - Madrid", "Scenario_E6": "CPV - Madrid"}
+#    scenario_dict = {"Scenario_E2": "PSI", "Scenario_E3": "CPV", "Scenario_E1": "SI"} #"Scenario_E1": "SI", "Scenario_E2": "PSI", "Scenario_E3": "CPV"}
+#    scenario_dict = { "Scenario_E5": "PSI", "Scenario_E6": "CPV","Scenario_E4": "SI"}
 #    scenario_dict = {"Scenario_G5": "PSI", "Scenario_G6": "CPV", "Scenario_G4": "SI"}
-#     scenario_dict = {"Scenario_G2": "PSI", "Scenario_G3": "CPV", "Scenario_G1": "SI"}
+#    scenario_dict = {"Scenario_G2": "PSI", "Scenario_G3": "CPV", "Scenario_G1": "SI"}
 # #
 #     plot_kpi_loop(
 #     scenario_dict=scenario_dict,
@@ -1740,34 +1743,34 @@ if __name__ == "__main__":
 # #        "LCOE PV",
 # #        "Total costs",
 # #       "Installed capacity PV",
-#        "Installed capacity storage",
-#         "Feedin",
-#         "Degree of NZE",
+# #       "Installed capacity storage",
+# #        "Feedin",
+# #        "Degree of NZE",
 # #       "Degree of autonomy",
 # #       "Self consumption",
 #    ],
 #    )
     #
-    latitude = 40.416775  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
-
-    longitude = -3.703790  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
-    year = 2017
-    storeys = 7
-    country = "Spain"
-
-    compare_weather_years(
-        latitude=latitude,
-        longitude=longitude,
-        country=country,
-        static_inputs_directory=None,
-    )
-
-    # plot_facades(
-    #     variable_name="technology",
-    #     kpi=["Installed capacity PV", "production", "LCOE PV", "Installed capacity Storage"],
-    #     scenario_name="Scenario_J3",
-    #     outputs_directory=None,
+    # latitude = 40.416775  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
+    #
+    # longitude = -3.703790  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
+    # year = 2017
+    # storeys = 7
+    # country = "Spain"
+    #
+    # compare_weather_years(
+    #     latitude=latitude,
+    #     longitude=longitude,
+    #     country=country,
+    #     static_inputs_directory=None,
     # )
+
+    plot_facades(
+        variable_name="technology",
+        kpi=["Installed capacity PV", "production", "LCOE PV", "Installed capacity Storage"],
+        scenario_name="Scenario_J3",
+        outputs_directory=None,
+    )
     #
     # scenario_list = [
     #     "Scenario_A1",
@@ -1864,5 +1867,5 @@ if __name__ == "__main__":
     #scenario_dict= {"Scenario_C_500" : "500", "Scenario_C_600" : "600", "Scenario_C_700" : "700", "Scenario_C_800" : "800", "Scenario_C_900" : "900", "Scenario_C_1000" : "1000", "Scenario_C_1100" : "1100"}
     #plot_psi_matrix(scenario_dict=scenario_dict, variable_name="lifetime",basis_value_lcoe=0.0645, basis_value_costs = 166669697.75, outputs_directory=None)
     # spain: basis_value_lcoe=0.0645, basis_value_costs = 166669697.75 # Germany: basis_value_lcoe=0.09565, basis_value_costs=225925957.91
-    plot_LCOE(outputs_directory=None)
+    #plot_LCOE(outputs_directory=None)
 
