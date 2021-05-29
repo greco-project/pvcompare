@@ -2,12 +2,13 @@ from pvcompare import main
 
 
 # DEFINE USER INPUTS
-latitude = 52.5243700  # Madrid: 40.416775 # berlin: 52.5243700 oslo: 59.9127300 athens: 37.983810, Paris: 48.864716
-longitude = 13.4105300  # M: -3.703790 # berlin 13.4105300 oslo:10.7460900 	athens: 23.727539, paris: 2.349014
+# the following parameters are needed to run pvcompare, you can adapt them to your needs
+latitude = 52.5243700
+longitude = 13.4105300
 year = 2017
 storeys = 5
 country = "Germany"
-scenario_name = "Scenario_Z1"
+scenario_name = "My_Scenario"
 
 # FOR DEFAULT PARAMETERS SEE pvcompare/constants.py
 user_inputs_pvcompare_directory = None
@@ -32,7 +33,7 @@ main.apply_pvcompare(
     user_inputs_mvs_directory=user_inputs_mvs_directory,
     plot=False,
     pv_setup=pv_setup,
-    overwrite_grid_costs=True,
+    overwrite_grid_parameters=True,
     overwrite_pv_parameters=True,
 )
 

@@ -3,12 +3,14 @@
 name: CI
 
 # Controls when the action will run. # Triggers the workflow on push or pull request
-# events; push events only for dev and master branch
+# events; push events only for dev, master and release branches
 on:
   push:
     branches:
       - dev
       - master
+      - release
+      - 'release-*'
 
   pull_request:
 
@@ -31,12 +33,17 @@ jobs:
         uses: actions/checkout@v2
       
       - name: Set env for dev branch
-        if: endsWith(github.ref, '/develop')
+        if: endsWith(github.ref, '/dev')
         run: |
           echo "EXECUTE_TESTS_ON=dev" >> $GITHUB_ENV
           
       - name: Set env for master branch
         if: endsWith(github.ref, '/master')
+        run: |
+          echo "EXECUTE_TESTS_ON=master" >> $GITHUB_ENV
+
+      - name: Set env for release branches
+        if: contains(github.ref, 'release')
         run: |
           echo "EXECUTE_TESTS_ON=master" >> $GITHUB_ENV
 
@@ -62,10 +69,6 @@ jobs:
           pip install wheel
           pip install .[dev]
 
-      - name: Lint with black
-        run: |
-          black --check . --exclude docs/
-
       - name: Test with pytest
         run: |
           coverage run -m pytest tests/
@@ -80,3 +83,7 @@ jobs:
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_SERVICE_NAME: github
+
+      - name: Lint with black
+        run: |
+          black --check . --exclude docs/

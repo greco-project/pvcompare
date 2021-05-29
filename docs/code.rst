@@ -99,20 +99,20 @@ Specific functions for calculating the feed-in time series of the perovskite-sil
 .. _heat_pumps_chillers:
 
 Heat pumps and chillers
------------------------
+=======================
 
 Functions for implementing a sector-coupled system (electricity, heat) and for calculating the COPs/EERs of heat pumps and chillers.
 
 .. autosummary::
     :toctree: temp/
 
-    heat_pump_and_chiller.add_sector_coupling
     heat_pump_and_chiller.calculate_cops_and_eers
+    heat_pump_and_chiller.add_sector_coupling
 
 .. _thermal_storage:
 
 Stratified thermal storage
---------------------------
+==========================
 
 Functions for calculating thermal losses of a stratified thermal storage and for adding it to the energy system.
 

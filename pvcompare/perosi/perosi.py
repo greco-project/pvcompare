@@ -367,34 +367,3 @@ def create_pero_si_timeseries(
     output = (timeseries.iloc[:, 0] + timeseries.iloc[:, 1]) * param.Ns
 
     return output
-
-
-if __name__ == "__main__":
-    weather = pd.read_csv(
-        "/home/inia/Dokumente/greco_env/pvcompare/pvcompare/data/inputs/weatherdata_France_2014.csv",
-        index_col=0,
-    )
-    output1 = create_pero_si_timeseries(
-        lat=45.0,
-        lon=5.87,
-        surface_azimuth=180,
-        surface_tilt=30,
-        year=2015,
-        number_hours=40,
-        psi_type="Chen",
-        atmos_data=weather,
-    )
-    output2 = create_pero_si_timeseries(
-        lat=45.0,
-        lon=5.87,
-        surface_azimuth=180,
-        surface_tilt=30,
-        year=201,
-        number_hours=40,
-        psi_type="Korte",
-        atmos_data=weather,
-    )
-    plt.plot(output1, "r-", label="Chen")
-    plt.plot(output2, "b-", label="Korte")
-    plt.legend()
-    plt.show()
