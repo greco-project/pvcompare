@@ -41,12 +41,14 @@ setup(
         "scipy",
         "maya~=0.6.1",
         "workalendar < 7.0.0",
-        "multi_vector_simulator[report]==0.5.5",
+        "multi_vector_simulator==0.5.5",
         "cpvlib @ git+https://github.com/isi-ies-group/cpvlib.git@2020-11#egg=cpvlib-0",
         "mock>=3.0.5",
         "plotly==4.14.2",
         "seaborn",
         "Pyomo==5.7.2",
+        "psutil>=5.7.0",  # package for MVS plots
+        "kaleido>=0.0.2",  # package for MVS plots
     ],
     extras_require={
         "dev": ["pytest==5.3.5", "black==19.10b0", "coverage", "coveralls",],
