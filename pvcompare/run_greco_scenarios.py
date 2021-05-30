@@ -957,7 +957,7 @@ class Scenarios:
             pv_setup.at[i, "technology"] = str("si")
         pv_setup.to_csv(data_path, index=False)
 
-        scenario_name = "Scenario_G1"
+        scenario_name = "Scenario_F"
 
         outputs.loop_pvcompare(
             scenario_name=scenario_name,
@@ -1979,9 +1979,10 @@ if __name__ == "__main__":
     scenarios.setup_class()
     #    scenarios.run_scenario_a3()
     #    scenarios.run_scenario_a4()
-    #scenarios.run_scenario_a5()
-    #scenarios.run_scenario_a6()
-    #scenarios.run_scenario_a7()
+    # scenarios.run_scenario_a5()
+    # scenarios.run_scenario_a6()
+    # scenarios.run_scenario_a7()
+    # scenarios.run_scenario_a8()
     #    scenarios.run_scenario_a01()
     #    scenarios.run_scenario_a02()
  #   scenarios.run_scenario_B()

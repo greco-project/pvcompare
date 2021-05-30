@@ -1,6 +1,6 @@
 ,unit,Electricity demand,Heat demand
 unit,str,kW,kWh
-file_name,str,electricity_load.csv,heat_load.csv
+file_name,str,electricity_load_2015_France_5.csv,heat_load_2015_40.0_5.0_5.csv
 inflow_direction,str,Electricity bus,Heat bus
 energyVector,str,Electricity,Heat
 type_oemof,str,sink,sink

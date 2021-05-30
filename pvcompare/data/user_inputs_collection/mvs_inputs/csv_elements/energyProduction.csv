@@ -1,9 +1,9 @@
 index,unit,PV si,PV cpv,PV psi
 unit,str,kWp,kWp,kWp
-optimizeCap,bool,True,True,True
+optimizeCap,bool,False,False,False
 maximumCap,None or float,,,
 installedCap,kWp,0,0,0
-age_installed,year,0,0,0
+age_installed,year,25,25,25
 lifetime,year,25,25,25
 development_costs,currency,0,0,0
 specific_costs,currency/unit,934,1019,813
