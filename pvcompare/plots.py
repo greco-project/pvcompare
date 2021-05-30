@@ -1785,6 +1785,7 @@ if __name__ == "__main__":
 #    FIGURE 8:
 #    scenario_dict = {"Scenario_A5": "CPV Berlin", "Scenario_A7": "Reference - SI Berlin", "Scenario_A6": "CPV Madrid", "Scenario_A8": "Reference - SI Madrid"}
 #    FIGURE 12:
+#   ACHTUNG HIER KPI/20 rechnen!
 #    scenario_dict = {"Scenario_F2": "PSI Berlin", "Scenario_F3": "CPV Berlin", "Scenario_F1": "SI Berlin", "Scenario_F5": "PSI Madrid", "Scenario_F6": "CPV Madrid", "Scenario_F4": "SI Madrid"}
 #    FIGURE 9/10:
 #    scenario_dict = {"Scenario_E2": "PSI", "Scenario_E3": "CPV", "Scenario_E1": "SI"} #"Scenario_E1": "SI", "Scenario_E2": "PSI", "Scenario_E3": "CPV"}
@@ -1886,7 +1887,7 @@ if __name__ == "__main__":
 
     ###########################################################################
     # Working paper Figure 15
-
+#   ACHTUNG HIER KPI/20 rechnen!
     # scenario_list = [
     #     "Scenario_K1",
     #     "Scenario_K2",
