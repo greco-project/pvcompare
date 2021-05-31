@@ -22,7 +22,8 @@ Here is a template for new release sections
 ## [unreleased]
 
 ### Added
--
+- Add zenodo doi badge to readme (#328)
+
 ### Changed
 -
 ### Removed
