@@ -1,6 +1,6 @@
 """
 This module contains the processing of the stratified thermal storage
-in case it exists in `energyStorage.csv` within pvcompare.
+in case it exists in 'energyStorage.csv' within pvcompare.
 
 Storage specific parameters (nominal_storage_capacity, loss_rate
 fixed_losses_relative and fixed_losses_absolute) are precalculated and saved
@@ -26,7 +26,7 @@ def calc_strat_tes_param(
     user_inputs_pvcompare_directory=None,
     user_inputs_mvs_directory=None,
 ):
-    """
+    r"""
     This function does the precalculations of the stratified thermal storage.
 
     It calculates the following parameters:
@@ -36,10 +36,9 @@ def calc_strat_tes_param(
     3. fixed_losses_relative
     4. fixed_losses_absolute
 
-    from the storage's input data provided in `stratified_thermal_storage.csv`
-    and using functions implemented in oemof.thermal (https://github.com/oemof/oemof-thermal).
-
-    `oemof.demandlib <https://github.com/oemof/demandlib>`_.
+    from the storage's input data provided in
+    'stratified_thermal_storage.csv' and using functions
+    implemented in `oemof.thermal <https://github.com/oemof/oemof-thermal>`_.
 
     Parameters
     ----------
@@ -50,31 +49,26 @@ def calc_strat_tes_param(
         Name of column in `weather` containing ambient temperature.
         Default: "temp_air".
     user_inputs_pvcompare_directory: str or None
-        Directory of the user inputs. If None,
-        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
+        Path to user input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used.
         Default: None.
     user_inputs_mvs_directory: str or None
-        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
-        Default: None.
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
 
     Returns
     -------
     nominal_storage_capacity : numeric
-        Maximum amount of stored thermal energy [MWh]
-
+        Maximum amount of stored thermal energy [MWh].
     loss_rate : numeric (sequence or scalar)
         The relative loss of the storage capacity between two consecutive
-        timesteps [-]
-
+        timesteps [-].
     fixed_losses_relative : numeric (sequence or scalar)
         Losses independent of state of charge between two consecutive
-        timesteps relative to nominal storage capacity [-]
-
+        timesteps relative to nominal storage capacity [-].
     fixed_losses_absolute : numeric (sequence or scalar)
         Losses independent of state of charge and independent of
-        nominal storage capacity between two consecutive timesteps [MWh]
-
+        nominal storage capacity between two consecutive timesteps [MWh].
     """
     # *********************************************************************************************
     # Set paths - Read and prepare data
@@ -144,26 +138,25 @@ def calc_strat_tes_param(
 def save_time_dependent_values(
     losses, value_name, unit, filename, time_series_directory
 ):
-    """
+    r"""
     This function saves time dependent values to 'data/mvs_inputs/time_series'.
 
     Parameters
     ----------
     losses : numeric (sequence)
-    Parameter passed to be saved
-
+        Parameter passed to be saved.
     value_name : str
-    Name of the parameter
-
+        Name of the parameter.
     unit : str
-    Unit of the parameter
-
+        Unit of the parameter.
     filename : str
-    Name of the file containing time dependent values
-
+        Name of the file containing time dependent values.
     time_series_directory : str
-    Path to time_series: 'data/mvs_inputs/time_series'
+        Path to time_series: 'data/mvs_inputs/time_series'.
 
+    Returns
+    -------
+    None
     """
     # Make dictionary before saving data with unit as label
     losses_dict = {unit: losses}
@@ -190,12 +183,21 @@ def add_strat_tes(
     user_inputs_mvs_directory=None,
     overwrite_tes_parameters=None,
 ):
-    """
+    r"""
     Adds stratified thermal storage if it exists either in 'energyStorage.csv'.
 
     The precalculations are done if `inflow_direction` and `outflow_direction` give a hint
     that the respective asset is a heat storage (inflow_direction: "Heat",
     outflow_direction: "Heat"; check second option in the "Notes" section below).
+
+    You can include a stratified thermal storage in the model using two ways:
+
+    1. With storage component with `inflow_direction` and `outflow_direction` to the heat bus
+    2. With a storage bus, a storage component and `inflow_direction` and `outflow_direction`
+        as Transformer feeding in and from that bus
+        Please note that the cost parameters of `inflow_direction` and `outflow_direction` of the
+        Transformer should be set to zero, since they cannot be assigned to a real plant
+        component with cost parameters.
 
     Parameters
     ----------
@@ -206,34 +208,24 @@ def add_strat_tes(
     lon : float
         Longitude of ambient temperature location in `weather`.
     user_inputs_pvcompare_directory: str or None
-        Directory of the user inputs. If None,
-        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used as user_inputs_pvcompare_directory.
+        Path to user input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used.
         Default: None.
     user_inputs_mvs_directory: str or None
-        Directory of the multi-vector simulation inputs; where 'csv_elements/' is located. If None,
-        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
-        Default: None.
+        Path to MVS specific input directory. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used.
     overwrite_tes_parameters: bool
-        Default: True. If true, existing fixed thermal losses absolute and relative will be
-        overwritten with calculated time series of fixed thermal losses relative and absolute.
-
-    Notes
-    -----
-    You can include a stratified thermal storage in the model using two ways:
-
-    1. With storage component with `inflow_direction` and `outflow_direction` to the heat bus
-    2. With a storage bus, a storage component and `inflow_direction` and `outflow_direction`
-        as Transformer feeding in and from that bus
-        Please note that the cost parameters of `inflow_direction` and `outflow_direction` of the
-        Transformer should be set to zero, since they cannot be assigned to a real plant
-        component with cost parameters
+        If true, existing fixed thermal losses absolute
+        and relative will be overwritten with calculated
+        time series of fixed thermal losses relative and absolute.
+        Default: True.
 
     Returns
     -------
-    Depending on the case, updates energyStorage.csv and saves calculated values to
-    'data/mvs_inputs/time_series'.
-
+    Depending on the case, updates 'energyStorage.csv'
+    and saves calculated values to 'data/mvs_inputs/time_series'.
     """
+
     # *********************************************************************************************
     # Set paths
     # *********************************************************************************************
@@ -284,11 +276,7 @@ def add_strat_tes(
         user_inputs_pvcompare_directory, "stratified_thermal_storage.csv"
     )
     if os.path.isfile(storage_file_path):
-        storage_input_data = pd.read_csv(
-            storage_file_path,
-            header=0,
-            index_col=0,
-        )
+        storage_input_data = pd.read_csv(storage_file_path, header=0, index_col=0,)
         temp_high = storage_input_data.at["temp_h", "var_value"]
 
     # 6. Read heat_pumps_and_chillers.csv
@@ -296,11 +284,7 @@ def add_strat_tes(
         user_inputs_pvcompare_directory, "heat_pumps_and_chillers.csv"
     )
     if os.path.isfile(hp_file_path):
-        hp_input_data = pd.read_csv(
-            hp_file_path,
-            header=0,
-            index_col=0,
-        )
+        hp_input_data = pd.read_csv(hp_file_path, header=0, index_col=0,)
 
     # Create add on to filename (year, lat, lon, temp_high)
     year = maya.parse(weather.index[int(len(weather) / 2)]).datetime().year
@@ -466,10 +450,13 @@ def add_strat_tes(
 
 
 def run_stratified_thermal_storage():
+    r"""
+    Execution of :py:func:`~.calc_strat_tes_param` functionality.
+
+    This function executes :py:func:`~.calc_strat_tes_param`
+    with self selected input data series.
     """
-    This function executes calc_strat_tes_param(input_data)
-    with self selected input data series
-    """
+
     # Set paths to inputs
     inputs_path = "./data/inputs/"
 

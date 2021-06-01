@@ -12,11 +12,7 @@ import pvlib
 from feedinlib.cds_request_tools import get_cds_data_from_datespan_and_position
 
 
-def load_era5_weatherdata(
-        lat,
-        lon,
-        year
-):
+def load_era5_weatherdata(lat, lon, year):
     r"""
     Loads ERA5 weather data.
 
@@ -97,16 +93,16 @@ def get_era5_data_from_datespan_and_position(
     ----------
     variable: str or list of str
         ERA5 variables to download. If you
-        want to download all variables necessary to use the pvlib, set
+        want to download all variables necessary to use the 'pvlib', set
         `variable` to 'pvlib'. If you want to download all variables necessary
-        to use the windpowerlib, set `variable` to 'windpowerlib'.
-        To download both variable sets for pvlib and windpowerlib,
+        to use the 'windpowerlib', set `variable` to 'windpowerlib'.
+        To download both variable sets for 'pvlib' and 'windpowerlib',
         set `variable` to 'feedinlib'.
         Default: 'pvcompare'.
     start_date: str
-        Start date of the date span in YYYY-MM-DD format
+        Start date of the date span in YYYY-MM-DD format.
     end_date: str
-        End date of the date span in YYYY-MM-DD format
+        End date of the date span in YYYY-MM-DD format.
     latitude: float
         Latitude in the range [-90, 90] relative to the
         equator, north corresponds to positive latitude.
@@ -115,13 +111,13 @@ def get_era5_data_from_datespan_and_position(
         Greenwich Meridian, east relative to the meridian corresponds to
         positive longitude.
     grid: list of float
-        Provide the latitude and longitude grid resolutions in deg. It needs to
-        be an integer fraction of 90 deg.
+        Provide the latitude and longitude grid resolutions in deg.
+        It needs to be an integer fraction of 90 deg.
     target_file: str
-        Name of the file in which to store downloaded data locally
-    chunks: dict
+        Name of the file in which to store downloaded data locally.
+    chunks: dict TODO: Description needed
     cds_client: None
-        Handle to CDS client (if none is provided, then it is created)
+        Handle to CDS client. If none is provided, then it is created.
 
     Returns
     ---------
@@ -141,11 +137,11 @@ def format_pvcompare(ds):
     r"""
     Format weather data to dataframe as required by the pvlib's ModelChain.
 
-    The `pvlib's <https://pvlib-python.readthedocs.io/en/stable/>`_.
-    ModelChain requires a weather DataFrame with time series for
-    wind speed `wind_speed` in m/s, temperature `temp_air` in C,
-    direct irradiation 'dni' in W/m² (calculated later),
-    global horizontal irradiation 'ghi' in W/m².
+    The `pvlib's <https://pvlib-python.readthedocs.io/en/stable/>`_
+    :py:func:`~.ModelChain` functionality requires a weather
+    DataFrame with time series for wind speed `wind_speed` in m/s,
+    temperature `temp_air` in C, direct irradiation 'dni' in W/m²
+    (calculated later), global horizontal irradiation 'ghi' in W/m².
 
     Parameters
     ----------
@@ -212,12 +208,7 @@ def format_pvcompare(ds):
     return df
 
 
-def weather_df_from_era5(
-        era5_netcdf_filename,
-        lib,
-        start=None,
-        end=None
-):
+def weather_df_from_era5(era5_netcdf_filename, lib, start=None, end=None):
     r"""
     Converts ERA5 weather data to :pandas:`pandas.DataFrame<frame>`.
 

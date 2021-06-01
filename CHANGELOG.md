@@ -65,7 +65,7 @@ Here is a template for new release sections
 - Added general information for `era5.py`
 
 ### Changed
-- Changed docstrings for modules `era5.py`, `check_inputs.py`, and `stratified_thermal_storage.py`.
+- Changed docstrings for modules `era5.py`, and `stratified_thermal_storage.py`.
 
 
 ## [0.0.3] - 2021-05-20
