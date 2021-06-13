@@ -453,6 +453,41 @@ def add_parameters_to_energy_production_file(
         pvcompare_parameter=nominal_value,
         warning=False,
     )
+    ## THIS IS A HACK TO APPLY MAX INSTALLED CAPACITY TO ALL PV PLANTS
+    # ---------------------------------------------------------
+    #
+    switch_hack = False
+
+    if switch_hack is True:
+        add_parameter_to_mvs_file(
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
+            mvs_filename="energyProduction.csv",
+            mvs_row="installedCap",
+            mvs_column=label,
+            pvcompare_parameter=nominal_value,
+            warning=False,
+        )
+
+        # add age_installed
+        add_parameter_to_mvs_file(
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
+            mvs_filename="energyProduction.csv",
+            mvs_row="age_installed",
+            mvs_column=label,
+            pvcompare_parameter=25,
+            warning=False,
+        )
+        # add optimizeCap False
+        add_parameter_to_mvs_file(
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
+            mvs_filename="energyProduction.csv",
+            mvs_row="optimizeCap",
+            mvs_column=label,
+            pvcompare_parameter=str(False),
+            warning=False,
+        )
+
+    # ---------------------------------------------------------
     # add file name
     add_parameter_to_mvs_file(
         user_inputs_mvs_directory=user_inputs_mvs_directory,
@@ -462,7 +497,6 @@ def add_parameters_to_energy_production_file(
         pvcompare_parameter=ts_filename,
         warning=False,
     )
-
 
 def add_file_name_to_energy_consumption_file(
     column, ts_filename, user_inputs_mvs_directory=None

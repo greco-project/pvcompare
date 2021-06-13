@@ -734,7 +734,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_A7(self):
+    def run_scenario_A7(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -744,7 +744,7 @@ class ScenariosSectorCoupling:
             - Air-to-air heat pump
             - Heat demand for room heating only
 
-            - Loop over storeys: 1 - 5
+            - Loop over storeys: 1 - 8
         """
 
         scenario_name = "Scenario_A7"
@@ -766,7 +766,23 @@ class ScenariosSectorCoupling:
         for key, value in aahp_pvcompare.items():
             pvcompare_files_modified_list[1].at["heat_pump", key] = value
 
-        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+        if facades is True:
+            pv_setup_facades = pd.DataFrame(
+                data={
+                    "surface_type": ["south_facade", "east_facade", "west_facade"],
+                    "surface_azimuth": [180, 90, 270],
+                    "surface_tilt": [90, 90, 90],
+                    "technology": ["", "", ""],
+                }
+            )
+            pv_setup_facades = pv_setup_facades.set_index("surface_type")
+
+            pvcompare_files_modified_list[2] = pvcompare_files_modified_list[2].append(
+                pv_setup_facades, ignore_index=False
+            )
+
+        for i, row in pvcompare_files_modified_list[2].iterrows():
+            pvcompare_files_modified_list[2].at[i, "technology"] = str("si")
 
         # Save modified data
         scenarios_sector_coupling.save_data(
@@ -775,7 +791,7 @@ class ScenariosSectorCoupling:
 
         # Begin simulation
         loop_type = "storeys"
-        loop_dict = {"start": 1, "stop": 5, "step": 1}
+        loop_dict = {"start": 1, "stop": 8, "step": 1}
 
         analysis.loop_pvcompare(
             scenario_name=scenario_name,
@@ -790,8 +806,11 @@ class ScenariosSectorCoupling:
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
         )
+        if facades is True:
+            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
 
-    def run_scenario_A8(self):
+
+    def run_scenario_A8(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -801,7 +820,7 @@ class ScenariosSectorCoupling:
             - Air-to-air heat pump
             - Heat demand for room heating only
 
-            - Loop over storeys: 1 - 5
+            - Loop over storeys: 1 - 8
         """
 
         scenario_name = "Scenario_A8"
@@ -823,7 +842,23 @@ class ScenariosSectorCoupling:
         for key, value in aahp_pvcompare.items():
             pvcompare_files_modified_list[1].at["heat_pump", key] = value
 
-        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+        if facades is True:
+            pv_setup_facades = pd.DataFrame(
+                data={
+                    "surface_type": ["south_facade", "east_facade", "west_facade"],
+                    "surface_azimuth": [180, 90, 270],
+                    "surface_tilt": [90, 90, 90],
+                    "technology": ["", "", ""],
+                }
+            )
+            pv_setup_facades = pv_setup_facades.set_index("surface_type")
+
+            pvcompare_files_modified_list[2] = pvcompare_files_modified_list[2].append(
+                pv_setup_facades, ignore_index=False
+            )
+
+        for i, row in pvcompare_files_modified_list[2].iterrows():
+            pvcompare_files_modified_list[2].at[i, "technology"] = str("si")
 
         # Save modified data
         scenarios_sector_coupling.save_data(
@@ -832,7 +867,7 @@ class ScenariosSectorCoupling:
 
         # Begin simulation
         loop_type = "storeys"
-        loop_dict = {"start": 1, "stop": 5, "step": 1}
+        loop_dict = {"start": 1, "stop": 8, "step": 1}
 
         analysis.loop_pvcompare(
             scenario_name=scenario_name,
@@ -847,8 +882,10 @@ class ScenariosSectorCoupling:
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
         )
+        if facades is True:
+            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
 
-    def run_scenario_A9(self):
+    def run_scenario_A9(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -858,7 +895,7 @@ class ScenariosSectorCoupling:
             - Air-to-water heat pump
             - Heat demand for room heating only
 
-            - Loop over storeys: 1 - 5
+            - Loop over storeys: 1 - 8
         """
 
         scenario_name = "Scenario_A9"
@@ -880,7 +917,23 @@ class ScenariosSectorCoupling:
         for key, value in awhp_pvcompare.items():
             pvcompare_files_modified_list[1].at["heat_pump", key] = value
 
-        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+        if facades is True:
+            pv_setup_facades = pd.DataFrame(
+                data={
+                    "surface_type": ["south_facade", "east_facade", "west_facade"],
+                    "surface_azimuth": [180, 90, 270],
+                    "surface_tilt": [90, 90, 90],
+                    "technology": ["", "", ""],
+                }
+            )
+            pv_setup_facades = pv_setup_facades.set_index("surface_type")
+
+            pvcompare_files_modified_list[2] = pvcompare_files_modified_list[2].append(
+                pv_setup_facades, ignore_index=False
+            )
+
+        for i, row in pvcompare_files_modified_list[2].iterrows():
+            pvcompare_files_modified_list[2].at[i, "technology"] = str("si")
 
         # Save modified data
         scenarios_sector_coupling.save_data(
@@ -889,7 +942,7 @@ class ScenariosSectorCoupling:
 
         # Begin simulation
         loop_type = "storeys"
-        loop_dict = {"start": 1, "stop": 5, "step": 1}
+        loop_dict = {"start": 1, "stop": 8, "step": 1}
 
         analysis.loop_pvcompare(
             scenario_name=scenario_name,
@@ -904,8 +957,10 @@ class ScenariosSectorCoupling:
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
         )
+        if facades is True:
+            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
 
-    def run_scenario_A10(self):
+    def run_scenario_A10(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -915,7 +970,7 @@ class ScenariosSectorCoupling:
             - Air-to-water heat pump
             - Heat demand for room heating only
 
-            - Loop over storeys: 1 - 5
+            - Loop over storeys: 1 - 8
         """
 
         scenario_name = "Scenario_A10"
@@ -937,7 +992,23 @@ class ScenariosSectorCoupling:
         for key, value in awhp_pvcompare.items():
             pvcompare_files_modified_list[1].at["heat_pump", key] = value
 
-        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+        if facades is True:
+            pv_setup_facades = pd.DataFrame(
+                data={
+                    "surface_type": ["south_facade", "east_facade", "west_facade"],
+                    "surface_azimuth": [180, 90, 270],
+                    "surface_tilt": [90, 90, 90],
+                    "technology": ["", "", ""],
+                }
+            )
+            pv_setup_facades = pv_setup_facades.set_index("surface_type")
+
+            pvcompare_files_modified_list[2] = pvcompare_files_modified_list[2].append(
+                pv_setup_facades, ignore_index=False
+            )
+
+        for i, row in pvcompare_files_modified_list[2].iterrows():
+            pvcompare_files_modified_list[2].at[i, "technology"] = str("si")
 
         # Save modified data
         scenarios_sector_coupling.save_data(
@@ -946,7 +1017,7 @@ class ScenariosSectorCoupling:
 
         # Begin simulation
         loop_type = "storeys"
-        loop_dict = {"start": 1, "stop": 5, "step": 1}
+        loop_dict = {"start": 1, "stop": 8, "step": 1}
 
         analysis.loop_pvcompare(
             scenario_name=scenario_name,
@@ -961,8 +1032,10 @@ class ScenariosSectorCoupling:
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
         )
+        if facades is True:
+            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
 
-    def run_scenario_A11(self):
+    def run_scenario_A11(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -972,7 +1045,7 @@ class ScenariosSectorCoupling:
             - Brine-to-water heat pump
             - Heat demand for room heating only
 
-            - Loop over storeys: 1 - 5
+            - Loop over storeys: 1 - 8
         """
 
         scenario_name = "Scenario_A11"
@@ -994,7 +1067,23 @@ class ScenariosSectorCoupling:
         for key, value in bwhp_pvcompare.items():
             pvcompare_files_modified_list[1].at["heat_pump", key] = value
 
-        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+        if facades is True:
+            pv_setup_facades = pd.DataFrame(
+                data={
+                    "surface_type": ["south_facade", "east_facade", "west_facade"],
+                    "surface_azimuth": [180, 90, 270],
+                    "surface_tilt": [90, 90, 90],
+                    "technology": ["", "", ""],
+                }
+            )
+            pv_setup_facades = pv_setup_facades.set_index("surface_type")
+
+            pvcompare_files_modified_list[2] = pvcompare_files_modified_list[2].append(
+                pv_setup_facades, ignore_index=False
+            )
+
+        for i, row in pvcompare_files_modified_list[2].iterrows():
+            pvcompare_files_modified_list[2].at[i, "technology"] = str("si")
 
         # Save modified data
         scenarios_sector_coupling.save_data(
@@ -1003,7 +1092,7 @@ class ScenariosSectorCoupling:
 
         # Begin simulation
         loop_type = "storeys"
-        loop_dict = {"start": 1, "stop": 5, "step": 1}
+        loop_dict = {"start": 1, "stop": 8, "step": 1}
 
         analysis.loop_pvcompare(
             scenario_name=scenario_name,
@@ -1018,8 +1107,10 @@ class ScenariosSectorCoupling:
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
         )
+        if facades is True:
+            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
 
-    def run_scenario_A12(self):
+    def run_scenario_A12(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -1029,7 +1120,7 @@ class ScenariosSectorCoupling:
             - Brine-to-water heat pump
             - Heat demand for room heating only
 
-            - Loop over storeys: 1 - 5
+            - Loop over storeys: 1 - 8
         """
 
         scenario_name = "Scenario_A12"
@@ -1051,7 +1142,23 @@ class ScenariosSectorCoupling:
         for key, value in bwhp_pvcompare.items():
             pvcompare_files_modified_list[1].at["heat_pump", key] = value
 
-        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+        if facades is True:
+            pv_setup_facades = pd.DataFrame(
+                data={
+                    "surface_type": ["south_facade", "east_facade", "west_facade"],
+                    "surface_azimuth": [180, 90, 270],
+                    "surface_tilt": [90, 90, 90],
+                    "technology": ["", "", ""],
+                }
+            )
+            pv_setup_facades = pv_setup_facades.set_index("surface_type")
+
+            pvcompare_files_modified_list[2] = pvcompare_files_modified_list[2].append(
+                pv_setup_facades, ignore_index=False
+            )
+
+        for i, row in pvcompare_files_modified_list[2].iterrows():
+            pvcompare_files_modified_list[2].at[i, "technology"] = str("si")
 
         # Save modified data
         scenarios_sector_coupling.save_data(
@@ -1060,7 +1167,7 @@ class ScenariosSectorCoupling:
 
         # Begin simulation
         loop_type = "storeys"
-        loop_dict = {"start": 1, "stop": 5, "step": 1}
+        loop_dict = {"start": 1, "stop": 8, "step": 1}
 
         analysis.loop_pvcompare(
             scenario_name=scenario_name,
@@ -1075,6 +1182,8 @@ class ScenariosSectorCoupling:
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
         )
+        if facades is True:
+            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
 
     ###################################################################################
     ###################################  Scenario B ###################################
@@ -1336,7 +1445,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_B5(self):
+    def run_scenario_B5(self,facades):
         """
         Scenario description:
             - Sector-coupled
@@ -1347,7 +1456,7 @@ class ScenariosSectorCoupling:
             - Stratified thermal storage
             - Heat demand for room heating
 
-            - Loop over storeys: 1 - 5
+            - Loop over storeys: 1 - 8
         """
 
         scenario_name = "Scenario_B5"
@@ -1377,7 +1486,23 @@ class ScenariosSectorCoupling:
         for key, value in awhp_pvcompare.items():
             pvcompare_files_modified_list[1].at["heat_pump", key] = value
 
-        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+        if facades is True:
+            pv_setup_facades = pd.DataFrame(
+                data={
+                    "surface_type": ["south_facade", "east_facade", "west_facade"],
+                    "surface_azimuth": [180, 90, 270],
+                    "surface_tilt": [90, 90, 90],
+                    "technology": ["", "", ""],
+                }
+            )
+            pv_setup_facades = pv_setup_facades.set_index("surface_type")
+
+            pvcompare_files_modified_list[2] = pvcompare_files_modified_list[2].append(
+                pv_setup_facades, ignore_index=False
+            )
+
+        for i, row in pvcompare_files_modified_list[2].iterrows():
+            pvcompare_files_modified_list[2].at[i, "technology"] = str("si")
 
         # Save modified data
         scenarios_sector_coupling.save_data(
@@ -1386,7 +1511,7 @@ class ScenariosSectorCoupling:
 
         # Begin simulation
         loop_type = "storeys"
-        loop_dict = {"start": 1, "stop": 5, "step": 1}
+        loop_dict = {"start": 1, "stop": 8, "step": 1}
 
         analysis.loop_pvcompare(
             scenario_name=scenario_name,
@@ -1401,8 +1526,10 @@ class ScenariosSectorCoupling:
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
         )
+        if facades is True:
+            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
 
-    def run_scenario_B6(self):
+    def run_scenario_B6(self,facades):
         """
         Scenario description:
             - Sector-coupled
@@ -1413,7 +1540,7 @@ class ScenariosSectorCoupling:
             - Stratified thermal storage
             - Heat demand for room heating
 
-            - Loop over storeys: 1 - 5
+            - Loop over storeys: 1 - 8
         """
 
         scenario_name = "Scenario_B6"
@@ -1443,7 +1570,23 @@ class ScenariosSectorCoupling:
         for key, value in awhp_pvcompare.items():
             pvcompare_files_modified_list[1].at["heat_pump", key] = value
 
-        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+        if facades is True:
+            pv_setup_facades = pd.DataFrame(
+                data={
+                    "surface_type": ["south_facade", "east_facade", "west_facade"],
+                    "surface_azimuth": [180, 90, 270],
+                    "surface_tilt": [90, 90, 90],
+                    "technology": ["", "", ""],
+                }
+            )
+            pv_setup_facades = pv_setup_facades.set_index("surface_type")
+
+            pvcompare_files_modified_list[2] = pvcompare_files_modified_list[2].append(
+                pv_setup_facades, ignore_index=False
+            )
+
+        for i, row in pvcompare_files_modified_list[2].iterrows():
+            pvcompare_files_modified_list[2].at[i, "technology"] = str("si")
 
         # Save modified data
         scenarios_sector_coupling.save_data(
@@ -1452,7 +1595,7 @@ class ScenariosSectorCoupling:
 
         # Begin simulation
         loop_type = "storeys"
-        loop_dict = {"start": 1, "stop": 5, "step": 1}
+        loop_dict = {"start": 1, "stop": 8, "step": 1}
 
         analysis.loop_pvcompare(
             scenario_name=scenario_name,
@@ -1467,8 +1610,10 @@ class ScenariosSectorCoupling:
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
         )
+        if facades is True:
+            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
 
-    def run_scenario_B7(self):
+    def run_scenario_B7(self,facades):
         """
         Scenario description:
             - Sector-coupled
@@ -1479,7 +1624,7 @@ class ScenariosSectorCoupling:
             - Stratified thermal storage
             - Heat demand for room heating
 
-            - Loop over storeys: 1 - 5
+            - Loop over storeys: 1 - 8
         """
 
         scenario_name = "Scenario_B7"
@@ -1509,7 +1654,23 @@ class ScenariosSectorCoupling:
         for key, value in bwhp_pvcompare.items():
             pvcompare_files_modified_list[1].at["heat_pump", key] = value
 
-        pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("si")
+        if facades is True:
+            pv_setup_facades = pd.DataFrame(
+                data={
+                    "surface_type": ["south_facade", "east_facade", "west_facade"],
+                    "surface_azimuth": [180, 90, 270],
+                    "surface_tilt": [90, 90, 90],
+                    "technology": ["", "", ""],
+                }
+            )
+            pv_setup_facades = pv_setup_facades.set_index("surface_type")
+
+            pvcompare_files_modified_list[2] = pvcompare_files_modified_list[2].append(
+                pv_setup_facades, ignore_index=False
+            )
+
+        for i, row in pvcompare_files_modified_list[2].iterrows():
+            pvcompare_files_modified_list[2].at[i, "technology"] = str("si")
 
         # Save modified data
         scenarios_sector_coupling.save_data(
@@ -1518,7 +1679,7 @@ class ScenariosSectorCoupling:
 
         # Begin simulation
         loop_type = "storeys"
-        loop_dict = {"start": 1, "stop": 5, "step": 1}
+        loop_dict = {"start": 1, "stop": 8, "step": 1}
 
         analysis.loop_pvcompare(
             scenario_name=scenario_name,
@@ -1533,8 +1694,10 @@ class ScenariosSectorCoupling:
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
         )
+        if facades is True:
+            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
 
-    def run_scenario_B8(self):
+    def run_scenario_B8(self,facades):
         """
         Scenario description:
             - Sector-coupled
@@ -1545,7 +1708,7 @@ class ScenariosSectorCoupling:
             - Stratified thermal storage
             - Heat demand for room heating
 
-            - Loop over storeys: 1 - 5
+            - Loop over storeys: 1 - 8
         """
 
         scenario_name = "Scenario_B8"
@@ -1569,7 +1732,23 @@ class ScenariosSectorCoupling:
         energyStorage = energyStorage.join(strat_tes_data)
         mvs_files_modified_list[4] = energyStorage
 
-        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+        if facades is True:
+            pv_setup_facades = pd.DataFrame(
+                data={
+                    "surface_type": ["south_facade", "east_facade", "west_facade"],
+                    "surface_azimuth": [180, 90, 270],
+                    "surface_tilt": [90, 90, 90],
+                    "technology": ["", "", ""],
+                }
+            )
+            pv_setup_facades = pv_setup_facades.set_index("surface_type")
+
+            pvcompare_files_modified_list[2] = pvcompare_files_modified_list[2].append(
+                pv_setup_facades, ignore_index=False
+            )
+
+        for i, row in pvcompare_files_modified_list[2].iterrows():
+            pvcompare_files_modified_list[2].at[i, "technology"] = str("si")
 
         bwhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.bwhp_pvcompare_values))
         for key, value in bwhp_pvcompare.items():
@@ -1584,7 +1763,7 @@ class ScenariosSectorCoupling:
 
         # Begin simulation
         loop_type = "storeys"
-        loop_dict = {"start": 1, "stop": 5, "step": 1}
+        loop_dict = {"start": 1, "stop": 8, "step": 1}
 
         analysis.loop_pvcompare(
             scenario_name=scenario_name,
@@ -1599,6 +1778,8 @@ class ScenariosSectorCoupling:
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
         )
+        if facades is True:
+            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
 
     ###################################################################################
     ###################################  Scenario C ###################################
@@ -1675,8 +1856,7 @@ class ScenariosSectorCoupling:
             - Spain
             - Rooftop
             - PeroSi - PV
-            - Air-to-water heat pump
-            - Stratified thermal storage
+            - Air-to-air heat pump
             - Heat demand for room heating
         """
 
@@ -1689,22 +1869,14 @@ class ScenariosSectorCoupling:
         ) = scenarios_sector_coupling.get_data()
 
         # Modify data
-        awhp_mvs_values = dict(zip(self.hp_mvs_param, self.awhp_mvs_values))
-        for key, value in awhp_mvs_values.items():
+        aahp_mvs_values = dict(zip(self.hp_mvs_param, self.aahp_mvs_values))
+        for key, value in aahp_mvs_values.items():
             mvs_files_modified_list[1].at[key, "Heat pump"] = value
-
-        energyStorage = mvs_files_modified_list[4]
-        strat_tes_data = pd.DataFrame(
-            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
-        )
-        strat_tes_data = strat_tes_data.set_index("")
-        energyStorage = energyStorage.join(strat_tes_data)
-        mvs_files_modified_list[4] = energyStorage
 
         pvcompare_files_modified_list[0].at["include warm water", "value"] = False
 
-        awhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.awhp_pvcompare_values))
-        for key, value in awhp_pvcompare.items():
+        aahp_pvcompare = dict(zip(self.hp_pvcompare_param, self.aahp_pvcompare_values))
+        for key, value in aahp_pvcompare.items():
             pvcompare_files_modified_list[1].at["heat_pump", key] = value
 
         pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("psi")
@@ -1739,7 +1911,7 @@ class ScenariosSectorCoupling:
             - Germany
             - Rooftop
             - CPV - PV
-            - Brine-to-water heat pump
+            - Air-to-water heat pump
             - Stratified thermal storage
             - Heat demand for room heating
         """
@@ -1753,8 +1925,8 @@ class ScenariosSectorCoupling:
         ) = scenarios_sector_coupling.get_data()
 
         # Modify data
-        bwhp_mvs_values = dict(zip(self.hp_mvs_param, self.bwhp_mvs_values))
-        for key, value in bwhp_mvs_values.items():
+        awhp_mvs_values = dict(zip(self.hp_mvs_param, self.awhp_mvs_values))
+        for key, value in awhp_mvs_values.items():
             mvs_files_modified_list[1].at[key, "Heat pump"] = value
 
         energyStorage = mvs_files_modified_list[4]
@@ -1767,8 +1939,8 @@ class ScenariosSectorCoupling:
 
         pvcompare_files_modified_list[0].at["include warm water", "value"] = False
 
-        bwhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.bwhp_pvcompare_values))
-        for key, value in bwhp_pvcompare.items():
+        awhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.awhp_pvcompare_values))
+        for key, value in awhp_pvcompare.items():
             pvcompare_files_modified_list[1].at["heat_pump", key] = value
 
         pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("cpv")
@@ -1803,8 +1975,7 @@ class ScenariosSectorCoupling:
             - Spain
             - Rooftop
             - CPV - PV
-            - Brine-to-water heat pump
-            - Stratified thermal storage
+            - air-to-air heat pump
             - Heat demand for room heating
         """
 
@@ -1817,22 +1988,14 @@ class ScenariosSectorCoupling:
         ) = scenarios_sector_coupling.get_data()
 
         # Modify data
-        bwhp_mvs_values = dict(zip(self.hp_mvs_param, self.bwhp_mvs_values))
-        for key, value in bwhp_mvs_values.items():
+        aahp_mvs_values = dict(zip(self.hp_mvs_param, self.aahp_mvs_values))
+        for key, value in aahp_mvs_values.items():
             mvs_files_modified_list[1].at[key, "Heat pump"] = value
-
-        energyStorage = mvs_files_modified_list[4]
-        strat_tes_data = pd.DataFrame(
-            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
-        )
-        strat_tes_data = strat_tes_data.set_index("")
-        energyStorage = energyStorage.join(strat_tes_data)
-        mvs_files_modified_list[4] = energyStorage
 
         pvcompare_files_modified_list[0].at["include warm water", "value"] = False
 
-        bwhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.bwhp_pvcompare_values))
-        for key, value in bwhp_pvcompare.items():
+        aahp_pvcompare = dict(zip(self.hp_pvcompare_param, self.aahp_pvcompare_values))
+        for key, value in aahp_pvcompare.items():
             pvcompare_files_modified_list[1].at["heat_pump", key] = value
 
         pvcompare_files_modified_list[2].at["flat_roof", "technology"] = str("cpv")
@@ -1859,6 +2022,324 @@ class ScenariosSectorCoupling:
             outputs_directory=None,
             user_inputs_pvcompare_directory=None,
         )
+
+    def run_scenario_C5(self, facades):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Germany
+            - Rooftop
+            - PeroSi - PV
+            - Air-to-water heat pump
+            - Stratified thermal storage
+            - Heat demand for room heating
+
+            - Loop over storeys: 1 - 8
+        """
+
+        scenario_name = "Scenario_C5"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        awhp_mvs_values = dict(zip(self.hp_mvs_param, self.awhp_mvs_values))
+        for key, value in awhp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        energyStorage = mvs_files_modified_list[4]
+        strat_tes_data = pd.DataFrame(
+            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
+        )
+        strat_tes_data = strat_tes_data.set_index("")
+        energyStorage = energyStorage.join(strat_tes_data)
+        mvs_files_modified_list[4] = energyStorage
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        awhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.awhp_pvcompare_values))
+        for key, value in awhp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        if facades is True:
+            pv_setup_facades = pd.DataFrame(
+                data={
+                    "surface_type": ["south_facade", "east_facade", "west_facade"],
+                    "surface_azimuth": [180, 90, 270],
+                    "surface_tilt": [90, 90, 90],
+                    "technology": ["", "", ""],
+                }
+            )
+            pv_setup_facades = pv_setup_facades.set_index("surface_type")
+
+            pvcompare_files_modified_list[2] = pvcompare_files_modified_list[2].append(
+                pv_setup_facades, ignore_index=False
+            )
+
+        for i, row in pvcompare_files_modified_list[2].iterrows():
+            pvcompare_files_modified_list[2].at[i, "technology"] = str("psi")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 1, "stop": 8, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_germany,
+            longitude=self.longitude_germany,
+            years=self.years_germany,
+            storeys=self.storeys,
+            country=self.country_germany,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+        if facades is True:
+            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+
+    def run_scenario_C6(self, facades):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Spain
+            - Rooftop
+            - PeroSi - PV
+            - Air-to-air heat pump
+            - Heat demand for room heating
+
+            - Loop over storeys: 1 - 8
+        """
+
+        scenario_name = "Scenario_C6"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        aahp_mvs_values = dict(zip(self.hp_mvs_param, self.aahp_mvs_values))
+        for key, value in aahp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        aahp_pvcompare = dict(zip(self.hp_pvcompare_param, self.aahp_pvcompare_values))
+        for key, value in aahp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        if facades is True:
+            pv_setup_facades = pd.DataFrame(
+                data={
+                    "surface_type": ["south_facade", "east_facade", "west_facade"],
+                    "surface_azimuth": [180, 90, 270],
+                    "surface_tilt": [90, 90, 90],
+                    "technology": ["", "", ""],
+                }
+            )
+            pv_setup_facades = pv_setup_facades.set_index("surface_type")
+
+            pvcompare_files_modified_list[2] = pvcompare_files_modified_list[2].append(
+                pv_setup_facades, ignore_index=False
+            )
+
+        for i, row in pvcompare_files_modified_list[2].iterrows():
+            pvcompare_files_modified_list[2].at[i, "technology"] = str("psi")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 1, "stop": 8, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_spain,
+            longitude=self.longitude_spain,
+            years=self.years_spain,
+            storeys=self.storeys,
+            country=self.country_spain,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+        if facades is True:
+            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+
+    def run_scenario_C7(self, facades):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Germany
+            - Rooftop
+            - CPV - PV
+            - Air-to-water heat pump
+            - Stratified thermal storage
+            - Heat demand for room heating
+
+            - Loop over storeys: 1 - 8
+        """
+
+        scenario_name = "Scenario_C7"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        awhp_mvs_values = dict(zip(self.hp_mvs_param, self.awhp_mvs_values))
+        for key, value in awhp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        energyStorage = mvs_files_modified_list[4]
+        strat_tes_data = pd.DataFrame(
+            data={"": energyStorage.index, "storage_02": self.storage_mvs_value}
+        )
+        strat_tes_data = strat_tes_data.set_index("")
+        energyStorage = energyStorage.join(strat_tes_data)
+        mvs_files_modified_list[4] = energyStorage
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        awhp_pvcompare = dict(zip(self.hp_pvcompare_param, self.awhp_pvcompare_values))
+        for key, value in awhp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        if facades is True:
+            pv_setup_facades = pd.DataFrame(
+                data={
+                    "surface_type": ["south_facade", "east_facade", "west_facade"],
+                    "surface_azimuth": [180, 90, 270],
+                    "surface_tilt": [90, 90, 90],
+                    "technology": ["", "", ""],
+                }
+            )
+            pv_setup_facades = pv_setup_facades.set_index("surface_type")
+
+            pvcompare_files_modified_list[2] = pvcompare_files_modified_list[2].append(
+                pv_setup_facades, ignore_index=False
+            )
+
+        for i, row in pvcompare_files_modified_list[2].iterrows():
+            pvcompare_files_modified_list[2].at[i, "technology"] = str("cpv")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 1, "stop": 8, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_germany,
+            longitude=self.longitude_germany,
+            years=self.years_germany,
+            storeys=self.storeys,
+            country=self.country_germany,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+        if facades is True:
+            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+
+    def run_scenario_C8(self, facades):
+        """
+        Scenario description:
+            - Sector-coupled
+            - Spain
+            - Rooftop
+            - CPV - PV
+            - air-to-air heat pump
+            - Heat demand for room heating
+
+            - Loop over storeys: 1 - 8
+        """
+
+        scenario_name = "Scenario_C8"
+
+        # Get data
+        (
+            mvs_files_modified_list,
+            pvcompare_files_modified_list,
+        ) = scenarios_sector_coupling.get_data()
+
+        # Modify data
+        aahp_mvs_values = dict(zip(self.hp_mvs_param, self.aahp_mvs_values))
+        for key, value in aahp_mvs_values.items():
+            mvs_files_modified_list[1].at[key, "Heat pump"] = value
+
+        pvcompare_files_modified_list[0].at["include warm water", "value"] = False
+
+        aahp_pvcompare = dict(zip(self.hp_pvcompare_param, self.aahp_pvcompare_values))
+        for key, value in aahp_pvcompare.items():
+            pvcompare_files_modified_list[1].at["heat_pump", key] = value
+
+        if facades is True:
+            pv_setup_facades = pd.DataFrame(
+                data={
+                    "surface_type": ["south_facade", "east_facade", "west_facade"],
+                    "surface_azimuth": [180, 90, 270],
+                    "surface_tilt": [90, 90, 90],
+                    "technology": ["", "", ""],
+                }
+            )
+            pv_setup_facades = pv_setup_facades.set_index("surface_type")
+
+            pvcompare_files_modified_list[2] = pvcompare_files_modified_list[2].append(
+                pv_setup_facades, ignore_index=False
+            )
+
+        for i, row in pvcompare_files_modified_list[2].iterrows():
+            pvcompare_files_modified_list[2].at[i, "technology"] = str("cpv")
+
+        # Save modified data
+        scenarios_sector_coupling.save_data(
+            mvs_files_modified_list, pvcompare_files_modified_list
+        )
+
+        # Begin simulation
+        loop_type = "storeys"
+        loop_dict = {"start": 1, "stop": 8, "step": 1}
+
+        analysis.loop_pvcompare(
+            scenario_name=scenario_name,
+            latitude=self.latitude_spain,
+            longitude=self.longitude_spain,
+            years=self.years_spain,
+            storeys=self.storeys,
+            country=self.country_spain,
+            loop_type=loop_type,
+            loop_dict=loop_dict,
+            user_inputs_mvs_directory=self.mvs_inputs_path_sector_coupling,
+            outputs_directory=None,
+            user_inputs_pvcompare_directory=None,
+        )
+        if facades is True:
+            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
 
     ###################################################################################
     ###################################  Scenario D ###################################
@@ -2407,7 +2888,7 @@ class ScenariosSectorCoupling:
 
         for file in time_series_files:
             if os.path.exists(os.path.join(time_series_path, file)):
-                if "si" or "cpv" not in file:
+                if "si" not in file and "cpv" not in file:
                     os.remove(os.path.join(time_series_path, file))
 
 
@@ -2732,11 +3213,13 @@ class ScenariosGas:
 
         for file in time_series_files:
             if os.path.exists(os.path.join(time_series_path, file)):
-                if "si" or "cpv" not in file:
+                if "si" not in file or "cpv" not in file:
                     os.remove(os.path.join(time_series_path, file))
 
 
 if __name__ == "__main__":
+
+    facades = True
 
     scenarios = Scenarios()
     scenarios.setup_class()
@@ -2759,17 +3242,17 @@ if __name__ == "__main__":
     # scenarios_sector_coupling.revert_inputs_changes()
     # scenarios_sector_coupling.run_scenario_A6()
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_A7()
+    # scenarios_sector_coupling.run_scenario_A7(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_A8()
+    # scenarios_sector_coupling.run_scenario_A8(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_A9()
+    # scenarios_sector_coupling.run_scenario_A9(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_A10()
+    # scenarios_sector_coupling.run_scenario_A10(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_A11()
+    # scenarios_sector_coupling.run_scenario_A11(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_A12()
+    # scenarios_sector_coupling.run_scenario_A12(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
     # scenarios_sector_coupling.run_scenario_B1()
     # scenarios_sector_coupling.revert_inputs_changes()
@@ -2779,13 +3262,13 @@ if __name__ == "__main__":
     # scenarios_sector_coupling.revert_inputs_changes()
     # scenarios_sector_coupling.run_scenario_B4()
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_B5()
+    # scenarios_sector_coupling.run_scenario_B5(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_B6()
+    # scenarios_sector_coupling.run_scenario_B6(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_B7()
+    # scenarios_sector_coupling.run_scenario_B7(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_B8()
+    # scenarios_sector_coupling.run_scenario_B8(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
     # scenarios_sector_coupling.run_scenario_C1()
     # scenarios_sector_coupling.revert_inputs_changes()
