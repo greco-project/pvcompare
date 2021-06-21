@@ -106,11 +106,12 @@ Currently *pvcompare* is not released on pypi, but only on github. Please follow
     Please use [semantic versioning guidelines](https://semver.org/spec/v2.0.0.html) for `X`, `Y` and `Z`.
 2. In the release branch update the version number in [`__init__.py`](https://github.com/greco-project/pvcompare/blob/dev/pvcompare/__init__.py) and [`setup.py`](https://github.com/greco-project/pvcompare/blob/dev/setup.py).
 3. Adapt the header `[Unreleased]` of [Changelog.md](https://github.com/greco-project/pvcompare/blob/dev/CHANGELOG.md) with the version number and the date of the release in [ISO format](https://xkcd.com/1179/): `[Version] - YYYY-MM-DD`.
-4. Install pvcompare in a clean virtual environment on `release/vX.Y.Z` branch (navigate to directory where `setup.py` is located:
+4. Push your changes in 2. and 3. to your release branch (commit message e.g. "Bump version number and adapt Changelog.md for release")
+5. Install pvcompare in a clean virtual environment on `release/vX.Y.Z` branch (navigate to directory where `setup.py` is located):
    ```bash
-      pip install -e .[dev]
+      pip install -e .[dev,docs]
    ```
-6. Run all tests locally by `EXECUTE_TESTS_ON=master pytest`.
+6. Run all tests locally in this new environment (step 5) by `EXECUTE_TESTS_ON=master pytest`.
 7. If there are errors, fix them in the release branch. If you fix something in the `setup.py` please test the installation in clean virtual environment again (see step 4).
 8. When `EXECUTE_TESTS_ON=master pytest` passes, push your release branch, create a pull request towards `master` and merge.
 9. Wait until the [build](https://github.com/greco-project/pvcompare/actions) on `master` branch passes.
