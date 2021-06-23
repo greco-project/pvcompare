@@ -535,13 +535,18 @@ def postprocessing_kpi(
     1) Creates new sheet "Electricity bus1" with the column
     Electricity demand = Electricity demand + Heat pump.
     2) Creates new sheets in scalars.xlsx with KPI's adjusted to the new demand.
-    :param scenario_name: str
+
+    Parameters
+    ----------------
+    scenario_name: str
         scenario name
-    :param user_inputs_pvcompare_directory: str
+    user_inputs_pvcompare_directory: str
         pvcompare inputs directory
-    :param outputs_directory: str
+    outputs_directory: str
         output directory
-    :return:
+
+    Returns
+        Saves new sheet in output excel file
     """
     if outputs_directory == None:
         outputs_directory = constants.DEFAULT_OUTPUTS_DIRECTORY

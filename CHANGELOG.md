@@ -25,7 +25,8 @@ Here is a template for new release sections
 - Add zenodo doi badge to readme (#328)
 
 ### Changed
--
+- Improve docstrings of `plots.py` and `analysis.py` (#329)
+
 ### Removed
 -
 ### Fixed

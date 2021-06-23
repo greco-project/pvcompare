@@ -141,9 +141,13 @@ def plot_all_flows(
     )
 
 
-def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value):
+def plot_psi_matrix(
+    scenario_dict, variable_name, outputs_directory, basis_value_lcoe, basis_value_costs
+):
     r"""
-    Plots scenario matrix.
+    Plots two matrix subplots (LCOE and total costs) over a number of scenarios.
+
+    Note that the x- and y- achses needs to be adjusted.
 
     Parameters
     ----------
@@ -159,7 +163,10 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
         Path to the directory in which the plot should be saved.
         If None: `constants.DEFAULT_OUTPUTS_DIRECTORY` is used.
         Default: None.
-    basis_value: int
+    basis_value_lcoe: float
+        reference value for the LCOE
+    basis_value_costs: float
+        reference value for the total system costs
 
     Returns
     -------
@@ -191,7 +198,6 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
         for filepath in list(
             glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
         ):
-
             file_sheet1 = pd.read_excel(
                 filepath, header=0, index_col=1, sheet_name="cost_matrix1"
             )
@@ -215,52 +221,70 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
             LCOE.loc[index, column] = file_sheet1.at[
                 "PV psi", "levelized_cost_of_energy_of_asset"
             ]
-            TOTALCOSTS.loc[index, column] = file_sheet1.at["PV psi", "costs_total"]
+            TOTALCOSTS.loc[index, column] = file_sheet3.at["costs_total", 0]
 
     LCOE.sort_index(ascending=False, inplace=True)
     INSTCAP.sort_index(ascending=False, inplace=True)
     TOTALCOSTS.sort_index(ascending=False, inplace=True)
     # select values close to basis value
-    basis = pd.DataFrame()
+    basis1 = pd.DataFrame()
     for column in LCOE.columns:
-        value = LCOE[column].iloc[(LCOE[column] - basis_value).abs().argsort()[:1]]
-        if value.index[0] is not None:
-            basis.loc[column, "lifetime"] = int(value.index[0])
+        value1 = LCOE[column].iloc[
+            (LCOE[column] - basis_value_lcoe).abs().argsort()[:1]
+        ]
+        if value1.index[0] is not None:
+            basis1.loc[column, "lifetime"] = int(value1.index[0])
+    basis2 = pd.DataFrame()
+    for column in TOTALCOSTS.columns:
+        value2 = TOTALCOSTS[column].iloc[
+            (TOTALCOSTS[column] - basis_value_costs).abs().argsort()[:1]
+        ]
+        #        value2 = TOTALCOSTS[column][minimum]
+        if value2.index[0] is not None:
+            basis2.loc[column, "lifetime"] = int(value2.index[0])
 
     # plot LCOE
-    f, (ax1, ax3) = plt.subplots(1, 2, figsize=(20, 9))
+    f, (ax1, ax3) = plt.subplots(1, 2, figsize=(13, 6))
     plt.tick_params(bottom="on")
     sns.set_style("whitegrid", {"axes.grid": True})
     ax1 = plt.subplot(121)
     ax1 = sns.heatmap(
-        LCOE, cmap="YlGnBu", cbar_kws={"label": "LCOE in EUR/kWh"}, vmin=0.07
+        LCOE, cmap="YlGnBu", cbar_kws={"label": "LCOE in EUR/kWh"}, vmin=0.04
     )
-    ax1.set_ylabel("lifetime in years")
-    ax1.set_xlabel("specific_costs in EUR")
+    ax1.set_ylabel("Lifetime in years")
+    ax1.set_xlabel("Specific investment costs in EUR/kWp")
     #    sns.lineplot(basis.columns, basis[0], ax = ax1)
     ax2 = ax1.twinx()
-    ax2.plot(basis.index, basis["lifetime"], color="darkorange", label="SI")
+    ax2.plot(basis1.index, basis1["lifetime"], color="darkorange", label="SI")
     ax2.set_ylim(5, 25.5)
     ax2.axis("off")
 
+    ax3 = plt.subplot(122)
+    ax3 = sns.heatmap(
+        TOTALCOSTS, cmap="YlGnBu", cbar_kws={"label": "Total system costs in EUR"}
+    )
+    ax4 = ax3.twinx()
+    ax4.plot(basis2.index, basis2["lifetime"], color="darkorange", label="SI")
+    ax4.set_ylim(5, 25.5)
+    ax4.axis("off")
+    ax4.set_ylabel("Lifetime in years")
+    ax3.set_xlabel("Specific investment costs in EUR/kWp")
+
     ax1.set_xticklabels([500, 600, 700, 800, 900, 1000, 1100], minor=False)
+    ax4.set_xticklabels([500, 600, 700, 800, 900, 1000, 1100], minor=False)
     # Create offset transform by 5 points in x direction
-    dx = 40 / 72.0
+    dx = 0 / 72.0
     dy = 0 / 72.0
     offset = mpl.transforms.ScaledTranslation(dx, dy, f.dpi_scale_trans)
-
     # apply offset transform to all x ticklabels.
     for label in ax1.xaxis.get_majorticklabels():
         label.set_transform(label.get_transform() + offset)
     for label in ax2.xaxis.get_majorticklabels():
         label.set_transform(label.get_transform() + offset)
-
-    ax3 = plt.subplot(122)
-    ax3 = sns.heatmap(
-        TOTALCOSTS, cmap="YlGnBu", cbar_kws={"label": "Total costs in EUR"}
-    )
-    ax3.set_ylabel("lifetime in years")
-    ax3.set_xlabel("specific costs in EUR")
+    for label in ax3.xaxis.get_majorticklabels():
+        label.set_transform(label.get_transform() + offset)
+    for label in ax4.xaxis.get_majorticklabels():
+        label.set_transform(label.get_transform() + offset)
 
     plt.tight_layout()
 
@@ -303,7 +327,7 @@ def compare_weather_years(
     Returns
     -------
     None
-        The plot is saved into the `output_directory`.
+        The plot is saved into the `outputs_directory`.
     """
 
     if static_inputs_directory == None:
@@ -441,7 +465,7 @@ def plot_kpi_loop(
 
     Plots KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs`
     for a loop over one variable.
-    The plot is saved into the `loop_output_directory`.
+    The plot is saved into the `outputs_directory`.
 
     Parameters
     ----------
@@ -457,8 +481,8 @@ def plot_kpi_loop(
             "Total renewable energy use",
             "Renewable share",
             "LCOE PV",
-            "self consumption",
-            "self sufficiency",
+            "Self consumption",
+            "Self sufficiency",
             "Degree of autonomy",
             "Total non-renewable energy use",
             "Total costs",
@@ -678,11 +702,6 @@ def plot_kpi_loop(
         mode="expand",
     )
 
-    #    handles, labels = ax.get_legend_handles_labels()
-    #    fig.legend(
-    #        handles, labels, loc="lower left", mode="expand",
-    #    )
-
     name = ""
     for scenario_name in scenario_dict.keys():
         name = name + "_" + str(scenario_name)
@@ -696,12 +715,12 @@ def plot_kpi_loop(
 
 
 def plot_facades(
-    variable_name, kpi, scenario_name, outputs_directory=None,
+    variable_name, scenario_name, outputs_directory=None,
 ):
     r"""
-    Plots KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs` for a loop over one variable.
+    Plots barplot for KPI's from the 'mvs_output/scalars_**.xlsx' files in `loop_outputs` for all facades.
 
-    The plot is saved into the `loop_output_directory`.
+    The plot is saved into the `outputs_directory`.
 
     Parameters
     ----------
@@ -724,7 +743,7 @@ def plot_facades(
     Returns
     -------
     None
-        Saves figure into `loop_output_directory`.
+        Saves figure into `outputs_directory`.
     """
 
     if outputs_directory == None:
@@ -903,6 +922,8 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
     r"""
     Comparison of scenarios for specific KPI's.
 
+    Parameters
+    ---------------
     variable_name: str
         Name of the variable that is changed each loop. Please do not enter
         white spaces within the string.
@@ -932,7 +953,7 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
     Returns
     -------
     None
-        Saves figure into `loop_output_directory`.
+        Saves figure into `outputs_directory`.
     """
 
     # height = len(kpi) * 2
@@ -1206,7 +1227,7 @@ def plot_compare_technologies(
     variable_name, kpi, scenario_list, outputs_directory=None
 ):
     r"""
-    Comparison of different technologies for specific KPI's.
+    Comparison of different technologies at different locations for specific KPI's.
 
     kpi: list of str
         List of KPI's to be plotted.
@@ -1234,7 +1255,7 @@ def plot_compare_technologies(
     Returns
     -------
     None
-        Saves figure into `loop_output_directory`.
+        Saves figure into `outputs_directory`.
     """
 
     # height = len(kpi) * 2
