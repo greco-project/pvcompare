@@ -141,7 +141,9 @@ def plot_all_flows(
     )
 
 
-def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value_lcoe, basis_value_costs):
+def plot_psi_matrix(
+    scenario_dict, variable_name, outputs_directory, basis_value_lcoe, basis_value_costs
+):
     r"""
     Plots two matrix subplots (LCOE and total costs) over a number of scenarios.
 
@@ -183,8 +185,7 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
         else:
             scenario_folder = os.path.join(outputs_directory, scenario_name)
             if not os.path.isdir(scenario_folder):
-                logging.warning(
-                    f"The scenario folder {scenario_name} does not exist.")
+                logging.warning(f"The scenario folder {scenario_name} does not exist.")
         loop_output_directory = os.path.join(
             scenario_folder, "loop_outputs_" + str(variable_name)
         )
@@ -195,8 +196,7 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
             )
         # parse through scalars folder and read in all excel sheets
         for filepath in list(
-                glob.glob(
-                    os.path.join(loop_output_directory, "scalars", "*.xlsx"))
+            glob.glob(os.path.join(loop_output_directory, "scalars", "*.xlsx"))
         ):
             file_sheet1 = pd.read_excel(
                 filepath, header=0, index_col=1, sheet_name="cost_matrix1"
@@ -217,8 +217,7 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
             index = lt_step
             column = str(sc_step)
             #            LCOE.loc[index, "step"] = int(step)
-            INSTCAP.loc[index, column] = file_sheet2.at[
-                "PV psi", "optimizedAddCap"]
+            INSTCAP.loc[index, column] = file_sheet2.at["PV psi", "optimizedAddCap"]
             LCOE.loc[index, column] = file_sheet1.at[
                 "PV psi", "levelized_cost_of_energy_of_asset"
             ]
@@ -231,13 +230,15 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
     basis1 = pd.DataFrame()
     for column in LCOE.columns:
         value1 = LCOE[column].iloc[
-            (LCOE[column] - basis_value_lcoe).abs().argsort()[:1]]
+            (LCOE[column] - basis_value_lcoe).abs().argsort()[:1]
+        ]
         if value1.index[0] is not None:
             basis1.loc[column, "lifetime"] = int(value1.index[0])
     basis2 = pd.DataFrame()
     for column in TOTALCOSTS.columns:
         value2 = TOTALCOSTS[column].iloc[
-            (TOTALCOSTS[column] - basis_value_costs).abs().argsort()[:1]]
+            (TOTALCOSTS[column] - basis_value_costs).abs().argsort()[:1]
+        ]
         #        value2 = TOTALCOSTS[column][minimum]
         if value2.index[0] is not None:
             basis2.loc[column, "lifetime"] = int(value2.index[0])
@@ -260,8 +261,7 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
 
     ax3 = plt.subplot(122)
     ax3 = sns.heatmap(
-        TOTALCOSTS, cmap="YlGnBu",
-        cbar_kws={"label": "Total system costs in EUR"}
+        TOTALCOSTS, cmap="YlGnBu", cbar_kws={"label": "Total system costs in EUR"}
     )
     ax4 = ax3.twinx()
     ax4.plot(basis2.index, basis2["lifetime"], color="darkorange", label="SI")
@@ -288,8 +288,7 @@ def plot_psi_matrix(scenario_dict, variable_name, outputs_directory, basis_value
 
     plt.tight_layout()
 
-    f.savefig(
-        os.path.join(outputs_directory, f"plot_{scenario_name}_matrix.png", ))
+    f.savefig(os.path.join(outputs_directory, f"plot_{scenario_name}_matrix.png",))
 
 
 def compare_weather_years(
@@ -702,7 +701,6 @@ def plot_kpi_loop(
         loc="lower left",
         mode="expand",
     )
-
 
     name = ""
     for scenario_name in scenario_dict.keys():
