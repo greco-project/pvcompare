@@ -1,4 +1,4 @@
-|badge_docs| |badge_CI| |badge_coverage|
+|badge_docs| |badge_CI| |badge_coverage| |badge_zenodo|
 
 Deprecated: |badge_travis| 
 
@@ -16,6 +16,9 @@ Deprecated: |badge_travis|
 
 .. |badge_travis| image:: https://travis-ci.com/greco-project/pvcompare.svg?branch=dev
     :target: https://travis-ci.com/greco-project/pvcompare
+
+.. |badge_zenodo| image:: https://zenodo.org/badge/224614782.svg
+   :target: https://zenodo.org/badge/latestdoi/224614782
 
 
 pvcompare
