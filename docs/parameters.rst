@@ -391,9 +391,43 @@ stratified_thermal_storage.csv
     8. **alpha_inside**: 4.3 (Calculated with calculations in [6]), W/(m2*K)
     9. **alpha_outside** 3.17 (Calculated with calculations in [6]), W/(m2*K)
 
+
+
+2. Static inputs parameters
+==========================
+
 list_of_workalendar_countries.csv
 ---------------------------------
-    * list of countries for which a python.workalendar [3] exists with the column name "country".
+    *list of countries for which a python.workalendar [3] exists with the column name "country".*
+
+
+EUROSTAT_population.csv
+-----------------------
+    *Population on 1 January by age, sex and broad group of citizenship for European countries obtained from [7]*
+
+
+Energetic demands
+-----------------
+
+    *Energetic demands were obtained from* `Odyssee Project of Enerdata <https://odyssee.enerdata.net/database/>`_
+
+    * electricity_consumption_residential.xlsx [8]
+    * electricity_consumption_SH_residential.xlsx [9]
+    * electricity_consumption_WH_residential.xlsx [10]
+    * total_consumption_cooking_residential.xlsx [11]
+    * electricity_consumption_cooking_residential.xlsx [12]
+    * total_consumption_SH_residential.xlsx [13]
+    * total_consumption_WH_residential.xlsx [14]
+
+local_grid_parameters.xlsx
+--------------------------
+
+    1. **electricity_price**: default: 0.18 else *auto_calc*, EUR/kWh, Obtained from [15]
+    2. **gas_price**: default: 0.05 else *auto_calc*, EUR/kWh, Gas prices of European countries obtained from [16]
+    3. **feedin_tariff**: default: 0.05 else *auto_calc*, EUR/kWh, Feed-in tariff obtained from [17]
+    4. **emission_factor**: default: 0.25, kgCO2eq/kWh, Emission factor of the electricity grid obtained from [18]
+    5. **renewable_share**: default: 0.15, factor, Share of renewables in the electricity grid obtained from [19]
+
 
 
 
@@ -408,3 +442,29 @@ list_of_workalendar_countries.csv
 [5] Beikircher, Thomas & Buttinger, Frank & Rottmann, Matthias & Herzog, Fabian & Konrad, Martin & Reuß, Manfred & Beikircher, Redaktion, 2013: Superisolierter Heißwasser-Langzeitwärmespeicher : Abschlussbericht zu BMU-Projekt Förderkennzeichen 0325964A, Projektlaufzeit: 01.05.2010 - 31.10.2012. 10.2314/GBV:749701188.
 
 [6] In:Klan, H, 2002: Wärmeübergang durch freie Konvektion an umströmten Körpern. Berlin, Heidelberg: Springer Berlin Heidelberg, ISBN 978-3-662-10743-0, 567-591
+
+[7] Eurostat, the Statistical Office of the European Union: Population on 1 January by age, sex and broad group of citizenship. https://ec.europa.eu/eurostat/databrowser/view/migr pop2ctz/default/table?lang=en
+
+[8] Enerdata: Electricity consumption of residential sector. https://odyssee.enerdata.net/database/
+
+[9] Enerdata: Electricity consumption of residential for space heating. https://odyssee.enerdata.net/database/
+
+[10] Enerdata: Electricity consumption of households for water heating. https://odyssee.enerdata.net/database/
+
+[11] Enerdata: Final consumption of residential for cooking. https://odyssee.enerdata.net/database/
+
+[12] Enerdata: Electricity consumption of residential for cooking. https://odyssee.enerdata.net/database/
+
+[13] Enerdata: Final consumption of residential for space heating. https://odyssee.enerdata.net/database/
+
+[14] Enerdata: Final consumption of households for water heating. https://odyssee.enerdata.net/database/
+
+[15] Eurostat, the Statistical Office of the European Union: Electricity prices by type of user. https://ec.europa.eu/eurostat/databrowser/view/ten00117/default/table?lang=en
+
+[16] Eurostat, the Statistical Office of the European Union: Gas prices by type of user. https://ec.europa.eu/eurostat/databrowser/view/ten00118/default/table?lang=en
+
+[17] magazine, pv: Feed-in taris (FITs) in Europe. https://www.pv-magazine.com/features/archive/solar-incentives-and-ts/feed-in-taris-in-europe/
+
+[18] Hans Bruyninckx: Greenhouse gas emission intensity of electricity generation in Europe | European Environment Agency. https://www.eea.europa.eu/data-and-maps/indicators/overview-of-the-electricity-production-3/assessment
+
+[19] Eurostat, the Statistical Office of the European Union: Share of renewable energy in gross nal energy consumption. https://ec.europa.eu/eurostat/databrowser/view/t2020 31/default/table?lang=en
