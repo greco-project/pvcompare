@@ -393,7 +393,7 @@ stratified_thermal_storage.csv
 
 
 
-2. Static inputs parameters
+2. Static input parameters
 ==========================
 
 list_of_workalendar_countries.csv
