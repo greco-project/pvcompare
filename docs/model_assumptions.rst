@@ -31,7 +31,7 @@ These load profiles are flattened,
 compared to profiles of single households. In order to meet the required number of households,
 we assume a number of 20 houses by default for our simulations with variable number of storeys and a fixed
 number of 8 flats per storey. For 5 storey buildings this counts up to 800 households while for
-3 storey buildings this counts up to 480 households.\\
+3 storey buildings this counts up to 480 households.
 The amount of buildings, households per storey, number of people per household and further parameters
 can be adjusted in the inputs file :ref:`building_parameters`.
 
@@ -60,8 +60,9 @@ All building parameters can be adjusted in the inputs file :ref:`building_parame
 Exploitation for PV Installation
 --------------------------------
 *The following paragraphs are mostly taken from `Haas et al., 2021 <QUELLE>`_.*
+
 In general we assume an urban environment that allows high solar exposure without shading
-from surrounding buildings or trees.\\
+from surrounding buildings or trees.
 It is assumed that PV systems can cover "50% of the south façade
 area, starting from the third floor up, and 80% of the east and west
 façades." (`Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_.)
@@ -81,7 +82,7 @@ Maximum Capacity
 
 With the help of the calculated available area for PV exploitation, the maximum
 capacity can be evaluated. The maximum capacity, given in
-the unit of kWp, depends on the size and the efficiency of the specific PV technology.
+the unit of kWp, depends on the size and the peak power of the specific PV technology.
 It serves as a limit (constraint) for the investment optimization.
 It is calculated as follows:
 
