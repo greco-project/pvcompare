@@ -443,7 +443,7 @@ local_grid_parameters.xlsx
 
 [6] In:Klan, H, 2002: Wärmeübergang durch freie Konvektion an umströmten Körpern. Berlin, Heidelberg: Springer Berlin Heidelberg, ISBN 978-3-662-10743-0, 567-591
 
-[7] Eurostat, the Statistical Office of the European Union: Population on 1 January by age, sex and broad group of citizenship. https://ec.europa.eu/eurostat/databrowser/view/migr pop2ctz/default/table?lang=en
+[7] Eurostat, the Statistical Office of the European Union: Population on 1 January by age, sex and broad group of citizenship. online data code: MIGR_POP2CTZ. https://ec.europa.eu/eurostat/databrowser/view/migr_pop2ctz/default/table?lang=en
 
 [8] Enerdata: Electricity consumption of residential sector. https://odyssee.enerdata.net/database/
 
