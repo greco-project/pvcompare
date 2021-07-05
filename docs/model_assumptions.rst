@@ -21,6 +21,8 @@ Local energy sytem
 
 Building assumptions
 --------------------
+*The following paragraph is mostly taken from `Haas et al., 2021 <QUELLE>`_.*
+
 The analyzed local energy system is assumed to belong to an urban neighbourhood with a specific
 number of buildings. The calculation of the demand profiles are based on standard load profiles
 that are typically generated for 500-100 hoseholds. The functionalities for calculating the
@@ -44,6 +46,8 @@ The stardard building is constructed with defined building parameters, such as
 The construction of the buidling, as well as the available façades for PV usage
 are based on the research of `Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_.
 
+*The following paragraph is mostly taken from `Haas et al., 2021 <QUELLE>`_.*
+
 The default building parameters are based on the following assumptions that have
 been adopted from `Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_:
 Each storey (with a total area of 1232m²) is divided into 8 flats of 120m² each. The rest of the
@@ -55,6 +59,7 @@ All building parameters can be adjusted in the inputs file :ref:`building_parame
 
 Exploitation for PV Installation
 --------------------------------
+*The following paragraphs are mostly taken from `Haas et al., 2021 <QUELLE>`_.*
 In general we assume an urban environment that allows high solar exposure without shading
 from surrounding buildings or trees.\\
 It is assumed that PV systems can cover "50% of the south façade
@@ -72,6 +77,8 @@ total floor area, due to shading between the modules (see `Energieatlas <https:/
 
 Maximum Capacity
 ----------------
+*The following paragraph is mostly taken from `Haas et al., 2021 <QUELLE>`_.*
+
 With the help of the calculated available area for PV exploitation, the maximum
 capacity can be evaluated. The maximum capacity, given in
 the unit of kWp, depends on the size and the efficiency of the specific PV technology.
@@ -326,6 +333,7 @@ timeseries is kW/kWp.
 
 Electricity and heat demand modeling
 ====================================
+*Most of this section "Electricity and heat demand modeling" is taken from `Haas et al., 2021 <QUELLE>`_.*
 
 The load profiles of the demand (electricity and heat) are calculated for a
 given population (calculated from number of storeys), a certain country and year.
