@@ -403,7 +403,7 @@ list_of_workalendar_countries.csv
 
 EUROSTAT_population.csv
 -----------------------
-    *Population on 1 January by age, sex and broad group of citizenship for European countries obtained from [7]*
+    *"Population on 1 January by age, sex and broad group of citizenship for European countries" of the years 2008 to 2019 obtained from [7]*
 
 
 Energetic demands
