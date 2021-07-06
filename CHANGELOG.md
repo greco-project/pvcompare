@@ -47,6 +47,9 @@ Here is a template for new release sections
 - Added description of the implementation of the stratified thermal storage in pvcompare with a description of the possibilities modeling it (#291)
 - Dokumentation: Update on 'basic_usage', 'parameter description' and 'model assumptions' (#302)
 - Add gas bus to `energyBusses.csv` in  `tests/data/user_inputs/mvs_inputs_sector_coupling/csv_elements` (#314)
+- Improved usability: allow the user to provide their own weather data, demand time series, pv time series and SAM SI modules (#317)
+
+
 
 ### Changed
 - Description for multiple functions in the modules `area_potential`, `check_inputs`, `demand`, `cpv/apply_cpvlib_StaticHybridSystem`, `heat_pump_and_chiller`, `main`, `plots` were updated and corrected. (#303)

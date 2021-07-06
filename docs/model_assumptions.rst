@@ -98,6 +98,8 @@ unique models were developed for the CPV and PeroSi technologies. The next
 sections will provide a detailed description of the different modeling
 approaches.
 
+.. _si:
+
 1. SI
 -----
 The silicone module parameters are loaded from `cec module <https://github.com/NREL/SAM/tree/develop/deploy/libraries>`_ database. The module
@@ -172,8 +174,6 @@ The utilization factors are defined as follows:
 .. figure:: ./images/Equation_UF.png
     :width: 60%
     :align: center
-
-    ".."
 
 The overall model for the hybrid system is illustrated in the next figure.
 
