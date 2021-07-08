@@ -354,9 +354,9 @@ Electricity demand does not cover space heating nor hot water. For this reason, 
 The annual electricity demand is calculated by the following procedure:
 
 1)  the national residential electricity consumption for a country is calculated
-    with the following procedure. The data for the total electricity consumption
-    as well as the fractions for space heating (SH), water heating (WH) and cooking
-    are taken from `EU Building Database <https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use>`_.
+    with the following procedure. The data for the total electricity consumption [1]
+    as well as the fractions for space heating (SH) [2], water heating (WH) [3] and cooking [4] [5]
+    are taken from `Odyssee Project of Enerdata <https://odyssee.enerdata.net/database/>`_.
 
 .. math::
     \text{nec} &= \text{tec}(country, year) \\
@@ -366,13 +366,13 @@ The annual electricity demand is calculated by the following procedure:
         &- \text{ec}(country, year) \\
 
     \text{with } nec &= \text{national energy consumption} \\
-    \text{tec} &= \text{total electricity consumption} \\
-    \text{esh} &= \text{electricity space heating} \\
-    \text{ewh} &= \text{electricity water heating} \\
-    \text{tc} &= \text{total cookin}g \\
-    \text{ec} &= \text{electicity cooking} \\
+    \text{tec} &= \text{total electricity consumption [1]}\\
+    \text{esh} &= \text{electricity space heating [2]}\\
+    \text{ewh} &= \text{electricity water heating [3]}\\
+    \text{tc} &= \text{total cooking [4]}\\
+    \text{ec} &= \text{electicity cooking [5]}\\
 
-2)  the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&plugin=1&language=en&pcode=tps00001>`_.
+2)  the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/databrowser/view/migr_pop2ctz/default/table?lang=en>`_.
 3)  the total residential demand is divided by the country's population
     and multiplied by the population living in the area considered. The latter is calculated by the product of the
     number of houses, the number of storeys and the number of people per storey (for
@@ -424,8 +424,8 @@ The standard load profile is scaled with the annual heat demand for the given
 population, which is derived from the given number of houses and storeys (for assumptions see :ref:`building_assumptions`). The annual heat demand for space heating and warm water is calculated by the
 following procedure:
 
-1)  the residential heat demand of a country is taken from the `EU Building Database <https://ec.europa.eu/energy/en/eu-buildings-database#how-to-use>`_.
-2)  on the lines of the electricity demand, the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/tgm/table.do?tab=table&init=1&plugin=1&language=en&pcode=tps00001>`_.
+1)  the residential heat demand for space heating [6] with or without warm water [7] of a country is taken from the `Odyssee Project of Enerdata <https://odyssee.enerdata.net/database/>`_.
+2)  on the lines of the electricity demand, the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/databrowser/view/migr_pop2ctz/default/table?lang=en>`_.
 3)  the total residential demand is divided by the country's population
     and multiplied by the population living in the area considered. The latter is calculated by the product of the
     number of houses, the number of storeys and the number of people per storey (for
@@ -721,3 +721,19 @@ You can model the stratified thermal storage with fixed thermal losses by either
             fixed_thermal_losses_absolute,kWh,"{'file_name': 'None', 'header': 'kWh', 'unit': ''}",,
 
     (In this example the fixed thermal losses are calculated in :ref:`thermal_storage` and written to the field ``'file_name'`` in :ref:`storage_02.csv` with *no_unit* as header of the column with the fixed losses relative and *kWh* as header of the column with the fixed losses absolute)
+
+
+
+[1] Enerdata: Electricity consumption of residential sector. https://odyssee.enerdata.net/database/
+
+[2] Enerdata: Electricity consumption of residential for space heating. https://odyssee.enerdata.net/database/
+
+[3] Enerdata: Electricity consumption of households for water heating. https://odyssee.enerdata.net/database/
+
+[4] Enerdata: Final consumption of residential for cooking. https://odyssee.enerdata.net/database/
+
+[5] Enerdata: Electricity consumption of residential for cooking. https://odyssee.enerdata.net/database/
+
+[6] Enerdata: Final consumption of residential for space heating. https://odyssee.enerdata.net/database/
+
+[7] Enerdata: Final consumption of households for water heating. https://odyssee.enerdata.net/database/
