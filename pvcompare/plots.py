@@ -90,13 +90,15 @@ def plot_all_flows(
             sheet_name="Heat bus",
             index_col=0,
         )
-    except(KeyError):
-        df_heat = pd.DataFrame(data={"Heat pump": [0], "TES input power": [0], "TES output power": [0]})
+    except (KeyError):
+        df_heat = pd.DataFrame(
+            data={"Heat pump": [0], "TES input power": [0], "TES output power": [0]}
+        )
 
     df_pv = pd.read_excel(
-            os.path.join(timeseries_directory, timeseries_name),
-            sheet_name="PV bus",
-            index_col=0,
+        os.path.join(timeseries_directory, timeseries_name),
+        sheet_name="PV bus",
+        index_col=0,
     )
     # Converting the index as date
     df.index = pd.to_datetime(df.index)
@@ -162,14 +164,14 @@ def plot_all_flows(
     # plot
     df_plot = df.copy().drop(
         [
-            #'Charge Contoller ESS Li-Ion (discharge)',
-            #"storage_charge_controller_in",
-            #"storage_charge_controller_out",
+            "Charge Contoller ESS Li-Ion (discharge)",
+            # "storage_charge_controller_in",
+            # "storage_charge_controller_out",
             "Heat pump",
             #'Solar inverter',
-            'Electricity grid_consumption_period',
-            #'Charge Contoller ESS Li-Ion (charge)',
-            'Electricity bus_excess_sink',
+            "Electricity grid_consumption_period",
+            "Charge Contoller ESS Li-Ion (charge)",
+            "Electricity bus_excess_sink",
             #'Electricity demand',
             #'Electricity grid_feedin_sink_sink'
         ],
@@ -183,7 +185,7 @@ def plot_all_flows(
     #     ],
     #     axis=1
     # )
-    #df_plot = pd.concat([df_plot, df_pv_plot], axis=1)
+    # df_plot = pd.concat([df_plot, df_pv_plot], axis=1)
 
     try:
         df_heat_plot = df_heat.copy().drop(
@@ -196,10 +198,14 @@ def plot_all_flows(
             axis=1,
         )
         df_plot = pd.concat([df_plot, df_heat_plot], axis=1)
-    except(KeyError):
+    except (KeyError):
         print("TES not installed, flow won't be printed")
 
-    switch_german = False
+    df_plot.rename(
+        columns={"Electricity grid_feedin_sink_sink": "Electricity grid feed-in"},
+        inplace="True",
+    )
+    switch_german = True
 
     if switch_german:
         parameters_timeseries = {
@@ -232,11 +238,11 @@ def plot_all_flows(
         plt.xlabel("Time")
     plt.ylabel("kW")
     plt.ylim(-1000, 1500)
-    plt.grid(b=True, which='major', axis='both', color='white', linestyle='-')
+    plt.grid(b=True, which="major", axis="both", color="white", linestyle="-")
     plt.minorticks_on()
-    plt.grid(b=True, which='minor', axis='both', color='white', linestyle=':')
-    #plt.tight_layout(rect=(0.02, 0.12, 1, 1))
-    #plt.show()
+    plt.grid(b=True, which="minor", axis="both", color="white", linestyle=":")
+    # plt.tight_layout(rect=(0.02, 0.12, 1, 1))
+    # plt.show()
 
     # save plot into output directory
     plt.savefig(
@@ -1298,16 +1304,16 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
                     output.loc[index, "Total annual production PV"]
                     + file_sheet2.at[pv, "annual_total_flow"]
                 )
-                output.loc[index, "Total annual production solar inverter"] = (\
-                    file_sheet2.at["Solar inverter", "annual_total_flow"]
-                )
+                output.loc[
+                    index, "Total annual production solar inverter"
+                ] = file_sheet2.at["Solar inverter", "annual_total_flow"]
                 counter += 1
 
             output_dict_column = output.to_dict()
             output_dict[scenario_name] = output_dict_column
     # define y labels
 
-    switch_german = False
+    switch_german = True
 
     if switch_german:
         y_title = {
@@ -1389,32 +1395,33 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
     )  # the setting for number of rows | number of columns | row number
 
     for i in kpi:
-        dict_y_kpi = {"Self consumption": [0, 100],
-                      "Total annual production PV": [0, 3500000],
-                      "Degree of NZE": [0, 250],
-                      "Degree of autonomy": [0, 100],
-                      #"Total annual production solar inverter": [],
-                      "Total electricity demand heat pump": [0,13000000],
-                      "Total_excessElectricity": [0, 80000],
-                      "Total_feedinElectricity": [0, 1100000],
-                      #"Total demand electricity": [],
-                      "Total_consumption_from_grid": [0, 11000000],
-                      #"Total flow ESS Li-Ion storage": [],
-                      "Total costs": [0, 51000000],
-                      "Total costs heat pump": [0, 12500000],
-                      "Total costs Electricity grid_consumption_source": [0, 51000000],
-                      "Total costs TES": [0, 1400000],
-                      "Total costs solar inverter": [0, 410000],
-                      "Total costs electricity grid_feedin": [-625000, 0],
-                      "Total costs of ESS Li-Ion storage": [0, 450000],
-                      #"Total costs PV": [],
-                      #"Installed capacity PV": [],
-                      #"Installed heat pump capacity": [],
-                      #"Installed capacity per heat pump": [],
-                      #"Installed TES capacity": [],
-                      #"ESS Li-Ion storage capacity": [],
-                      "Total emissions": [0, 4000000]
-                     }
+        dict_y_kpi = {
+            "Self consumption": [0, 100],
+            "Total annual production PV": [0, 3500000],
+            "Degree of NZE": [0, 250],
+            "Degree of autonomy": [0, 100],
+            # "Total annual production solar inverter": [],
+            "Total electricity demand heat pump": [0, 13000000],
+            "Total_excessElectricity": [0, 80000],
+            "Total_feedinElectricity": [0, 1100000],
+            # "Total demand electricity": [],
+            "Total_consumption_from_grid": [0, 11000000],
+            # "Total flow ESS Li-Ion storage": [],
+            "Total costs": [0, 51000000],
+            "Total costs heat pump": [0, 12500000],
+            "Total costs Electricity grid_consumption_source": [0, 51000000],
+            "Total costs TES": [0, 1400000],
+            "Total costs solar inverter": [0, 410000],
+            "Total costs electricity grid_feedin": [-625000, 0],
+            "Total costs of ESS Li-Ion storage": [0, 450000],
+            # "Total costs PV": [],
+            # "Installed capacity PV": [],
+            # "Installed heat pump capacity": [],
+            # "Installed capacity per heat pump": [],
+            # "Installed TES capacity": [],
+            # "ESS Li-Ion storage capacity": [],
+            "Total emissions": [0, 4000000],
+        }
         ax = fig.add_subplot(num)
         num = num + 1
 
@@ -1464,7 +1471,7 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
                 color=color_1[0],
                 edgecolor=color_1[0],
                 linewidth=0.5,
-                label = "KPI minimum of weather years",
+                label="KPI minimum of weather years",
             )
             # Plot span between minimum and maximum value of all three years
             ax.bar(
@@ -1474,7 +1481,7 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
                 edgecolor=color_2[0],
                 linewidth=0.5,
                 color=color_2[0],
-                label = "KPI maximum of weather years",
+                label="KPI maximum of weather years",
             )
 
         ax.set_ylabel(y_title[i])
@@ -1485,7 +1492,7 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
         ax.get_yaxis().set_label_coords(-0.37, 0.5)
         ax.set_xlim(ax.get_xlim()[0] - 0.1, ax.get_xlim()[1] + 0.1)
         if i in dict_y_kpi.keys():
-           ax.set_ylim(dict_y_kpi[i])
+            ax.set_ylim(dict_y_kpi[i])
         # if i == "Total costs electricity grid_feedin":
         #     ax.set_ylim([-610000, 0])
         # else:
@@ -1514,8 +1521,12 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
     for scenario_name in scenario_name_ending:
         name = name + "_" + str(scenario_name)
 
-    fig.savefig(os.path.join(outputs_directory, "plot_PeroSi_CPV_Si" + str(name) + ".png"))
-    fig.savefig(os.path.join(outputs_directory, "plot_PeroSi_CPV_Si" + str(name) + ".pdf"))
+    fig.savefig(
+        os.path.join(outputs_directory, "plot_PeroSi_CPV_Si" + str(name) + ".png")
+    )
+    fig.savefig(
+        os.path.join(outputs_directory, "plot_PeroSi_CPV_Si" + str(name) + ".pdf")
+    )
 
 
 def plot_compare_technologies(
@@ -1821,6 +1832,9 @@ if __name__ == "__main__":
     #     ),
     # )
 
+    # scenario_dict = {"Scenario_C5": "PSI", "Scenario_C7": "CPV", "Scenario_B5": "SI"}
+    # scenario_dict = {"Scenario_C6": "PSI", "Scenario_C8": "CPV", "Scenario_A8": "SI"}
+    #
     # scenario_dict = {"Scenario_A7": "Scenario A7", "Scenario_A9": "Scenario A9", "Scenario_A11": "Scenario A11", "Scenario_B5": "Scenario B5", "Scenario_B7": "Scenario B7"}
     # plot_kpi_loop(
     #     scenario_dict=scenario_dict,
@@ -1828,7 +1842,9 @@ if __name__ == "__main__":
     #     kpi=[
     # "Total annual production",
     # "Total_feedinElectricity",
+    # "Feedin",
     # "Degree of NZE",
+    # "LCOE PV",
     # "Total costs PV",
     # "Total costs heat pump",
     # "Total costs TES",
@@ -1839,6 +1855,7 @@ if __name__ == "__main__":
     # "Total_consumption_from_grid",
     # "Installed TES capacity",
     # "Installed heat pump capacity",
+    # "Installed capacity battery",
     # "Total electricity demand heat pump",
     # "Installed capacity per heat pump",
     #     ],
@@ -1879,19 +1896,19 @@ if __name__ == "__main__":
     scenario_list = [
         # "Scenario_A1",
         # "Scenario_A3",
-    #     "Scenario_A5",
-    #     "Scenario_B1",
-    #     "Scenario_B3",
-    #     "Scenario_RefE1",
-    #     "Scenario_RefG1",
-    #     "Scenario_A1",
-    #     "Scenario_A3",
-    #     "Scenario_B1",
-    #     "Scenario_RefG1",
-    #     "Scenario_RefE1",
-        "Scenario_C1",
-        "Scenario_C3",
-        "Scenario_B1",
+        # "Scenario_A5",
+        # "Scenario_B1",
+        # "Scenario_B3",
+        # "Scenario_RefE1",
+        # "Scenario_RefG1",
+        # "Scenario_A1",
+        # "Scenario_A3",
+        # "Scenario_B1",
+        # "Scenario_RefG1",
+        # "Scenario_RefE1",
+        # "Scenario_C1",
+        # "Scenario_C3",
+        # "Scenario_B1",
         # "Scenario_C2",
         # "Scenario_C4",
         # "Scenario_A2",
@@ -1923,8 +1940,8 @@ if __name__ == "__main__":
             # "Total costs Electricity grid_consumption_source",
             # "Total costs heat pump",
             # "Total costs TES",
-            "Total costs solar inverter",
-            "Total costs electricity grid_feedin",
+            # "Total costs solar inverter",
+            # "Total costs electricity grid_feedin",
             # "Total costs of ESS Li-Ion storage",
             # "Total costs PV",
             # "Installed capacity PV",
