@@ -1,4 +1,10 @@
+.. _README:
+
+README
+~~~~~~
+
 Instructions for running run_sector_coupling_scenarios.py
+=========================================================
 
 Note: For the examinations in the working paper with the title "The influence of innovative photovoltaic technologies on urban energy systems - An energy system analysis with concentrator PV, perovskite-silicon PV and PV-powered heat pumps in comparison with state-of-the-art technologies",
 simulations have been run, which have a Li-ion battery connected to the electricity bus as a storage component.
@@ -34,5 +40,6 @@ thermal components on corresponding KPIs.
 
 
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 with "~/[...]/" as the path to your locally cloned repositories
