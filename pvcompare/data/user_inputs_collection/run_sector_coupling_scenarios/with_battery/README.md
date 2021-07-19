@@ -12,7 +12,9 @@ simulations have been run, which have a Li-ion battery connected to the electric
    to
 
    a. ~/[...]/pvcompare/pvcompare/data/user_inputs/mvs_inputs/ in case of simulating RefE scenarios
+
    b. ~/[...]/pvcompare/pvcompare/data/user_inputs/mvs_inputs_sector_coupling/ in case of simulating sector coupling scenarios A, B, C and D
+   
    c. ~/[...]/pvcompare/pvcompare/data/user_inputs/mvs_inputs_sector_coupling_gas/ in case of simulating RefG scenarios
 
 2. Please set `facades` to True if you want to simulate facades
@@ -23,16 +25,15 @@ simulations have been run, which have a Li-ion battery connected to the electric
    For example:
 
 
-    :::python
-
-
-    # # scenarios.run_scenario_RefE1()
+```
+   # scenarios.run_scenario_RefE1()
+```
 
 ->
 
-    :::python
-
-    # scenarios.run_scenario_RefE1()
+```
+   # scenarios.run_scenario_RefE1()
+```
 
 5. Run the script
 
