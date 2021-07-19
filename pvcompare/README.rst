@@ -14,18 +14,18 @@ thermal components on corresponding KPIs.
 
 1. Please make sure to add input data first by obtaining it from:
 
-	~/[...]/pvcompare/pvcompare/data/user_inputs_collection/run_sector_coupling_scenarios/
+   ~/[...]/pvcompare/pvcompare/data/user_inputs_collection/run_sector_coupling_scenarios/
 
-	Choose whether you want to simulate
+   Choose whether you want to simulate
 
-		A. with (directory: with_battery) or
-		B. without (directory: without_battery)
+   A. with (directory: with_battery) or
+   B. without (directory: without_battery)
 
-	battery and copy the repective data to
+   battery and copy the repective data to
 
-		a. ~/[...]/pvcompare/pvcompare/data/user_inputs/mvs_inputs/ in case of simulating RefE scenarios
-		b. ~/[...]/pvcompare/pvcompare/data/user_inputs/mvs_inputs_sector_coupling/ in case of simulating sector coupling scenarios A, B, C and D
-		c. ~/[...]/pvcompare/pvcompare/data/user_inputs/mvs_inputs_sector_coupling_gas/ in case of simulating RefG scenarios
+   a. ~/[...]/pvcompare/pvcompare/data/user_inputs/mvs_inputs/ in case of simulating RefE scenarios
+   b. ~/[...]/pvcompare/pvcompare/data/user_inputs/mvs_inputs_sector_coupling/ in case of simulating sector coupling scenarios A, B, C and D
+   c. ~/[...]/pvcompare/pvcompare/data/user_inputs/mvs_inputs_sector_coupling_gas/ in case of simulating RefG scenarios
 
 2. Please set `facades` to True if you want to simulate facades
 
