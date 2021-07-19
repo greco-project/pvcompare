@@ -39,6 +39,6 @@ thermal components on corresponding KPIs.
 5. Run the script
 
 
-Transition_
+====================================
 
 with "~/[...]/" as the path to your locally cloned repositories
