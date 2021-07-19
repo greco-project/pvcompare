@@ -32,14 +32,14 @@ thermal components on corresponding KPIs.
 4. Please uncomment the scenarios you want to simulate
    For example:
 
-   .. code-block:: python
+.. code-block:: python
 
-       # scenarios.run_scenario_RefE1()
+    # scenarios.run_scenario_RefE1()
 
-    ->
-   .. code-block:: python
+->
+.. code-block:: python
 
-       scenarios.run_scenario_RefE1()
+    scenarios.run_scenario_RefE1()
 
 5. Run the script
 
