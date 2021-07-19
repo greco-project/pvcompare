@@ -205,7 +205,7 @@ def plot_all_flows(
         columns={"Electricity grid_feedin_sink_sink": "Electricity grid feed-in"},
         inplace="True",
     )
-    switch_german = True
+    switch_german = False
 
     if switch_german:
         parameters_timeseries = {
@@ -1313,7 +1313,7 @@ def plot_compare_scenarios(variable_name, kpi, scenario_list, outputs_directory=
             output_dict[scenario_name] = output_dict_column
     # define y labels
 
-    switch_german = True
+    switch_german = False
 
     if switch_german:
         y_title = {
