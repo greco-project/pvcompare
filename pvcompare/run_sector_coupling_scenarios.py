@@ -734,7 +734,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_A7(self, facades):
+    def run_scenario_A7_A13(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -746,8 +746,10 @@ class ScenariosSectorCoupling:
 
             - Loop over storeys: 1 - 8
         """
-
-        scenario_name = "Scenario_A7"
+        if facades is True:
+            scenario_name = "Scenario_A13"
+        else:
+            scenario_name = "Scenario_A7"
 
         # Get data
         (
@@ -807,10 +809,11 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
         if facades is True:
-            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+            self.pv_setup_original.to_csv(
+                os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv")
+            )
 
-
-    def run_scenario_A8(self, facades):
+    def run_scenario_A8_A14(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -822,8 +825,10 @@ class ScenariosSectorCoupling:
 
             - Loop over storeys: 1 - 8
         """
-
-        scenario_name = "Scenario_A8"
+        if facades is True:
+            scenario_name = "Scenario_A14"
+        else:
+            scenario_name = "Scenario_A8"
 
         # Get data
         (
@@ -883,9 +888,11 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
         if facades is True:
-            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+            self.pv_setup_original.to_csv(
+                os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv")
+            )
 
-    def run_scenario_A9(self, facades):
+    def run_scenario_A9_A15(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -897,8 +904,10 @@ class ScenariosSectorCoupling:
 
             - Loop over storeys: 1 - 8
         """
-
-        scenario_name = "Scenario_A9"
+        if facades is True:
+            scenario_name = "Scenario_A15"
+        else:
+            scenario_name = "Scenario_A9"
 
         # Get data
         (
@@ -958,9 +967,11 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
         if facades is True:
-            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+            self.pv_setup_original.to_csv(
+                os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv")
+            )
 
-    def run_scenario_A10(self, facades):
+    def run_scenario_A10_A16(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -972,8 +983,10 @@ class ScenariosSectorCoupling:
 
             - Loop over storeys: 1 - 8
         """
-
-        scenario_name = "Scenario_A10"
+        if facades is True:
+            scenario_name = "Scenario_A16"
+        else:
+            scenario_name = "Scenario_A10"
 
         # Get data
         (
@@ -1033,9 +1046,11 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
         if facades is True:
-            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+            self.pv_setup_original.to_csv(
+                os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv")
+            )
 
-    def run_scenario_A11(self, facades):
+    def run_scenario_A11_A17(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -1047,8 +1062,10 @@ class ScenariosSectorCoupling:
 
             - Loop over storeys: 1 - 8
         """
-
-        scenario_name = "Scenario_A11"
+        if facades is True:
+            scenario_name = "Scenario_A17"
+        else:
+            scenario_name = "Scenario_A11"
 
         # Get data
         (
@@ -1108,9 +1125,11 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
         if facades is True:
-            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+            self.pv_setup_original.to_csv(
+                os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv")
+            )
 
-    def run_scenario_A12(self, facades):
+    def run_scenario_A12_A18(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -1122,8 +1141,10 @@ class ScenariosSectorCoupling:
 
             - Loop over storeys: 1 - 8
         """
-
-        scenario_name = "Scenario_A12"
+        if facades is True:
+            scenario_name = "Scenario_A18"
+        else:
+            scenario_name = "Scenario_A12"
 
         # Get data
         (
@@ -1183,7 +1204,9 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
         if facades is True:
-            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+            self.pv_setup_original.to_csv(
+                os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv")
+            )
 
     ###################################################################################
     ###################################  Scenario B ###################################
@@ -1445,7 +1468,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_B5(self,facades):
+    def run_scenario_B5_B9(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -1458,8 +1481,10 @@ class ScenariosSectorCoupling:
 
             - Loop over storeys: 1 - 8
         """
-
-        scenario_name = "Scenario_B5"
+        if facades is True:
+            scenario_name = "Scenario_B9"
+        else:
+            scenario_name = "Scenario_B5"
 
         # Get data
         (
@@ -1527,9 +1552,11 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
         if facades is True:
-            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+            self.pv_setup_original.to_csv(
+                os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv")
+            )
 
-    def run_scenario_B6(self,facades):
+    def run_scenario_B6_B10(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -1542,8 +1569,10 @@ class ScenariosSectorCoupling:
 
             - Loop over storeys: 1 - 8
         """
-
-        scenario_name = "Scenario_B6"
+        if facades is True:
+            scenario_name = "Scenario_B10"
+        else:
+            scenario_name = "Scenario_B6"
 
         # Get data
         (
@@ -1611,9 +1640,11 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
         if facades is True:
-            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+            self.pv_setup_original.to_csv(
+                os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv")
+            )
 
-    def run_scenario_B7(self,facades):
+    def run_scenario_B7_B11(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -1626,8 +1657,10 @@ class ScenariosSectorCoupling:
 
             - Loop over storeys: 1 - 8
         """
-
-        scenario_name = "Scenario_B7"
+        if facades is True:
+            scenario_name = "Scenario_B11"
+        else:
+            scenario_name = "Scenario_B7"
 
         # Get data
         (
@@ -1695,9 +1728,11 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
         if facades is True:
-            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+            self.pv_setup_original.to_csv(
+                os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv")
+            )
 
-    def run_scenario_B8(self,facades):
+    def run_scenario_B8_B12(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -1710,8 +1745,10 @@ class ScenariosSectorCoupling:
 
             - Loop over storeys: 1 - 8
         """
-
-        scenario_name = "Scenario_B8"
+        if facades is True:
+            scenario_name = "Scenario_B12"
+        else:
+            scenario_name = "Scenario_B8"
 
         # Get data
         (
@@ -1779,7 +1816,9 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
         if facades is True:
-            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+            self.pv_setup_original.to_csv(
+                os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv")
+            )
 
     ###################################################################################
     ###################################  Scenario C ###################################
@@ -2023,7 +2062,7 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
 
-    def run_scenario_C5(self, facades):
+    def run_scenario_C5_C9(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -2036,8 +2075,10 @@ class ScenariosSectorCoupling:
 
             - Loop over storeys: 1 - 8
         """
-
-        scenario_name = "Scenario_C5"
+        if facades is True:
+            scenario_name = "Scenario_C9"
+        else:
+            scenario_name = "Scenario_C5"
 
         # Get data
         (
@@ -2105,9 +2146,11 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
         if facades is True:
-            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+            self.pv_setup_original.to_csv(
+                os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv")
+            )
 
-    def run_scenario_C6(self, facades):
+    def run_scenario_C6_C10(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -2119,8 +2162,10 @@ class ScenariosSectorCoupling:
 
             - Loop over storeys: 1 - 8
         """
-
-        scenario_name = "Scenario_C6"
+        if facades is True:
+            scenario_name = "Scenario_C10"
+        else:
+            scenario_name = "Scenario_C6"
 
         # Get data
         (
@@ -2180,9 +2225,11 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
         if facades is True:
-            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+            self.pv_setup_original.to_csv(
+                os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv")
+            )
 
-    def run_scenario_C7(self, facades):
+    def run_scenario_C7_C11(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -2195,8 +2242,10 @@ class ScenariosSectorCoupling:
 
             - Loop over storeys: 1 - 8
         """
-
-        scenario_name = "Scenario_C7"
+        if facades is True:
+            scenario_name = "Scenario_C11"
+        else:
+            scenario_name = "Scenario_C7"
 
         # Get data
         (
@@ -2264,9 +2313,11 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
         if facades is True:
-            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+            self.pv_setup_original.to_csv(
+                os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv")
+            )
 
-    def run_scenario_C8(self, facades):
+    def run_scenario_C8_C12(self, facades):
         """
         Scenario description:
             - Sector-coupled
@@ -2278,8 +2329,10 @@ class ScenariosSectorCoupling:
 
             - Loop over storeys: 1 - 8
         """
-
-        scenario_name = "Scenario_C8"
+        if facades is True:
+            scenario_name = "Scenario_C12"
+        else:
+            scenario_name = "Scenario_C8"
 
         # Get data
         (
@@ -2339,7 +2392,9 @@ class ScenariosSectorCoupling:
             user_inputs_pvcompare_directory=None,
         )
         if facades is True:
-            self.pv_setup_original.to_csv(os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv"))
+            self.pv_setup_original.to_csv(
+                os.path.join(self.user_inputs_pvcompare_directory, "py_setup.csv")
+            )
 
     ###################################################################################
     ###################################  Scenario D ###################################
@@ -3242,17 +3297,17 @@ if __name__ == "__main__":
     # scenarios_sector_coupling.revert_inputs_changes()
     # scenarios_sector_coupling.run_scenario_A6()
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_A7(facades)
+    # scenarios_sector_coupling.run_scenario_A7_A13(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_A8(facades)
+    # scenarios_sector_coupling.run_scenario_A8_A14(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_A9(facades)
+    # scenarios_sector_coupling.run_scenario_A9_A15(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_A10(facades)
+    # scenarios_sector_coupling.run_scenario_A10_A16(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_A11(facades)
+    # scenarios_sector_coupling.run_scenario_A11_A17(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_A12(facades)
+    # scenarios_sector_coupling.run_scenario_A12_A18(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
     # scenarios_sector_coupling.run_scenario_B1()
     # scenarios_sector_coupling.revert_inputs_changes()
@@ -3262,13 +3317,13 @@ if __name__ == "__main__":
     # scenarios_sector_coupling.revert_inputs_changes()
     # scenarios_sector_coupling.run_scenario_B4()
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_B5(facades)
+    # scenarios_sector_coupling.run_scenario_B5_B9(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_B6(facades)
+    # scenarios_sector_coupling.run_scenario_B6_B10(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_B7(facades)
+    # scenarios_sector_coupling.run_scenario_B7_B11(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
-    # scenarios_sector_coupling.run_scenario_B8(facades)
+    # scenarios_sector_coupling.run_scenario_B8_B12(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
     # scenarios_sector_coupling.run_scenario_C1()
     # scenarios_sector_coupling.revert_inputs_changes()
@@ -3277,6 +3332,14 @@ if __name__ == "__main__":
     # scenarios_sector_coupling.run_scenario_C3()
     # scenarios_sector_coupling.revert_inputs_changes()
     # scenarios_sector_coupling.run_scenario_C4()
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_C5_C9(facades)
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_C6_C10(facades)
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_C7_C11(facades)
+    # scenarios_sector_coupling.revert_inputs_changes()
+    # scenarios_sector_coupling.run_scenario_C8_C12(facades)
     # scenarios_sector_coupling.revert_inputs_changes()
     # scenarios_sector_coupling.run_scenario_D1()
     # scenarios_sector_coupling.revert_inputs_changes()
