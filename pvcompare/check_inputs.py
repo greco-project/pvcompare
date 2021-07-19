@@ -498,6 +498,7 @@ def add_parameters_to_energy_production_file(
         warning=False,
     )
 
+
 def add_file_name_to_energy_consumption_file(
     column, ts_filename, user_inputs_mvs_directory=None
 ):
