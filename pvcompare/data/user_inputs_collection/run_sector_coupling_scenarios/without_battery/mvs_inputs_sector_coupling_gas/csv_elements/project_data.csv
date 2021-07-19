@@ -1,0 +1,9 @@
+,unit,project_data
+country,str,
+latitude,str,
+longitude,str,
+project_id,str,1
+project_name,str,Gas as reference
+scenario_id,str,1
+scenario_name,str,
+scenario_description,str,Simulating gas scenarios RefG as reference
