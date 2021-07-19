@@ -1,25 +1,17 @@
 README
 ~~~~~~
 
-Instructions for running scenaios with run_sector_coupling_scenarios.py
-=======================================================================
+Instructions for running scenarios with /pvcompare/run_sector_coupling_scenarios.py
+===================================================================================
 
 Note: For the examinations in the working paper with the title "The influence of innovative photovoltaic technologies on urban energy systems - An energy system analysis with concentrator PV, perovskite-silicon PV and PV-powered heat pumps in comparison with state-of-the-art technologies",
 simulations have been run, which have a Li-ion battery connected to the electricity bus as a storage component.
-In the studies of the master thesis entitled "Modellierung und Analyse von sektorgekoppelten Energiesystemen mit photovoltaisch betriebenen Wärmepumpen und thermischen Energiespeichern",
-Li-ion batteries are not considered in the simulations, since the analyses there focus on the influence of the
-thermal components on corresponding KPIs.
 
-1. Please make sure to add input data first by obtaining it from:
+1. Copy the input data from
 
-   ~/[...]/pvcompare/pvcompare/data/user_inputs_collection/run_sector_coupling_scenarios/
+   ~/[...]/pvcompare/pvcompare/data/user_inputs_collection/run_sector_coupling_scenarios/with_battery
 
-   Choose whether you want to simulate
-
-   A. with (directory: with_battery) or
-   B. without (directory: without_battery)
-
-   battery and copy the repective data to
+   to
 
    a. ~/[...]/pvcompare/pvcompare/data/user_inputs/mvs_inputs/ in case of simulating RefE scenarios
    b. ~/[...]/pvcompare/pvcompare/data/user_inputs/mvs_inputs_sector_coupling/ in case of simulating sector coupling scenarios A, B, C and D
@@ -45,5 +37,4 @@ thermal components on corresponding KPIs.
 
 
 ====================================
-
 with "~/[...]/" as the path to your locally cloned repositories
