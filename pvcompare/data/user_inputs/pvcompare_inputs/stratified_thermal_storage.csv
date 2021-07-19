@@ -1,0 +1,9 @@
+var_name,var_value,var_unit
+height,NaN,m
+diameter,0.79,m
+temp_h,40.0,degC
+temp_c,34.0,degC
+s_iso,100.0,mm
+lamb_iso,0.03,W/(m*K)
+alpha_inside,4.3,W/(m2*K)
+alpha_outside,3.17,W/(m2*K)
