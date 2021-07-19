@@ -32,9 +32,9 @@ thermal components on corresponding KPIs.
 3. Please set `install_max_cap_pv` to True if you want to simulate the maximum installable capacity
 
 4. Please uncomment the scenarios you want to simulate
-	e.g.:
-		    # scenarios.run_scenario_RefE1()
-		->  scenarios.run_scenario_RefE1()
+   For example:
+      # scenarios.run_scenario_RefE1()
+   ->  scenarios.run_scenario_RefE1()
 
 5. Run the script
 
