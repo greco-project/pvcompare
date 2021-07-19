@@ -3274,7 +3274,29 @@ class ScenariosGas:
 
 if __name__ == "__main__":
 
-    facades = True
+    # Please set facades to True if you want to simulate facades
+    facades = False
+
+    if facades:
+        print("Facades are regarded in scenarios of sensitivity analysis.")
+
+    # Please set install_max_cap_pv to True if you want to simulate
+    # the maximum installable capacity
+    install_max_cap_pv = False
+
+    if install_max_cap_pv:
+        print("The maximum installable capacity is regarded in all simulations.")
+        check_inputs = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "check_inputs.py",)
+        )
+        check_inputs_content = open(check_inputs).read()
+        check_inputs_content_with_hack = check_inputs_content.replace(
+            "switch_hack = False", "switch_hack = True"
+        )
+
+        check_inputs_content_modified = open(check_inputs, "w")
+        check_inputs_content_modified.write(check_inputs_content_with_hack)
+        check_inputs_content_modified.close()
 
     scenarios = Scenarios()
     scenarios.setup_class()
@@ -3360,3 +3382,8 @@ if __name__ == "__main__":
     # scenarios_gas.revert_inputs_changes()
     # scenarios_gas.run_scenario_RefG4()
     # scenarios_gas.revert_inputs_changes()
+
+    if install_max_cap_pv:
+        check_inputs_content_original = open(check_inputs, "w")
+        check_inputs_content_original.write(check_inputs_content)
+        check_inputs_content_original.close()
