@@ -34,9 +34,11 @@ thermal components on corresponding KPIs.
 
 .. code-block:: python
 
+
     # scenarios.run_scenario_RefE1()
 
 ->
+
 .. code-block:: python
 
     scenarios.run_scenario_RefE1()

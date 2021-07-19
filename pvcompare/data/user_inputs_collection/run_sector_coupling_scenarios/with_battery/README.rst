@@ -29,6 +29,7 @@ simulations have been run, which have a Li-ion battery connected to the electric
     # scenarios.run_scenario_RefE1()
 
 ->
+
 .. code-block:: python
 
     scenarios.run_scenario_RefE1()
