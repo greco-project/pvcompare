@@ -351,9 +351,9 @@ cooling and cooking. For the latter it is assumed that only electrical energy is
 Therefore, the share of electrical energy consumption for cooking is subtracted from the total electrical energy consumption before adding the total energy consumption for cooking. 
 Electricity demand does not cover space heating nor hot water. For this reason, the electrical share of space heating and hot water is subtracted from the electricity demand.
 
-The annual electricity demand is calculated by the following procedure:
+The annual electricity profile is calculated by the following procedure:
 
-1)  the national residential electricity consumption for a country is calculated
+1)  The national residential electricity consumption for a country is calculated
     with the following procedure. The data for the total electricity consumption [1]
     as well as the fractions for space heating (SH) [2], water heating (WH) [3] and cooking [4] [5]
     are taken from `Odyssee Project of Enerdata <https://odyssee.enerdata.net/database/>`_.
@@ -372,13 +372,12 @@ The annual electricity demand is calculated by the following procedure:
     \text{tc} &= \text{total cooking [4]}\\
     \text{ec} &= \text{electicity cooking [5]}\\
 
-2)  the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/databrowser/view/migr_pop2ctz/default/table?lang=en>`_.
-3)  the total residential demand is divided by the country's population
-    and multiplied by the population living in the area considered. The latter is calculated by the product of the
-    number of houses, the number of storeys and the number of people per storey (for
+2)  The population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/databrowser/view/migr_pop2ctz/default/table?lang=en>`_.
+3)  To obtain the neighbourhood's total annual demand, the total annual residential electricity demand (step 1)
+    is divided by the country’s population (step 2) and multiplied by the neighbourhood's population. The population derives from the number of houses, number of storeys and number of people per storage (for building
     assumptions see :ref:`building_assumptions`).
-4)  The load profile is shifted due to country specific behaviour following the
-    approach of HOTMAPS. For further information see p.127 in
+4)  The load profile is calculated with `oemof.demandlib <https://github.com/oemof/demandlib>`_ taking holidays into account and then is scaled with the total annual demand of the neighbourhood (step 3).
+5)  For multiple countries, the load profile is adapted by hour shifting following the approach of HOTMAPS. For further information see p.127 in
     `HOTMAPS <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_.
 
 Figure `Electricity demand`_ shows an exemplary electricty demand for Spain, 2013.
@@ -424,16 +423,13 @@ The standard load profile is scaled with the annual heat demand for the given
 population, which is derived from the given number of houses and storeys (for assumptions see :ref:`building_assumptions`). The annual heat demand for space heating and warm water is calculated by the
 following procedure:
 
-1)  the residential heat demand for space heating [6] with or without warm water [7] of a country is taken from the `Odyssee Project of Enerdata <https://odyssee.enerdata.net/database/>`_.
-2)  on the lines of the electricity demand, the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/databrowser/view/migr_pop2ctz/default/table?lang=en>`_.
-3)  the total residential demand is divided by the country's population
-    and multiplied by the population living in the area considered. The latter is calculated by the product of the
-    number of houses, the number of storeys and the number of people per storey (for
-    assumptions see :ref:`building_assumptions`).
-4)  Heat demand that occurs when a daily mean temperature is above the heating limit
-    temperature is removed and distributed evenly over the heat demand of the remaining time
-    of the year.
-5)  For multiple countries, the load profile is adapted by hour shifting following the
+1)  The residential heat demand for space heating [6] with or without warm water [7] of a country is taken from the `Odyssee Project of Enerdata <https://odyssee.enerdata.net/database/>`_.
+2)  On the lines of the electricity demand, the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/databrowser/view/migr_pop2ctz/default/table?lang=en>`_.
+3)  The total residential demand for space heating is divided by the country’s population and multiplied by the neighbourhood's population.
+    The population derives from the number of houses, number of storeys and number of people per storage (for building assumptions see :ref:`building_assumptions`).
+4)  The heat demand profile is calculated with `oemof.demandlib <https://github.com/oemof/demandlib>`_ for a multi family house and then is scaled with the total annual demand of the neighbourhood (step 3).
+5)  Heat demand on days with a daily mean temperature above the heating limit temperature is removed and distributed evenly over the heat demand profile of the remaining time of the year.
+6)  For multiple countries, the load profile is adapted by hour shifting following the
     approach of HOTMAPS. For further information see p.127 in
     `HOTMAPS <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_.
 
