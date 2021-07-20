@@ -90,7 +90,7 @@ def plot_all_flows(
             sheet_name="Heat bus",
             index_col=0,
         )
-    except (KeyError):
+    except:
         df_heat = pd.DataFrame(
             data={"Heat pump": [0], "TES input power": [0], "TES output power": [0]}
         )
@@ -164,14 +164,14 @@ def plot_all_flows(
     # plot
     df_plot = df.copy().drop(
         [
-            "Charge Contoller ESS Li-Ion (discharge)",
+            # "Charge Contoller ESS Li-Ion (discharge)",
             # "storage_charge_controller_in",
             # "storage_charge_controller_out",
-            "Heat pump",
+            # "Heat pump",
             #'Solar inverter',
-            "Electricity grid_consumption_period",
-            "Charge Contoller ESS Li-Ion (charge)",
-            "Electricity bus_excess_sink",
+            # "Electricity grid_consumption_period",
+            # "Charge Contoller ESS Li-Ion (charge)",
+            # "Electricity bus_excess_sink",
             #'Electricity demand',
             #'Electricity grid_feedin_sink_sink'
         ],
