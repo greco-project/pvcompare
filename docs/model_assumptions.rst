@@ -43,7 +43,7 @@ The stardard building is constructed with defined building parameters, such as
 * hight of storey
 * population per storey
 
-The construction of the buidling, as well as the available façades for PV usage
+The construction of the building, as well as the available façades for PV usage
 are based on the research of `Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_.
 
 *The following paragraph is mostly taken from `Haas, Steinbach, Gering & Möller, 2021 <TODO URL>`_.*
