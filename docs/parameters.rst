@@ -464,7 +464,7 @@ local_grid_parameters.xlsx
 
 [16] Eurostat, the Statistical Office of the European Union: Gas prices by type of user. https://ec.europa.eu/eurostat/databrowser/view/ten00118/default/table?lang=en
 
-[17] magazine, pv: Feed-in taris (FITs) in Europe. https://www.pv-magazine.com/features/archive/solar-incentives-and-ts/feed-in-taris-in-europe/
+[17] magazine, pv: Feed-in taris (FITs) in Europe. https://www.pv-magazine.com/features/archive/solar-incentives-and-fits/feed-in-tariffs-in-europe/
 
 [18] Hans Bruyninckx: Greenhouse gas emission intensity of electricity generation in Europe | European Environment Agency. https://www.eea.europa.eu/data-and-maps/indicators/overview-of-the-electricity-production-3/assessment
 
