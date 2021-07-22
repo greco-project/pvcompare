@@ -24,10 +24,12 @@ Here is a template for new release sections
 ### Added
 - Add zenodo doi badge to readme (#328)
 - Add description of static inputs to RTD (#331)
+- References to working paper (#332)
 
 ### Changed
 - Improve docstrings of `plots.py` and `analysis.py` (#329)
 - Change references of energetic demands in RTD (#331)
+- Adapt heat and electricity demand documentation in consistency with working paper (#332)
 
 ### Removed
 -
