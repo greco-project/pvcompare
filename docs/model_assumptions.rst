@@ -21,7 +21,7 @@ Local energy sytem
 
 Building assumptions
 --------------------
-*The following paragraph is mostly taken from `Haas, Steinbach, Gering & Möller, 2021 <TODO URL>`_.*
+*The following paragraph is mostly taken from `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.*
 
 The analyzed local energy system is assumed to belong to an urban neighbourhood with a specific
 number of buildings. The calculation of the demand profiles are based on standard load profiles
@@ -46,7 +46,7 @@ The stardard building is constructed with defined building parameters, such as
 The construction of the building, as well as the available façades for PV usage
 are based on the research of `Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_.
 
-*The following paragraph is mostly taken from `Haas, Steinbach, Gering & Möller, 2021 <TODO URL>`_.*
+*The following paragraph is mostly taken from `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.*
 
 The default building parameters are based on the following assumptions that have
 been adopted from `Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_:
@@ -59,7 +59,7 @@ All building parameters can be adjusted in the inputs file :ref:`building_parame
 
 Exploitation for PV Installation
 --------------------------------
-*The following paragraphs are mostly taken from `Haas, Steinbach, Gering & Möller, 2021 <TODO URL>`_.*
+*The following paragraphs are mostly taken from `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.*
 
 In general we assume an urban environment that allows high solar exposure without shading
 from surrounding buildings or trees.
@@ -78,7 +78,7 @@ total floor area, due to shading between the modules (see `Energieatlas <https:/
 
 Maximum Capacity
 ----------------
-*The following paragraph is mostly taken from `Haas, Steinbach, Gering & Möller, 2021 <TODO URL>`_.*
+*The following paragraph is mostly taken from `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.*
 
 With the help of the calculated available area for PV exploitation, the maximum
 capacity can be evaluated. The maximum capacity, given in
@@ -125,7 +125,7 @@ conditions the following methods are selected from `modelchain object <https://p
 2. CPV
 ------
 
-*Parts of this section are taken from `Haas, Steinbach, Gering & Möller, 2021 <TODO URL>`_.*
+*Parts of this section are taken from `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.*
 
 The CPV technology that is used in the *pvcompare* simulations is a hybrid
 micro-Concentrator module with integrated planar tracking and diffuse light
@@ -232,7 +232,7 @@ whereas the performance testing of the test module is described in `Askins, et a
 3. PeroSi
 ---------
 
-*Parts of this section are taken from `Haas, Steinbach, Gering & Möller, 2021 <TODO URL>`_.*
+*Parts of this section are taken from `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.*
 
 The perovskite-silicon cell is a high-efficiency cell that is still in its
 test phase. Because perovskite is a material that is easily accessible many
@@ -339,7 +339,7 @@ timeseries is kW/kWp.
 
 Electricity and heat demand modeling
 ====================================
-*Most of this section "Electricity and heat demand modeling" is taken from `Haas, Steinbach, Gering & Möller, 2021 <TODO URL>`_.*
+*Most of this section "Electricity and heat demand modeling" is taken from `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.*
 
 The load profiles of the demand (electricity and heat) are calculated for a
 given population (calculated from number of storeys), a certain country and year.
@@ -350,7 +350,7 @@ help of `oemof.demandlib <https://demandlib.readthedocs.io/en/latest/description
 Electricity demand
 ------------------
 
-*The following paragraphs are mostly taken from `Haas, Steinbach, Gering & Möller, 2021 <TODO URL>`_.*
+*The following paragraphs are mostly taken from `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.*
 
 For the electricity demand, the BDEW load profile for households (H0) is scaled with the annual
 demand of a certain population. It is assumed that the demand of the population is equal to the national residential consumption scaled to the size of this population. Further it is assumed that the electricity demand covers not only all electrical demand for lightning and home appliances but also the energy demand for
@@ -402,7 +402,7 @@ Figure `Electricity demand`_ shows an exemplary electricty demand for Spain, 201
 Heat demand
 -----------
 
-*The following paragraphs are mostly taken from `Haas, Steinbach, Gering & Möller, 2021 <TODO URL>`_.*
+*The following paragraphs are mostly taken from `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.*
 
 The heat demand of either space heating or space heating and warm water is calculated for a
 given number of houses with a given number of storeys, a certain country and year. By default only space heating
