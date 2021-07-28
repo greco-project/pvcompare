@@ -7,6 +7,7 @@ Within the ``pvcompare/pvcompare/data/`` directory, two separate categories of i
 
 1. *MVS* parameters (found in the CSVs within the ``data/user_inputs/mvs_inputs/csv_elements/`` directory)
 2. *pvcompare*-specific parameters (found in the CSVs within the ``data/user_inputs/pvcompare_inputs/`` directory)
+3. Static input parameters of *pvcompare* (found in the ``data/static_inputs/`` directory)
 
 As *pvcompare* imports the `Multi-vector Simulation (MVS) <https://github.com/rl-institut/mvs_eland>`_ tool, the definitions of all the
 relevant parameters of *MVS* can be found in the `documentation of MVS <https://mvs-eland.readthedocs.io/en/latest/MVS_parameters.html>`_.
@@ -393,7 +394,7 @@ stratified_thermal_storage.csv
 
 
 
-2. Static input parameters
+3. Static input parameters
 ==========================
 
 list_of_workalendar_countries.csv
@@ -463,7 +464,7 @@ local_grid_parameters.xlsx
 
 [16] Eurostat, the Statistical Office of the European Union: Gas prices by type of user. https://ec.europa.eu/eurostat/databrowser/view/ten00118/default/table?lang=en
 
-[17] magazine, pv: Feed-in taris (FITs) in Europe. https://www.pv-magazine.com/features/archive/solar-incentives-and-ts/feed-in-taris-in-europe/
+[17] magazine, pv: Feed-in taris (FITs) in Europe. https://www.pv-magazine.com/features/archive/solar-incentives-and-fits/feed-in-tariffs-in-europe/
 
 [18] Hans Bruyninckx: Greenhouse gas emission intensity of electricity generation in Europe | European Environment Agency. https://www.eea.europa.eu/data-and-maps/indicators/overview-of-the-electricity-production-3/assessment
 

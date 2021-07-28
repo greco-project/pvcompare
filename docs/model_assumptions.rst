@@ -21,6 +21,8 @@ Local energy sytem
 
 Building assumptions
 --------------------
+*The following paragraph is mostly taken from the work of* `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.
+
 The analyzed local energy system is assumed to belong to an urban neighbourhood with a specific
 number of buildings. The calculation of the demand profiles are based on standard load profiles
 that are typically generated for 500-100 hoseholds. The functionalities for calculating the
@@ -29,7 +31,7 @@ These load profiles are flattened,
 compared to profiles of single households. In order to meet the required number of households,
 we assume a number of 20 houses by default for our simulations with variable number of storeys and a fixed
 number of 8 flats per storey. For 5 storey buildings this counts up to 800 households while for
-3 storey buildings this counts up to 480 households.\\
+3 storey buildings this counts up to 480 households.
 The amount of buildings, households per storey, number of people per household and further parameters
 can be adjusted in the inputs file :ref:`building_parameters`.
 
@@ -41,8 +43,10 @@ The stardard building is constructed with defined building parameters, such as
 * hight of storey
 * population per storey
 
-The construction of the buidling, as well as the available façades for PV usage
+The construction of the building, as well as the available façades for PV usage
 are based on the research of `Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_.
+
+*The following paragraph is mostly taken from the work of* `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.
 
 The default building parameters are based on the following assumptions that have
 been adopted from `Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_:
@@ -55,8 +59,10 @@ All building parameters can be adjusted in the inputs file :ref:`building_parame
 
 Exploitation for PV Installation
 --------------------------------
+*The following paragraphs are mostly taken from the work of* `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.
+
 In general we assume an urban environment that allows high solar exposure without shading
-from surrounding buildings or trees.\\
+from surrounding buildings or trees.
 It is assumed that PV systems can cover "50% of the south façade
 area, starting from the third floor up, and 80% of the east and west
 façades." (`Hachem, 2014 <https://www.sciencedirect.com/science/article/abs/pii/S0306261913009112>`_.)
@@ -72,9 +78,11 @@ total floor area, due to shading between the modules (see `Energieatlas <https:/
 
 Maximum Capacity
 ----------------
+*The following paragraph is mostly taken from the work of* `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.
+
 With the help of the calculated available area for PV exploitation, the maximum
 capacity can be evaluated. The maximum capacity, given in
-the unit of kWp, depends on the size and the efficiency of the specific PV technology.
+the unit of kWp, depends on the size and the peak power of the specific PV technology.
 It serves as a limit (constraint) for the investment optimization.
 It is calculated as follows:
 
@@ -116,6 +124,8 @@ conditions the following methods are selected from `modelchain object <https://p
 
 2. CPV
 ------
+
+*Parts of this section are taken from the work of* `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.
 
 The CPV technology that is used in the *pvcompare* simulations is a hybrid
 micro-Concentrator module with integrated planar tracking and diffuse light
@@ -221,6 +231,9 @@ whereas the performance testing of the test module is described in `Askins, et a
 
 3. PeroSi
 ---------
+
+*Parts of this section are taken from the work of* `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.
+
 The perovskite-silicon cell is a high-efficiency cell that is still in its
 test phase. Because perovskite is a material that is easily accessible many
 researchers around the world are investigating the potential of single junction
@@ -326,6 +339,7 @@ timeseries is kW/kWp.
 
 Electricity and heat demand modeling
 ====================================
+*Most of this section "Electricity and heat demand modeling" is taken from the work of* `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.
 
 The load profiles of the demand (electricity and heat) are calculated for a
 given population (calculated from number of storeys), a certain country and year.
@@ -336,15 +350,17 @@ help of `oemof.demandlib <https://demandlib.readthedocs.io/en/latest/description
 Electricity demand
 ------------------
 
+*The following paragraphs are mostly taken from the work of * `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.
+
 For the electricity demand, the BDEW load profile for households (H0) is scaled with the annual
 demand of a certain population. It is assumed that the demand of the population is equal to the national residential consumption scaled to the size of this population. Further it is assumed that the electricity demand covers not only all electrical demand for lightning and home appliances but also the energy demand for
 cooling and cooking. For the latter it is assumed that only electrical energy is used for cooking.
 Therefore, the share of electrical energy consumption for cooking is subtracted from the total electrical energy consumption before adding the total energy consumption for cooking. 
 Electricity demand does not cover space heating nor hot water. For this reason, the electrical share of space heating and hot water is subtracted from the electricity demand.
 
-The annual electricity demand is calculated by the following procedure:
+The annual electricity profile is calculated by the following procedure:
 
-1)  the national residential electricity consumption for a country is calculated
+1)  The national residential electricity consumption for a country is calculated
     with the following procedure. The data for the total electricity consumption [1]
     as well as the fractions for space heating (SH) [2], water heating (WH) [3] and cooking [4] [5]
     are taken from `Odyssee Project of Enerdata <https://odyssee.enerdata.net/database/>`_.
@@ -363,13 +379,12 @@ The annual electricity demand is calculated by the following procedure:
     \text{tc} &= \text{total cooking [4]}\\
     \text{ec} &= \text{electicity cooking [5]}\\
 
-2)  the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/databrowser/view/migr_pop2ctz/default/table?lang=en>`_.
-3)  the total residential demand is divided by the country's population
-    and multiplied by the population living in the area considered. The latter is calculated by the product of the
-    number of houses, the number of storeys and the number of people per storey (for
+2)  The population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/databrowser/view/migr_pop2ctz/default/table?lang=en>`_.
+3)  To obtain the neighbourhood's total annual demand, the total annual residential electricity demand (step 1)
+    is divided by the country’s population (step 2) and multiplied by the neighbourhood's population. The population derives from the number of houses, number of storeys and number of people per storage (for building
     assumptions see :ref:`building_assumptions`).
-4)  The load profile is shifted due to country specific behaviour following the
-    approach of HOTMAPS. For further information see p.127 in
+4)  The load profile is calculated with `oemof.demandlib <https://github.com/oemof/demandlib>`_ taking holidays into account and then is scaled with the total annual demand of the neighbourhood (step 3).
+5)  For multiple countries, the load profile is adapted by hour shifting following the approach of HOTMAPS. For further information see p.127 in
     `HOTMAPS <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_.
 
 Figure `Electricity demand`_ shows an exemplary electricty demand for Spain, 2013.
@@ -386,6 +401,8 @@ Figure `Electricity demand`_ shows an exemplary electricty demand for Spain, 201
 
 Heat demand
 -----------
+
+*The following paragraphs are mostly taken from the work of* `Haas, Steinbach, Gering & Möller, 2021 <https://zenodo.org/record/512172>`_.
 
 The heat demand of either space heating or space heating and warm water is calculated for a
 given number of houses with a given number of storeys, a certain country and year. By default only space heating
@@ -415,16 +432,13 @@ The standard load profile is scaled with the annual heat demand for the given
 population, which is derived from the given number of houses and storeys (for assumptions see :ref:`building_assumptions`). The annual heat demand for space heating and warm water is calculated by the
 following procedure:
 
-1)  the residential heat demand for space heating [6] with or without warm water [7] of a country is taken from the `Odyssee Project of Enerdata <https://odyssee.enerdata.net/database/>`_.
-2)  on the lines of the electricity demand, the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/databrowser/view/migr_pop2ctz/default/table?lang=en>`_.
-3)  the total residential demand is divided by the country's population
-    and multiplied by the population living in the area considered. The latter is calculated by the product of the
-    number of houses, the number of storeys and the number of people per storey (for
-    assumptions see :ref:`building_assumptions`).
-4)  Heat demand that occurs when a daily mean temperature is above the heating limit
-    temperature is removed and distributed evenly over the heat demand of the remaining time
-    of the year.
-5)  For multiple countries, the load profile is adapted by hour shifting following the
+1)  The residential heat demand for space heating [6] with or without warm water [7] of a country is taken from the `Odyssee Project of Enerdata <https://odyssee.enerdata.net/database/>`_.
+2)  On the lines of the electricity demand, the population of the country is taken from `EUROSTAT <https://ec.europa.eu/eurostat/databrowser/view/migr_pop2ctz/default/table?lang=en>`_.
+3)  The total residential demand for space heating is divided by the country’s population and multiplied by the neighbourhood's population.
+    The population derives from the number of houses, number of storeys and number of people per storage (for building assumptions see :ref:`building_assumptions`).
+4)  The heat demand profile is calculated with `oemof.demandlib <https://github.com/oemof/demandlib>`_ for a multi family house and then is scaled with the total annual demand of the neighbourhood (step 3).
+5)  Heat demand on days with a daily mean temperature above the heating limit temperature is removed and distributed evenly over the heat demand profile of the remaining time of the year.
+6)  For multiple countries, the load profile is adapted by hour shifting following the
     approach of HOTMAPS. For further information see p.127 in
     `HOTMAPS <https://www.hotmaps-project.eu/wp-content/uploads/2018/03/D2.3-Hotmaps_for-upload_revised-final_.pdf>`_.
 
