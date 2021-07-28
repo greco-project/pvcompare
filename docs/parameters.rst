@@ -7,7 +7,7 @@ Within the ``pvcompare/pvcompare/data/`` directory, two separate categories of i
 
 1. *MVS* parameters (found in the CSVs within the ``data/user_inputs/mvs_inputs/csv_elements/`` directory)
 2. *pvcompare*-specific parameters (found in the CSVs within the ``data/user_inputs/pvcompare_inputs/`` directory)
-3. Static input parameters of *pvcompare* (found in the CSVs within the ``data/static_inputs/`` directory)
+3. Static input parameters of *pvcompare* (found in the ``data/static_inputs/`` directory)
 
 As *pvcompare* imports the `Multi-vector Simulation (MVS) <https://github.com/rl-institut/mvs_eland>`_ tool, the definitions of all the
 relevant parameters of *MVS* can be found in the `documentation of MVS <https://mvs-eland.readthedocs.io/en/latest/MVS_parameters.html>`_.
