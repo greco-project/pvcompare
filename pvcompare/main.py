@@ -47,6 +47,11 @@ def apply_pvcompare(
     overwrite_grid_parameters=True,
     overwrite_pv_parameters=True,
     overwrite_heat_parameters=True,
+    add_weather_file=None,
+    add_sam_si_module=None,
+    add_electricity_demand=None,
+    add_heat_demand=None,
+    add_pv_timeseries=None,
 ):
     r"""
     Runs the main functionalities of pvcompare.
@@ -111,6 +116,38 @@ def apply_pvcompare(
         absolute and relative will be overwritten with calculated time series of fixed thermal
         losses relative and absolute.
         Default: True.
+    add_weather_data: str or None
+        Path to csv containing hourly weather time series with columns: [time, latitude, longitude
+        ,ghi, wind_speed, temp_air, precipitable_water, dni, dhi]
+        Default: None. If None, the ERA5 data is used instead.
+    add_sam_si_module: dict or None
+        Dictionary with library (’CECMod’  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod":'Canadian_Solar_Inc__CS5P_220M'}.
+        Note that the SI module is only considered if there is the technology "SI" in
+        'user_inputs/mvs_inputs/pvcompare_inputs/pv_setup.csv'
+    add_electricity_demand: str or None
+        Path to precalculated hourly electricity demand time series for one year (or the same period
+        of a precalculated PV timeseries). Default: None
+        Note that that the demand is only considered if a column "Electricity demand" is added to
+        'user_inputs/mvs_inputs/csv_elements/energyConsumption.csv'
+    add_heat_demand: str or None
+        Path to precalculated hourly heat demand time series for one year (or the same period
+        of a precalculated PV timeseries). Default: None
+        Note that that the demand is only considered is a column "Heat demand" is added to
+        'user_inputs/mvs_inputs/csv_elements/energyConsumption.csv'
+    add_pv_timeseries: dict or None
+        Dictionary with {"PV1" : ["filename": >path_to_time_series< , "module_size": >module_size in m²<,
+        "module_peak_power": >peak power of the module in kWp<, "surface_type": >surface_type for PV installation<],
+        "PV2" : [...], ...}. You can add more than one module time series by defining more PV-keys.
+        The PV time series itself needs to be a normalized hourly time series in kW/kWp
+        (normalized by the peak power of the module). The surface_type can be one of: [
+        "flat_roof", "gable_roof", "south_facade", "east_facade", "west_facade"].
+        Note that you need to add more specific PV parameters of your module (name, costs, lifetime etc.) in
+        ``user_inputs_mvs_directory/csv_elements/energyProduction.csv``. The columns in ``energyProduction.csv``
+        should be named "PV"+ key (e.g. "PV SI1" if your key is "SI1").
+        When providing your own time series, ``overwrite_pv_parameters`` in :py:func:`~.main.apply_pvcompare` should be
+        set to ``False``. When ``add_pv_timeseries`` is used, the ``pv_setup.csv`` is disregarded.
+
 
     Returns
     -------
@@ -149,39 +186,55 @@ def apply_pvcompare(
             user_inputs_mvs_directory=user_inputs_mvs_directory,
         )
 
-    # check if weather data already exists
-    weather_file = os.path.join(
-        static_inputs_directory, f"weatherdata_{latitude}_{longitude}_{year}.csv"
-    )
-    if os.path.isfile(weather_file):
-        weather = pd.read_csv(weather_file, index_col=0,)
+    if add_weather_file is not None:
+        weather = pd.read_csv(add_weather_file, index_col=0,)
     else:
-        # if era5 import works this line can be used
-        weather = era5.load_era5_weatherdata(lat=latitude, lon=longitude, year=year)
-        weather.to_csv(weather_file)
+        # check if weather data already exists
+        weather_file = os.path.join(
+            static_inputs_directory, f"weatherdata_{latitude}_{longitude}_{year}.csv"
+        )
+        if os.path.isfile(weather_file):
+            weather = pd.read_csv(weather_file, index_col=0,)
+        else:
+            # download ERA5 weather data
+            weather = era5.load_era5_weatherdata(lat=latitude, lon=longitude, year=year)
+            # save to csv
+            weather.to_csv(weather_file)
     # add datetimeindex
     weather.index = pd.to_datetime(weather.index)
 
-    # check energyProduction.csv file for the correct pv technology
-    check_inputs.overwrite_mvs_energy_production_file(
-        pv_setup=pv_setup,
-        user_inputs_mvs_directory=user_inputs_mvs_directory,
-        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
-        collections_mvs_inputs_directory=collections_mvs_inputs_directory,
-        overwrite_pv_parameters=overwrite_pv_parameters,
-    )
-    pv_feedin.create_pv_components(
-        lat=latitude,
-        lon=longitude,
-        weather=weather,
-        storeys=storeys,
-        pv_setup=pv_setup,
-        plot=plot,
-        user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
-        user_inputs_mvs_directory=user_inputs_mvs_directory,
-        year=year,
-        normalization=True,
-    )
+    # check if add_pv_time_series is provided
+    if add_pv_timeseries is not None:
+        pv_feedin.add_pv_timeseries(
+            add_pv_timeseries=add_pv_timeseries,
+            storeys=storeys,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
+            user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+        )
+
+    else:
+        # check energyProduction.csv file for the correct pv technology
+        check_inputs.overwrite_mvs_energy_production_file(
+            pv_setup=pv_setup,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
+            user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+            collections_mvs_inputs_directory=collections_mvs_inputs_directory,
+            overwrite_pv_parameters=overwrite_pv_parameters,
+        )
+
+        pv_feedin.create_pv_components(
+            lat=latitude,
+            lon=longitude,
+            weather=weather,
+            storeys=storeys,
+            pv_setup=pv_setup,
+            plot=plot,
+            user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
+            year=year,
+            normalization=True,
+            add_sam_si_module=add_sam_si_module,
+        )
 
     # add sector coupling in case heat pump or chiller exists in energyConversion.csv
     # note: chiller was not tested, yet.
@@ -204,6 +257,8 @@ def apply_pvcompare(
         user_inputs_pvcompare_directory=user_inputs_pvcompare_directory,
         user_inputs_mvs_directory=user_inputs_mvs_directory,
         weather=weather,
+        add_electricity_demand=add_electricity_demand,
+        add_heat_demand=add_heat_demand,
     )
 
     stratified_thermal_storage.add_strat_tes(

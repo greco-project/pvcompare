@@ -52,6 +52,7 @@ def create_pv_components(
     user_inputs_mvs_directory=None,
     psi_type="Chen",
     normalization=True,
+    add_sam_si_module=None,
 ):
     r"""
     Creates feed-in time series for all surface types in `pv_setup` or 'pv_setup.csv'.
@@ -102,6 +103,10 @@ def create_pv_components(
     normalization: bool
         If True: Time series is normalized. Otherwise absolute time series is
         returned. Default: True.
+    add_sam_si_module: dict
+        Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}.
+
 
     Returns
     -------
@@ -119,7 +124,7 @@ def create_pv_components(
 
         data_path = os.path.join(user_inputs_pvcompare_directory, "pv_setup.csv")
         pv_setup = pd.read_csv(data_path)
-        logging.info("setup conditions successfully loaded.")
+        logging.info("Pv setup conditions successfully loaded.")
 
     # check if all required columns are in pv_setup
     if not all(
@@ -170,6 +175,7 @@ def create_pv_components(
                     surface_azimuth=j,
                     surface_tilt=k,
                     normalization=normalization,
+                    add_sam_si_module=add_sam_si_module,
                 )
             elif row["technology"] == "cpv":
                 time_series = create_cpv_time_series(
@@ -253,6 +259,7 @@ def create_pv_components(
             surface_azimuth=j,
             surface_tilt=k,
             psi_type=psi_type,
+            add_sam_si_module=add_sam_si_module,
         )
         # save the file name of the time series and the nominal value to
         # mvs_inputs/elements/csv/energyProduction.csv
@@ -300,7 +307,7 @@ def get_optimal_pv_angle(lat):
     return round(lat - 15)
 
 
-def set_up_system(technology, surface_azimuth, surface_tilt):
+def set_up_system(technology, surface_azimuth, surface_tilt, add_sam_si_module=None):
 
     r"""
     Sets up pvlibPVSystems.
@@ -316,6 +323,9 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
         Surface azimuth of the module.
     surface_tilt: float
         Surface tilt of the module.
+    add_sam_si_module: dict
+        Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}.
 
     Returns
     -------
@@ -325,8 +335,14 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
 
     if technology == "si":
 
-        sandia_modules = pvlib.pvsystem.retrieve_sam("cecmod")
-        sandia_module = sandia_modules["Aleo_Solar_S59y280"]
+        if add_sam_si_module is None:
+            library = "cecmod"
+            module = "Aleo_Solar_S59y280"
+        else:
+            library, module = next(iter(add_sam_si_module.items()))
+        sandia_modules = pvlib.pvsystem.retrieve_sam(library)
+        sandia_module = sandia_modules[module]
+        # note that the inverter is not accounted for  in the calculation of PV timeseries
         cec_inverters = pvlib.pvsystem.retrieve_sam("cecinverter")
         cec_inverter = cec_inverters["ABB__MICRO_0_25_I_OUTD_US_208__208V_"]
         system = PVSystem(
@@ -371,7 +387,13 @@ def set_up_system(technology, surface_azimuth, surface_tilt):
 
 
 def create_si_time_series(
-    lat, lon, weather, surface_azimuth, surface_tilt, normalization
+    lat,
+    lon,
+    weather,
+    surface_azimuth,
+    surface_tilt,
+    normalization,
+    add_sam_si_module=None,
 ):
     r"""
     Calculates feed-in time series for a silicon PV module.
@@ -394,6 +416,9 @@ def create_si_time_series(
     normalization: bool
         If True: Time series is normalized. Otherwise absolute time series is
         returned.
+    add_sam_si_module: dict
+        Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}.
 
     Returns
     -------
@@ -402,7 +427,10 @@ def create_si_time_series(
     """
 
     system, module_parameters = set_up_system(
-        technology="si", surface_azimuth=surface_azimuth, surface_tilt=surface_tilt
+        technology="si",
+        surface_azimuth=surface_azimuth,
+        surface_tilt=surface_tilt,
+        add_sam_si_module=add_sam_si_module,
     )
     location = Location(latitude=lat, longitude=lon)
 
@@ -589,8 +617,11 @@ def create_psi_time_series(
         return (output / peak).clip(0)
 
 
-def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type):
-    r"""
+def nominal_values_pv(
+    technology, area, surface_azimuth, surface_tilt, psi_type, add_sam_si_module=None
+):
+    """
+
     calculates the maximum installed capacity for each pv module.
 
     The nominal value for each PV technology is constructed by the size of
@@ -614,6 +645,11 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
     psi_type  : str
         Defines the type of module of which the time series is calculated.
         Options: "Korte", "Chen".
+    add_sam_si_module: dict or None
+        Dictionary with library ("CECMod"  or "SandiaMod") as key and module name as value.
+        E.g. {"cecmod": "Canadian_Solar_Inc__CS5P_220M"}.
+        Note that the SI module is only considered if there is the technology "SI" in
+
 
     Returns
     -------
@@ -626,6 +662,7 @@ def nominal_values_pv(technology, area, surface_azimuth, surface_tilt, psi_type)
             technology=technology,
             surface_azimuth=surface_azimuth,
             surface_tilt=surface_tilt,
+            add_sam_si_module=add_sam_si_module,
         )
         peak = get_peak(
             technology, module_parameters_1=module_parameters, module_parameters_2=None,
@@ -702,3 +739,80 @@ def get_peak(technology, module_parameters_1, module_parameters_2):
             - (module_parameters_1.p_mp + module_parameters_2.p_mp) * 0.1
         )
         return peak
+
+
+def add_pv_timeseries(
+    add_pv_timeseries,
+    storeys,
+    user_inputs_mvs_directory,
+    user_inputs_pvcompare_directory,
+):
+    r"""
+    Adds PV time series of user to the simulations inputs.
+    
+    This function calculates the maximum capacity and inserts the time series filename
+    and the maximum capacity into 'user_inputs_mvs_directory/csv_elements/energyProduction.csv'.
+
+    Parameter
+    ----------
+    add_pv_timeseries: dict or None
+        Dictionary with {"PV1" : ["filename": >path_to_time_series< , "module_size": >module_size in m²<,
+        "module_peak_power": >peak power of the module in kWp<, "surface_type": >surface_type for PV installation<],
+        "PV2" : [...], ...}. You can add more than one module time series by defining more PV-keys.
+        The PV time series itself needs to be a normalized hourly time series in kW/kWp
+        (normalized by the peak power of the module). The surface_type can be one of: [
+        "flat_roof", "gable_roof", "south_facade", "east_facade", "west_facade"].
+        Note that you need to add more specific PV parameters of your module (name, costs, lifetime etc.) in
+        ``user_inputs_mvs_directory/csv_elements/energyProduction.csv``. The columns in ``energyProduction.csv``
+        should be named "PV"+ key (e.g. "PV SI1" if your key is "SI1").
+        When providing your own time series, ``overwrite_pv_parameters`` in :py:func:`~.main.apply_pvcompare` should be
+        set to ``False``. When ``add_pv_timeseries`` is used, the ``pv_setup.csv`` is disregarded.
+    storeys: int
+        number of storeys for which the demand is calculated.
+    user_inputs_mvs_directory: str or None
+        Directory of the mvs inputs; where 'csv_elements/' is located. If None,
+        `constants.DEFAULT_USER_INPUTS_MVS_DIRECTORY` is used as user_inputs_mvs_directory.
+        Default: None.
+    user_inputs_pvcompare_directory: str or None
+        If None, `constants.DEFAULT_USER_INPUTS_PVCOMPARE_DIRECTORY` is used
+        as  user_inputs_pvcompare_directory.
+        Default: None.
+
+    Returns
+    -------
+        None
+    """
+
+    for key in add_pv_timeseries.keys():
+        # check if PV timeseries exists
+        if not os.path.isfile(add_pv_timeseries[key]["filename"]):
+            raise ValueError(
+                "The PV time series you have specified does not exist. "
+                "Please check your input or set `add_pv_timeseries` to None "
+                "in order to use the default pvcompare methods."
+            )
+            return
+        pv_timeseries = pd.read_csv(
+            add_pv_timeseries[key]["filename"], index_col=0, header=None
+        )
+        # add "evaluated_period" to simulation_settings.csv
+        check_inputs.add_evaluated_period_to_simulation_settings(
+            time_series=pv_timeseries,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
+        )
+        area = area_potential.calculate_area_potential(
+            storeys,
+            user_inputs_pvcompare_directory,
+            surface_type=add_pv_timeseries[key]["surface_type"],
+        )
+        nominal_value = round(
+            (area / add_pv_timeseries[key]["module_size"])
+            * add_pv_timeseries[key]["module_peak_power"]
+        )
+
+        check_inputs.add_parameters_to_energy_production_file(
+            technology=key,
+            ts_filename=add_pv_timeseries[key]["filename"],
+            nominal_value=nominal_value,
+            user_inputs_mvs_directory=user_inputs_mvs_directory,
+        )

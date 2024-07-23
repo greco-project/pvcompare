@@ -12,6 +12,15 @@ Run a simulation
 You can easily run a simulation by executing one of the examples in `examples/ <https://github.com/greco-project/pvcompare/tree/master/examples>`_.
 There are three examples, one that accounts only for the electricity sector, one for sector coupling using heat pumps and one example covering heat demand with a gas plant as a reference scenario for the one with heat pumps.
 
+Here's an example energy system graph of a sector coupled scenario of the simulation provided in ``examples/run_pvcompare_example_sector_coupling.py``.
+
+.. figure:: ./images/energy_system_graph.png
+    :width: 100%
+    :alt: energy system graph.
+    :align: center
+
+    Energy system graph of an examplary sector coupled energy system.
+
 If you want to set up your own scenario, you need to insert input files into the directory first. How to do this is described in the next paragraph :ref:`define_params`.
 Afterwards you can run a simulation by running the file `run_pvcompare.py <https://github.com/greco-project/pvcompare/blob/master/run_pvcompare.py>`_ in the parent folder of *pvcompare*.
 In order to run a simulation you need to at least define the following parameters:
@@ -77,11 +86,65 @@ install the *cdsapi* package. `This page <https://cds.climate.copernicus.eu/api-
 
 Two example weather years for Berlin, Germany, 2017 and Madrid, Spain, 2017 are already added to ``data/static_inputs``.
 
-**Provide your own weather data**
+Provide your own input time series
+==================================
 
-As an alternative `oemof feedinlib <https://feedinlib.readthedocs.io/en/releases-0.1.0/load_era5_weather_data.html>`_ provides a jupyter notebook with instructions on how to download data for a single coordinate or a region.
+*pvcompare* provides functionalities to automatically download weather data as well as calculate demand and PV time series.
+If you want to use your own input time series, you
+can do so by defining them in the :py:func:`~.main.apply_pvcompare` function. The following section gives you an overview
+on how to provide your time series.
 
+**Weather data**
 
+In oder to provide your own weather data, you need to insert the path
+to your weather file to the parameter ``add_weather_data`` in the :py:func:`~.main.apply_pvcompare` function. The file
+should be a csv file with the columns: [time, latitude, longitude,
+ghi, dni, dhi, wind_speed, temp_air, precipitable_water] and contain hourly time series.
+
+You can also download ERA5 weather data yourself. `oemof feedinlib <https://feedinlib.readthedocs.io/en/releases-0.1.0/load_era5_weather_data.html>`_ provides a jupyter notebook with instructions on how to download data for a single coordinate or a region.
+
+**Demand time series**
+
+In order to add your own heat and/or electricity demand time series provide the path to the file(s) with ``add_electricity_demand`` and/or ``add_heat_demand``
+in :py:func:`~.main.apply_pvcompare`. Note that the respective demand is only considered, if you add a column with the ``energy_vector`` "Heat" or "Electricity"
+to ``energyConsumption.csv`` in ``user_inputs_mvs_directory/csv_elements``.
+To match the unit of calculated time series (e.g. of PV production), the demand time series should be given as an hourly time series in kW.
+
+**PV generation time series**
+
+You can add your own PV generation time series by defining ``add_pv_timeseries`` in :py:func:`~.main.apply_pvcompare`.
+Instead of just providing the path to the file, you need to define a dictionary with additional information
+on the PV module you are considering, in order to allow the calculation of the area potential for your module.
+The dictionary should be given as follows:
+.. code-block:: python
+
+    {"PV1" : ["filename": >path_to_time_series< , "module_size": >module_size in m²<,
+    "module_peak_power": >peak power of the module in kWp<, "surface_type": >surface_type for PV installation<],
+    "PV2" : [...], ...}
+    
+You can add more than one module time series by defining more PV-keys.
+The PV time series itself needs to be a normalized hourly time series in kW/kWp
+(normalized by the peak power of the module). The surface_type can be one of: [
+"flat_roof", "gable_roof", "south_facade", "east_facade", "west_facade"].
+
+Note that you need to add more specific PV parameters of your module (name, costs, lifetime etc.) in
+``user_inputs_mvs_directory/csv_elements/energyProduction.csv``. The columns in ``energyProduction.csv``
+should be named "PV"+ key (e.g. "PV SI1" if your key is "SI1").
+
+When providing your own time series, ``overwrite_pv_parameters`` in :py:func:`~.main.apply_pvcompare` should be
+set to ``False``. When ``add_pv_timeseries`` is used, the ``pv_setup.csv`` is disregarded.
+
+**Add a different SI module**
+
+By default, the module "Aleo_Solar_S59y280" is loaded from `cec module <https://github.com/NREL/SAM/tree/develop/deploy/libraries>`_ database.
+But you can add another module from sandia or cec `libraries <https://github.com/NREL/SAM/tree/develop/deploy/libraries>`_.
+
+To do so, you need to define the parameter ``add_sam_si_module`` in :py:func:`~.main.apply_pvcompare`.
+You should define a dictionary with the library ("CECMod"  or "SandiaMod") as key and module name as value.
+E.g. ``{"cecmod": "Canadian_Solar_Inc__CS5P_220M"}``.
+
+Note that the SI module is only considered if a module with the technology "SI" is provided in
+``user_inputs_pvcompare_directory/pv_setup.csv``
 
 
 Add a sensitivy to your simulations
