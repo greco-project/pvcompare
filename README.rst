@@ -14,8 +14,8 @@ Deprecated: |badge_travis|
     :target: https://coveralls.io/github/greco-project/pvcompare?branch=dev
     :alt: Test coverage
 
-.. |badge_travis| image:: https://travis-ci.com/greco-project/pvcompare.svg?branch=dev
-    :target: https://travis-ci.com/greco-project/pvcompare
+.. |badge_travis| image:: https://flat.badgen.net/travis/greco-project/pvcompare
+    :target: https://travis-ci.com/github/greco-project/pvcompare
 
 .. |badge_zenodo| image:: https://zenodo.org/badge/224614782.svg
    :target: https://zenodo.org/badge/latestdoi/224614782
